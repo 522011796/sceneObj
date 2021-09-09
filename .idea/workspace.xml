@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/assets/css/common.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/locales/en-US.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/locales/zh-CN.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/middleware/i18n.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mixins/mixins.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/alloyFinger.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/axios.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/i18n.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/img/light.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/rule.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/store/index.js" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="CSS File" />
+        <option value="Vue Single File Component" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1wvbQKuRvCP1qqGMjrNuATw7reL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/img" />
+    <property name="list.type.of.created.stylesheet" value="CSS" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="show.migrate.to.gradle.popup" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/static/img" />
+      <recent name="$PROJECT_DIR$" />
+      <recent name="$PROJECT_DIR$/plugins" />
+      <recent name="$PROJECT_DIR$/store" />
+      <recent name="$PROJECT_DIR$/middleware" />
+    </key>
+  </component>
+  <component name="ServiceViewManager">
+    <option name="viewStates">
+      <list>
+        <serviceView>
+          <treeState>
+            <expand />
+            <select />
+          </treeState>
+        </serviceView>
+      </list>
+    </option>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="" />
+      <created>1629341991312</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1629341991312</updated>
+      <workItem from="1629341997293" duration="6441000" />
+      <workItem from="1629768755302" duration="4001000" />
+      <workItem from="1629858239239" duration="2021000" />
+      <workItem from="1629885081898" duration="448000" />
+      <workItem from="1629941454585" duration="887000" />
+      <workItem from="1629945110191" duration="5897000" />
+      <workItem from="1629968761609" duration="15417000" />
+      <workItem from="1630058575856" duration="4611000" />
+      <workItem from="1630286840848" duration="8961000" />
+      <workItem from="1630371636733" duration="13385000" />
+      <workItem from="1630403222895" duration="677000" />
+      <workItem from="1630544618981" duration="977000" />
+      <workItem from="1630631225533" duration="8259000" />
+      <workItem from="1630976304454" duration="3895000" />
+      <workItem from="1630981549024" duration="16881000" />
+      <workItem from="1631008654328" duration="34147000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="458" y="171" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1630982318035">
+      <screen x="0" y="25" width="1440" height="791" />
+    </state>
+    <state x="458" y="171" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1440.791@0.25.1440.791" timestamp="1630982318035" />
+    <state x="383" y="177" width="674" height="486" key="find.popup" timestamp="1630998445195">
+      <screen x="0" y="25" width="1440" height="791" />
+    </state>
+    <state x="383" y="177" width="674" height="486" key="find.popup/0.25.1440.791@0.25.1440.791" timestamp="1630998445195" />
+    <state x="385" y="140" width="670" height="676" key="search.everywhere.popup" timestamp="1631069936700">
+      <screen x="0" y="25" width="1440" height="791" />
+    </state>
+    <state x="385" y="140" width="670" height="676" key="search.everywhere.popup/0.25.1440.791@0.25.1440.791" timestamp="1631069936700" />
+  </component>
+</project>

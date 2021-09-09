@@ -1,0 +1,102 @@
+html {
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  font-size: 14px;
+  word-spacing: 1px;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+  color: #dddddd;
+  overflow-y: hidden;
+}
+body{
+  margin: 0px !important;
+  padding: 0px !important;
+  overflow-y: hidden;
+  background: #595959;
+}
+p{
+  margin: 0px;
+}
+a{
+  text-decoration: none;
+}
+.select-none{
+  user-select:  none;
+}
+.clearfix{
+  clear: both;
+}
+.moon-container{
+  padding: 10px 10px;
+}
+.moon-ellipsis-class{
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-break: break-all;
+}
+.textCenter{
+  text-align: center;
+}
+.padding-full10{
+  padding: 10px 10px;
+}
+.el-button+.el-button {
+  margin-left: 0px;
+}
+.layout-menu-add .el-button--mini, .el-button--mini.is-round {
+  padding: 7px 5px;
+}
+.demoRuleClass .el-slider__runway {
+  width: 100%;
+  height: 3px;
+  margin: 0px 0px;
+  background-color: #E4E7ED;
+  border-radius: 0px;
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+  margin: 0px 5px;
+}
+.demoRuleClass .el-slider__button {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #409EFF;
+  background-color: #FFF;
+  border-radius: 50%;
+  transition: .2s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.indexPopVisible.el-popover {
+  position: absolute;
+  background: #454545;
+  min-width: 150px;
+  border: 1px solid #353535;
+  padding: 12px;
+  z-index: 2000;
+  color: #f8f8f8;
+  line-height: 1.4;
+  text-align: justify;
+  font-size: 14px;
+  box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  word-break: break-all;
+}
+.indexPopVisible.el-popper[x-placement^=bottom] .popper__arrow::after {
+  top: 1px;
+  margin-left: -6px;
+  border-top-width: 0;
+  border-bottom-color: #454545;
+}
+.indexPopVisible.el-popper[x-placement^=bottom] .popper__arrow {
+  top: -6px;
+  left: 50%;
+  margin-right: 3px;
+  border-top-width: 0;
+  border-bottom-color: #353535;
+}
+
