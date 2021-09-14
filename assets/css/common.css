@@ -43,6 +43,9 @@ a{
 .padding-full10{
   padding: 10px 10px;
 }
+.padding-right5{
+  padding-right: 5px;
+}
 .el-button+.el-button {
   margin-left: 0px;
 }
@@ -98,5 +101,210 @@ a{
   margin-right: 3px;
   border-top-width: 0;
   border-bottom-color: #353535;
+}
+.drawer-bottom{
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+.drawer-right-bottom{
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+.drawer-bottom .el-drawer__body{
+  padding: 0px 10px 0px 10px;
+}
+.drawer-right-bottom .el-drawer__body{
+  padding: 0px 10px 0px 10px;
+  background: #f5f5f5;
+}
+.drawer-bottom .el-drawer__header{
+  align-items: center;
+  color: #72767b;
+  display: flex;
+  margin-bottom: 0px;
+  padding: 0px 0px 0;
+}
+.drawer-right-bottom .el-drawer__header{
+  align-items: center;
+  color: #72767b;
+  display: flex;
+  margin-bottom: 0px;
+  padding: 0px 0px 0;
+}
+.textLeft{
+  text-align: left;
+}
+.textRight{
+  text-align: right;
+}
+.textCenter{
+  text-align: center;
+}
+.netmoon-form-dialog .el-input__inner, .netmoon-form-item-dialog .el-input__inner{
+  border: 0px;
+  text-align: right;
+  padding: 0px;
+}
+.netmoon-form-dialog input::-webkit-input-placeholder, .netmoon-form-item-dialog input::-webkit-input-placeholder {
+  /* WebKit browsers */
+  color: #dddddd;
+}
+.netmoon-form-dialog input:-moz-placeholder, .netmoon-form-item-dialog input::-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 */
+  color: #dddddd;
+}
+.netmoon-form-dialog input::-moz-placeholder, .netmoon-form-item-dialog input::-moz-placeholder {
+  /* Mozilla Firefox 19+ */
+  color: #dddddd;
+}
+.netmoon-form-dialog input:-ms-input-placeholder,.netmoon-form-item-dialog input::-ms-input-placeholder {
+  /* Internet Explorer 10+ */
+  color: #dddddd;
+}
+.font-size-12{
+  font-size: 12px;
+}
+.font-size-13{
+  font-size: 12px;
+}
+.font-size-14{
+  font-size: 14px;
+}
+.font-size-15{
+  font-size: 15px;
+}
+.font-size-16{
+  font-size: 16px;
+}
+.font-size-17{
+  font-size: 16px;
+}
+.font-size-18{
+  font-size: 18px;
+}
+.font-size-19{
+  font-size: 19px;
+}
+.font-size-20{
+  font-size: 20px;
+}
+.marginTop20{
+  margin-top: 20px;
+}
+.marginTop10{
+  margin-top: 10px;
+}
+.marginLeft10{
+  margin-left: 10px;
+}
+.color-333333{
+  color: #333333;
+}
+.color-666666{
+  color: #666666;
+}
+.color-bbbbbb{
+  color: #bbbbbb;
+}
+.item-icon{
+  height: 25px;
+  width: 25px;
+}
+.pop-custom.el-popover{
+  min-width: 80px;
+}
+.drawerHeader{
+  height: 45px;
+  line-height: 45px;
+  background: #dddddd;
+}
+.drawerRightHeader{
+  height: 45px;
+  line-height: 45px;
+  background: #dddddd;
+}
+.drawerHeaderDiv{
+  text-align: center;
+}
+.drawerHeaderBtn{
+  text-decoration: none;
+  font-size: 12px;
+  color: #333333;
+}
+.rightDialogTab{
+  height: 60px;
+  line-height: 60px;
+}
+.rightDialogContent{
+  border-radius: 5px;
+  background: #ffffff;
+  padding: 10px 5px;
+  color: #777777;
+}
+.rightdialogContentItem{
+  padding:10px 0px;
+  border-bottom: 1px solid #f8f8f8;
+}
+.index-item-title{
+  margin-top: 5px;
+}
+.index-item-room{
+  position: relative;
+  top: 5px;
+}
+.index-pop-item{
+  padding: 8px 10px;
+  border-bottom: 1px solid #f8f8f8;
+  color: #777777;
+}
+
+.alertHeader{
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #eeeeee;
+}
+.alertTitle{
+  font-size: 16px;
+  font-weight: bold;
+  color: #333333;
+  text-align: center;
+}
+.alert-class .el-dialog__header{
+  padding: 0px;
+}
+.alert-class .el-dialog__headerbtn{
+  top: 12px;
+}
+.alert-class .el-dialog__footer{
+  padding: 0px;
+}
+.alertContent{
+  text-align: center;
+  font-size: 12px;
+}
+.alertFooterClass{
+  text-align: center;
+  border-top: 1px solid #eeeeee;
+}
+.alertFooterSpan{
+  display: inline-block;
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 12px;
+  color: #409eff;
+  cursor: default;
+}
+.alertFooterSpanRightBorder{
+  border-right: 1px solid #eeeeee;
+}
+.netmoon-form-item-dialog.el-form-item {
+  margin-bottom: 5px;
+}
+.netmoon-form-dialog .el-form-item {
+  margin-bottom: 5px;
+}
+.netmoon-form-item-border-dialog.el-form-item {
+  margin-bottom: 5px;
 }
 

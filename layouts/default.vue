@@ -29,7 +29,7 @@
                 </div>
               </div>
               <div class="layout-menu-add" v-show="showMenuAdd == false" :style="showMenuAdd == false ? {'height': '40px','line-height': '40px'} : {'height': '0px','line-height': '0px'}">
-                <el-button type="warning" size="mini" icon="el-icon-plus">{{$t("添加任务")}}</el-button>
+                <el-button type="warning" size="mini" icon="el-icon-plus" @click="addPlain">{{$t("添加任务")}}</el-button>
               </div>
             </div>
           </div>
@@ -44,23 +44,208 @@
         <div class="layout-main-footer-left" :style="footerLeftStyle">
           <div v-show="showMenuAdd == true">
             <div class="layout-menu-add" :style="showMenuAdd == true ? {'height': '60px','line-height': '60px'} : {'height': '0px','line-height': '0px'}">
-              <el-button type="warning" size="mini" icon="el-icon-plus">{{$t("添加任务")}}</el-button>
+              <el-button type="warning" size="mini" icon="el-icon-plus" @click="addPlain">{{$t("添加任务")}}</el-button>
             </div>
           </div>
         </div>
         <div class="layout-main-footer-right" :style="footerRightStyle">
-          <el-button size="mini" plain>{{$t("删除")}}</el-button>
-          <el-button size="mini" plain>{{$t("修改")}}</el-button>
-          <el-button size="mini" plain>{{$t("复制")}}</el-button>
-          <el-button size="mini" plain>{{$t("设备")}}</el-button>
+          <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>
+          <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>
+          <el-button size="mini" plain @click="copyPlain">{{$t("复制")}}</el-button>
+          <el-button size="mini" plain @click="changeDevice">{{$t("设备")}}</el-button>
         </div>
         <div class="clearfix"></div>
       </div>
+
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        custom-class="alert-class"
+        width="300px"
+        @close="closeDialog">
+        <div slot="title">
+          <div class="alertHeader">
+            <div class="alertTitle">
+              <span>title</span>
+            </div>
+          </div>
+        </div>
+        <div class="alertContent">
+          <div>{{alertMessageTips}}</div>
+        </div>
+        <span slot="footer" class="dialog-footer">
+          <el-row>
+            <el-col :span="12">
+              <div class="alertFooterClass alertFooterSpanRightBorder">
+                <span class="alertFooterSpan" @click="dialogVisible = false">
+                  取 消
+                </span>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="alertFooterClass">
+                <span class="alertFooterSpan" @click="dialogVisible = false">
+                  确 定
+                </span>
+              </div>
+            </el-col>
+          </el-row>
+        </span>
+      </el-dialog>
+
+      <!--任务框-->
+      <el-drawer
+        title="任务设置"
+        custom-class="drawer-bottom"
+        :show-close="false"
+        :modal="true"
+        :size="dialogHeight"
+        :wrapperClosable="false"
+        :visible.sync="drawer"
+        :direction="direction"
+        :style="{'width': screenOrientation == 'landscape' ? '90% !important' : '100% !important', 'margin': '0px auto'}">
+
+        <div slot="title">
+          <div class="drawerHeader">
+            <el-row>
+              <el-col :span="4">
+                <div class="drawerHeaderDiv">
+                  <a href="javascript:;" class="drawerHeaderBtn error-color" @click="cancelDrawer">关闭</a>
+                </div>
+              </el-col>
+              <el-col :span="16">
+                <div class="drawerHeaderDiv">
+                  {{$t("任务设置")}}
+                </div>
+              </el-col>
+              <el-col :span="4">
+                <div class="drawerHeaderDiv">
+                  <a href="javascript:;" class="drawerHeaderBtn primary-color" @click="okConfirm">确定</a>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+
+        <div class="drawerHeaderContent" :style="{'padding-bottom': paddingBottom}">
+          <el-form class="netmoon-form-dialog" label-width="70px" ref="formPlain" :model="formPlain">
+            <el-form-item label="任务类型">
+              <div class="textRight color-666666">
+                <label>{{formPlain.type == '' ? $t("请选择") : formPlain.type}}</label>
+                <label><i class="fa fa-chevron-right"></i></label>
+              </div>
+            </el-form-item>
+            <el-form-item label="任务名称" v-model="formPlain.name">
+              <el-input :placeholder="$t('请输入任务名称')" v-model="formPlain.name"></el-input>
+            </el-form-item>
+            <el-form-item label="添加设备">
+              <el-row>
+                <el-col :span="8">
+                  <div class="textLeft color-666666">
+                    <label>({{$t("已选择")}}0{{$t("台设备")}})</label>
+                  </div>
+                </el-col>
+                <el-col :span="16">
+                  <div class="textRight">
+                    <label class="color-666666 font-size-20" @click="addDevice"><i class="fa fa-plus"></i></label>
+                  </div>
+                </el-col>
+              </el-row>
+            </el-form-item>
+          </el-form>
+        </div>
+      </el-drawer>
+
+      <!--设备列表-->
+      <el-drawer
+        custom-class="drawer-right-bottom"
+        title="我是标题"
+        size="90%"
+        :show-close="false"
+        :visible.sync="drawerDevice"
+        :direction="directionDevice">
+        <div class="drawerRightHeader" slot="title">
+          <el-row>
+            <el-col :span="4">
+              <div class="drawerHeaderDiv">
+                &nbsp;
+              </div>
+            </el-col>
+            <el-col :span="16">
+              <div class="drawerHeaderDiv">
+                {{$t("设备列表")}}
+              </div>
+            </el-col>
+            <el-col :span="4">
+              <div class="drawerHeaderDiv">
+                <a href="javascript:;" class="drawerHeaderBtn primary-color" @click="cancelDeviceDrawer">关闭</a>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="rightDialogTab">
+          <el-row>
+            <el-col :span="18">
+              <div>
+                <el-button-group>
+                  <el-button size="mini">{{$t("单灯")}}</el-button>
+                  <el-button size="mini">{{$t("灯组")}}</el-button>
+                  <el-button size="mini">{{$t("开关")}}</el-button>
+                  <el-button size="mini">{{$t("窗帘")}}</el-button>
+                </el-button-group>
+              </div>
+            </el-col>
+            <el-col :span="6">
+              <div class="textRight">
+                <el-popover
+                  placement="top"
+                  width="100"
+                  popper-class="pop-custom"
+                  trigger="click">
+                  <div class="textCenter">
+                    <div class="index-pop-item" v-for="n in 5">
+                      <span>xxxxxxx</span>
+                    </div>
+                  </div>
+                  <el-button slot="reference" size="mini">
+                    <span>{{$t("全部房间")}}</span>
+                    <i class="fa fa-chevron-down"></i>
+                  </el-button>
+                </el-popover>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+        <div>
+          <div class="rightDialogContent" :style="dialogRightTabStyle">
+            <div class="rightdialogContentItem" v-for="n in 30">
+              <el-row>
+                <el-col :span="18">
+                  <div>
+                  <span>
+                    <img src="~/static/img/light.png" class="item-icon"/>
+                  </span>
+                    <span class="index-item-title">
+                    <label>xxxxxxx</label>
+                  </span>
+                  </div>
+                </el-col>
+                <el-col :span="6">
+                  <div class="textRight index-item-room">
+                    <label>xxxxxx</label>
+                  </div>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
+        </div>
+      </el-drawer>
     </div>
 </template>
 
 <script>
     import mixins from "/mixins/mixins";
+    import {MessageSuccess, MessageWarning} from "../utils/utils";
     export default {
       name: "default",
       mixins: [mixins],
@@ -76,6 +261,18 @@
           dialogHeight: '50%',
           menuList: [],
           showMenuAdd: false,
+          dialogVisible: false,
+          drawer: false,
+          drawerDevice: false,
+          direction: 'btt',
+          directionDevice: 'rtl',
+          selMenuData: '',
+          alertMessageTips: '',
+          formPlain: {
+            type: '',
+            name: '',
+            deviceList: []
+          },
           contentStyle:{
             'height': '0px',
             'overflow-y': 'auto',
@@ -95,6 +292,10 @@
           footerRightStyle:{
             'height': '0px',
             'margin-left': '100px'
+          },
+          dialogRightTabStyle:{
+            'height': '0px',
+            'overflow-y': 'auto',
           }
         }
       },
@@ -115,6 +316,8 @@
         //window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
       },
       created() {
+        this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
+        this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
         this.checkOrient();
       },
       methods:{
@@ -150,6 +353,7 @@
               }
             }
             this.menuStyle.height = window.innerHeight-40-60 + 'px';
+            this.$set(this.dialogRightTabStyle,'height', window.innerHeight-45-60-30 + 'px');
           }
         },
         initMenu(){
@@ -193,13 +397,13 @@
           this.setMenuAdd();
         },
         selMenu(event, item, index){
+          this.selMenuData = item.name;
           for (let i = 0; i < this.menuList.length; i++){
             this.menuList[i].selected = false;
             if (i == index) {
               this.menuList[i].selected = true;
             }
           }
-          console.log(this.menuList);
         },
         checkOrient() {
           if (process.browser) {
@@ -224,6 +428,53 @@
           if (!this.minxinsScroll) {
             this.$refs.childRef.$children[0].$refs.wrapper.scrollTop = this.$refs.menuRef.scrollTop;
           }
+        },
+        okConfirm(){
+          this.dialogVisible = true;
+        },
+        addPlain(){
+          this.drawer = true;
+        },
+        cancelDrawer(){
+          this.drawer = false;
+        },
+        cancelDeviceDrawer(){
+          this.drawerDevice = false;
+        },
+        closeDialog(){
+          //this.selMenuData = "";
+        },
+        addDevice(){
+          this.drawerDevice = true;
+        },
+        delPlain(){
+          if (this.selMenuData == ""){
+            MessageWarning(this.$t("请选择需要删除的任务"));
+            return;
+          }
+          this.alertMessageTips = this.$t("确定删除该任务吗？");
+          this.dialogVisible = true;
+        },
+        updatePlain(){
+          if (this.selMenuData == ""){
+            MessageWarning(this.$t("请选择需要修改的任务"));
+            return;
+          }
+          this.drawer = true;
+        },
+        copyPlain(){
+          if (this.selMenuData == ""){
+            MessageWarning(this.$t("请选择需要复制的任务"));
+            return;
+          }
+          MessageSuccess(this.$t("复制任务成功"));
+        },
+        changeDevice(){
+          if (this.selMenuData == ""){
+            MessageWarning(this.$t("请选择需要调整设备的任务"));
+            return;
+          }
+          this.drawerDevice = true;
         }
       }
     }

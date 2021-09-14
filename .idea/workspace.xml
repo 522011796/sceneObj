@@ -2,18 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/css/common.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/locales/en-US.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/locales/zh-CN.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/middleware/i18n.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mixins/mixins.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/alloyFinger.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/axios.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plugins/i18n.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/img/light.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/rule.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/store/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/common.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/locales/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/locales/zh-CN.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -96,7 +89,7 @@
       <workItem from="1630631225533" duration="8259000" />
       <workItem from="1630976304454" duration="3895000" />
       <workItem from="1630981549024" duration="16881000" />
-      <workItem from="1631008654328" duration="34147000" />
+      <workItem from="1631008654328" duration="68637000" />
     </task>
     <servers />
   </component>
@@ -108,10 +101,22 @@
       <screen x="0" y="25" width="1440" height="791" />
     </state>
     <state x="458" y="171" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1440.791@0.25.1440.791" timestamp="1630982318035" />
-    <state x="383" y="177" width="674" height="486" key="find.popup" timestamp="1630998445195">
+    <state x="585" y="318" key="Github.ShareDialog" timestamp="1631159882454">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
-    <state x="383" y="177" width="674" height="486" key="find.popup/0.25.1440.791@0.25.1440.791" timestamp="1630998445195" />
+    <state x="585" y="318" key="Github.ShareDialog/0.25.1440.791@0.25.1440.791" timestamp="1631159882454" />
+    <state x="457" y="131" key="Github.UntrackedFilesDialog" timestamp="1631159889160">
+      <screen x="0" y="25" width="1440" height="791" />
+    </state>
+    <state x="457" y="131" key="Github.UntrackedFilesDialog/0.25.1440.791@0.25.1440.791" timestamp="1631159889160" />
+    <state x="320" y="157" key="Vcs.Push.Dialog.v2" timestamp="1631159864032">
+      <screen x="0" y="25" width="1440" height="791" />
+    </state>
+    <state x="320" y="157" key="Vcs.Push.Dialog.v2/0.25.1440.791@0.25.1440.791" timestamp="1631159864032" />
+    <state x="383" y="177" width="674" height="486" key="find.popup" timestamp="1631501621573">
+      <screen x="0" y="25" width="1440" height="791" />
+    </state>
+    <state x="383" y="177" width="674" height="486" key="find.popup/0.25.1440.791@0.25.1440.791" timestamp="1631501621573" />
     <state x="385" y="140" width="670" height="676" key="search.everywhere.popup" timestamp="1631069936700">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
