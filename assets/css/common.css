@@ -276,7 +276,9 @@ a{
   border-bottom: 1px solid #f8f8f8;
 }
 .index-item-title{
-  margin-top: 5px;
+  margin-top: 0px;
+  position: relative;
+  top: -5px;
 }
 .index-item-room{
   position: relative;

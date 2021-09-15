@@ -147,7 +147,7 @@
         <el-row>
           <el-col :span="4">
             <div class="drawerHeaderDiv">
-              <a href="javascript:;" class="color-success">保存</a>
+              <a href="javascript:;" class="color-success" @click="saveDeviceBlock">保存</a>
             </div>
           </el-col>
           <el-col :span="16">
@@ -181,8 +181,8 @@
           <div>
             <el-row :gutter="8">
               <template v-if="setType == 'room'">
-                <el-col :span="8" v-for="n in 30" :key="n">
-                  <div class="item-block">
+                <el-col :span="8" v-for="(item, index) in roomList" :key="index">
+                  <div class="item-block" :class="item._checked ? 'item-active' : ''" @click="selBLock($event, item, 'room')">
                     <div class="textCenter">
                       <img src="~/static/img/light.png" class="item-icon"/>
                     </div>
@@ -194,8 +194,8 @@
               </template>
 
               <template v-if="setType == 'icon'">
-                <el-col :span="8" v-for="n in 30" :key="n">
-                  <div class="item-block">
+                <el-col :span="8" v-for="(item, index) in 30" :key="index">
+                  <div class="item-block" :class="item._checked ? 'item-active' : ''" @click="selBLock($event, item, 'icon')">
                     <div class="textCenter">
                       <img src="~/static/img/light.png" class="item-icon"/>
                     </div>
@@ -405,7 +405,7 @@
             <el-row>
               <el-col :span="4">
                 <div class="drawerHeaderDiv">
-                  <a href="javascript:;" class="color-success">保存</a>
+                  <a href="javascript:;" class="color-success" @click="saveRoomBlock">保存</a>
                 </div>
               </el-col>
               <el-col :span="16">
@@ -427,8 +427,8 @@
             <div v-if="setChildType != 'light'" class="rightDialogContent" :style="dialogRightChildTabStyle">
               <div>
                 <el-row :gutter="8">
-                  <el-col :span="8" v-for="n in 30" :key="n">
-                    <div class="item-block">
+                  <el-col :span="8" v-for="(item, index) in roomList" :key="index">
+                    <div class="item-block" :class="item._checked ? 'item-active' : ''" @click="selBLock($event, item, 'room')">
                       <div class="textCenter">
                         <img src="~/static/img/light.png" class="item-icon"/>
                       </div>
@@ -502,40 +502,42 @@
                 </el-row>
               </div>
               <div v-if="setChildBottomType == 'change'" class="drawerBottomDialogContent" :style="drawerBottomDialogStyle">
-                <div class="item-list-child" v-for="(item, index) in 5">
-                  <el-row>
-                    <el-col :span="20">
-                      <span>{{$t("速度")}}+{{5-index}}</span>
-                    </el-col>
-                    <el-col :span="4">
-
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="item-list-child">
-                  <el-row>
-                    <el-col :span="20">
-                      <span>{{$t("默认速度")}}</span>
-                    </el-col>
-                    <el-col :span="4">
-
-                    </el-col>
-                  </el-row>
-                </div>
-                <div class="item-list-child" v-for="(item, index) in 5">
-                  <el-row>
-                    <el-col :span="20">
-                      <span>{{$t("速度")}}-{{index+1}}</span>
-                    </el-col>
-                    <el-col :span="4">
-
-                    </el-col>
-                  </el-row>
+                <div v-for="(item, index) in 11" @click="selSpeed(item, index)">
+                  <div class="item-list-child" v-if="index <= 4">
+                    <el-row>
+                      <el-col :span="20">
+                        <span>{{$t("速度")}}+{{5-index}}</span>
+                      </el-col>
+                      <el-col :span="4">
+                        <div class="textRight" v-if="speed == index"><i class="fa fa-check-circle color-success"></i></div>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="item-list-child" v-if="index == 5">
+                    <el-row>
+                      <el-col :span="20">
+                        <span>{{$t("默认速度")}}</span>
+                      </el-col>
+                      <el-col :span="4">
+                        <div class="textRight" v-if="speed == index"><i class="fa fa-check-circle color-success"></i></div>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="item-list-child" v-if="index > 5">
+                    <el-row>
+                      <el-col :span="20">
+                        <span>{{$t("速度")}}-{{index - 5}}</span>
+                      </el-col>
+                      <el-col :span="4">
+                        <div class="textRight" v-if="speed == index"><i class="fa fa-check-circle color-success"></i></div>
+                      </el-col>
+                    </el-row>
+                  </div>
                 </div>
               </div>
 
               <div class="drawerBottomDialogContent">
-                <div v-if="setChildBottomType == 'lightSub'" >
+                <div v-if="setChildBottomType == 'lightSub' || setChildBottomType == 'lightGroup'" >
                   <el-form class="padding-tb10-lr20" label-width="70px" ref="formOrder" :model="formOrder">
                     <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
                       <div class="textRight color-666666">
@@ -558,8 +560,11 @@
                             <div class="index-pop-item" @click="changeCustomBottomType($event, 4)">
                               <span>{{$t("色彩控制")}}</span>
                             </div>
-                            <div class="index-pop-item" @click="changeCustomBottomType($event, 7)">
+                            <div v-if="setChildBottomType != 'lightGroup'" class="index-pop-item" @click="changeCustomBottomType($event, 7)">
                               <span>{{$t("循环操作")}}</span>
+                            </div>
+                            <div class="index-pop-item" @click="changeCustomBottomType($event, 8)">
+                              <span>{{$t("电源控制(勿与循环操作一起使用)")}}</span>
                             </div>
                             <div class="index-pop-item" @click="changeCustomBottomType($event, 5)">
                               <span>{{$t("场景调用(勿使用2级以上嵌套)")}}</span>
@@ -649,6 +654,51 @@
                         <el-input-number size="mini" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
                       </div>
                     </el-form-item>
+                    <el-form-item v-if="customBottomType == 8" label="电源" class="netmoon-form-item-border-dialog">
+                      <div class="textRight color-666666">
+                        <el-popover
+                          placement="left"
+                          width="240"
+                          popper-class="pop-custom"
+                          trigger="click"
+                          v-model="customBottomOpenVisible">
+                          <div class="textCenter" style="max-height: 260px; overflow-y: auto">
+                            <div class="index-pop-item">
+                              <el-row>
+                                <el-col :span="20">
+                                  <div class="textLeft">
+                                    <span>{{$t("断电")}}</span>
+                                  </div>
+                                </el-col>
+                                <el-col :span="4">
+                                  <div class="textRight">
+                                    <span><i class="fa fa-check-circle color-success"></i></span>
+                                  </div>
+                                </el-col>
+                              </el-row>
+                            </div>
+                            <div class="index-pop-item">
+                              <el-row>
+                                <el-col :span="20">
+                                  <div class="textLeft">
+                                    <span>{{$t("通电")}}</span>
+                                  </div>
+                                </el-col>
+                                <el-col :span="4">
+                                  <div class="textRight">
+                                    <span></span>
+                                  </div>
+                                </el-col>
+                              </el-row>
+                            </div>
+                          </div>
+                          <span slot="reference" size="mini">
+                            <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
+                            <label><i class="fa fa-chevron-right"></i></label>
+                          </span>
+                        </el-popover>
+                      </div>
+                    </el-form-item>
                     <el-form-item v-if="customBottomType == 5" label="场景名称" class="netmoon-form-item-border-dialog">
                       <div class="textRight color-666666">
                         <el-popover
@@ -674,13 +724,13 @@
                             </div>
                           </div>
                           <span slot="reference" size="mini">
-                          <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
-                          <label><i class="fa fa-chevron-right"></i></label>
-                        </span>
+                            <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
+                            <label><i class="fa fa-chevron-right"></i></label>
+                          </span>
                         </el-popover>
                       </div>
                     </el-form-item>
-                    <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7" label="渐变时间" class="netmoon-form-item-border-dialog">
+                    <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8" label="渐变时间" class="netmoon-form-item-border-dialog">
                       <div class="textRight color-666666">
                         <el-input-number size="mini" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="0"></el-input-number>
                       </div>
@@ -914,6 +964,117 @@
                     </el-form-item>
                   </el-form>
                 </div>
+
+                <div v-if="setChildBottomType == 'switchSub'" >
+                  <el-form class="padding-tb10-lr20" label-width="80px" ref="formSwitchOrder" :model="formSwitchOrder">
+                    <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
+                      <div class="textRight color-666666">
+                        <el-popover
+                          placement="left"
+                          width="260"
+                          popper-class="pop-custom"
+                          trigger="click"
+                          v-model="customBottomVisible">
+                          <div class="textCenter">
+                            <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 1)">
+                              <span>{{$t("按键操作")}}</span>
+                            </div>
+                            <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 2)">
+                              <span>{{$t("延时")}}</span>
+                            </div>
+                          </div>
+                          <span slot="reference" size="mini">
+                          <label>{{formSwitchOrder.type == '' ? $t("请选择") : formSwitchOrder.type}}</label>
+                          <label><i class="fa fa-chevron-right"></i></label>
+                        </span>
+                        </el-popover>
+                      </div>
+                    </el-form-item>
+                    <el-form-item v-if="customBottomType == 1" label="按键" class="netmoon-form-item-border-dialog">
+                      <div class="textRight color-666666">
+                        <div class="textRight color-666666">
+                          <el-popover
+                            placement="left"
+                            width="240"
+                            popper-class="pop-custom"
+                            trigger="click"
+                            v-model="customBottomKeyVisible">
+                            <div class="textCenter" style="max-height: 260px; overflow-y: auto">
+                              <div class="index-pop-item" v-for="n in 10">
+                                <el-row>
+                                  <el-col :span="20">
+                                    <div class="textLeft">
+                                      <span>xxxxxxxxxx</span>
+                                    </div>
+                                  </el-col>
+                                  <el-col :span="4">
+                                    <div class="textRight">
+                                      <span v-if="n == 2"><i class="fa fa-check-circle color-success"></i></span>
+                                    </div>
+                                  </el-col>
+                                </el-row>
+                              </div>
+                            </div>
+                            <span slot="reference" size="mini">
+                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : formOrder.key}}</label>
+                            <label><i class="fa fa-chevron-right"></i></label>
+                          </span>
+                          </el-popover>
+                        </div>
+                      </div>
+                    </el-form-item>
+                    <el-form-item v-if="customBottomType == 1" label="按键操作" class="netmoon-form-item-border-dialog">
+                      <div class="textRight color-666666">
+                        <el-popover
+                          placement="left"
+                          width="240"
+                          popper-class="pop-custom"
+                          trigger="click"
+                          v-model="customBottomKeyOprVisible">
+                          <div class="textCenter" style="max-height: 260px; overflow-y: auto">
+                            <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 1)">
+                              <el-row>
+                                <el-col :span="20">
+                                  <div class="textLeft">
+                                    <span>{{$t("打开")}}</span>
+                                  </div>
+                                </el-col>
+                                <el-col :span="4">
+                                  <div class="textRight">
+                                    <span><i class="fa fa-check-circle color-success"></i></span>
+                                  </div>
+                                </el-col>
+                              </el-row>
+                            </div>
+                            <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 1)">
+                              <el-row>
+                                <el-col :span="20">
+                                  <div class="textLeft">
+                                    <span>{{$t("关闭")}}</span>
+                                  </div>
+                                </el-col>
+                                <el-col :span="4">
+                                  <div class="textRight">
+                                    <span></span>
+                                  </div>
+                                </el-col>
+                              </el-row>
+                            </div>
+                          </div>
+                          <span slot="reference" size="mini">
+                            <label>{{formSwitchOrder.keyOpr == '' ? $t("请选择") : formSwitchOrder.keyOpr}}</label>
+                            <label><i class="fa fa-chevron-right"></i></label>
+                          </span>
+                        </el-popover>
+                      </div>
+                    </el-form-item>
+                    <el-form-item label="延时时间" class="netmoon-form-item-border-dialog">
+                      <div class="textRight color-666666">
+                        <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
+                      </div>
+                    </el-form-item>
+                  </el-form>
+                </div>
               </div>
             </div>
           </div>
@@ -934,6 +1095,9 @@ export default {
       sliderValue: 0,
       dataList:[],
       ruleList: [],
+      roomList: [],
+      deviceList: [],
+      iconList: [],
       ruleCount: 0,
       ruleMax: 0,
       scrollLeft: 0,
@@ -967,6 +1131,7 @@ export default {
       customBottomType: '1',
       customBottomOpen: '2',
       customBottomKeyOpr: '',
+      speed: '',
       divStyle: {
         'height': '0px',
         'overflow-y': 'auto',
@@ -1043,6 +1208,9 @@ export default {
     this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
     this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
     this.checkIndexOrient();
+    this.initRoom();
+    this.initDevice();
+    this.initICon();
   },
   methods:{
     init(){
@@ -1069,6 +1237,33 @@ export default {
       let ruleMax = Math.max(...this.ruleList);
       this.ruleMax = ruleMax;
       //this.handleScrollTop()
+    },
+    initRoom(){
+      this.roomList = [];
+      for (let i = 0; i < 30; i++){
+        this.roomList.push({
+          _checked: false,
+          name: i
+        });
+      }
+    },
+    initICon(){
+      this.iconList = [];
+      for (let i = 0; i < 30; i++){
+        this.iconList.push({
+          _checked: false,
+          name: i
+        });
+      }
+    },
+    initDevice(){
+      this.deviceList = [];
+      for (let i = 0; i < this.deviceList.length; i++){
+        this.deviceList.push({
+          _checked: false,
+          name: i
+        });
+      }
     },
     format(seconds) {
       let hour = Math.floor(seconds / 3600) >= 10 ? Math.floor(seconds / 3600) : '0' + Math.floor(seconds / 3600);
@@ -1212,6 +1407,8 @@ export default {
         this.setChildBottomType = type;
       }else if(type == "switchSub"){
         this.setChildBottomType = type;
+      }else if(type == "lightGroup"){
+        this.setChildBottomType = type;
       }
       this.drawerBottomDialogVisible = true;
     },
@@ -1277,6 +1474,32 @@ export default {
       this.formSwitchOrder.keyOpr = event.target.innerText;
       this.customBottomKeyOpr = type;
       this.customBottomKeyOprVisible = false;
+    },
+    selBLock(event, item, type){
+      if (type == "room"){
+        for (let i = 0; i < this.roomList.length; i++){
+          this.roomList[i]._checked = false;
+          if (item.name == this.roomList[i].name){
+            this.roomList[i]._checked = true;
+          }
+        }
+      }else if (type == "icon"){
+        for (let i = 0; i < this.iconList.length; i++){
+          this.iconList[i]._checked = false;
+          if (item.name == this.iconList[i].name){
+            this.iconList[i]._checked = true;
+          }
+        }
+      }
+    },
+    saveRoomBlock(event){
+      this.drawerChild = false;
+    },
+    saveDeviceBlock(event){
+      this.drawerDevice = false;
+    },
+    selSpeed(item, index){
+      this.speed = index;
     }
   }
 }
@@ -1434,5 +1657,8 @@ export default {
   .item-list-child-main{
     border-bottom: 1px solid #ededed;
     padding: 15px 10px;
+  }
+  .item-active{
+    box-shadow:0 0 5px #888888;
   }
 </style>

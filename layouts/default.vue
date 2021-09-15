@@ -168,7 +168,7 @@
           <el-row>
             <el-col :span="4">
               <div class="drawerHeaderDiv">
-                &nbsp;
+                <a href="javascript:;" class="drawerHeaderBtn color-success">保存</a>
               </div>
             </el-col>
             <el-col :span="16">
@@ -218,16 +218,18 @@
         </div>
         <div>
           <div class="rightDialogContent" :style="dialogRightTabStyle">
-            <div class="rightdialogContentItem" v-for="n in 30">
+            <div class="rightdialogContentItem" v-for="(item, index) in deviceList" @click="selDevice($event, item)">
               <el-row>
                 <el-col :span="18">
                   <div>
-                  <span>
-                    <img src="~/static/img/light.png" class="item-icon"/>
-                  </span>
+                    <label v-if="item._checked" class="checkedICon"><i class="fa fa-check-circle color-success"></i></label>
+                    <label v-if="!item._checked" class="checkedICon"><i class="fa fa-circle-o color-default"></i></label>
+                    <span>
+                      <img src="~/static/img/light.png" class="item-icon"/>
+                    </span>
                     <span class="index-item-title">
-                    <label>xxxxxxx</label>
-                  </span>
+                      <label>xxxxxxx</label>
+                    </span>
                   </div>
                 </el-col>
                 <el-col :span="6">
@@ -260,6 +262,7 @@
           paddingMainBottom: '0px',
           dialogHeight: '50%',
           menuList: [],
+          deviceList: [],
           showMenuAdd: false,
           dialogVisible: false,
           drawer: false,
@@ -319,6 +322,7 @@
         this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
         this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
         this.checkOrient();
+        this.initDevice();
       },
       methods:{
         hh(){
@@ -375,6 +379,15 @@
             if (menuListCount * 40 + 40 >= menuHeight){
               this.showMenuAdd = true;
             }
+          }
+        },
+        initDevice(){
+          this.deviceList = [];
+          for (let i = 0; i < 20; i++){
+            this.deviceList.push({
+              _checked: false,
+              name: i
+            });
           }
         },
         toggleLeftMenu(event){
@@ -475,6 +488,9 @@
             return;
           }
           this.drawerDevice = true;
+        },
+        selDevice(event, item){
+          item._checked = !item._checked;
         }
       }
     }
@@ -625,5 +641,15 @@
 }
 .menu-active span{
   background: #825723;
+}
+.checkedICon{
+  font-size: 14px;
+  position: relative;
+  top: -5px;
+  padding: 0px 0px;
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  text-align: center;
 }
 </style>
