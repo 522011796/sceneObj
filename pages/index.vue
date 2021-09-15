@@ -194,7 +194,7 @@
               </template>
 
               <template v-if="setType == 'icon'">
-                <el-col :span="8" v-for="(item, index) in 30" :key="index">
+                <el-col :span="8" v-for="(item, index) in iconList" :key="index">
                   <div class="item-block" :class="item._checked ? 'item-active' : ''" @click="selBLock($event, item, 'icon')">
                     <div class="textCenter">
                       <img src="~/static/img/light.png" class="item-icon"/>
