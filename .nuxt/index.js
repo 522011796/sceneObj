@@ -19,6 +19,8 @@ import nuxt_plugin_elementui_cc267d44 from 'nuxt_plugin_elementui_cc267d44' // S
 import nuxt_plugin_alloyFinger_4375f820 from 'nuxt_plugin_alloyFinger_4375f820' // Source: ../plugins/alloyFinger (mode: 'client')
 import nuxt_plugin_i18n_926bd3dc from 'nuxt_plugin_i18n_926bd3dc' // Source: ../plugins/i18n (mode: 'all')
 import nuxt_plugin_axios_2228ef02 from 'nuxt_plugin_axios_2228ef02' // Source: ../plugins/axios (mode: 'all')
+import nuxt_plugin_vueTouch_17f3ab4d from 'nuxt_plugin_vueTouch_17f3ab4d' // Source: ../plugins/vueTouch (mode: 'client')
+import nuxt_plugin_vueColors_6d0919bc from 'nuxt_plugin_vueColors_6d0919bc' // Source: ../plugins/vueColors (mode: 'client')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -86,7 +88,7 @@ async function createApp(ssrContext, config = {}) {
   // here we inject the router and store to all child components,
   // making them available everywhere as `this.$router` and `this.$store`.
   const app = {
-    head: {"title":"test","htmlAttrs":{"lang":"en"},"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width, initial-scale=1"},{"name":"viewport","content":"width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"},{"hid":"description","name":"description","content":""},{"name":"format-detection","content":"telephone=no"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"style":[],"script":[]},
+    head: {"title":"test","htmlAttrs":{"lang":"en"},"meta":[{"charset":"utf-8"},{"name":"viewport","content":"width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no"},{"hid":"description","name":"description","content":""},{"name":"format-detection","content":"telephone=no"}],"link":[{"rel":"icon","type":"image\u002Fx-icon","href":"\u002Ffavicon.ico"}],"style":[],"script":[]},
 
     store,
     router,
@@ -237,6 +239,14 @@ async function createApp(ssrContext, config = {}) {
 
   if (typeof nuxt_plugin_axios_2228ef02 === 'function') {
     await nuxt_plugin_axios_2228ef02(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_vueTouch_17f3ab4d === 'function') {
+    await nuxt_plugin_vueTouch_17f3ab4d(app.context, inject)
+  }
+
+  if (process.client && typeof nuxt_plugin_vueColors_6d0919bc === 'function') {
+    await nuxt_plugin_vueColors_6d0919bc(app.context, inject)
   }
 
   // Lock enablePreview in context

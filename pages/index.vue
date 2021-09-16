@@ -16,7 +16,12 @@
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
         <div v-for="(item, index) in dataList" style="margin-bottom: 10px">
-          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#00f' : '#f00', 'width': itemBlock.sec * 70+'px', 'height':'40px'}" @click.stop="selBlock($event, item, index, itemBlock, indexBlock)">
+<!--          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"-->
+<!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
+<!--          >-->
+          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"
+
+            >
             <el-popover
               popper-class="indexPopVisible"
               v-model="itemBlock.popVisible"
@@ -25,9 +30,11 @@
               <div>
                 {{itemBlock.sec}}
               </div>
-              <div style="height: 100%; width: 100%" slot="reference">
-                {{itemBlock.sec}}
-              </div>
+              <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none">
+                <div>
+                  <div class="moon-ellipsis-class index-main-item-block">任务名称任务名称任务名称任务名称</div>
+                </div>
+              </v-touch>
             </el-popover>
           </div>
           <span class="index-plus-item">
@@ -537,7 +544,7 @@
               </div>
 
               <div class="drawerBottomDialogContent">
-                <div v-if="setChildBottomType == 'lightSub' || setChildBottomType == 'lightGroup'" >
+                <div v-if="setChildBottomType == 'lightSub' || setChildBottomType == 'lightGroupSub'" >
                   <el-form class="padding-tb10-lr20" label-width="70px" ref="formOrder" :model="formOrder">
                     <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
                       <div class="textRight color-666666">
@@ -560,7 +567,7 @@
                             <div class="index-pop-item" @click="changeCustomBottomType($event, 4)">
                               <span>{{$t("色彩控制")}}</span>
                             </div>
-                            <div v-if="setChildBottomType != 'lightGroup'" class="index-pop-item" @click="changeCustomBottomType($event, 7)">
+                            <div v-if="setChildBottomType != 'lightGroupSub'" class="index-pop-item" @click="changeCustomBottomType($event, 7)">
                               <span>{{$t("循环操作")}}</span>
                             </div>
                             <div class="index-pop-item" @click="changeCustomBottomType($event, 8)">
@@ -646,7 +653,21 @@
                     </el-form-item>
                     <el-form-item v-if="customBottomType == 4" label="色彩" class="netmoon-form-item-border-dialog">
                       <div class="textRight color-666666">
-                        <el-color-picker v-model="formOrder.color"></el-color-picker>
+<!--                        <el-color-picker v-model="formOrder.color"></el-color-picker>-->
+<!--                        <v-swatches v-model="formOrder.color" fallback-input-type="color"></v-swatches>-->
+                        <el-popover
+                          placement="left"
+                          width="180"
+                          popper-class="pop-custom"
+                          trigger="click"
+                          v-model="customBottomOpenVisible">
+                          <div class="textCenter">
+                            <color-picker v-bind="colors" style="height: 150px; width: 150px;margin: 0 auto;" @input="inputColor" @change="changeColor"></color-picker>
+                          </div>
+                          <span slot="reference">
+                            <span class="colorBlock" :style="{'background': this.formOrder.color}"></span>
+                          </span>
+                        </el-popover>
                       </div>
                     </el-form-item>
                     <el-form-item v-if="customBottomType == 7" label="重复次数" class="netmoon-form-item-border-dialog">
@@ -964,117 +985,6 @@
                     </el-form-item>
                   </el-form>
                 </div>
-
-                <div v-if="setChildBottomType == 'switchSub'" >
-                  <el-form class="padding-tb10-lr20" label-width="80px" ref="formSwitchOrder" :model="formSwitchOrder">
-                    <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
-                      <div class="textRight color-666666">
-                        <el-popover
-                          placement="left"
-                          width="260"
-                          popper-class="pop-custom"
-                          trigger="click"
-                          v-model="customBottomVisible">
-                          <div class="textCenter">
-                            <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 1)">
-                              <span>{{$t("按键操作")}}</span>
-                            </div>
-                            <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 2)">
-                              <span>{{$t("延时")}}</span>
-                            </div>
-                          </div>
-                          <span slot="reference" size="mini">
-                          <label>{{formSwitchOrder.type == '' ? $t("请选择") : formSwitchOrder.type}}</label>
-                          <label><i class="fa fa-chevron-right"></i></label>
-                        </span>
-                        </el-popover>
-                      </div>
-                    </el-form-item>
-                    <el-form-item v-if="customBottomType == 1" label="按键" class="netmoon-form-item-border-dialog">
-                      <div class="textRight color-666666">
-                        <div class="textRight color-666666">
-                          <el-popover
-                            placement="left"
-                            width="240"
-                            popper-class="pop-custom"
-                            trigger="click"
-                            v-model="customBottomKeyVisible">
-                            <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                              <div class="index-pop-item" v-for="n in 10">
-                                <el-row>
-                                  <el-col :span="20">
-                                    <div class="textLeft">
-                                      <span>xxxxxxxxxx</span>
-                                    </div>
-                                  </el-col>
-                                  <el-col :span="4">
-                                    <div class="textRight">
-                                      <span v-if="n == 2"><i class="fa fa-check-circle color-success"></i></span>
-                                    </div>
-                                  </el-col>
-                                </el-row>
-                              </div>
-                            </div>
-                            <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : formOrder.key}}</label>
-                            <label><i class="fa fa-chevron-right"></i></label>
-                          </span>
-                          </el-popover>
-                        </div>
-                      </div>
-                    </el-form-item>
-                    <el-form-item v-if="customBottomType == 1" label="按键操作" class="netmoon-form-item-border-dialog">
-                      <div class="textRight color-666666">
-                        <el-popover
-                          placement="left"
-                          width="240"
-                          popper-class="pop-custom"
-                          trigger="click"
-                          v-model="customBottomKeyOprVisible">
-                          <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                            <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 1)">
-                              <el-row>
-                                <el-col :span="20">
-                                  <div class="textLeft">
-                                    <span>{{$t("打开")}}</span>
-                                  </div>
-                                </el-col>
-                                <el-col :span="4">
-                                  <div class="textRight">
-                                    <span><i class="fa fa-check-circle color-success"></i></span>
-                                  </div>
-                                </el-col>
-                              </el-row>
-                            </div>
-                            <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 1)">
-                              <el-row>
-                                <el-col :span="20">
-                                  <div class="textLeft">
-                                    <span>{{$t("关闭")}}</span>
-                                  </div>
-                                </el-col>
-                                <el-col :span="4">
-                                  <div class="textRight">
-                                    <span></span>
-                                  </div>
-                                </el-col>
-                              </el-row>
-                            </div>
-                          </div>
-                          <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.keyOpr == '' ? $t("请选择") : formSwitchOrder.keyOpr}}</label>
-                            <label><i class="fa fa-chevron-right"></i></label>
-                          </span>
-                        </el-popover>
-                      </div>
-                    </el-form-item>
-                    <el-form-item label="延时时间" class="netmoon-form-item-border-dialog">
-                      <div class="textRight color-666666">
-                        <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
-                      </div>
-                    </el-form-item>
-                  </el-form>
-                </div>
               </div>
             </div>
           </div>
@@ -1086,9 +996,12 @@
 
 <script>
 import mixins from '/mixins/mixins';
+import VSwatches from 'vue-swatches'
+import 'vue-swatches/dist/vue-swatches.css'
 import {MessageWarning} from "../utils/utils";
 export default {
   mixins: [mixins],
+  components: {  },
   data(){
     return {
       popvisible: false,
@@ -1131,7 +1044,14 @@ export default {
       customBottomType: '1',
       customBottomOpen: '2',
       customBottomKeyOpr: '',
+      timeOutEvent: 0,
       speed: '',
+      colors: {
+        hue: 50,
+        saturation: 100,
+        luminosity: 50,
+        alpha: 1
+      },
       divStyle: {
         'height': '0px',
         'overflow-y': 'auto',
@@ -1347,11 +1267,12 @@ export default {
       this.drawer = true;
       for (let i = 0; i < this.dataList.length; i++){
         for (let j = 0; j < this.dataList[i].list.length; j++){
-          if (i == index && indexBlock == j){
-            this.dataList[i].list[j].popVisible = !this.dataList[i].list[j].popVisible;
-          }else {
-            this.dataList[i].list[j].popVisible = false;
-          }
+          // if (i == index && indexBlock == j){
+          //   this.dataList[i].list[j].popVisible = !this.dataList[i].list[j].popVisible;
+          // }else {
+          //   this.dataList[i].list[j].popVisible = false;
+          // }
+          this.dataList[i].list[j].popVisible = false;
         }
       }
     },
@@ -1385,6 +1306,8 @@ export default {
     },
     cancelChildBottomDrawer(){
       this.drawerBottomDialogVisible = false;
+      this.setChildBottomType = "";
+      this.customBottomType = 1;
     },
     addDialog(event, type){
       this.drawerDevice = true;
@@ -1407,9 +1330,10 @@ export default {
         this.setChildBottomType = type;
       }else if(type == "switchSub"){
         this.setChildBottomType = type;
-      }else if(type == "lightGroup"){
+      }else if(type == "lightGroupSub"){
         this.setChildBottomType = type;
       }
+      this.setChildBottomType = type;
       this.drawerBottomDialogVisible = true;
     },
     selTemplate(event, type){
@@ -1500,6 +1424,71 @@ export default {
     },
     selSpeed(item, index){
       this.speed = index;
+    },
+    selPressBlock(event, item, index, itemBlock, indexBlock){
+      event.preventDefault();
+      for (let i = 0; i < this.dataList.length; i++){
+        for (let j = 0; j < this.dataList[i].list.length; j++){
+          if (i == index && indexBlock == j){
+            this.dataList[i].list[j].popVisible = !this.dataList[i].list[j].popVisible;
+          }else {
+            this.dataList[i].list[j].popVisible = false;
+          }
+        }
+      }
+    },
+    inputColor(hue){
+      let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
+      let color = this.colorRGBtoHex(rgb[0],rgb[1],rgb[2]);
+    },
+    changeColor(hue){
+      let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
+      let color = this.colorRGBtoHex(rgb[0],rgb[1],rgb[2]);
+      this.formOrder.color = "#"+color;
+      console.log(color);
+    },
+    hsltorgb(h,s,l) {
+      var h = h / 360;
+      var s = s / 100;
+      var l = l / 100;
+      var rgb = [];
+
+      if (s == 0) {
+        rgb = [Math.round(l * 255), Math.round(l * 255), Math.round(l * 255)];
+      } else {
+        var q = l >= 0.5 ? (l + s - l * s) : (l * (1 + s));
+        var p = 2 * l - q;
+        var tr = rgb[0] = h + 1 / 3;
+        var tg = rgb[1] = h;
+        var tb = rgb[2] = h - 1 / 3;
+        for (var i = 0; i < rgb.length; i++) {
+          var tc = rgb[i];
+          if (tc < 0) {
+            tc = tc + 1;
+          } else if (tc > 1) {
+            tc = tc - 1;
+          }
+          switch (true) {
+            case (tc < (1 / 6)):
+              tc = p + (q - p) * 6 * tc;
+              break;
+            case ((1 / 6) <= tc && tc < 0.5):
+              tc = q;
+              break;
+            case (0.5 <= tc && tc < (2 / 3)):
+              tc = p + (q - p) * (4 - 6 * tc);
+              break;
+            default:
+              tc = p;
+              break;
+          }
+          rgb[i] = Math.round(tc * 255);
+        }
+      }
+      return rgb;
+    },
+    colorRGBtoHex(r, g, b) {
+      return ("00000" + (r << 16 | g << 8 | b).toString(16)).slice(-6);
     }
   }
 }
@@ -1525,6 +1514,7 @@ export default {
     display: inline-block;
     min-width: 70px;
     height: 45px;
+    text-align: center;
   }
   .rule-class {
     min-width: 70px;
@@ -1660,5 +1650,18 @@ export default {
   }
   .item-active{
     box-shadow:0 0 5px #888888;
+  }
+  .index-main-item-block{
+    font-size: 12px;
+    padding: 0px 10px;
+    position: relative;
+    top: 10px;
+  }
+  .colorBlock{
+    border: 1px solid #dddddd;
+    height: 25px;
+    width: 25px;
+    border-radius: 5px;
+    display: inline-block;
   }
 </style>

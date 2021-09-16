@@ -7,8 +7,7 @@ export default {
     },
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover' },
+      { name: 'viewport', content: 'width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no' },
       { hid: 'description', name: 'description', content: '' },
       { name: 'format-detection', content: 'telephone=no' }
     ],
@@ -20,6 +19,7 @@ export default {
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: [
     'element-ui/lib/theme-chalk/index.css',
+    '@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css',
     '~assets/css/common.css',
     '~assets/font-awesome-4.7.0/css/font-awesome.min.css',
   ],
@@ -30,6 +30,8 @@ export default {
     {src: '@/plugins/alloyFinger', ssr: false},
     '@/plugins/i18n',
     '@/plugins/axios',
+    {src: '@/plugins/vueTouch', ssr: false},
+    {src: '@/plugins/vueColors', ssr: false},
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -54,6 +56,7 @@ export default {
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: [/^element-ui/],
+
   },
   router: {
     middleware: ['i18n']

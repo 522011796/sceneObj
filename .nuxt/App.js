@@ -8,6 +8,8 @@ import NuxtBuildIndicator from './components/nuxt-build-indicator'
 
 import '../node_modules/element-ui/lib/theme-chalk/index.css'
 
+import '../node_modules/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'
+
 import '../assets/css/common.css'
 
 import '../assets/font-awesome-4.7.0/css/font-awesome.min.css'

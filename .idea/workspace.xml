@@ -2,7 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/plugins/vueColors.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/vueTouch.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/routes.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/common.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nuxt.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/nuxt.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -31,20 +40,21 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/img" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/plugins" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.standard" value="project" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/plugins" />
       <recent name="$PROJECT_DIR$/static/img" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/plugins" />
       <recent name="$PROJECT_DIR$/store" />
       <recent name="$PROJECT_DIR$/middleware" />
     </key>
@@ -86,7 +96,7 @@
       <workItem from="1630631225533" duration="8259000" />
       <workItem from="1630976304454" duration="3895000" />
       <workItem from="1630981549024" duration="16881000" />
-      <workItem from="1631008654328" duration="95316000" />
+      <workItem from="1631008654328" duration="116179000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1631588103599</created>
@@ -109,7 +119,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631691914130</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="init">
+      <created>1631692203642</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1631692203642</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -124,10 +141,10 @@
       <screen x="0" y="25" width="1440" height="791" />
     </state>
     <state x="458" y="171" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1440.791@0.25.1440.791" timestamp="1630982318035" />
-    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2" timestamp="1631691913117">
+    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2" timestamp="1631692202780">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
-    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2/0.25.1440.791@0.25.1440.791" timestamp="1631691913117" />
+    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2/0.25.1440.791@0.25.1440.791" timestamp="1631692202780" />
     <state x="585" y="318" key="Github.ShareDialog" timestamp="1631159882454">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
@@ -136,14 +153,14 @@
       <screen x="0" y="25" width="1440" height="791" />
     </state>
     <state x="457" y="131" key="Github.UntrackedFilesDialog/0.25.1440.791@0.25.1440.791" timestamp="1631159889160" />
-    <state x="320" y="157" key="Vcs.Push.Dialog.v2" timestamp="1631691915753">
+    <state x="320" y="157" key="Vcs.Push.Dialog.v2" timestamp="1631692206572">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
-    <state x="320" y="157" key="Vcs.Push.Dialog.v2/0.25.1440.791@0.25.1440.791" timestamp="1631691915753" />
-    <state x="383" y="177" width="674" height="486" key="find.popup" timestamp="1631501621573">
+    <state x="320" y="157" key="Vcs.Push.Dialog.v2/0.25.1440.791@0.25.1440.791" timestamp="1631692206572" />
+    <state x="383" y="177" width="674" height="486" key="find.popup" timestamp="1631760149572">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
-    <state x="383" y="177" width="674" height="486" key="find.popup/0.25.1440.791@0.25.1440.791" timestamp="1631501621573" />
+    <state x="383" y="177" width="674" height="486" key="find.popup/0.25.1440.791@0.25.1440.791" timestamp="1631760149572" />
     <state x="385" y="140" width="670" height="676" key="search.everywhere.popup" timestamp="1631069936700">
       <screen x="0" y="25" width="1440" height="791" />
     </state>

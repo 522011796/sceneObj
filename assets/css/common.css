@@ -1,3 +1,11 @@
+*{
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
+}
 html {
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
   font-size: 14px;
@@ -21,6 +29,9 @@ p{
 }
 a{
   text-decoration: none;
+}
+span,div,button{
+  outline: none;
 }
 .select-none{
   user-select:  none;
@@ -242,6 +253,7 @@ a{
 }
 .pop-custom.el-popover{
   min-width: 80px;
+  outline: 0 !important;
 }
 .drawerHeader{
   height: 45px;
@@ -338,5 +350,8 @@ a{
 }
 .netmoon-form-item-border-dialog.el-form-item {
   margin-bottom: 5px;
+}
+.indexPopVisible{
+  z-index: 9 !important;
 }
 
