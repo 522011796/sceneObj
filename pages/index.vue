@@ -215,8 +215,8 @@
       <transition :name="screenOrientation == 'landscape' ? 'myboxV' : 'mybox'">
         <div :class="screenOrientation == 'landscape' ? 'drawerBottomDialogV' : 'drawerBottomDialog'" class="share" v-show="drawerBottomDialogVisible"
              :style="{
-            'width': (screenOrientation == 'landscape' && appType == 'app') ? '90% !important' : '100% !important',
-            'margin-left': (screenOrientation == 'landscape' && appType == 'app') ? '5% !important' : ''
+            'width': (screenOrientation == 'landscape' && appType == 'app') ? '100% !important' : '100% !important',
+            'margin-left': (screenOrientation == 'landscape' && appType == 'app') ? '' : ''
           }">
           <div>
             <div class="drawerHeader header">
