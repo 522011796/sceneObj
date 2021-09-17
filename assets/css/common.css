@@ -30,7 +30,7 @@ p{
 a{
   text-decoration: none;
 }
-span,div,button{
+span,div,button,label{
   outline: none;
 }
 .select-none{

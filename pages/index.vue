@@ -154,41 +154,27 @@
         <el-row>
           <el-col :span="4">
             <div class="drawerHeaderDiv">
-<!--              <a href="javascript:;" class="color-success" @click="saveDeviceBlock">保存</a>-->
-              &nbsp;
+              <div class="drawerHeaderDiv">
+                <a href="javascript:;" class="drawerHeaderBtn primary-color" @click="cancelDeviceDrawer">关闭</a>
+              </div>
             </div>
           </el-col>
-          <el-col :span="16">
+          <el-col :span="14">
             <div class="drawerHeaderDiv">
               <span >{{$t("指令列表")}}</span>
             </div>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="6">
             <div class="drawerHeaderDiv">
-              <a href="javascript:;" class="drawerHeaderBtn primary-color" @click="cancelDeviceDrawer">关闭</a>
+              <a href="javascript:;" class="color-success" @click="addChildBottomDialog($event, 'lightSub')">{{$t("添加指令")}}</a>
             </div>
           </el-col>
         </el-row>
       </div>
       <div class="marginTop10">
         <div>
-          <div>
-            <el-row>
-              <el-col :span="12">
-                <div class="textLeft">
-                  <el-button size="mini" type="warning" @click="addChildBottomDialog($event, 'lightSub')">{{$t("添加指令")}}</el-button>
-                </div>
-              </el-col>
-              <el-col :span="12">
-                <div class="textRight">
-<!--                  <el-button size="mini" type="warning" @click="addChildBottomDialog($event, 'lightSub')">{{$t("添加指令")}}</el-button>-->
-                  &nbsp;
-                </div>
-              </el-col>
-            </el-row>
-          </div>
           <div class="marginTop10">
-            <div class="rightDialogContent" :style="dialogRightTabStyle">
+            <div class="rightDialogContent" :style="dialogRightTabOrderStyle">
               <div class="item-list-child" v-for="(item, index) in orderList" :key="index">
                 <el-row>
                   <el-col :span="12">
@@ -1143,6 +1129,10 @@ export default {
         'height': '0px',
         'overflow-y': 'auto',
       },
+      dialogRightTabOrderStyle:{
+        'height': '0px',
+        'overflow-y': 'auto',
+      },
       dialogRightChildTabStyle: {
         'height': '0px',
         'overflow-y': 'auto',
@@ -1292,10 +1282,12 @@ export default {
         let height = this.setType == 'template' ? window.innerHeight-45-60-30 : window.innerHeight-45-60;
         let heightChild = window.innerHeight-45-60;
         let heightBottomChild = type == 'landscape' ? window.innerHeight * 0.7-45 : window.innerHeight * 0.5-45;
-        this.$set(this.divStyle,'height', window.innerHeight-40-60 + 'px');
+        let heightOrder = window.innerHeight-45-60;
+        this.$set(this.divStyle,'height', window.innerHeight-40-30 + 'px');
         this.$set(this.dialogRightTabStyle,'height', height + 'px');
         this.$set(this.dialogRightChildTabStyle,'height', heightChild + 'px');
         this.$set(this.drawerBottomDialogStyle,'height', heightBottomChild + 'px');
+        this.$set(this.dialogRightTabOrderStyle,'height', heightOrder + 'px');
       }
     },
     checkIndexOrient() {
@@ -1370,7 +1362,7 @@ export default {
       }
     },
     mousedown(){
-      console.log(111);
+
     },
     hidePopVisible(){
       for (let i = 0; i < this.dataList.length; i++){

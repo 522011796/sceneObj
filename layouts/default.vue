@@ -417,7 +417,6 @@
                 this.contentStyle["margin-left"] = this.isCollapse == false ? '30px' : '105px';
                 this.footerRightStyle["margin-left"] = '105px';
               }else{
-                console.log(this.isCollapse);
                 this.mainStyle.width = this.isCollapse == false ? '8%' : '15%';
                 this.footerLeftStyle.width = '15%';
                 this.contentStyle["margin-left"] = this.isCollapse == false ? '8.5%' :'15.5%';
