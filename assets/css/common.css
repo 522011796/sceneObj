@@ -111,18 +111,25 @@ span,div,button{
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 }
+.drawer-default-bottom{
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
 .drawer-right-bottom{
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
 }
-.drawer-bottom .el-drawer__body{
+.drawer-bottom .el-drawer__body, .drawer-default-bottom .el-drawer__body{
   padding: 0px 10px 0px 10px;
+}
+.drawer-default-bottom .el-drawer__body{
+  overflow-y: hidden;
 }
 .drawer-right-bottom .el-drawer__body{
   padding: 0px 10px 0px 10px;
   background: #f5f5f5;
 }
-.drawer-bottom .el-drawer__header{
+.drawer-bottom .el-drawer__header, .drawer-default-bottom .el-drawer__header{
   align-items: center;
   color: #72767b;
   display: flex;
@@ -353,5 +360,61 @@ span,div,button{
 }
 .indexPopVisible{
   z-index: 9 !important;
+}
+.rightPopVisible{
+
+}
+.block-plane .el-tree {
+  position: relative;
+  cursor: default;
+  background: #FFF;
+  color: #606266;
+  border-radius: 5px;
+}
+.block-plane .el-tree-node__content {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  cursor: pointer;
+}
+.block-plane .el-checkbox__inner::after {
+  box-sizing: content-box;
+  content: "";
+  border: 1px solid #FFF;
+  border-left: 0;
+  border-top: 0;
+  height: 7px;
+  left: 6px;
+  position: absolute;
+  top: 3px;
+  transform: rotate(
+    45deg
+  ) scaleY(0);
+  width: 3px;
+  transition: transform .15s ease-in .05s;
+  transform-origin: center;
+}
+.block-plane .el-checkbox__inner {
+  display: inline-block;
+  position: relative;
+  border: 1px solid #DCDFE6;
+  border-radius: 2px;
+  box-sizing: border-box;
+  width: 18px;
+  height: 18px;
+  background-color: #FFF;
+  z-index: 1;
+  transition: border-color .25s cubic-bezier(.71,-.46,.29,1.46),background-color .25s cubic-bezier(.71,-.46,.29,1.46);
+}
+.block-plane .el-checkbox__input.is-indeterminate .el-checkbox__inner::before {
+  content: '';
+  position: absolute;
+  display: block;
+  background-color: #FFF;
+  height: 2px;
+  transform: scale(.5);
+  left: 0;
+  right: 0;
+  top: 6px;
 }
 

@@ -96,14 +96,14 @@
       <!--任务框-->
       <el-drawer
         title="任务设置"
-        custom-class="drawer-bottom"
+        custom-class="drawer-default-bottom"
         :show-close="false"
         :modal="true"
         :size="dialogHeight"
         :wrapperClosable="false"
         :visible.sync="drawer"
         :direction="direction"
-        :style="{'width': screenOrientation == 'landscape' ? '90% !important' : '100% !important', 'margin': '0px auto'}">
+        :style="{'width': screenOrientation == 'landscape' ? '100% !important' : '100% !important', 'margin': '0px auto'}">
 
         <div slot="title">
           <div class="drawerHeader">
@@ -127,12 +127,35 @@
           </div>
         </div>
 
-        <div class="drawerHeaderContent" :style="{'padding-bottom': paddingBottom}">
+        <div class="drawerHeaderContent" :style="{'padding-bottom': paddingBottom, 'padding-left': paddingLR, 'padding-right': paddingLR}">
           <el-form class="netmoon-form-dialog" label-width="70px" ref="formPlain" :model="formPlain">
             <el-form-item label="任务类型">
               <div class="textRight color-666666">
-                <label>{{formPlain.type == '' ? $t("请选择") : formPlain.type}}</label>
-                <label><i class="fa fa-chevron-right"></i></label>
+                <el-popover
+                  placement="left"
+                  width="100"
+                  popper-class="pop-custom"
+                  trigger="click"
+                  v-model="customPlainVisible">
+                  <div class="textCenter">
+                    <div class="index-pop-item" @click="changePlainType($event, 1)">
+                      <span>{{$t("灯")}}</span>
+                    </div>
+                    <div class="index-pop-item" @click="changePlainType($event, 2)">
+                      <span>{{$t("开关")}}</span>
+                    </div>
+                    <div class="index-pop-item" @click="changePlainType($event, 3)">
+                      <span>{{$t("窗帘")}}</span>
+                    </div>
+                    <div class="index-pop-item" @click="changePlainType($event, 4)">
+                      <span>{{$t("音乐")}}</span>
+                    </div>
+                  </div>
+                  <span slot="reference" size="mini">
+                    <label>{{formPlain.type == '' ? $t("请选择") : formPlain.type}}</label>
+                    <label><i class="fa fa-chevron-right"></i></label>
+                  </span>
+                </el-popover>
               </div>
             </el-form-item>
             <el-form-item label="任务名称" v-model="formPlain.name">
@@ -140,19 +163,21 @@
             </el-form-item>
             <el-form-item label="添加设备">
               <el-row>
-                <el-col :span="8">
-                  <div class="textLeft color-666666">
+                <el-col :span="24">
+                  <div class="textRight color-666666">
                     <label>({{$t("已选择")}}0{{$t("台设备")}})</label>
-                  </div>
-                </el-col>
-                <el-col :span="16">
-                  <div class="textRight">
-                    <label class="color-666666 font-size-20" @click="addDevice"><i class="fa fa-plus"></i></label>
                   </div>
                 </el-col>
               </el-row>
             </el-form-item>
           </el-form>
+
+          <div class="color-666666 block-plane" :style="drawerTreeStyle">
+            <el-tree
+              :data="dataDeviceGroup"
+              show-checkbox>
+            </el-tree>
+          </div>
         </div>
       </el-drawer>
 
@@ -260,9 +285,11 @@
           appType: 'app',
           paddingBottom: '0px',
           paddingMainBottom: '0px',
-          dialogHeight: '50%',
+          paddingLR: '0px',
+          dialogHeight: '100%',
           menuList: [],
           deviceList: [],
+          customPlainVisible: false,
           showMenuAdd: false,
           dialogVisible: false,
           drawer: false,
@@ -271,6 +298,42 @@
           directionDevice: 'rtl',
           selMenuData: '',
           alertMessageTips: '',
+          customPlainType: '',
+          dataDeviceGroup: [{
+            label: '一级 1',
+            children: [{
+              label: '二级 1-1',
+              children: [{
+                label: '三级 1-1-1'
+              }]
+            }]
+          }, {
+            label: '一级 2',
+            children: [{
+              label: '二级 2-1',
+              children: [{
+                label: '三级 2-1-1'
+              }]
+            }, {
+              label: '二级 2-2',
+              children: [{
+                label: '三级 2-2-1'
+              }]
+            }]
+          }, {
+            label: '一级 3',
+            children: [{
+              label: '二级 3-1',
+              children: [{
+                label: '三级 3-1-1'
+              }]
+            }, {
+              label: '二级 3-2',
+              children: [{
+                label: '三级 3-2-1'
+              }]
+            }]
+          }],
           formPlain: {
             type: '',
             name: '',
@@ -299,6 +362,10 @@
           dialogRightTabStyle:{
             'height': '0px',
             'overflow-y': 'auto',
+          },
+          drawerTreeStyle: {
+            'height': '0px',
+            'overflow-y': 'auto',
           }
         }
       },
@@ -321,6 +388,7 @@
       created() {
         this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
         this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
+        this.appType == 'app' ? this.paddingLR = '10px' : this.paddingLR = '10px';
         this.checkOrient();
         this.initDevice();
       },
@@ -357,6 +425,7 @@
               }
             }
             this.menuStyle.height = window.innerHeight-40-60 + 'px';
+            this.drawerTreeStyle.height = window.innerHeight-40-160 + 'px';
             this.$set(this.dialogRightTabStyle,'height', window.innerHeight-45-60-30 + 'px');
           }
         },
@@ -365,7 +434,7 @@
           for (let i = 0; i < 3; i++){
             this.menuList.push({
               selected: false,
-              name: i
+              name: i+1
             });
           }
           this.setMenuAdd();
@@ -422,14 +491,16 @@
           if (process.browser) {
             if (window.orientation == 0 || window.orientation == 180){
               this.screenOrientation = 'portrait';
-              this.dialogHeight = '50%';
+              this.dialogHeight = '100%';
               this.paddingBottom = this.appType == 'app' ? '84px' : '0px';
+              this.paddingLR = this.appType == 'app' ? '10px' : '10px';
               this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
             }
             else if (window.orientation == 90 || window.orientation == -90){
               this.screenOrientation = 'landscape';
-              this.dialogHeight = '80%';
+              this.dialogHeight = '100%';
               this.paddingBottom = this.appType == 'app' ? '35px' : '0px';
+              this.paddingLR = this.appType == 'app' ? '20px' : '20px';
               this.appType == 'app' ? this.paddingMainBottom = '55px' : this.paddingMainBottom = '0px';
             }
             this.hh();
@@ -491,6 +562,11 @@
         },
         selDevice(event, item){
           item._checked = !item._checked;
+        },
+        changePlainType(event, type){
+          this.customPlainType = type;
+          this.customPlainVisible = false;
+          this.formPlain.type = event.target.innerText;
         }
       }
     }
@@ -651,5 +727,10 @@
   height: 20px;
   display: inline-block;
   text-align: center;
+}
+.block-plane{
+  padding: 0px;
+  border-radius: 5px;
+  border: 1px solid #dddddd;
 }
 </style>
