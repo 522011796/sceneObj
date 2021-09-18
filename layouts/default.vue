@@ -52,7 +52,7 @@
           <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>
           <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>
           <el-button size="mini" plain @click="copyPlain">{{$t("复制")}}</el-button>
-          <el-button size="mini" plain @click="changeDevice">{{$t("设备")}}</el-button>
+<!--          <el-button size="mini" plain @click="changeDevice">{{$t("设备")}}</el-button>-->
         </div>
         <div class="clearfix"></div>
       </div>
