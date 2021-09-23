@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="init">
+    <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/locales/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/locales/zh-CN.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +89,7 @@
       <workItem from="1630976304454" duration="3895000" />
       <workItem from="1630981549024" duration="16881000" />
       <workItem from="1631008654328" duration="133185000" />
-      <workItem from="1631866039644" duration="7857000" />
+      <workItem from="1631866039644" duration="13030000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1631588103599</created>
@@ -146,7 +147,14 @@
       <option name="project" value="LOCAL" />
       <updated>1631872823668</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="init">
+      <created>1631929608139</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1631929608139</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -171,10 +179,10 @@
       <screen x="0" y="25" width="1440" height="791" />
     </state>
     <state x="458" y="171" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1440.791@0.25.1440.791" timestamp="1630982318035" />
-    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2" timestamp="1631928804344">
+    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2" timestamp="1631929606799">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
-    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2/0.25.1440.791@0.25.1440.791" timestamp="1631928804344" />
+    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2/0.25.1440.791@0.25.1440.791" timestamp="1631929606799" />
     <state x="585" y="318" key="Github.ShareDialog" timestamp="1631159882454">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
@@ -183,10 +191,10 @@
       <screen x="0" y="25" width="1440" height="791" />
     </state>
     <state x="457" y="131" key="Github.UntrackedFilesDialog/0.25.1440.791@0.25.1440.791" timestamp="1631159889160" />
-    <state x="320" y="157" key="Vcs.Push.Dialog.v2" timestamp="1631872825109">
+    <state x="320" y="157" key="Vcs.Push.Dialog.v2" timestamp="1631929609832">
       <screen x="0" y="25" width="1440" height="791" />
     </state>
-    <state x="320" y="157" key="Vcs.Push.Dialog.v2/0.25.1440.791@0.25.1440.791" timestamp="1631872825109" />
+    <state x="320" y="157" key="Vcs.Push.Dialog.v2/0.25.1440.791@0.25.1440.791" timestamp="1631929609832" />
     <state x="383" y="177" width="674" height="486" key="find.popup" timestamp="1631760149572">
       <screen x="0" y="25" width="1440" height="791" />
     </state>

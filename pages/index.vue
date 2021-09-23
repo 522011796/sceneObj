@@ -301,7 +301,7 @@
                           <div v-if="setChildBottomType != 'lightGroupSub'" class="index-pop-item" @click="changeCustomBottomType($event, 7)">
                             <span>{{$t("循环操作")}}</span>
                           </div>
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 8)">
+                          <div v-if="setChildBottomType != 'lightSub'" class="index-pop-item" @click="changeCustomBottomType($event, 8)">
                             <span>{{$t("电源控制(勿与循环操作一起使用)")}}</span>
                           </div>
                           <div class="index-pop-item" @click="changeCustomBottomType($event, 5)">
@@ -309,6 +309,9 @@
                           </div>
                           <div class="index-pop-item" @click="changeCustomBottomType($event, 6)">
                             <span>{{$t("延时")}}</span>
+                          </div>
+                          <div class="index-pop-item" @click="changeCustomBottomType($event, 9)">
+                            <span>{{$t("空闲时段")}}</span>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
@@ -482,14 +485,19 @@
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8" label="渐变时间" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8 && customBottomType != 9" label="渐变时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-input-number size="mini" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
-                  <el-form-item label="延时时间" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType != 9" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-input-number size="mini" v-model="formOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 9" label="空闲时间" class="netmoon-form-item-border-dialog">
+                    <div class="textRight color-666666">
+                      <el-input-number size="mini" v-model="formOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
                 </el-form>
@@ -1164,7 +1172,8 @@ export default {
         sence: '',
         open: '关灯',
         startLoop: 0,
-        startOrder: ''
+        startOrder: '',
+        emptyTime: 0
       },
       formCurtainsOrder: {
         type: '行程控制',
@@ -1459,6 +1468,8 @@ export default {
         this.formOrder.startLoop = data;
       }else if (type == 'curtainsOpenClose'){
         this.formCurtainsOrder.curtainsOpenClose = data;
+      }else if (type == 'emptyTime'){
+        this.formCurtainsOrder.emptyTime = data;
       }
     },
     closeDialog(){
