@@ -16,7 +16,7 @@ export default {
     ]
   },
 
-  // Global CSS: https://go.nuxtjs.dev/config-css
+  // Global CSS: https://go.nuxtjs.dev/config-cssbackgroundImage
   css: [
     'element-ui/lib/theme-chalk/index.css',
     '@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css',
@@ -32,6 +32,7 @@ export default {
     '@/plugins/axios',
     {src: '@/plugins/vueTouch', ssr: false},
     {src: '@/plugins/vueColors', ssr: false},
+    '@/plugins/moment',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

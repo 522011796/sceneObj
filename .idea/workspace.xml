@@ -1,10 +1,181 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="">
+    <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="init">
+      <change afterPath="$PROJECT_DIR$/layouts/defaultFull.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/index2.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plugins/moment.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/routes.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/common.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/locales/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/locales/zh-CN.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mixins/mixins.vue" beforeDir="false" afterPath="$PROJECT_DIR$/mixins/mixins.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/builder/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/builder/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/builder/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/builder/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/builder/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/builder/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/cli/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/cli/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/cli/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/cli/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/cli/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/cli/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/components/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/components/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/components/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/components/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/components/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/components/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/generator/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/generator/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/generator/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/generator/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/generator/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/generator/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/opencollective/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/opencollective/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/opencollective/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/opencollective/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/opencollective/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/opencollective/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/telemetry/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/telemetry/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/telemetry/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/telemetry/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@nuxt/telemetry/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@nuxt/telemetry/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/html-minifier-terser/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/html-minifier-terser/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/http-proxy/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/http-proxy/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/json-schema/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/json-schema/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/node/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/node/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/q/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/q/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/source-list-map/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/source-list-map/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/tapable/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/tapable/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/uglify-js/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/uglify-js/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/webpack-sources/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/webpack-sources/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@types/webpack/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@types/webpack/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/@webassemblyjs/floating-point-hex-parser/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/@webassemblyjs/floating-point-hex-parser/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/.babelrc" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/.babelrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/alloy_crop/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/alloy_crop/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/alloy_finger.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/alloy_finger.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/asset/a.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/asset/a.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/asset/alloy_paper.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/asset/alloy_paper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/asset/image_loaded.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/asset/image_loaded.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/asset/to.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/asset/to.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/asset/transform.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/asset/transform.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/example/canvas/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/example/canvas/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/example/destroy/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/example/destroy/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/example/on_off/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/example/on_off/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/example/picture/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/example/picture/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/example/simple/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/example/simple/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/example/tap_state/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/example/tap_state/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/example/test/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/example/test/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/react/AlloyFinger.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/react/AlloyFinger.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/transformjs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/transformjs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/transformjs/transform.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/transformjs/transform.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/vue/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/vue/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/vue/alloy_finger_vue.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/vue/alloy_finger_vue.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue1/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue1/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue1/vue.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue1/vue.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue2/test.html" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue2/test.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue2/vue.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alloyfinger/vue/example/vue2/vue.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alphanum-sort/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alphanum-sort/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alphanum-sort/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alphanum-sort/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/alphanum-sort/lib/compare.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/alphanum-sort/lib/compare.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/big.js/CHANGELOG.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/big.js/CHANGELOG.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/big.js/LICENCE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/big.js/LICENCE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/big.js/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/big.js/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/big.js/big.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/big.js/big.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/big.js/big.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/big.js/big.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/big.js/big.mjs" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/big.js/big.mjs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/boxen/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/boxen/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/boxen/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/boxen/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/boxen/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/boxen/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/coa/coa.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/coa/coa.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/color-name/.npmignore" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/color-name/.npmignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/color-name/test.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/color-name/test.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/component-emitter/History.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/component-emitter/History.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/component-emitter/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/component-emitter/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/component-emitter/Readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/component-emitter/Readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/component-emitter/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/component-emitter/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/http-proxy/.auto-changelog" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/http-proxy/.auto-changelog" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/inquirer/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/inquirer/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/inquirer/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/inquirer/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/inquirer/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/inquirer/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/postcss-replace-overflow-wrap/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/postcss-replace-overflow-wrap/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/postcss-replace-overflow-wrap/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/postcss-replace-overflow-wrap/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/prettier/bin-prettier.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/prettier/bin-prettier.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/prettier/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/prettier/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/prettier/standalone.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/prettier/standalone.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rc9/node_modules/defu/dist/defu.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rc9/node_modules/defu/dist/defu.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/read-cache/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/read-cache/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/read-cache/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/read-cache/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.es.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.global.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.global.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.js.flow" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/dist/ResizeObserver.js.flow" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObservation.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObservation.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserver.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserver.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserverController.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserverController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserverEntry.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserverEntry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserverSPI.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/ResizeObserverSPI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/index.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/index.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/index.js.flow" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/index.js.flow" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/shims/es6-collections.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/shims/es6-collections.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/shims/global.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/shims/global.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/shims/requestAnimationFrame.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/shims/requestAnimationFrame.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/defineConfigurable.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/defineConfigurable.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/geometry.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/geometry.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/getWindowOf.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/getWindowOf.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/isBrowser.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/isBrowser.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/throttle.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resize-observer-polyfill/src/utils/throttle.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resolve-url/.jshintrc" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resolve-url/.jshintrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resolve-url/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resolve-url/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resolve-url/resolve-url.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resolve-url/resolve-url.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/resolve-url/test/resolve-url.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/resolve-url/test/resolve-url.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/bundles/rxjs.umd.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/bundles/rxjs.umd.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/CopyrightNotice.txt" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/CopyrightNotice.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/modules/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/modules/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/modules/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/modules/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/tslib.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/tslib.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/tslib.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/tslib.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/tslib.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/rxjs/node_modules/tslib/tslib.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/CopyrightNotice.txt" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/CopyrightNotice.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/modules/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/modules/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/modules/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/modules/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/tslib.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/tslib.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/tslib.es6.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/tslib.es6.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/tslib/tslib.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/tslib/tslib.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/urix/.jshintrc" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/urix/.jshintrc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/urix/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/urix/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/urix/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/urix/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/urix/test/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/urix/test/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/vue-style-loader/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/vue-style-loader/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack-bundle-analyzer/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack-bundle-analyzer/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack-bundle-analyzer/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack-bundle-analyzer/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack-bundle-analyzer/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack-bundle-analyzer/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack-node-externals/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack-node-externals/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack-node-externals/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack-node-externals/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack-node-externals/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack-node-externals/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack-node-externals/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack-node-externals/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/lib/MemoryFileSystem.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/lib/MemoryFileSystem.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/lib/join.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/lib/join.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/lib/normalize.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/webpack/node_modules/memory-fs/lib/normalize.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/wrap-ansi/node_modules/color-name/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/wrap-ansi/node_modules/color-name/LICENSE" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/wrap-ansi/node_modules/color-name/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/wrap-ansi/node_modules/color-name/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/wrap-ansi/node_modules/color-name/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/wrap-ansi/node_modules/color-name/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/node_modules/xxhashjs/build/xxhash.js" beforeDir="false" afterPath="$PROJECT_DIR$/node_modules/xxhashjs/build/xxhash.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nuxt.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/nuxt.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plugins/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/api/url.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/api/url.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,10 +196,10 @@
   <component name="ProjectId" id="1wvbQKuRvCP1qqGMjrNuATw7reL" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
@@ -41,14 +212,16 @@
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
     <property name="show.migrate.to.gradle.popup" value="false" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+    <property name="vuejs.nuxt.types-notification-shown" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/plugins" />
+      <recent name="$PROJECT_DIR$/layouts" />
+      <recent name="$PROJECT_DIR$/pages" />
       <recent name="$PROJECT_DIR$/static/img" />
       <recent name="$PROJECT_DIR$" />
-      <recent name="$PROJECT_DIR$/store" />
-      <recent name="$PROJECT_DIR$/middleware" />
     </key>
   </component>
   <component name="ServiceViewManager">
@@ -63,6 +236,7 @@
       </list>
     </option>
   </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -89,7 +263,11 @@
       <workItem from="1630976304454" duration="3895000" />
       <workItem from="1630981549024" duration="16881000" />
       <workItem from="1631008654328" duration="133185000" />
-      <workItem from="1631866039644" duration="13030000" />
+      <workItem from="1631866039644" duration="14931000" />
+      <workItem from="1632445521247" duration="12666000" />
+      <workItem from="1632472917172" duration="497000" />
+      <workItem from="1635123440534" duration="6908000" />
+      <workItem from="1635388802577" duration="37432000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1631588103599</created>
@@ -154,11 +332,18 @@
       <option name="project" value="LOCAL" />
       <updated>1631929608139</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="init">
+      <created>1632388775480</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1632388775480</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.History.Properties">
     <option name="COLUMN_ORDER">
@@ -170,38 +355,19 @@
       </list>
     </option>
   </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init" />
     <option name="LAST_COMMIT_MESSAGE" value="init" />
-  </component>
-  <component name="WindowStateProjectService">
-    <state x="458" y="171" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1630982318035">
-      <screen x="0" y="25" width="1440" height="791" />
-    </state>
-    <state x="458" y="171" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.25.1440.791@0.25.1440.791" timestamp="1630982318035" />
-    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2" timestamp="1631929606799">
-      <screen x="0" y="25" width="1440" height="791" />
-    </state>
-    <state x="300" y="25" width="840" height="791" key="CommitChangelistDialog2/0.25.1440.791@0.25.1440.791" timestamp="1631929606799" />
-    <state x="585" y="318" key="Github.ShareDialog" timestamp="1631159882454">
-      <screen x="0" y="25" width="1440" height="791" />
-    </state>
-    <state x="585" y="318" key="Github.ShareDialog/0.25.1440.791@0.25.1440.791" timestamp="1631159882454" />
-    <state x="457" y="131" key="Github.UntrackedFilesDialog" timestamp="1631159889160">
-      <screen x="0" y="25" width="1440" height="791" />
-    </state>
-    <state x="457" y="131" key="Github.UntrackedFilesDialog/0.25.1440.791@0.25.1440.791" timestamp="1631159889160" />
-    <state x="320" y="157" key="Vcs.Push.Dialog.v2" timestamp="1631929609832">
-      <screen x="0" y="25" width="1440" height="791" />
-    </state>
-    <state x="320" y="157" key="Vcs.Push.Dialog.v2/0.25.1440.791@0.25.1440.791" timestamp="1631929609832" />
-    <state x="383" y="177" width="674" height="486" key="find.popup" timestamp="1631760149572">
-      <screen x="0" y="25" width="1440" height="791" />
-    </state>
-    <state x="383" y="177" width="674" height="486" key="find.popup/0.25.1440.791@0.25.1440.791" timestamp="1631760149572" />
-    <state x="385" y="140" width="670" height="676" key="search.everywhere.popup" timestamp="1631844404813">
-      <screen x="0" y="25" width="1440" height="791" />
-    </state>
-    <state x="385" y="140" width="670" height="676" key="search.everywhere.popup/0.25.1440.791@0.25.1440.791" timestamp="1631844404813" />
   </component>
 </project>

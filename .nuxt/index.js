@@ -13,14 +13,15 @@ import { createStore } from './store.js'
 
 /* Plugins */
 
-import nuxt_plugin_plugin_14667d34 from 'nuxt_plugin_plugin_14667d34' // Source: ./components/plugin.js (mode: 'all')
-import nuxt_plugin_axios_05d8536c from 'nuxt_plugin_axios_05d8536c' // Source: ./axios.js (mode: 'all')
+import nuxt_plugin_plugin_7629d08c from 'nuxt_plugin_plugin_7629d08c' // Source: ./components/plugin.js (mode: 'all')
+import nuxt_plugin_axios_73f789d0 from 'nuxt_plugin_axios_73f789d0' // Source: ./axios.js (mode: 'all')
 import nuxt_plugin_elementui_cc267d44 from 'nuxt_plugin_elementui_cc267d44' // Source: ../plugins/element-ui (mode: 'all')
 import nuxt_plugin_alloyFinger_4375f820 from 'nuxt_plugin_alloyFinger_4375f820' // Source: ../plugins/alloyFinger (mode: 'client')
 import nuxt_plugin_i18n_926bd3dc from 'nuxt_plugin_i18n_926bd3dc' // Source: ../plugins/i18n (mode: 'all')
 import nuxt_plugin_axios_2228ef02 from 'nuxt_plugin_axios_2228ef02' // Source: ../plugins/axios (mode: 'all')
 import nuxt_plugin_vueTouch_17f3ab4d from 'nuxt_plugin_vueTouch_17f3ab4d' // Source: ../plugins/vueTouch (mode: 'client')
 import nuxt_plugin_vueColors_6d0919bc from 'nuxt_plugin_vueColors_6d0919bc' // Source: ../plugins/vueColors (mode: 'client')
+import nuxt_plugin_moment_36f1f0f4 from 'nuxt_plugin_moment_36f1f0f4' // Source: ../plugins/moment (mode: 'all')
 
 // Component: <ClientOnly>
 Vue.component(ClientOnly.name, ClientOnly)
@@ -217,12 +218,12 @@ async function createApp(ssrContext, config = {}) {
   }
   // Plugin execution
 
-  if (typeof nuxt_plugin_plugin_14667d34 === 'function') {
-    await nuxt_plugin_plugin_14667d34(app.context, inject)
+  if (typeof nuxt_plugin_plugin_7629d08c === 'function') {
+    await nuxt_plugin_plugin_7629d08c(app.context, inject)
   }
 
-  if (typeof nuxt_plugin_axios_05d8536c === 'function') {
-    await nuxt_plugin_axios_05d8536c(app.context, inject)
+  if (typeof nuxt_plugin_axios_73f789d0 === 'function') {
+    await nuxt_plugin_axios_73f789d0(app.context, inject)
   }
 
   if (typeof nuxt_plugin_elementui_cc267d44 === 'function') {
@@ -247,6 +248,10 @@ async function createApp(ssrContext, config = {}) {
 
   if (process.client && typeof nuxt_plugin_vueColors_6d0919bc === 'function') {
     await nuxt_plugin_vueColors_6d0919bc(app.context, inject)
+  }
+
+  if (typeof nuxt_plugin_moment_36f1f0f4 === 'function') {
+    await nuxt_plugin_moment_36f1f0f4(app.context, inject)
   }
 
   // Lock enablePreview in context

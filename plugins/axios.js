@@ -1,5 +1,5 @@
 import {showLoading, hideLoading} from '../utils/loading';
-export default function({ $axios, redirect }) {
+export default function({store, redirect, req, router, $axios }) {
   // request interceptor
   let jsonData = {
     code: '',
@@ -10,11 +10,13 @@ export default function({ $axios, redirect }) {
       // do something before request is sent
       config.withCredentials = true; // 允许携带token ,这个是解决跨域产生的相关问题
       config.timeout = 30000;
+      config.headers['IOT-SESS'] = config.sessionId;
+
       if (config.method == "post"){
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'
       }
       if (config.dataType == 'stringfy'){
-        config.headers['Content-Type'] = 'application/json; charset=UTF-8'
+        config.headers['Content-Type'] = 'application/json; charset=UTF-8';
       }
       return config;
     },
@@ -50,15 +52,15 @@ export default function({ $axios, redirect }) {
           return res;
         } else if (res.data.code === 401) {
           hideLoading();
-          redirect('/login');
+          //redirect('/login');
           return res;
         } else if (res.data.code === 403) {
           hideLoading();
-          redirect('/noPermission');
+          //redirect('/noPermission');
           return res;
         } else if (res.data.code === 404) {
           hideLoading();
-          redirect('/404');
+          //redirect('/404');
           return res;
         }else {
           hideLoading();

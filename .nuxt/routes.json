@@ -1,9 +1,16 @@
 [
   {
+    "name": "index2",
+    "path": "/index2",
+    "component": "/Users/likai/工作/object/vuejs/test/test/pages/index2.vue",
+    "chunkName": "pages/index2",
+    "_name": "_c3f129d8"
+  },
+  {
     "name": "index",
     "path": "/",
-    "component": "/Volumes/Macintosh HD - 数据/object/vuejs/test/test/pages/index.vue",
+    "component": "/Users/likai/工作/object/vuejs/test/test/pages/index.vue",
     "chunkName": "pages/index",
-    "_name": "_c0f4fa58"
+    "_name": "_0518400e"
   }
 ]

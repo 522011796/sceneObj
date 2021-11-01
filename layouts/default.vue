@@ -23,7 +23,7 @@
                       <img src="~/static/img/light.png" class="layout-menu-icon"/>
                     </span>
                     <span class="layout-menu-title" v-if="isCollapse == true">
-                      任务任务任务任务{{index}}
+                      {{ item.n }}
                     </span>
                   </span>
                 </div>
@@ -174,7 +174,7 @@
 
           <div class="color-666666 block-plane" :style="drawerTreeStyle">
             <el-tree
-              :data="dataDeviceGroup"
+              :data="dataDeviceList"
               show-checkbox>
             </el-tree>
           </div>
@@ -299,41 +299,10 @@
           selMenuData: '',
           alertMessageTips: '',
           customPlainType: '',
-          dataDeviceGroup: [{
-            label: '一级 1',
-            children: [{
-              label: '二级 1-1',
-              children: [{
-                label: '三级 1-1-1'
-              }]
-            }]
-          }, {
-            label: '一级 2',
-            children: [{
-              label: '二级 2-1',
-              children: [{
-                label: '三级 2-1-1'
-              }]
-            }, {
-              label: '二级 2-2',
-              children: [{
-                label: '三级 2-2-1'
-              }]
-            }]
-          }, {
-            label: '一级 3',
-            children: [{
-              label: '二级 3-1',
-              children: [{
-                label: '三级 3-1-1'
-              }]
-            }, {
-              label: '二级 3-2',
-              children: [{
-                label: '三级 3-2-1'
-              }]
-            }]
-          }],
+          test: '',
+          taskList: [],
+          planList:[],
+          dataDeviceGroup: [],
           formPlain: {
             type: '',
             name: '',
@@ -375,7 +344,7 @@
         window.onresize = () => {
           this.checkOrient();
         };
-        this.initMenu();
+        //this.initMenu();
       },
       beforeMount() {
         window.addEventListener('orientationchange', (e) => {
@@ -426,16 +395,24 @@
             this.menuStyle.height = window.innerHeight-40-60 + 'px';
             this.drawerTreeStyle.height = window.innerHeight-40-160 + 'px';
             this.$set(this.dialogRightTabStyle,'height', window.innerHeight-45-60-30 + 'px');
+            this.test = window.innerHeight;
           }
         },
-        initMenu(){
+        initMenu(menuList){
           this.menuList = [];
-          for (let i = 0; i < 3; i++){
-            this.menuList.push({
+          let menuListTemp = [];
+          for (let i = 0; i < menuList.length; i++){
+            //menuList[i]['selected'] = false;
+            menuListTemp.push({
               selected: false,
-              name: i+1
+              n: menuList[i].n,
+              t: menuList[i].t,
+              d: menuList[i].d
             });
           }
+
+          this.menuList = menuListTemp;
+
           this.setMenuAdd();
           //this.handleDefaultScrollTop();
         },
@@ -478,11 +455,13 @@
           this.setMenuAdd();
         },
         selMenu(event, item, index){
-          this.selMenuData = item.name;
+          this.selMenuData = item.n;
           for (let i = 0; i < this.menuList.length; i++){
             this.menuList[i].selected = false;
+            this.$set(this.menuList[i],'selected', false);
             if (i == index) {
               this.menuList[i].selected = true;
+              this.$set(this.menuList[i],'selected', true);
             }
           }
         },
@@ -516,6 +495,7 @@
           this.dialogVisible = true;
         },
         addPlain(){
+          this.getDeviceList();
           this.drawer = true;
         },
         cancelDrawer(){

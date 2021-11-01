@@ -4,5 +4,6 @@
  */
 export const common = {
   login_url: 'proxy/user/login', //登录
-
+  senceList: '/scene/querySceneList',
+  deviceList: '/device/getDevicePageByEnvKey',
 };

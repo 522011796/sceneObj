@@ -15,8 +15,9 @@ import '../assets/css/common.css'
 import '../assets/font-awesome-4.7.0/css/font-awesome.min.css'
 
 import _6f6c098b from '../layouts/default.vue'
+import _6007e2ba from '../layouts/defaultFull.vue'
 
-const layouts = { "_default": sanitizeComponent(_6f6c098b) }
+const layouts = { "_default": sanitizeComponent(_6f6c098b),"_defaultFull": sanitizeComponent(_6007e2ba) }
 
 export default {
   render (h, props) {

@@ -1,9 +1,9 @@
 <template>
   <div @click="hidePopVisible">
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
-    <div class="demoRuleClass" :style="{'width': ruleMax * 70 + 25 + 'px'}">
+    <div class="demoRuleClass" :style="{'width': ruleMax * 70 + 25 + 0.1 + 'px'}">
       <div>
-        <div class="demoRuleFixedClass" :style="{'width': ruleMax * 70+'px', 'left': -scrollLeft+0 + 'px'}">
+        <div class="demoRuleFixedClass" :style="{'width': ruleMax * 70 + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
           <div v-for="(itemNum, indexNum) in ruleMax" :key="indexNum" class="rule-class">
             <div class="num">
               {{format(indexNum)}}
@@ -15,27 +15,28 @@
       </div>
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
-        <div v-for="(item, index) in dataList" style="margin-bottom: 10px">
+        <div class="demoRuleBlockClass" v-for="(item, index) in taskList" style="margin-bottom: 10px">
 <!--          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"-->
 <!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
 <!--          >-->
-          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"
-
-            >
-            <el-popover
-              popper-class="indexPopVisible"
-              v-model="itemBlock.popVisible"
-              placement="bottom"
-              trigger="manual">
-              <div>
-                {{itemBlock.sec}}
-              </div>
-              <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none">
+          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item" v-if="itemBlock.i == 1 || itemBlock.i == 2"
+               :style="{'background': itemBlock.i == 1 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}">
+            <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
+              <el-popover
+                popper-class="indexPopVisible"
+                v-model="itemBlock.popVisible"
+                placement="bottom"
+                trigger="manual">
                 <div>
-                  <div class="moon-ellipsis-class index-main-item-block">任务名称任务名称任务名称任务名称</div>
+                  {{itemBlock.i}}
                 </div>
-              </v-touch>
-            </el-popover>
+                <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none">
+                  <div>
+                    <div class="moon-ellipsis-class index-main-item-block">{{ itemBlock.i }}</div>
+                  </div>
+                </v-touch>
+              </el-popover>
+            </v-touch>
           </div>
           <span class="index-plus-item">
             <i class="fa fa-plus font-size-14" @click.stop="setSence($event, item, index)"></i>
@@ -79,6 +80,42 @@
           </el-row>
         </span>
     </el-dialog>
+
+    <!--场景列表-->
+    <el-drawer
+      title="场景设置"
+      custom-class="drawer-list"
+      :show-close="false"
+      :modal="true"
+      :size="dialogListSize"
+      :wrapperClosable="false"
+      :visible.sync="drawerListVisible"
+      :direction="directionList">
+
+      <div slot="title">
+        <div class="block-list-header">
+          <span>{{$t("场景列表")}}</span>
+        </div>
+      </div>
+
+      <div class="marginTop10">
+        <div v-for="(item, index) in sceneList" class="block-list-content-item marginBottom10" @click="selSence($event, item)">
+          <el-row>
+            <el-col :span="16">
+              <div class="textLeft">
+                <div class="marginTop10 fontBold">{{ item.sceneName }}</div>
+                <div class="marginTop5">{{ item.envKey }}</div>
+              </div>
+            </el-col>
+            <el-col :span="8">
+              <div class="textRight marginTop20">
+                <span>{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+    </el-drawer>
 
     <!--场景框-->
     <el-drawer
@@ -1074,6 +1111,7 @@
 <script>
 import mixins from '/mixins/mixins';
 import {MessageWarning} from "../utils/utils";
+import {common} from "../utils/api/url";
 export default {
   mixins: [mixins],
   components: {  },
@@ -1106,11 +1144,14 @@ export default {
       customBottomKeyOprVisible: false,
       customBottomKeyVisible: false,
       customInsetVisible: false,
+      drawerListVisible: true,
       dialogHeight: '50%',
+      dialogListSize: '100%',
       drawerRightWidth: '90%',
       drawerRightChildWidth: '90%',
       direction: 'btt',
       directionDevice: 'rtl',
+      directionList: 'rtl',
       screenArrow: '',
       setType: '',
       setChildType: '',
@@ -1123,6 +1164,10 @@ export default {
       customBottomKeyOpr: '',
       timeOutEvent: 0,
       speed: '',
+      touchStatus: false,
+      sceneList: [],
+      taskList: [],
+      planList:[],
       colors: {
         hue: 50,
         saturation: 100,
@@ -1194,8 +1239,6 @@ export default {
     // 监听窗口大小
     window.addEventListener( 'resize', () => (this.checkIndexOrient())
     );
-
-    this.init();
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
@@ -1209,6 +1252,9 @@ export default {
     this.appType = this.$route.query.appType;
     this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
     this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
+
+    this.initSenceList();
+
     this.checkIndexOrient();
     this.initRoom();
     this.initDevice();
@@ -1216,30 +1262,39 @@ export default {
     this.initOrder();
   },
   methods:{
+    initSenceList(){
+      let params = {
+        envKey: this.envKey
+      };
+      this.$axios.get(this.baseUrl + common.senceList, {params: params, sessionId: this.sessionId}).then(res => {
+        if (res.data.code == 200){
+          console.log(res.data.data);
+          this.sceneList = res.data.data;
+        }else {
+          MessageWarning(res.data.msg);
+        }
+      });
+    },
     init(){
       this.dataList = [];
       this.ruleList = [];
-      for (let i = 0; i < 3; i++){
-        let dataObj = {
-          name: i,
-          list: []
-        };
+      for (let i = 0; i < this.taskList.length; i++){
         this.ruleCount = 0;
-        for (let j = 0; j < 30; j++){
-          let aNumber = (5 - 1) * Math.random() + 1;
-          let result = Math.floor(aNumber);
-          this.ruleCount += result;
-          dataObj.list.push({
-            sec: result,
-            popVisible: false
-          });
+        for (let j = 0; j < this.taskList[i].length; j++){
+          //let aNumber = (5 - 1) * Math.random() + 1;
+          if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2){
+            let aNumber = this.taskList[i][j].v / 1000;
+            let result = Math.floor(aNumber);
+            this.ruleCount += result;
+          }
         }
         this.ruleList.push(this.ruleCount);
-        this.dataList.push(dataObj);
       }
+
       let ruleMax = Math.max(...this.ruleList);
       this.ruleMax = ruleMax;
       //this.handleScrollTop()
+      //this.$router.push("/index2");
     },
     initRoom(){
       this.roomList = [];
@@ -1292,7 +1347,7 @@ export default {
         let heightChild = window.innerHeight-45-60;
         let heightBottomChild = type == 'landscape' ? window.innerHeight * 0.7-45 : window.innerHeight * 0.5-45;
         let heightOrder = window.innerHeight-45-60;
-        this.$set(this.divStyle,'height', window.innerHeight-40-30 + 'px');
+        this.$set(this.divStyle,'height', window.innerHeight-40-60 + 'px');
         this.$set(this.dialogRightTabStyle,'height', height + 'px');
         this.$set(this.dialogRightChildTabStyle,'height', heightChild + 'px');
         this.$set(this.drawerBottomDialogStyle,'height', heightBottomChild + 'px');
@@ -1323,6 +1378,7 @@ export default {
       this.hidePopVisible();
     },
     handleScrollTop(){
+      this.touchStatus = false;
       this.changeFlag(true);
       if (this.minxinsScroll) {
         this.$parent.$parent.$refs.menuRef.scrollTop = this.$refs.wrapper.scrollTop;
@@ -1359,24 +1415,64 @@ export default {
     selBlock(event, item, index, itemBlock, indexBlock){
       //console.log(index, indexBlock);
       this.drawerDevice = true;
-      for (let i = 0; i < this.dataList.length; i++){
-        for (let j = 0; j < this.dataList[i].list.length; j++){
+      for (let i = 0; i < this.taskList.length; i++){
+        for (let j = 0; j < this.taskList[i].length; j++){
           // if (i == index && indexBlock == j){
-          //   this.dataList[i].list[j].popVisible = !this.dataList[i].list[j].popVisible;
+          //   this.taskList[i].list[j].popVisible = !this.taskList[i].list[j].popVisible;
           // }else {
-          //   this.dataList[i].list[j].popVisible = false;
+          //   this.taskList[i].list[j].popVisible = false;
           // }
-          this.dataList[i].list[j].popVisible = false;
+          this.taskList[i][j].popVisible = false;
         }
       }
+    },
+    selSence(event, item){
+      this.$axios.get(item.sourceUrl).then(res => {
+        //console.log(res.data.tasks);
+        let plans = [];
+        let tasks = [];
+        let tasksTemp = [];
+        for (let i = 0; i < res.data.tasks.length; i++){
+          plans.push({
+            d: res.data.tasks[i].d,
+            n: res.data.tasks[i].n,
+            t: res.data.tasks[i].t
+          });
+
+          tasksTemp = [];
+          for (let j = 0; j < res.data.tasks[i].i.length; j++){
+            tasksTemp.push({
+              sec: res.data.tasks[i].i[j].v / 1000,
+              i: res.data.tasks[i].i[j].i,
+              popVisible: false,
+              t: res.data.tasks[i].i[j].t,
+              v: res.data.tasks[i].i[j].v,
+            });
+          }
+          tasks.push(tasksTemp);
+        }
+        this.planList = plans;
+        this.taskList = tasks;
+
+        console.log(this.planList);
+        console.log(this.taskList);
+        this.$parent.$parent.initMenu(this.planList);
+        this.init();
+
+        this.drawerListVisible = false;
+      });
     },
     mousedown(){
 
     },
     hidePopVisible(){
-      for (let i = 0; i < this.dataList.length; i++){
-        for (let j = 0; j < this.dataList[i].list.length; j++){
-          this.dataList[i].list[j].popVisible = false;
+      if (this.touchStatus == true){
+        return;
+      };
+      for (let i = 0; i < this.taskList.length; i++){
+        for (let j = 0; j < this.taskList[i].length; j++){
+          //console.log(this.taskList[i][j]);
+          this.taskList[i][j].popVisible = false;
         }
       }
 
@@ -1384,7 +1480,7 @@ export default {
         this.$set(this.orderList[i], 'insertVisible', false);
       }
 
-      this.$forceUpdate();
+      //this.$forceUpdate();
     },
     setSence(event, item, index){
       this.drawer = true;
@@ -1532,15 +1628,16 @@ export default {
     },
     selPressBlock(event, item, index, itemBlock, indexBlock){
       event.preventDefault();
-      for (let i = 0; i < this.dataList.length; i++){
-        for (let j = 0; j < this.dataList[i].list.length; j++){
+      for (let i = 0; i < this.taskList.length; i++){
+        for (let j = 0; j < this.taskList[i].length; j++){
           if (i == index && indexBlock == j){
-            this.dataList[i].list[j].popVisible = !this.dataList[i].list[j].popVisible;
+            this.taskList[i][j].popVisible = !this.taskList[i][j].popVisible;
           }else {
-            this.dataList[i].list[j].popVisible = false;
+            this.taskList[i][j].popVisible = false;
           }
         }
       }
+      this.touchStatus = true;
     },
     inputColor(hue){
       let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
@@ -1614,11 +1711,16 @@ export default {
     position: relative;
     margin-top: 0px;
   }
+  .demoRuleBlockClass:hover .demoRuleChildClass{
+    box-shadow: 1px 1px 2px #000000;
+  }
   .demoRuleChildClass{
     display: inline-block;
     min-width: 70px;
     height: 45px;
     text-align: center;
+    /*border-right: 0.1px solid #434343;*/
+    box-shadow: 0.5px 0px 1.5px #434343;
   }
   .rule-class {
     min-width: 70px;
@@ -1636,7 +1738,10 @@ export default {
     font-size: 12px;
   }
   .demoRuleChildClass:hover{
-    box-shadow: 0px 0px 10px #000000;
+    /*box-shadow: 0px 0px 10px #000000;*/
+  }
+  .demoRuleBlockClass:hover{
+    /*box-shadow: 0px 0px 10px #000000;*/
   }
   .guide{
     display: none;
@@ -1759,7 +1864,7 @@ export default {
     font-size: 12px;
     padding: 0px 10px;
     position: relative;
-    top: 10px;
+    top: 12px;
   }
   .colorBlock{
     border: 1px solid #dddddd;
