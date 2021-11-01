@@ -19,7 +19,7 @@
 <!--          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"-->
 <!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
 <!--          >-->
-          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item" v-if="itemBlock.i == 1 || itemBlock.i == 2"
+          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item" v-if="item.length > 0 && itemBlock.i == 1 || itemBlock.i == 2"
                :style="{'background': itemBlock.i == 1 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}">
             <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
               <el-popover
@@ -37,6 +37,11 @@
                 </v-touch>
               </el-popover>
             </v-touch>
+          </div>
+          <div class="demoRuleChildEmptyClass" style="height: 40px" v-if="item.length <= 0">
+            <div>
+              <div class="moon-ellipsis-class index-main-item-block">&nbsp;</div>
+            </div>
           </div>
           <span class="index-plus-item">
             <i class="fa fa-plus font-size-14" @click.stop="setSence($event, item, index)"></i>
@@ -99,7 +104,7 @@
       </div>
 
       <div class="marginTop10">
-        <div v-for="(item, index) in sceneList" class="block-list-content-item marginBottom10" @click="selSence($event, item)">
+        <div v-for="(item, index) in sceneList" class="block-list-content-item marginBottom10" @click="selSence($event, item, 'menu')">
           <el-row>
             <el-col :span="16">
               <div class="textLeft">
@@ -215,8 +220,15 @@
               <div class="item-list-child" v-for="(item, index) in orderList" :key="index">
                 <el-row>
                   <el-col :span="12">
-                    <span>1</span>
-                    <span class="marginLeft10">{{item.insertVisible}}-{{item.name}}</span>
+                    <span>
+                      <el-tag>
+                        <label class="font-size-12 color-default">
+                          {{$t("No.")}}
+                          {{index+1}}
+                        </label>
+                      </el-tag>
+                    </span>
+                    <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
                   </el-col>
                   <el-col :span="12">
                     <div class="textRight">
@@ -1110,7 +1122,6 @@
 
 <script>
 import mixins from '/mixins/mixins';
-import {MessageWarning} from "../utils/utils";
 import {common} from "../utils/api/url";
 export default {
   mixins: [mixins],
@@ -1168,6 +1179,7 @@ export default {
       sceneList: [],
       taskList: [],
       planList:[],
+      orderList: [],
       colors: {
         hue: 50,
         saturation: 100,
@@ -1259,7 +1271,7 @@ export default {
     this.initRoom();
     this.initDevice();
     this.initICon();
-    this.initOrder();
+    //this.initOrder();
   },
   methods:{
     initSenceList(){
@@ -1268,7 +1280,7 @@ export default {
       };
       this.$axios.get(this.baseUrl + common.senceList, {params: params, sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
-          console.log(res.data.data);
+          console.log(1, res.data.data);
           this.sceneList = res.data.data;
         }else {
           MessageWarning(res.data.msg);
@@ -1323,7 +1335,7 @@ export default {
         });
       }
     },
-    initOrder(){
+    initOrder(event, item){
       this.orderList = [];
       for (let i = 0; i < 20; i++){
         this.orderList.push({
@@ -1413,7 +1425,7 @@ export default {
       }
     },
     selBlock(event, item, index, itemBlock, indexBlock){
-      //console.log(index, indexBlock);
+      this.orderList = item;
       this.drawerDevice = true;
       for (let i = 0; i < this.taskList.length; i++){
         for (let j = 0; j < this.taskList[i].length; j++){
@@ -1426,41 +1438,50 @@ export default {
         }
       }
     },
-    selSence(event, item){
-      this.$axios.get(item.sourceUrl).then(res => {
-        //console.log(res.data.tasks);
-        let plans = [];
-        let tasks = [];
-        let tasksTemp = [];
-        for (let i = 0; i < res.data.tasks.length; i++){
-          plans.push({
-            d: res.data.tasks[i].d,
-            n: res.data.tasks[i].n,
-            t: res.data.tasks[i].t
+    selSence(event, item, type){
+      if (type == 'menu'){
+        this.$axios.get(item.sourceUrl).then(res => {
+          console.log(2,res.data.tasks);
+          this.setSenceData(res.data.tasks);
+
+          this.drawerListVisible = false;
+        });
+      }else {
+        this.setSenceData(event);
+      }
+    },
+    setSenceData(item){
+      let data = item;
+      let plans = [];
+      let tasks = [];
+      let tasksTemp = [];
+      for (let i = 0; i < data.length; i++){
+        plans.push({
+          d: data[i].d,
+          n: data[i].n,
+          t: data[i].t,
+          i: data[i].i
+        });
+
+        tasksTemp = [];
+        for (let j = 0; j < data[i].i.length; j++){
+          tasksTemp.push({
+            sec: data[i].i[j].v / 1000,
+            i: data[i].i[j].i,
+            popVisible: false,
+            t: data[i].i[j].t,
+            v: data[i].i[j].v,
           });
-
-          tasksTemp = [];
-          for (let j = 0; j < res.data.tasks[i].i.length; j++){
-            tasksTemp.push({
-              sec: res.data.tasks[i].i[j].v / 1000,
-              i: res.data.tasks[i].i[j].i,
-              popVisible: false,
-              t: res.data.tasks[i].i[j].t,
-              v: res.data.tasks[i].i[j].v,
-            });
-          }
-          tasks.push(tasksTemp);
         }
-        this.planList = plans;
-        this.taskList = tasks;
+        tasks.push(tasksTemp);
+      }
+      this.planList = plans;
+      this.taskList = tasks;
 
-        console.log(this.planList);
-        console.log(this.taskList);
-        this.$parent.$parent.initMenu(this.planList);
-        this.init();
-
-        this.drawerListVisible = false;
-      });
+      console.log(this.planList);
+      console.log(this.taskList);
+      this.$parent.$parent.initMenu(this.planList);
+      this.init();
     },
     mousedown(){
 
@@ -1721,6 +1742,11 @@ export default {
     text-align: center;
     /*border-right: 0.1px solid #434343;*/
     box-shadow: 0.5px 0px 1.5px #434343;
+  }
+  .demoRuleChildEmptyClass{
+    display: inline-block;
+    width: 1px;
+    height: 30px;
   }
   .rule-class {
     min-width: 70px;

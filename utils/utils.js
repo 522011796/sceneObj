@@ -76,23 +76,47 @@ export function trim (str) {
   return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
-export function courseProperties(type, str){
-  let courseProperties = {
-    "1": "必修",
-    "2": "限选",
-    "3": "任选",
-    "4": "辅修",
-    "5": "实践",
-    "6": "双必",
-    "7": "双选",
-    "8": "通选",
-    "9": "其他"
+export function orderValue(type, str){
+  let orderValue = {
+    "1": "空闲指令",
+    "2": "延时指令",
+    "3": "循环指令",
+    "4": "场景嵌套调⽤用",
+    "5": "电源控制",
+    "6": "开/关控制",
+    "7": "亮度控制",
+    "8": "色温控制",
+    "9": "色彩控制",
+    "10": "行程控制",
+    "11": "按键控制",
+    "12":"⾳音量量控制",
+    "13":"播放控制",
+    "14":"暂停控制",
+    "15":"时间跳转控制",
+    "16":"点状灯效",
+    "17":"线状灯效"
   };
   if (str && type == 'set') {
-    return courseProperties[str];
+    return orderValue[str];
   }
   if (!str && type == 'get'){
-    return courseProperties;
+    return orderValue;
+  }
+}
+
+export function planType(type, str){
+  let planType = {
+    "0": "场景",
+    "1": "灯",
+    "2": "开关",
+    "3": "窗帘⽤用",
+    "4": "音乐"
+  };
+  if (str && type == 'set') {
+    return planType[str];
+  }
+  if (!str && type == 'get'){
+    return planType;
   }
 }
 

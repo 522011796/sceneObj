@@ -62,7 +62,7 @@
         :visible.sync="dialogVisible"
         custom-class="alert-class"
         width="300px"
-        @close="closeDialog">
+        @close="closeDelDialog">
         <div slot="title">
           <div class="alertHeader">
             <div class="alertTitle">
@@ -84,7 +84,7 @@
             </el-col>
             <el-col :span="12">
               <div class="alertFooterClass">
-                <span class="alertFooterSpan" @click="dialogVisible = false">
+                <span class="alertFooterSpan" @click="oprPlain()">
                   确 定
                 </span>
               </div>
@@ -103,6 +103,7 @@
         :wrapperClosable="false"
         :visible.sync="drawer"
         :direction="direction"
+        @close="closeDialog"
         :style="{'width': screenOrientation == 'landscape' ? '100% !important' : '100% !important', 'margin': '0px auto'}">
 
         <div slot="title">
@@ -150,9 +151,12 @@
                     <div class="index-pop-item" @click="changePlainType($event, 4)">
                       <span>{{$t("音乐")}}</span>
                     </div>
+                    <div class="index-pop-item" @click="changePlainType($event, 0)">
+                      <span>{{$t("场景")}}</span>
+                    </div>
                   </div>
                   <span slot="reference" size="mini">
-                    <label>{{formPlain.type == '' ? $t("请选择") : formPlain.type}}</label>
+                    <label>{{formPlain.type == '' ? $t("请选择") : planTypeInfo(formPlain.type)}}</label>
                     <label><i class="fa fa-chevron-right"></i></label>
                   </span>
                 </el-popover>
@@ -165,7 +169,7 @@
               <el-row>
                 <el-col :span="24">
                   <div class="textRight color-666666">
-                    <label>({{$t("已选择")}}0{{$t("台设备")}})</label>
+                    <label>({{$t("已选择")}}{{formPlain.deviceSelDevice.length}}{{$t("台设备")}})</label>
                   </div>
                 </el-col>
               </el-row>
@@ -174,8 +178,13 @@
 
           <div class="color-666666 block-plane" :style="drawerTreeStyle">
             <el-tree
+              node-key="sn"
               :data="dataDeviceList"
-              show-checkbox>
+              :default-checked-keys="formPlain.deviceSelDevice"
+              show-checkbox
+              @check="checkDevice"
+              @check-change="checkChangeDevice"
+              @current-change="checkChangeCurrentDevice">
             </el-tree>
           </div>
         </div>
@@ -272,12 +281,13 @@
 
 <script>
     import mixins from "/mixins/mixins";
-    import {MessageSuccess, MessageWarning} from "../utils/utils";
+    import {MessageSuccess, MessageWarning, planType} from "../utils/utils";
     export default {
       name: "default",
       mixins: [mixins],
       data(){
         return {
+          oprType: '',
           menuToggle: true,
           isCollapse: true,
           scrollTop: 0,
@@ -297,6 +307,7 @@
           direction: 'btt',
           directionDevice: 'rtl',
           selMenuData: '',
+          selMenuIndex: '',
           alertMessageTips: '',
           customPlainType: '',
           test: '',
@@ -306,7 +317,8 @@
           formPlain: {
             type: '',
             name: '',
-            deviceList: []
+            deviceList: [],
+            deviceSelDevice: []
           },
           contentStyle:{
             'height': '0px',
@@ -455,7 +467,8 @@
           this.setMenuAdd();
         },
         selMenu(event, item, index){
-          this.selMenuData = item.n;
+          this.selMenuData = item;
+          this.selMenuIndex = index;
           for (let i = 0; i < this.menuList.length; i++){
             this.menuList[i].selected = false;
             this.$set(this.menuList[i],'selected', false);
@@ -492,9 +505,21 @@
           }
         },
         okConfirm(){
+          if (this.formPlain.type == ""){
+            MessageWarning(this.$t("请设置任务类型"));
+            return;
+          }else if (this.formPlain.name == ""){
+            MessageWarning(this.$t("请设置任务名称"));
+            return;
+          }else if (this.formPlain.deviceSelDevice.length == 0){
+            MessageWarning(this.$t("请设置设备"));
+            return;
+          }
+          this.alertMessageTips = this.$t("确认保存该任务？");
           this.dialogVisible = true;
         },
         addPlain(){
+          this.oprType = "add";
           this.getDeviceList();
           this.drawer = true;
         },
@@ -504,8 +529,18 @@
         cancelDeviceDrawer(){
           this.drawerDevice = false;
         },
+        closeDelDialog(){
+          //this.selMenuData = "";
+          //this.selMenuIndex = "";
+        },
         closeDialog(){
           //this.selMenuData = "";
+          this.formPlain = {
+            type: '',
+            name: '',
+            deviceList: [],
+            deviceSelDevice: []
+          }
         },
         addDevice(){
           this.drawerDevice = true;
@@ -515,6 +550,7 @@
             MessageWarning(this.$t("请选择需要删除的任务"));
             return;
           }
+          this.oprType = 'del';
           this.alertMessageTips = this.$t("确定删除该任务吗？");
           this.dialogVisible = true;
         },
@@ -523,6 +559,15 @@
             MessageWarning(this.$t("请选择需要修改的任务"));
             return;
           }
+          this.getDeviceList();
+          this.formPlain = {
+            type: this.selMenuData.t,
+            name: this.selMenuData.n,
+            deviceList: this.dataDeviceList,
+            deviceSelDevice: this.selMenuData.d
+          }
+          this.oprType = 'update';
+          console.log(this.formPlain);
           this.drawer = true;
         },
         copyPlain(){
@@ -542,10 +587,56 @@
         selDevice(event, item){
           item._checked = !item._checked;
         },
+        planTypeInfo(value){
+          return planType('set', value);
+        },
         changePlainType(event, type){
           this.customPlainType = type;
           this.customPlainVisible = false;
-          this.formPlain.type = event.target.innerText;
+          this.formPlain.type = type;
+        },
+        checkChangeDevice(event){
+
+        },
+        checkChangeCurrentDevice(current, node){
+
+        },
+        checkDevice(data, checkData){
+          let deviceList = [];
+          for (let i = 0; i < checkData.checkedNodes.length; i++){
+            if (checkData.checkedNodes[i].type == 'device'){
+              deviceList.push(checkData.checkedNodes[i].sn);
+            }
+          }
+          this.formPlain.deviceSelDevice = deviceList;
+        },
+        oprPlain(){
+          let planList = this.$refs.childRef.$children[0].planList;
+          if (this.oprType == "add"){
+            let planObj = {
+              d: this.formPlain.deviceSelDevice,
+              i: [],
+              n: this.formPlain.name,
+              t: this.formPlain.type,
+            };
+            planList.push(planObj);
+            this.dialogVisible = false;
+            this.drawer = false;
+            this.$refs.childRef.$children[0].selSence(planList, null, 'save');
+          }else if (this.oprType == "del"){
+            planList.splice(this.selMenuIndex,1);
+            this.drawer = false;
+            this.dialogVisible = false;
+            this.$refs.childRef.$children[0].selSence(planList, null, 'save');
+          }else if (this.oprType == "update"){
+            planList[this.selMenuIndex].d = this.formPlain.deviceSelDevice;
+            planList[this.selMenuIndex].i = planList[this.selMenuIndex].i;
+            planList[this.selMenuIndex].n = this.formPlain.name;
+            planList[this.selMenuIndex].t = this.formPlain.type;
+            this.drawer = false;
+            this.dialogVisible = false;
+            this.$refs.childRef.$children[0].selSence(planList, null, 'save');
+          }
         }
       }
     }

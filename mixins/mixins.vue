@@ -1,5 +1,6 @@
 <script>
     import {common} from "../utils/api/url";
+    import {MessageWarning, orderValue} from "../utils/utils";
 
     export default {
       name: "mixins",
@@ -16,6 +17,9 @@
         this.getUrl();
       },
       methods: {
+        orderGetAndSet(value, type){
+          return orderValue(type, value);
+        },
         changeFlag(flag) {
           this.minxinsScroll = flag;
         },
@@ -75,6 +79,7 @@
                   if (arr[i].subGroup != null){
                     arrTemp = arr.filter((e) => {
                       e['label'] = e.name;
+                      e['type'] = 'device';
                       return e.subGroup == arr[i].subGroup;
                     });
 
@@ -88,8 +93,9 @@
                     att[j]['children'].push(child);
                   }else {
                     let child = {
-                      type: 'subGroup',
+                      type: 'device',
                       label: arr[i].name,
+                      sn: arr[i].sn,
                       subGroup: arr[i].subGroup
                     };
 
