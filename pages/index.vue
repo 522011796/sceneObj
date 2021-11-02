@@ -31,7 +31,12 @@
                       || itemBlock.i == 9
                       || itemBlock.i == 10
                       || itemBlock.i == 11"
-               :style="{'background': itemBlock.i == 1 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}">
+               :style="{
+                        'background': orderColorInfo(itemBlock.i),
+                        'width': itemBlock.sec * 70+'px',
+                        'height':'40px',
+                        'color': '#ffffff'}"
+          >
             <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
               <el-popover
                 popper-class="indexPopVisible"
@@ -39,11 +44,15 @@
                 placement="bottom"
                 trigger="manual">
                 <div>
-                  {{itemBlock.i}}
+                  <div>
+                    {{$t("类型")}}: {{ orderValueInfo(outTypeObjInfo(itemBlock.i), 'set') }}
+                  </div>
                 </div>
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none">
                   <div>
-                    <div class="moon-ellipsis-class index-main-item-block">{{ itemBlock.i }}</div>
+                    <div class="moon-ellipsis-class index-main-item-block">
+                      {{ orderValueInfo(outTypeObjInfo(itemBlock.i), 'set') }}
+                    </div>
                   </div>
                 </v-touch>
               </el-popover>
@@ -1265,7 +1274,7 @@
 <script>
 import mixins from '/mixins/mixins';
 import {common} from "../utils/api/url";
-import {MessageSuccess, MessageWarning, orderValue, outTypeObj, keyType} from "../utils/utils";
+import {MessageSuccess, MessageWarning, orderValue, outTypeObj, keyType, orderColor} from "../utils/utils";
 export default {
   mixins: [mixins],
   components: { },
@@ -1953,6 +1962,9 @@ export default {
     },
     keyTypeInfo(type){
       return keyType(type);
+    },
+    orderColorInfo(type){
+      return orderColor(type);
     },
     lightFormatTooltip(val){
       if (val){

@@ -128,6 +128,29 @@ export function orderValue(type, str){
   }
 }
 
+export function orderColor(type){
+  let orderColor = {
+    "1": "#f56c6c",
+    "2": "#67c23a",
+    "3": "#abffff",
+    "4": "#abffff",
+    "5": "#abffff",
+    "6": "#abffff",
+    "7": "#abffff",
+    "8": "#abffff",
+    "9": "#67c23a",
+    "10": "#67c23a",
+    "11": "#67c23a",
+    "12":"#67c23a",
+    "13":"#67c23a",
+    "14":"#67c23a",
+    "15":"#67c23a",
+    "16":"#67c23a",
+    "17":"#67c23a"
+  };
+  return orderColor[type];
+}
+
 export function planType(type, str){
   let planType = {
     "0": "场景",
