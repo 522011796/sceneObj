@@ -288,6 +288,12 @@ span,div,button,label{
 .color-default{
   color: #909399;
 }
+.color-disabled{
+  color: #C0C4CC;
+}
+.disbled-icon{
+  cursor: not-allowed;
+}
 .item-icon{
   height: 25px;
   width: 25px;

@@ -76,20 +76,44 @@ export function trim (str) {
   return str.replace(/(^\s*)|(\s*$)/g, "");
 }
 
+export function outTypeObj(type){
+  //外部指令类型type对比
+  let typeOutObj = {
+    1 : 6,
+    2 : 7,
+    3 : 8,
+    4 : 9,
+    5 : 4,
+    6 : 2,
+    7 : 3,
+    8 : 5,
+    9 : 1,
+    10 : 10,
+    11 : 11,
+    12 : 12,
+    13 : 13,
+    14 : 14,
+    15 : 15,
+    16 : 16,
+    17 : 17,
+  };
+  return typeOutObj[type];
+}
+
 export function orderValue(type, str){
   let orderValue = {
     "1": "空闲指令",
     "2": "延时指令",
     "3": "循环指令",
-    "4": "场景嵌套调⽤用",
+    "4": "场景嵌套调⽤",
     "5": "电源控制",
-    "6": "开/关控制",
+    "6": "开/关灯控制",
     "7": "亮度控制",
     "8": "色温控制",
     "9": "色彩控制",
     "10": "行程控制",
     "11": "按键控制",
-    "12":"⾳音量量控制",
+    "12":"音量量控制",
     "13":"播放控制",
     "14":"暂停控制",
     "15":"时间跳转控制",
@@ -118,6 +142,15 @@ export function planType(type, str){
   if (!str && type == 'get'){
     return planType;
   }
+}
+
+export function keyType(type){
+  let keyType = {
+    "1": "按下",
+    "0": "释放"
+  };
+  console.log(type);
+  return keyType[type];
 }
 
 export function inArray(search,array,tag){
