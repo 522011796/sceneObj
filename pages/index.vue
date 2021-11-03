@@ -432,6 +432,9 @@
                     <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 2)">
                       <span>{{$t("延时")}}</span>
                     </div>
+                    <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 1)">
+                      <span>{{$t("空闲时间")}}</span>
+                    </div>
                   </div>
                   <span slot="reference" size="mini">
                           <label>{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
@@ -501,7 +504,7 @@
                     <div class="index-pop-item" v-for="(item, index) in sceneList">
                       <el-row>
                         <el-col :span="20">
-                          <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'curtainsSub') : selSenceUse($event, item, index, 'curtainsSub')" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
+                          <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
                             <span>{{ item.sceneName }}</span>
                             <span>({{$t("自身")}})</span>
                           </div>
@@ -521,9 +524,14 @@
                 </el-popover>
               </div>
             </el-form-item>
-            <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
+            <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4 && customBottomType != 5 && customBottomType != 1" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="customBottomType == 1" label="空闲时间" class="netmoon-form-item-border-dialog">
+              <div class="textRight color-666666">
+                <el-input-number size="mini" v-model="formCurtainsOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="0"></el-input-number>
               </div>
             </el-form-item>
           </el-form>
@@ -1078,9 +1086,12 @@
                           <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 2)">
                             <span>{{$t("延时")}}</span>
                           </div>
+                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 1)">
+                            <span>{{$t("空闲时间")}}</span>
+                          </div>
                         </div>
                         <span slot="reference" size="mini">
-                          <label v-if="areaItem == ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formCurtainsOrder.type), 'set')}}</label>
+                          <label v-if="areaItem == ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
                           <label v-if="areaItem != ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -1168,9 +1179,14 @@
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4" label="延时时间" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4 && customBottomType != 1" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 1" label="空闲时间" class="netmoon-form-item-border-dialog">
+                    <div class="textRight color-666666">
+                      <el-input-number size="mini" v-model="formCurtainsOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
                 </el-form>
@@ -1446,7 +1462,8 @@ export default {
         senceText: '',
         senceRoom: '',
         senceName: '',
-        curtainsOpenClose: 0
+        curtainsOpenClose: 0,
+        emptyTime: 0
       },
       formSwitchOrder: {
         type: '11',
@@ -1892,6 +1909,20 @@ export default {
         }else if (item.i == 2){
           this.formSwitchOrder.waitTime = item.v / 1000;
         }
+      }else if (this.setChildBottomType == 'curtainsSub') {
+        this.formCurtainsOrder.type = item.i;
+        this.customBottomType = item.i;
+        if (item.i == 10) {
+          this.formCurtainsOrder.curtainsOpenClose = item.v;
+        }else if (item.i == 1){
+          this.formCurtainsOrder.emptyTime = item.v / 1000;
+        }else if (item.i == 4){
+          this.formCurtainsOrder.sence = item.v;
+          this.formCurtainsOrder.senceRoom = item.r;
+          this.formCurtainsOrder.senceText = item.n;
+        }else if (item.i == 2){
+          this.formCurtainsOrder.waitTime = item.v / 1000;
+        }
       }
       this.drawerBottomDialogVisible = true;
     },
@@ -1954,7 +1985,8 @@ export default {
         senceText: '',
         senceRoom: '',
         senceName: '',
-        curtainsOpenClose: 0
+        curtainsOpenClose: 0,
+        emptyTime: 0
       };
       this.formSwitchOrder = {
         type: '11',
@@ -2223,13 +2255,13 @@ export default {
           }
         }
 
-        if (outTypeObj(this.formOrder.type) == 1 || outTypeObj(this.formSwitchOrder.type) == 1){
-          console.log(this.formOrder.type, this.formSwitchOrder.type);
+        if (outTypeObj(this.formOrder.type) == 1 || outTypeObj(this.formSwitchOrder.type) == 1 || this.formCurtainsOrder.type == 1){
           if (this.formOrder.type != ""){
             obj['v'] = this.formOrder.emptyTime * 1000;
             obj['sec'] = this.formOrder.emptyTime;
           }else if (this.formCurtainsOrder.type != ""){
-
+            obj['v'] = this.formCurtainsOrder.emptyTime * 1000;
+            obj['sec'] = this.formCurtainsOrder.emptyTime;
           }else if (this.formSwitchOrder.type != ""){
             obj['v'] = this.formSwitchOrder.emptyTime * 1000;
             obj['sec'] = this.formSwitchOrder.emptyTime;
@@ -2272,8 +2304,8 @@ export default {
             obj['n'] = this.formOrder.senceText;
           }else if (this.formCurtainsOrder.sence != ""){
             obj['v'] = this.formCurtainsOrder.sence;
-            obj['r'] = this.formOrder.senceRoom;
-            obj['n'] = this.formOrder.senceText;
+            obj['r'] = this.formCurtainsOrder.senceRoom;
+            obj['n'] = this.formCurtainsOrder.senceText;
           }
           obj['t'] = 1 * 1000;
           obj['sec'] = 1;
