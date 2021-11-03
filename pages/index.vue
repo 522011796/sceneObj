@@ -543,8 +543,11 @@
                     <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 11)">
                       <span>{{$t("按键操作")}}</span>
                     </div>
-                    <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 2)">
+                    <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 6)">
                       <span>{{$t("延时")}}</span>
+                    </div>
+                    <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 9)">
+                      <span>{{$t("空闲时段")}}</span>
                     </div>
                   </div>
                   <span slot="reference" size="mini">
@@ -626,15 +629,20 @@
                     </div>
                   </div>
                   <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.keyOpr === '' ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
+                            <label>{{formSwitchOrder.keyOpr === '' && formSwitchOrder.keyOpr != 0 ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                 </el-popover>
               </div>
             </el-form-item>
-            <el-form-item v-if="customBottomType == 2" label="延时时间" class="netmoon-form-item-border-dialog">
+            <el-form-item v-if="customBottomType == 6" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <el-input-number size="mini" v-model="formSwitchOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="customBottomType == 9" label="空闲时间" class="netmoon-form-item-border-dialog">
+              <div class="textRight color-666666">
+                <el-input-number size="mini" v-model="formSwitchOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="0"></el-input-number>
               </div>
             </el-form-item>
           </el-form>
@@ -1182,8 +1190,11 @@
                           <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 11)">
                             <span>{{$t("按键操作")}}</span>
                           </div>
-                          <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 2)">
+                          <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 6)">
                             <span>{{$t("延时")}}</span>
+                          </div>
+                          <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 9)">
+                            <span>{{$t("空闲时段")}}</span>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
@@ -1220,7 +1231,7 @@
                             </div>
                           </div>
                           <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : $t("按键")+formSwitchOrder.key}}</label>
+                            <label>{{formSwitchOrder.keyArr == '' ? $t("请选择") : $t("按键")+formSwitchOrder.keyArr.join()}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                         </el-popover>
@@ -1266,15 +1277,20 @@
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.keyOpr === '' ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
+                            <label>{{formSwitchOrder.keyOpr === '' && formSwitchOrder.keyOpr != 0 ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType == 2" label="延时时间" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType == 6" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-input-number size="mini" v-model="formSwitchOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 9" label="空闲时间" class="netmoon-form-item-border-dialog">
+                    <div class="textRight color-666666">
+                      <el-input-number size="mini" v-model="formSwitchOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
                 </el-form>
@@ -1438,6 +1454,7 @@ export default {
         key: '',
         keyOpr: '',
         waitTime: 0,
+        emptyTime: 0,
         senceRoom: '',
         senceName: '',
       }
@@ -1631,6 +1648,17 @@ export default {
       this.taskIndex = index;
       this.oprOtherType = "orderList";
 
+      this.clearForm();
+      this.formOrder.type = "";
+      this.formCurtainsOrder.type = "";
+      this.formSwitchOrder.type = "";
+      this.loopIndex = "";
+      this.loopItem = "";
+      this.senceIndex = "";
+      this.senceItem = "";
+      this.switchIndex = "";
+      this.switchItem = "";
+
       if (this.planList[index].t == 1){
         this.setChildBottomType = 'lightSub';
         this.formOrder.type = 1;
@@ -1638,7 +1666,7 @@ export default {
       }else if (this.planList[index].t == 2){
         this.setChildBottomType = 'switchSub';
         this.customBottomType = 11;
-        this.formSwitchOrder.type = 10;
+        this.formSwitchOrder.type = 11;
       }else if (this.planList[index].t == 3){
         this.setChildBottomType = 'curtainsSub';
         this.customBottomType = 10;
@@ -1656,6 +1684,8 @@ export default {
           this.taskList[i][j].popVisible = false;
         }
       }
+
+      console.log(this.formOrder.type, this.formSwitchOrder.type);
     },
     selSence(event, item, type){
       if (type == 'menu'){
@@ -1687,14 +1717,21 @@ export default {
             sec: data[i].i[j].v / 1000,
             i: data[i].i[j].i,
             popVisible: false,
-            t: data[i].i[j].t,
             v: data[i].i[j].v
           });
+          if (data[i].i[j].t){
+            tasksTemp[j]['t'] = data[i].i[j].t
+          }else {
+            tasksTemp[j]['t'] = 1000
+          }
           if (data[i].i[j].r){
             tasksTemp[j]['r'] = data[i].i[j].r
           }
           if (data[i].i[j].g){
             tasksTemp[j]['g'] = data[i].i[j].g
+          }
+          if (data[i].i[j].s == 0 || data[i].i[j].s){
+            tasksTemp[j]['s'] = data[i].i[j].s
           }
         }
         tasks.push(tasksTemp);
@@ -1739,23 +1776,21 @@ export default {
       this.switchIndex = "";
       this.switchItem = "";
       //暂时屏蔽
-      // if (this.planList[index].t == 1){
-      //   this.setChildBottomType = 'lightSub';
-      //   this.formOrder.type = 1;
-      //   this.customBottomType = 1;
-      // }else if (this.planList[index].t == 2){
-      //   this.setChildBottomType = 'switchSub';
-      //   this.customBottomType = 11;
-      //   this.formSwitchOrder.type = 10;
-      // }else if (this.planList[index].t == 3){
-      //   this.setChildBottomType = 'curtainsSub';
-      //   this.customBottomType = 10;
-      //   this.formCurtainsOrder.type = 10;
-      // }
+      if (this.planList[index].t == 1){
+        this.setChildBottomType = 'lightSub';
+        this.formOrder.type = 1;
+        this.customBottomType = 1;
+      }else if (this.planList[index].t == 2){
+        this.setChildBottomType = 'switchSub';
+        this.customBottomType = 11;
+        this.formSwitchOrder.type = 11;
+      }else if (this.planList[index].t == 3){
+        this.setChildBottomType = 'curtainsSub';
+        this.customBottomType = 10;
+        this.formCurtainsOrder.type = 10;
+      }
 
-      this.setChildBottomType = 'lightSub';
-      this.customBottomType = 1;
-      this.formSwitchOrder.type = 1;
+      console.log(this.formOrder.type, this.formSwitchOrder.type);
 
       this.taskIndex = index;
       this.taskItem = item;
@@ -1781,7 +1816,7 @@ export default {
     cancelChildBottomDrawer(){
       this.areaIndex = "";
       this.areaItem = "";
-      this.clearForm();
+      //this.clearForm();
       this.drawerBottomDialogVisible = false;
       //this.setChildBottomType = "";
       //this.customBottomType = 1;
@@ -1805,12 +1840,12 @@ export default {
         this.customBottomType = 1;
       }else if (this.setChildBottomType == 'switchSub'){
         this.customBottomType = 11;
-        this.formSwitchOrder.type = 10;
+        this.formSwitchOrder.type = 11;
       }else if (this.setChildBottomType == 'curtainsSub'){
         this.customBottomType = 10;
         this.formCurtainsOrder.type = 10;
       }
-      this.clearForm();
+      //this.clearForm();
       this.oprOtherType = "orderList";
       this.drawerBottomDialogVisible = true;
     },
@@ -1822,7 +1857,6 @@ export default {
       if (this.setChildBottomType == 'lightSub'){
         this.formOrder.type = item.i;
         this.customBottomType = this.outEditTypeObjInfo(item.i);
-        console.log(this.customBottomType);
         if (item.i == 1){
           this.formOrder.emptyTime = item.v / 1000;
         }else if (item.i == 6){
@@ -1846,6 +1880,17 @@ export default {
         }else if (item.i == 9){
           this.formOrder.color = item.v;
           this.formOrder.changeTime = item.t / 1000;
+        }
+      }else if (this.setChildBottomType == 'switchSub') {
+        this.formSwitchOrder.type = item.i;
+        this.customBottomType = this.outEditTypeObjInfo(item.i);
+        if (item.i == 11) {
+          this.formSwitchOrder.keyArr = item.v;
+          this.formSwitchOrder.keyOpr = item.s;
+        }else if (item.i == 1){
+          this.formSwitchOrder.emptyTime = item.v / 1000;
+        }else if (item.i == 2){
+          this.formSwitchOrder.waitTime = item.v / 1000;
         }
       }
       this.drawerBottomDialogVisible = true;
@@ -1917,6 +1962,7 @@ export default {
         key: '',
         keyOpr: '',
         waitTime: 0,
+        emptyTime: 0,
         senceRoom: '',
         senceName: '',
       }
@@ -1930,6 +1976,7 @@ export default {
         this.formOrder.changeTime = data;
       }else if (type == 'waiteTime'){
         this.formOrder.waiteTime = data;
+        this.formSwitchOrder.waiteTime = data;
       }else if (type == 'light'){
         this.formOrder.light = data;
       }else if (type == 'temp'){
@@ -1940,6 +1987,7 @@ export default {
         this.formCurtainsOrder.curtainsOpenClose = data;
       }else if (type == 'emptyTime'){
         this.formCurtainsOrder.emptyTime = data;
+        this.formSwitchOrder.emptyTime = data;
       }
     },
     closeDialog(){
@@ -2126,6 +2174,7 @@ export default {
       this.formSwitchOrder.key = index;
     },
     saveOpr(){
+      console.log("----"+this.oprOtherType,this.formOrder.type,this.formSwitchOrder.type);
       if (this.oprType == 'order'){
         let obj = {}
 
@@ -2152,15 +2201,40 @@ export default {
             i : this.formCurtainsOrder.type
           }
         }else if (this.formSwitchOrder.type != ""){
-          obj = {
-            i : this.formSwitchOrder.type
+          if (this.oprOtherType == "editOrderList"){
+            if (this.areaItem != ""){
+              console.log(1);
+              obj = {
+                i : this.formSwitchOrder.type
+              }
+              this.formSwitchOrder.type = outEditTypeObj(this.formSwitchOrder.type);
+            }else {
+              console.log(2);
+              obj = {
+                i : outTypeObj(this.formSwitchOrder.type)
+              }
+              this.formSwitchOrder.type = this.formSwitchOrder.type;
+            }
+          }else {
+            console.log(3);
+            obj = {
+              i : outTypeObj(this.formSwitchOrder.type)
+            }
           }
         }
 
-        if (outTypeObj(this.formOrder.type) == 1){
-          obj['v'] = this.formOrder.emptyTime * 1000;
-          obj['sec'] = this.formOrder.emptyTime;
-        }else if (outTypeObj(this.formOrder.type) == 2 || this.formCurtainsOrder.type == 2 || this.formSwitchOrder.type == 2){
+        if (outTypeObj(this.formOrder.type) == 1 || outTypeObj(this.formSwitchOrder.type) == 1){
+          console.log(this.formOrder.type, this.formSwitchOrder.type);
+          if (this.formOrder.type != ""){
+            obj['v'] = this.formOrder.emptyTime * 1000;
+            obj['sec'] = this.formOrder.emptyTime;
+          }else if (this.formCurtainsOrder.type != ""){
+
+          }else if (this.formSwitchOrder.type != ""){
+            obj['v'] = this.formSwitchOrder.emptyTime * 1000;
+            obj['sec'] = this.formSwitchOrder.emptyTime;
+          }
+        }else if (outTypeObj(this.formOrder.type) == 2 || this.formCurtainsOrder.type == 2 || outTypeObj(this.formSwitchOrder.type) == 2){
           if (this.formOrder.type != ""){
             obj['v'] = this.formOrder.waitTime * 1000;
             obj['sec'] = this.formOrder.waitTime;
@@ -2235,7 +2309,7 @@ export default {
         this.drawerBottomDialogVisible = false;
         this.areaIndex = "";
         this.areaItem = "";
-        this.clearForm();
+        //this.clearForm();
       }else if(this.oprType == 'delOrder'){
         this.taskList[this.taskIndex].splice(this.oprOrderIndex, 1);
         //this.init();

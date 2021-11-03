@@ -180,7 +180,7 @@ export function planType(type, str){
     "0": "场景",
     "1": "灯",
     "2": "开关",
-    "3": "窗帘⽤用",
+    "3": "窗帘",
     "4": "音乐"
   };
   if (str && type == 'set') {

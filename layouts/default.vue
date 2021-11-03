@@ -178,7 +178,9 @@
 
           <div class="color-666666 block-plane" :style="drawerTreeStyle">
             <el-tree
+              ref="tree"
               node-key="sn"
+              :empty-text="$t('暂无数据')"
               :data="dataDeviceList"
               :default-checked-keys="formPlain.deviceSelDevice"
               show-checkbox
@@ -520,7 +522,8 @@
         },
         addPlain(){
           this.oprType = "add";
-          this.getDeviceList();
+          //this.getDeviceList();
+          console.log(this.formPlain.deviceSelDevice);
           this.drawer = true;
         },
         cancelDrawer(){
@@ -540,7 +543,8 @@
             name: '',
             deviceList: [],
             deviceSelDevice: []
-          }
+          };
+          this.$refs.tree.setCheckedKeys([]);
         },
         addDevice(){
           this.drawerDevice = true;
@@ -594,6 +598,7 @@
           this.customPlainType = type;
           this.customPlainVisible = false;
           this.formPlain.type = type;
+          this.getDeviceList(this.customPlainType);
         },
         checkChangeDevice(event){
 

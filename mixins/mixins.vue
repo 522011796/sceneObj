@@ -28,7 +28,7 @@
           this.envKey = this.$route.query.envKey;
           this.sessionId = this.$route.query.sessionId;
         },
-        getDeviceList(){
+        getDeviceList(type){
           let data = [];
           let params = {
             envKey: this.envKey,
@@ -38,6 +38,16 @@
           this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
               let list = res.data.data.list;
+              let listArr = [];
+              //type不为空，过滤掉非type设备
+              if (type || type === 0){
+                for (let i =0; i < list.length; i++){
+                  if (list[i].devType === type){
+                    listArr.push(list[i]);
+                  }
+                }
+                list = listArr;
+              }
               let subGroupArr = [];
               let subRoomArr = [];
               let roomArr = [];
@@ -79,6 +89,7 @@
                   if (arr[i].subGroup != null){
                     arrTemp = arr.filter((e) => {
                       e['label'] = e.name;
+                      e['devType'] = e.devType,
                       e['type'] = 'device';
                       return e.subGroup == arr[i].subGroup;
                     });
@@ -96,6 +107,7 @@
                       type: 'device',
                       label: arr[i].name,
                       sn: arr[i].sn,
+                      devType: arr[i].devType,
                       subGroup: arr[i].subGroup
                     };
 
