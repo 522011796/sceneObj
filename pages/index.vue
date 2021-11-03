@@ -20,17 +20,7 @@
 <!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
 <!--          >-->
           <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item"
-               v-if="item.length > 0
-                      && itemBlock.i == 1
-                      || itemBlock.i == 2
-                      || itemBlock.i == 3
-                      || itemBlock.i == 4
-                      || itemBlock.i == 6
-                      || itemBlock.i == 7
-                      || itemBlock.i == 8
-                      || itemBlock.i == 9
-                      || itemBlock.i == 10
-                      || itemBlock.i == 11"
+               v-if="item.length > 0"
                :style="{
                         'background': orderColorInfo(itemBlock.i),
                         'width': itemBlock.sec * 70+'px',
@@ -45,13 +35,18 @@
                 trigger="manual">
                 <div>
                   <div>
-                    {{$t("类型")}}: {{ orderValueInfo(outTypeObjInfo(itemBlock.i), 'set') }}
+                    {{$t("类型")}}: {{ orderValueInfo(itemBlock.i, 'set') }}
+                  </div>
+                  <div>
+                    <div v-if="itemBlock.i == 1">
+                      {{$t("空闲时间")}}: {{ itemBlock.v / 1000 }}
+                    </div>
                   </div>
                 </div>
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none">
                   <div>
                     <div class="moon-ellipsis-class index-main-item-block">
-                      {{ orderValueInfo(outTypeObjInfo(itemBlock.i), 'set') }}
+                      {{ orderValueInfo(itemBlock.i, 'set') }}
                     </div>
                   </div>
                 </v-touch>
@@ -240,7 +235,7 @@
                     </div>
                   </div>
                   <span slot="reference" size="mini">
-                          <label>{{formOrder.open == '' ? $t("请选择") : formOrder.open}}</label>
+                          <label>{{formOrder.open == '' && formOrder.open != 0 ? $t("请选择") : openTypeInfo(formOrder.open)}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                 </el-popover>
@@ -526,7 +521,7 @@
                 </el-popover>
               </div>
             </el-form-item>
-            <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4" label="延时时间" class="netmoon-form-item-border-dialog">
+            <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
               </div>
@@ -722,22 +717,22 @@
                   </el-col>
                   <el-col :span="12">
                     <div class="textRight">
-                      <a href="javascript:;" class="color-warning" @click="addChildBottomDialog($event, 'lightSub')">{{$t("修改")}}</a>
-                      <a href="javascript:;" class="color-error" @click="delOpr($event, 'lightCustom')">{{$t("删除")}}</a>
+                      <a href="javascript:;" class="color-warning" @click="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
+                      <a href="javascript:;" class="color-error" @click="delOpr($event, index, 'lightCustom')">{{$t("删除")}}</a>
                       <el-popover
                         width="140"
                         placement="bottom"
                         trigger="manual"
                         v-model="item.insertVisible">
                         <div class="color-666666 textCenter">
-                          <div class="index-pop-item" @click="insertOrder($event,item,index, 'lightSub')">
+                          <div class="index-pop-item" @click="insertOrder($event,item, index, 'pre', 'lightSub')">
                             <span>{{$t("插入到上一行")}}</span>
                           </div>
-                          <div class="index-pop-item" @click="insertOrder($event,item,index, 'lightSub')">
+                          <div class="index-pop-item" @click="insertOrder($event,item, index, 'next', 'lightSub')">
                             <span>{{$t("插入到下一行")}}</span>
                           </div>
                         </div>
-                        <label slot="reference" @click.stop="insertOrderOpr($event,item,index)">{{$t("插入")}}</label>
+                        <label slot="reference" @click.stop="insertOrderOpr($event,item, index)">{{$t("插入")}}</label>
                       </el-popover>
                     </div>
                   </el-col>
@@ -823,7 +818,7 @@
                         width="260"
                         popper-class="pop-custom"
                         trigger="click"
-                        v-model="customBottomVisible">
+                        v-model="customDrawBottomVisible">
                         <div class="textCenter">
                           <div class="index-pop-item" @click="changeCustomBottomType($event, 1)">
                             <span>{{$t("开/关灯控制")}}</span>
@@ -854,7 +849,8 @@
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                          <label>{{formOrder.type == '' ? $t("请选择") : formOrder.type}}</label>
+                          <label v-if="areaItem == ''">{{formOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formOrder.type), 'set')}}</label>
+                          <label v-if="areaItem != ''">{{formOrder.type == '' ? $t("请选择") : orderValueInfo(formOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                       </el-popover>
@@ -872,12 +868,12 @@
                           <div class="index-pop-item" @click="changeCustomBottomOpen($event, 1)">
                             <span>{{$t("开灯")}}</span>
                           </div>
-                          <div class="index-pop-item" @click="changeCustomBottomOpen($event, 2)">
+                          <div class="index-pop-item" @click="changeCustomBottomOpen($event, 0)">
                             <span>{{$t("关灯")}}</span>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                          <label>{{formOrder.open == '' ? $t("请选择") : formOrder.open}}</label>
+                          <label>{{formOrder.open == '' && formOrder.open != 0 ? $t("请选择") : openTypeInfo(formOrder.open)}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                       </el-popover>
@@ -887,28 +883,36 @@
                     <div class="textRight color-666666">
                       <el-popover
                         placement="left"
-                        width="240"
+                        width="260"
                         popper-class="pop-custom"
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item" v-for="n in 10">
+                          <div class="index-pop-item" v-for="(item, index) in this.taskList[this.taskIndex]" @click="selLoopOrder($event, item, index, 'lightSub')">
                             <el-row>
                               <el-col :span="20">
                                 <div class="textLeft">
-                                  <span>xxxxxxxxxx</span>
+                            <span>
+                              <el-tag>
+                                <label class="font-size-12 color-default">
+                                  {{$t("No.")}}
+                                  {{index+1}}
+                                </label>
+                              </el-tag>
+                            </span>
+                                  <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
                                 <div class="textRight">
-                                  <span v-if="n == 2"><i class="fa fa-check-circle color-success"></i></span>
+                                  <span v-if="(loopIndex != '' || loopIndex === 0) && index === loopIndex" style="position: relative; top: 7px;"><i class="fa fa-check-circle color-success"></i></span>
                                 </div>
                               </el-col>
                             </el-row>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                          <label>{{formOrder.startOrder == '' ? $t("请选择") : formOrder.startOrder}}</label>
+                          <label>{{formOrder.startOrder == '' ? $t("请选择") : orderValueInfo(formOrder.startOrder, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                       </el-popover>
@@ -916,7 +920,7 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 2" label="亮度" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-slider v-model="formOrder.light" :min="0" :max="100" @change="handleChange($event, 'light')"></el-slider>
+                      <el-slider v-model="formOrder.light" :step="0.0001" :max="1" :format-tooltip="lightFormatTooltip" @change="handleChange($event, 'light')"></el-slider>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 3" label="色温" class="netmoon-form-item-border-dialog">
@@ -1002,23 +1006,24 @@
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item" v-for="n in 10">
+                          <div class="index-pop-item" v-for="(item, index) in sceneList">
                             <el-row>
                               <el-col :span="20">
-                                <div class="textLeft">
-                                  <span>xxxxxxxxxx</span>
+                                <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
+                                  <span>{{ item.sceneName }}</span>
+                                  <span>({{$t("自身")}})</span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
                                 <div class="textRight">
-                                  <span v-if="n == 2"><i class="fa fa-check-circle color-success"></i></span>
+                                  <span v-if="(senceIndex != '' || senceIndex === 0) && index === senceIndex" style="position: relative; top: 0px;"><i class="fa fa-check-circle color-success"></i></span>
                                 </div>
                               </el-col>
                             </el-row>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                            <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
+                            <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.senceText}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                       </el-popover>
@@ -1029,7 +1034,7 @@
                       <el-input-number size="mini" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType != 9" label="延时时间" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType != 9 && customBottomType != 1 && customBottomType != 2 && customBottomType != 3 && customBottomType != 4 && customBottomType != 7 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-input-number size="mini" v-model="formOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
                     </div>
@@ -1053,32 +1058,33 @@
                         trigger="click"
                         v-model="customBottomVisible">
                         <div class="textCenter">
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 1)">
+                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 10)">
                             <span>{{$t("行程控制")}}</span>
                           </div>
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 2)">
+                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 3)">
                             <span>{{$t("循环操作")}}</span>
                           </div>
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 3)">
+                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 4)">
                             <span>{{$t("场景调用(勿使用2级以上嵌套)")}}</span>
                           </div>
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 4)">
+                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 2)">
                             <span>{{$t("延时")}}</span>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                          <label>{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
+                          <label v-if="areaItem == ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formCurtainsOrder.type), 'set')}}</label>
+                          <label v-if="areaItem != ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType == 1" label="开合百分比" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType == 10" label="开合百分比" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-slider v-model="formCurtainsOrder.curtainsOpenClose" :step="0.01" :max="1" :format-tooltip="curtainsFormatTooltip" @change="handleChange($event, 'curtainsOpenClose')"></el-slider>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType == 2" label="循环起始" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType == 3" label="循环起始" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-popover
                         placement="left"
@@ -1087,34 +1093,42 @@
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item" v-for="n in 10">
+                          <div class="index-pop-item" v-for="(item, index) in  this.taskList[this.taskIndex]" @click="selLoopOrder($event, item, index, 'lightSub')">
                             <el-row>
                               <el-col :span="20">
                                 <div class="textLeft">
-                                  <span>xxxxxxxxxx</span>
+                            <span>
+                              <el-tag>
+                                <label class="font-size-12 color-default">
+                                  {{$t("No.")}}
+                                  {{index+1}}
+                                </label>
+                              </el-tag>
+                            </span>
+                                  <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
                                 <div class="textRight">
-                                  <span v-if="n == 2"><i class="fa fa-check-circle color-success"></i></span>
+                                  <span v-if="(loopIndex != '' || loopIndex === 0) && index === loopIndex" style="position: relative; top: 7px;"><i class="fa fa-check-circle color-success"></i></span>
                                 </div>
                               </el-col>
                             </el-row>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                            <label>{{formOrder.startOrder == '' ? $t("请选择") : formOrder.startOrder}}</label>
+                            <label>{{formOrder.startOrder == '' ? $t("请选择") : orderValueInfo(formOrder.startOrder, 'set')}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType == 2" label="重复次数" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType == 3" label="重复次数" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-input-number size="mini" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType == 3" label="场景名称" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType == 4" label="场景名称" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-popover
                         placement="left"
@@ -1123,29 +1137,30 @@
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item" v-for="n in 10">
+                          <div class="index-pop-item" v-for="(item, index) in sceneList">
                             <el-row>
                               <el-col :span="20">
-                                <div class="textLeft">
-                                  <span>xxxxxxxxxx</span>
+                                <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
+                                  <span>{{ item.sceneName }}</span>
+                                  <span>({{$t("自身")}})</span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
                                 <div class="textRight">
-                                  <span v-if="n == 2"><i class="fa fa-check-circle color-success"></i></span>
+                                  <span v-if="(senceIndex != '' || senceIndex === 0) && index === senceIndex" style="position: relative; top: 0px;"><i class="fa fa-check-circle color-success"></i></span>
                                 </div>
                               </el-col>
                             </el-row>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                          <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
+                          <label>{{formCurtainsOrder.sence == '' ? $t("请选择") : formCurtainsOrder.senceText}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item label="延时时间" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
                     </div>
@@ -1172,7 +1187,8 @@
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                          <label>{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(formSwitchOrder.type, 'set')}}</label>
+                          <label v-if="areaItem == ''">{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formSwitchOrder.type), 'set')}}</label>
+                          <label v-if="areaItem != ''">{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(formSwitchOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                       </el-popover>
@@ -1186,25 +1202,25 @@
                           width="240"
                           popper-class="pop-custom"
                           trigger="click"
-                          v-model="customBottomKeyVisible">
+                          v-model="customDrawBottomKeyVisible">
                           <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                            <div class="index-pop-item" v-for="n in 10">
+                            <div class="index-pop-item" v-for="(item ,index) in 8" @click="selSwitchKey($event, item, index)">
                               <el-row>
                                 <el-col :span="20">
                                   <div class="textLeft">
-                                    <span>xxxxxxxxxx</span>
+                                    <span>{{ $t("按键")}}{{index+1}}</span>
                                   </div>
                                 </el-col>
                                 <el-col :span="4">
                                   <div class="textRight">
-                                    <span v-if="n == 2"><i class="fa fa-check-circle color-success"></i></span>
+                                    <span v-if="formSwitchOrder.keyArr.indexOf(index) > -1" style="position: relative; top: 0px;"><i class="fa fa-check-circle color-success"></i></span>
                                   </div>
                                 </el-col>
                               </el-row>
                             </div>
                           </div>
                           <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : formOrder.key}}</label>
+                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : $t("按键")+formSwitchOrder.key}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                         </el-popover>
@@ -1228,7 +1244,7 @@
                                 </div>
                               </el-col>
                               <el-col :span="4">
-                                <div class="textRight">
+                                <div class="textRight" v-if="formSwitchOrder.keyOpr === 0">
                                   <span><i class="fa fa-check-circle color-success"></i></span>
                                 </div>
                               </el-col>
@@ -1242,23 +1258,23 @@
                                 </div>
                               </el-col>
                               <el-col :span="4">
-                                <div class="textRight">
-                                  <span></span>
+                                <div class="textRight" v-if="formSwitchOrder.keyOpr === 1">
+                                  <span><i class="fa fa-check-circle color-success"></i></span>
                                 </div>
                               </el-col>
                             </el-row>
                           </div>
                         </div>
                         <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.keyOpr == '' ? $t("请选择") : formSwitchOrder.keyOpr}}</label>
+                            <label>{{formSwitchOrder.keyOpr === '' ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item label="延时时间" v-if="customBottomType == 2" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType == 2" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
+                      <el-input-number size="mini" v-model="formSwitchOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
                 </el-form>
@@ -1274,7 +1290,7 @@
 <script>
 import mixins from '/mixins/mixins';
 import {common} from "../utils/api/url";
-import {MessageSuccess, MessageWarning, orderValue, outTypeObj, keyType, orderColor} from "../utils/utils";
+import {MessageSuccess, MessageWarning, orderValue, outTypeObj, keyType, orderColor, outEditTypeObj, openType} from "../utils/utils";
 export default {
   mixins: [mixins],
   components: { },
@@ -1296,6 +1312,10 @@ export default {
       paddingBottom: '0px',
       paddingMainBottom: '0px',
       oprType: '',
+      oprOtherType: '',
+      areaType: '',
+      areaIndex: '',
+      areaItem: '',
       drawer: false,
       drawerDevice: false,
       drawerDeviceBak: false,
@@ -1341,6 +1361,7 @@ export default {
       senceItem: '',
       switchIndex: '',
       switchItem: '',
+      oprOrderIndex: '',
       sceneList: [],
       taskList: [],
       planList:[],
@@ -1393,6 +1414,8 @@ export default {
         changeTime: 0,
         sence: '',
         senceText: '',
+        senceRoom: '',
+        senceName: '',
         open: '关灯',
         startLoop: 0,
         startOrder: '',
@@ -1405,6 +1428,8 @@ export default {
         startLoop: 0,
         startOrder: '',
         senceText: '',
+        senceRoom: '',
+        senceName: '',
         curtainsOpenClose: 0
       },
       formSwitchOrder: {
@@ -1412,7 +1437,9 @@ export default {
         keyArr: [],
         key: '',
         keyOpr: '',
-        waitTime: 0
+        waitTime: 0,
+        senceRoom: '',
+        senceName: '',
       }
     }
   },
@@ -1601,6 +1628,23 @@ export default {
     },
     selBlock(event, item, index, itemBlock, indexBlock){
       this.orderList = item;
+      this.taskIndex = index;
+      this.oprOtherType = "orderList";
+
+      if (this.planList[index].t == 1){
+        this.setChildBottomType = 'lightSub';
+        this.formOrder.type = 1;
+        this.customBottomType = 1;
+      }else if (this.planList[index].t == 2){
+        this.setChildBottomType = 'switchSub';
+        this.customBottomType = 11;
+        this.formSwitchOrder.type = 10;
+      }else if (this.planList[index].t == 3){
+        this.setChildBottomType = 'curtainsSub';
+        this.customBottomType = 10;
+        this.formCurtainsOrder.type = 10;
+      }
+
       this.drawerDevice = true;
       for (let i = 0; i < this.taskList.length; i++){
         for (let j = 0; j < this.taskList[i].length; j++){
@@ -1709,9 +1753,9 @@ export default {
       //   this.formCurtainsOrder.type = 10;
       // }
 
-      this.setChildBottomType = 'switchSub';
-      this.customBottomType = 11;
-      this.formSwitchOrder.type = 11;
+      this.setChildBottomType = 'lightSub';
+      this.customBottomType = 1;
+      this.formSwitchOrder.type = 1;
 
       this.taskIndex = index;
       this.taskItem = item;
@@ -1735,9 +1779,12 @@ export default {
       this.drawerChild = false;
     },
     cancelChildBottomDrawer(){
+      this.areaIndex = "";
+      this.areaItem = "";
+      this.clearForm();
       this.drawerBottomDialogVisible = false;
-      this.setChildBottomType = "";
-      this.customBottomType = 1;
+      //this.setChildBottomType = "";
+      //this.customBottomType = 1;
     },
     addDialog(event, type){
       this.drawerDevice = true;
@@ -1750,13 +1797,63 @@ export default {
       this.setChildType = type;
       this.hhIndex();
     },
-    addChildBottomDialog(event, type){
+    addChildBottomDialog(event, type, index){
       //this.drawerChildBottom = true;
-      this.setChildBottomType = type;
+      //this.setChildBottomType = type;
+      if (this.setChildBottomType == 'lightSub'){
+        this.formOrder.type = 1;
+        this.customBottomType = 1;
+      }else if (this.setChildBottomType == 'switchSub'){
+        this.customBottomType = 11;
+        this.formSwitchOrder.type = 10;
+      }else if (this.setChildBottomType == 'curtainsSub'){
+        this.customBottomType = 10;
+        this.formCurtainsOrder.type = 10;
+      }
+      this.clearForm();
+      this.oprOtherType = "orderList";
       this.drawerBottomDialogVisible = true;
     },
-    insertOrder(event, item, index, type){
-      this.setChildBottomType = type;
+    upateChildBottomDialog(event, type, index, item){
+      this.areaIndex = index;
+      this.areaItem = item;
+      this.oprOtherType = "editOrderList";
+      console.log(item);
+      if (this.setChildBottomType == 'lightSub'){
+        this.formOrder.type = item.i;
+        this.customBottomType = this.outEditTypeObjInfo(item.i);
+        console.log(this.customBottomType);
+        if (item.i == 1){
+          this.formOrder.emptyTime = item.v / 1000;
+        }else if (item.i == 6){
+          this.formOrder.open = item.v;
+          this.formOrder.changeTime = item.t / 1000;
+        }else if (item.i == 2){
+          this.formOrder.waitTime = item.v / 1000;
+        }else if (item.i == 7){
+          this.formOrder.light = item.v;
+          this.formOrder.changeTime = item.t / 1000;
+        }else if (item.i == 8){
+          this.formOrder.temp = item.v;
+          this.formOrder.changeTime = item.t / 1000;
+        }else if (item.i == 3){
+          this.formOrder.startLoop = item.t / 1000;
+          this.formOrder.startOrder = item.v;
+        }else if (item.i == 4){
+          this.formOrder.sence = item.v;
+          this.formOrder.senceRoom = item.r;
+          this.formOrder.senceText = item.n;
+        }else if (item.i == 9){
+          this.formOrder.color = item.v;
+          this.formOrder.changeTime = item.t / 1000;
+        }
+      }
+      this.drawerBottomDialogVisible = true;
+    },
+    insertOrder(event, item, index, area, type){
+      //this.setChildBottomType = type;
+      this.areaType = area;
+      this.areaIndex = index;
       this.drawerBottomDialogVisible = true;
       for (let i = 0; i < this.orderList.length; i++){
         this.orderList[i].insertVisible = false;
@@ -1777,6 +1874,11 @@ export default {
       this.drawerBottomDialogVisible = false;
       this.customBottomType = 1;
       this.customBottomOpen = 1;
+      this.oprOtherType = "";
+      this.areaType = "";
+      this.areaIndex = "";
+      this.areaItem = "";
+      this.clearForm();
       this.setDialogWidth(this.setType);
     },
     closeChildDrawer(){
@@ -1791,7 +1893,9 @@ export default {
         changeTime: 0,
         sence: '',
         senceText: '',
-        open: '关灯',
+        senceRoom: '',
+        senceName: '',
+        open: '1',
         startLoop: 0,
         startOrder: '',
         emptyTime: 0
@@ -1803,6 +1907,8 @@ export default {
         startLoop: 0,
         startOrder: '',
         senceText: '',
+        senceRoom: '',
+        senceName: '',
         curtainsOpenClose: 0
       };
       this.formSwitchOrder = {
@@ -1810,7 +1916,9 @@ export default {
         keyArr: [],
         key: '',
         keyOpr: '',
-        waitTime: 0
+        waitTime: 0,
+        senceRoom: '',
+        senceName: '',
       }
     },
     handleChange(data, type){
@@ -1854,30 +1962,35 @@ export default {
       this.customBottomOpen = 1;
       this.customBottomType = 1;
     },
-    delOpr(event, type){
+    delOpr(event, index, type){
+      this.oprOrderIndex = index;
+      this.oprType = 'delOrder';
       this.alertMessageTips = this.$t("确定删除该数据吗？");
       this.dialogVisible = true;
     },
     changeCustomBottomType(event, type){
       this.formOrder.type = type;
+      this.areaItem = "";
       this.customBottomType = type;
       this.customBottomVisible = false;
       this.customDrawBottomVisible = false;
     },
     changeCustomBottomSwitchType(event, type){
+      this.areaItem = "";
       this.formSwitchOrder.type = type;
       this.customBottomType = type;
       this.customBottomVisible = false;
       this.customDrawBottomVisible = false;
     },
     changeCustomBottomCurtainsType(event, type){
+      this.areaItem = "";
       this.formCurtainsOrder.type = type;
       this.customBottomType = type;
       this.customBottomVisible = false;
       this.customDrawBottomVisible = false;
     },
     changeCustomBottomOpen(event, type){
-      this.formOrder.open = event.target.innerText;
+      this.formOrder.open = type;
       this.customBottomOpen = type;
       this.customBottomOpenVisible = false;
     },
@@ -1960,8 +2073,14 @@ export default {
     outTypeObjInfo(type){
       return outTypeObj(type);
     },
+    outEditTypeObjInfo(type){
+      return outEditTypeObj(type);
+    },
     keyTypeInfo(type){
       return keyType(type);
+    },
+    openTypeInfo(type){
+      return openType(type);
     },
     orderColorInfo(type){
       return orderColor(type);
@@ -1991,9 +2110,11 @@ export default {
       if (type == "lightSub"){
         this.formOrder.sence = item.sceneId;
         this.formOrder.senceText = item.sceneName;
+        this.formOrder.senceRoom = item.roomId;
       }else if (type == "curtainsSub"){
         this.formCurtainsOrder.sence = item.sceneId;
         this.formCurtainsOrder.senceText = item.sceneName;
+        this.formCurtainsOrder.senceRoom = item.roomId;
       }
     },
     selSwitchKey(event, item, index){
@@ -2009,8 +2130,22 @@ export default {
         let obj = {}
 
         if (this.formOrder.type != ""){
-          obj = {
-            i : outTypeObj(this.formOrder.type)
+          if (this.oprOtherType == "editOrderList"){
+            if (this.areaItem != ""){
+              obj = {
+                i : this.formOrder.type
+              }
+              this.formOrder.type = outEditTypeObj(this.formOrder.type);
+            }else {
+              obj = {
+                i : outTypeObj(this.formOrder.type)
+              }
+              this.formOrder.type = this.formOrder.type;
+            }
+          }else {
+            obj = {
+              i : outTypeObj(this.formOrder.type)
+            }
           }
         }else if (this.formCurtainsOrder.type != ""){
           obj = {
@@ -2054,13 +2189,17 @@ export default {
           obj['sec'] = this.formOrder.changeTime;
         }else if (outTypeObj(this.formOrder.type) == 3 || this.formCurtainsOrder.type == 3){//循环指令，时间默认1
           obj['v'] = this.loopIndex;
-          obj['t'] = 1 * 1000;
+          obj['t'] = this.formOrder.startLoop * 1000;
           obj['sec'] = 1;
         }else if (outTypeObj(this.formOrder.type) == 4 || this.formCurtainsOrder.type == 4){//场景指令，时间默认1
           if (this.formOrder.sence != ""){
             obj['v'] = this.formOrder.sence;
+            obj['r'] = this.formOrder.senceRoom;
+            obj['n'] = this.formOrder.senceText;
           }else if (this.formCurtainsOrder.sence != ""){
             obj['v'] = this.formCurtainsOrder.sence;
+            obj['r'] = this.formOrder.senceRoom;
+            obj['n'] = this.formOrder.senceText;
           }
           obj['t'] = 1 * 1000;
           obj['sec'] = 1;
@@ -2076,10 +2215,31 @@ export default {
         }
         console.log(obj);
         //this.taskItem.push(obj);
-        this.taskList[this.taskIndex].push(obj);
+
+        if (this.oprOtherType == "orderList"){
+          if (this.areaType == 'pre'){
+            this.orderList.splice(this.areaIndex, 0, obj);
+          }else if(this.areaType == 'next'){
+            this.orderList.splice(this.areaIndex + 1, 0, obj);
+          }else {
+            this.orderList.push(obj);
+          }
+        }else if(this.oprOtherType == "editOrderList"){
+          this.orderList[this.areaIndex] = obj;
+        }else {
+          this.taskList[this.taskIndex].push(obj);
+        }
         this.init();
         this.dialogVisible = false;
         this.drawer = false;
+        this.drawerBottomDialogVisible = false;
+        this.areaIndex = "";
+        this.areaItem = "";
+        this.clearForm();
+      }else if(this.oprType == 'delOrder'){
+        this.taskList[this.taskIndex].splice(this.oprOrderIndex, 1);
+        //this.init();
+        this.dialogVisible = false;
       }
     }
   }

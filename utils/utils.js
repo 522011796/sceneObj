@@ -100,6 +100,30 @@ export function outTypeObj(type){
   return typeOutObj[type];
 }
 
+export function outEditTypeObj(type){
+  //外部指令类型type对比
+  let outEditTypeObj = {
+    1 : 9,
+    2 : 6,
+    3 : 7,
+    4 : 5,
+    5 : 8,
+    6 : 1,
+    7 : 2,
+    8 : 3,
+    9 : 4,
+    10 : 10,
+    11 : 11,
+    12 : 12,
+    13 : 13,
+    14 : 14,
+    15 : 15,
+    16 : 16,
+    17 : 17,
+  };
+  return outEditTypeObj[type];
+}
+
 export function orderValue(type, str){
   let orderValue = {
     "1": "空闲指令",
@@ -172,8 +196,15 @@ export function keyType(type){
     "1": "按下",
     "0": "释放"
   };
-  console.log(type);
   return keyType[type];
+}
+
+export function openType(type){
+  let openType = {
+    "1": "开灯",
+    "0": "关灯"
+  };
+  return openType[type];
 }
 
 export function inArray(search,array,tag){
