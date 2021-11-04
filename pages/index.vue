@@ -1683,6 +1683,7 @@ export default {
       }
     },
     handleScroll() {
+      this.touchStatus = false;
       this.scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
       this.hidePopVisible();
     },

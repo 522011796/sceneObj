@@ -51,7 +51,7 @@
         <div class="layout-main-footer-right" :style="footerRightStyle">
           <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>
           <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>
-          <el-button size="mini" plain @click="copyPlain">{{$t("复制")}}</el-button>
+          <el-button size="mini" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>
 <!--          <el-button size="mini" plain @click="changeDevice">{{$t("设备")}}</el-button>-->
         </div>
         <div class="clearfix"></div>
@@ -421,7 +421,8 @@
               selected: false,
               n: menuList[i].n,
               t: menuList[i].t,
-              d: menuList[i].d
+              d: menuList[i].d,
+              i: menuList[i].i,
             });
           }
 
@@ -578,6 +579,11 @@
             MessageWarning(this.$t("请选择需要复制的任务"));
             return;
           }
+          console.log(this.selMenuData);
+          this.menuList.push(this.selMenuData);
+          //this.initMenu(this.menuList);
+          //setSenceData();
+          this.$refs.childRef.$children[0].setSenceData(this.menuList);
           MessageSuccess(this.$t("复制任务成功"));
         },
         changeDevice(){
