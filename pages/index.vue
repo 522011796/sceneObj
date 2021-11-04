@@ -25,7 +25,7 @@
                         'background': orderColorInfo(itemBlock.i),
                         'width': itemBlock.sec * 70+'px',
                         'height':'40px',
-                        'color': '#ffffff'}"
+                        'color': '#555555'}"
           >
             <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
               <el-popover
@@ -175,7 +175,14 @@
 
       <div slot="title">
         <div class="block-list-header">
-          <span>{{$t("场景列表")}}</span>
+          <el-row>
+            <el-col :span="12">
+              <span>{{$t("场景列表")}}</span>
+            </el-col>
+            <el-col :span="12" class="textRight">
+              <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
+            </el-col>
+          </el-row>
         </div>
       </div>
 
@@ -195,6 +202,73 @@
             </el-col>
           </el-row>
         </div>
+      </div>
+    </el-drawer>
+
+    <!--场景列表-->
+    <el-drawer
+      title="场景设置"
+      custom-class="drawer-opr"
+      :show-close="false"
+      :modal="true"
+      :size="dialogListSize"
+      :wrapperClosable="false"
+      :visible.sync="drawerSenceVisible"
+      :direction="directionList"
+      @closed="closeOprDrawer">
+
+      <div slot="title">
+        <div class="block-opr-header">
+          <el-row>
+            <el-col :span="4" class="textLeft">
+              <el-button size="mini" @click="cancelConfig">{{$t("取消")}}</el-button>
+            </el-col>
+            <el-col :span="16" class="textCenter">
+              <span>{{$t("创建场景")}}</span>
+            </el-col>
+            <el-col :span="4" class="textRight">
+              <el-button size="mini" type="warning" @click="saveConfig">{{$t("保存")}}</el-button>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <div>
+        <el-form class="netmoon-form-dialog padding-tb10-lr20" label-width="120px" ref="formSence" :model="formSence">
+          <el-form-item label="场景名称" v-model="formSence.name" class="netmoon-form-item-border-dialog">
+            <el-input :placeholder="$t('请输入场景名称')" v-model="formSence.name"></el-input>
+          </el-form-item>
+          <el-form-item label="房间" class="netmoon-form-item-border-dialog" v-model="formSence.roomId">
+            <div class="textRight">
+              <label>{{formSence.roomId == '' ? $t("请选择") : formSence.roomId}}</label>
+              <label><i class="fa fa-chevron-right"></i></label>
+            </div>
+          </el-form-item>
+          <el-form-item label="场景开源" class="netmoon-form-item-border-dialog">
+            <div class="textRight">
+              <el-radio-group v-model="formSence.openSource">
+                <el-radio :label="true">开源</el-radio>
+                <el-radio :label="false" disabled>闭源</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+          <el-form-item label="场景类型" class="netmoon-form-item-border-dialog">
+            <div class="textRight">
+              <el-radio-group v-model="formSence.sceneType">
+                <el-radio :label="1">原创</el-radio>
+                <el-radio :label="2" disabled>模板</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+          <el-form-item label="场景内部调用" class="netmoon-form-item-border-dialog">
+            <div class="textRight">
+              <el-radio-group v-model="formSence.internal">
+                <el-radio :label="true">是</el-radio>
+                <el-radio :label="false" disabled>否</el-radio>
+              </el-radio-group>
+            </div>
+          </el-form-item>
+        </el-form>
       </div>
     </el-drawer>
 
@@ -1426,6 +1500,7 @@ export default {
       customDrawBottomKeyVisible: false,
       customInsetVisible: false,
       drawerListVisible: true,
+      drawerSenceVisible: false,
       dialogHeight: '50%',
       dialogListSize: '100%',
       drawerRightWidth: '90%',
@@ -1459,6 +1534,7 @@ export default {
       taskList: [],
       planList:[],
       orderList: [],
+      configList: [],
       colors: {
         hue: 50,
         saturation: 100,
@@ -1535,6 +1611,18 @@ export default {
         emptyTime: 0,
         senceRoom: '',
         senceName: '',
+      },
+      formSence:{
+        envKey: '',
+        name: '',
+        iconId: 1,
+        internal: true,
+        roomId: '',
+        sceneId: '',
+        sceneName: '',
+        sceneType: 1,
+        sourceCode: '',
+        openSource: true
       }
     }
   },
@@ -1843,6 +1931,9 @@ export default {
 
       //this.$forceUpdate();
     },
+    openDialogSence(){
+      this.drawerSenceVisible = true;
+    },
     setSence(event, item, index, type){
       this.clearForm();
       this.formOrder.type = "";
@@ -2086,6 +2177,20 @@ export default {
     },
     closeDialog(){
       //this.selMenuData = "";
+    },
+    closeOprDrawer(){
+      this.formSence = {
+        envKey: '',
+        name: '',
+        iconId: 1,
+        internal: true,
+        roomId: '',
+        sceneId: '',
+        sceneName: '',
+        sceneType: 1,
+        sourceCode: '',
+        openSource: true
+      };
     },
     closeDrawder(){
       this.formOrder = {
@@ -2409,6 +2514,23 @@ export default {
         //this.init();
         this.dialogVisible = false;
       }
+    },
+    cancelConfig(){
+      this.drawerSenceVisible = false;
+    },
+    saveConfig(){
+      if (this.formSence.name == ""){
+        MessageWarning(this.$t("请输入场景名称"));
+        return;
+      }else if (this.formSence.roomId == ""){
+        MessageWarning(this.$t("请选择房间"));
+        return;
+      }
+    },
+    createSence(){
+      this.planList = [];
+      this.taskList = [];
+      this.drawerListVisible = false;
     }
   }
 }

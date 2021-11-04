@@ -49,6 +49,7 @@
           </div>
         </div>
         <div class="layout-main-footer-right" :style="footerRightStyle">
+          <el-button size="mini" type="success" @click="saveConfig()">{{$t("保存")}}</el-button>
           <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>
           <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>
           <el-button size="mini" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>
@@ -647,6 +648,15 @@
             this.dialogVisible = false;
             this.$refs.childRef.$children[0].selSence(planList, null, 'save');
           }
+        },
+        saveConfig(){
+          console.log(JSON.stringify(this.$refs.childRef.$children[0].taskList));
+          console.log(JSON.stringify(this.$refs.childRef.$children[0].planList));
+          if (this.$refs.childRef.$children[0].taskList.length == 0){
+            MessageWarning(this.$t("请先设置场景任务指令"));
+            return;
+          }
+          this.$refs.childRef.$children[0].openDialogSence();
         }
       }
     }

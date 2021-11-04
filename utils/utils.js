@@ -154,23 +154,23 @@ export function orderValue(type, str){
 
 export function orderColor(type){
   let orderColor = {
-    "1": "#f56c6c",
-    "2": "#67c23a",
-    "3": "#abffff",
-    "4": "#abffff",
-    "5": "#abffff",
-    "6": "#abffff",
-    "7": "#abffff",
-    "8": "#abffff",
-    "9": "#67c23a",
-    "10": "#67c23a",
-    "11": "#67c23a",
-    "12":"#67c23a",
-    "13":"#67c23a",
-    "14":"#67c23a",
-    "15":"#67c23a",
-    "16":"#67c23a",
-    "17":"#67c23a"
+    "1": "#99FFCC",
+    "2": "#00CCFF",
+    "3": "#0099CC",
+    "4": "#00CC99",
+    "5": "#CCFF33",
+    "6": "#CCCCFF",
+    "7": "#CC99FF",
+    "8": "#CC66FF",
+    "9": "#CC6666",
+    "10": "#FF9900",
+    "11": "#FFCC66",
+    "12":"#FF00CC",
+    "13":"#6699FF",
+    "14":"#336699",
+    "15":"#0000CC",
+    "16":"#660066",
+    "17":"#006633"
   };
   return orderColor[type];
 }
