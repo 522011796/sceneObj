@@ -523,7 +523,6 @@
         addPlain(){
           this.oprType = "add";
           //this.getDeviceList();
-          console.log(this.formPlain.deviceSelDevice);
           this.drawer = true;
         },
         cancelDrawer(){
@@ -563,7 +562,7 @@
             MessageWarning(this.$t("请选择需要修改的任务"));
             return;
           }
-          this.getDeviceList();
+          this.getDeviceList(this.selMenuData.t);
           this.formPlain = {
             type: this.selMenuData.t,
             name: this.selMenuData.n,

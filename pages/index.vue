@@ -33,7 +33,7 @@
                 v-model="itemBlock.popVisible"
                 placement="bottom"
                 trigger="manual">
-                <div>
+                <div class="font-size-10">
                   <div>
                     {{$t("类型")}}: {{ orderValueInfo(itemBlock.i, 'set') }}
                   </div>
@@ -41,11 +41,72 @@
                     <div v-if="itemBlock.i == 1">
                       {{$t("空闲时间")}}: {{ itemBlock.v / 1000 }}
                     </div>
+                    <div v-if="itemBlock.i == 2">
+                      {{$t("延时时间")}}: {{ itemBlock.v / 1000 }}
+                    </div>
+                    <div v-if="itemBlock.i == 3">
+                      <div>
+                        {{$t("循环位置")}}: {{ orderValueInfo(item[itemBlock.v].i, 'set') }}
+                      </div>
+                      <div>
+                        {{$t("重复次数")}}: {{ itemBlock.t }}
+                      </div>
+                    </div>
+                    <div v-if="itemBlock.i == 4">
+                      <div>
+                        {{$t("场景名称")}}: {{ itemBlock.n }}
+                      </div>
+                    </div>
+                    <div v-if="itemBlock.i == 6">
+                      <div>
+                        {{$t("状态")}}: {{ openTypeInfo(itemBlock.v) }}
+                      </div>
+                      <div>
+                        {{$t("渐变时间")}}: {{ itemBlock.t / 1000 }}
+                      </div>
+                    </div>
+                    <div v-if="itemBlock.i == 7">
+                      <div>
+                        {{$t("亮度百分比")}}: {{ itemBlock.v * 100 }}%
+                      </div>
+                      <div>
+                        {{$t("渐变时间")}}: {{ itemBlock.t / 1000 }}
+                      </div>
+                    </div>
+                    <div v-if="itemBlock.i == 8">
+                      <div>
+                        {{$t("色温")}}: {{ itemBlock.v }}
+                      </div>
+                      <div>
+                        {{$t("渐变时间")}}: {{ itemBlock.t / 1000 }}
+                      </div>
+                    </div>
+                    <div v-if="itemBlock.i == 9">
+                      <div>
+                        {{$t("色彩")}}: <span :style="{background:  itemBlock.v }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
+                      </div>
+                      <div>
+                        {{$t("渐变时间")}}: {{ itemBlock.t / 1000 }}
+                      </div>
+                    </div>
+                    <div v-if="itemBlock.i == 10">
+                      <div>
+                        {{$t("行程百分比")}}: {{ itemBlock.v * 100 }}%
+                      </div>
+                    </div>
+                    <div v-if="itemBlock.i == 11">
+                      <div>
+                        {{$t("按键")}}: {{ itemBlock.v.join() }}
+                      </div>
+                      <div>
+                        {{$t("状态")}}: {{ keyTypeInfo(itemBlock.s) }}
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none">
                   <div>
-                    <div class="moon-ellipsis-class index-main-item-block">
+                    <div class="moon-ellipsis-class index-main-item-block font-size-10">
                       {{ orderValueInfo(itemBlock.i, 'set') }}
                     </div>
                   </div>
