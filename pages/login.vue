@@ -212,7 +212,7 @@ export default {
       });
     },
     selEnv(event, item){
-      this.$router.push({
+      this.$router.replace({
         path: '/',
         query: {
           envKey: item.envKey,

@@ -1,6 +1,6 @@
 <script>
 import {common, commonConfig} from "../utils/api/url";
-    import {MessageWarning, orderValue} from "../utils/utils";
+import {MessageError, MessageWarning, orderValue} from "../utils/utils";
 
     export default {
       name: "mixins",
@@ -15,6 +15,7 @@ import {common, commonConfig} from "../utils/api/url";
           globalLightGroupList: [],
           globalCurtainsGroupList: [],
           globalRoomObj: {},
+          globalEnvList: []
         }
       },
       created() {
@@ -203,6 +204,16 @@ import {common, commonConfig} from "../utils/api/url";
               }
               console.log(111,att);
               this.dataDeviceList = att;
+            }
+          });
+        },
+        getEnvList(){
+          let params = {
+
+          };
+          this.$axios.get(commonConfig.baseUrl + common.envList, {params: params,sessionId: this.sessionId}).then(res => {
+            if (res.data.code == 200){
+              this.globalEnvList = res.data.data;
             }
           });
         }
