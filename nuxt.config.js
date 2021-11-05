@@ -33,6 +33,7 @@ export default {
     {src: '@/plugins/vueTouch', ssr: false},
     {src: '@/plugins/vueColors', ssr: false},
     '@/plugins/moment',
+    '@/plugins/qs',
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components

@@ -135,7 +135,7 @@
       <div slot="title">
         <div class="alertHeader">
           <div class="alertTitle">
-            <span>title</span>
+            <span>提示</span>
           </div>
         </div>
       </div>
@@ -154,7 +154,8 @@
             <el-col :span="12">
               <div class="alertFooterClass">
                 <span class="alertFooterSpan" @click="saveOpr()">
-                  确 定
+                  <i class="fa fa-spinner fa-spin" v-if="timer != null"></i>
+                  <label v-else>确 定</label>
                 </span>
               </div>
             </el-col>
@@ -180,6 +181,7 @@
               <span>{{$t("场景列表")}}</span>
             </el-col>
             <el-col :span="12" class="textRight">
+              <el-button size="mini" type="error" @click="logout()">{{$t("退出")}}</el-button>
               <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
             </el-col>
           </el-row>
@@ -196,12 +198,55 @@
               </div>
             </el-col>
             <el-col :span="8">
-              <div class="textRight marginTop20">
-                <span>{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>
+              <div class="textRight marginTop20" style="position: relative">
+                <span class="color-666666">{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>
+                <span style="display: inline-block;position: relative; top: -9px; height: 40px;width: 40px;text-align: center" @click.stop="removeSenceOpr($event, item)">
+                  <i class="fa fa-trash font-size-20 marginLeft10 color-error" style="position: relative; top: 9px;"></i>
+                </span>
               </div>
             </el-col>
           </el-row>
         </div>
+      </div>
+    </el-drawer>
+
+    <!--场景列表-->
+    <el-drawer
+      title="场景设置"
+      custom-class="drawer-list"
+      :show-close="false"
+      :modal="true"
+      :size="dialogRoomSize"
+      :wrapperClosable="false"
+      :visible.sync="drawerRoomVisible"
+      :direction="directionList">
+
+      <div slot="title">
+        <div class="block-list-header">
+          <el-row>
+            <el-col :span="12">
+              <span>{{$t("房间列表")}}</span>
+            </el-col>
+            <el-col :span="12" class="textRight">
+<!--              <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>-->
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <div class="marginTop10">
+        <el-row :gutter="10">
+          <el-col :span="8" class="textCenter" v-for="(item, index) in globalRoomList" :key="index">
+            <div class="room-Block-Item" @click="selRoomItem($event, item)">
+              <div class="marginTop10">
+                <img :src="require(`~/static/img/${item.id}.png`)" style="height: 50px; width: 50px;">
+              </div>
+              <div class="marginTop5">
+                {{ item.name }}
+              </div>
+            </div>
+          </el-col>
+        </el-row>
       </div>
     </el-drawer>
 
@@ -227,7 +272,13 @@
               <span>{{$t("创建场景")}}</span>
             </el-col>
             <el-col :span="4" class="textRight">
-              <el-button size="mini" type="warning" @click="saveConfig">{{$t("保存")}}</el-button>
+              <el-button size="mini" type="warning" v-if="configLoading == false" @click="saveConfig">
+                {{$t("保存")}}
+              </el-button>
+              <el-button size="mini" type="warning" v-if="configLoading == true">
+                <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
+                {{$t("保存")}}
+              </el-button>
             </el-col>
           </el-row>
         </div>
@@ -239,8 +290,8 @@
             <el-input :placeholder="$t('请输入场景名称')" v-model="formSence.name"></el-input>
           </el-form-item>
           <el-form-item label="房间" class="netmoon-form-item-border-dialog" v-model="formSence.roomId">
-            <div class="textRight">
-              <label>{{formSence.roomId == '' ? $t("请选择") : formSence.roomId}}</label>
+            <div class="textRight" @click="selRoom($event)">
+              <label class="color-666666">{{formSence.roomId == '' ? $t("请选择") : getGlobalRoomObj(formSence.roomId)}}</label>
               <label><i class="fa fa-chevron-right"></i></label>
             </div>
           </el-form-item>
@@ -264,7 +315,7 @@
             <div class="textRight">
               <el-radio-group v-model="formSence.internal">
                 <el-radio :label="true">是</el-radio>
-                <el-radio :label="false" disabled>否</el-radio>
+                <el-radio :label="false">否</el-radio>
               </el-radio-group>
             </div>
           </el-form-item>
@@ -1455,15 +1506,26 @@
 </template>
 
 <script>
-import mixins from '/mixins/mixins';
+import mixins from "../mixins/mixins";
 import {common} from "../utils/api/url";
-import {MessageSuccess, MessageWarning, orderValue, outTypeObj, keyType, orderColor, outEditTypeObj, openType} from "../utils/utils";
+import {
+  MessageSuccess,
+  MessageWarning,
+  orderValue,
+  outTypeObj,
+  keyType,
+  orderColor,
+  outEditTypeObj,
+  openType,
+  MessageError
+} from "../utils/utils";
 export default {
   mixins: [mixins],
   components: { },
   data(){
     return {
       popvisible: false,
+      configLoading: false,
       sliderValue: 0,
       dataList:[],
       ruleList: [],
@@ -1500,9 +1562,11 @@ export default {
       customDrawBottomKeyVisible: false,
       customInsetVisible: false,
       drawerListVisible: true,
+      drawerRoomVisible: false,
       drawerSenceVisible: false,
       dialogHeight: '50%',
       dialogListSize: '100%',
+      dialogRoomSize: '70%',
       drawerRightWidth: '90%',
       drawerRightChildWidth: '90%',
       direction: 'btt',
@@ -1535,6 +1599,9 @@ export default {
       planList:[],
       orderList: [],
       configList: [],
+      mainCodeData: '',
+      removeSenceItem: '',
+      timer: null,
       colors: {
         hue: 50,
         saturation: 100,
@@ -1613,6 +1680,7 @@ export default {
         senceName: '',
       },
       formSence:{
+        id: '',
         envKey: '',
         name: '',
         iconId: 1,
@@ -1622,7 +1690,8 @@ export default {
         sceneName: '',
         sceneType: 1,
         sourceCode: '',
-        openSource: true
+        openSource: true,
+        img: ''
       }
     }
   },
@@ -1857,6 +1926,15 @@ export default {
     selSence(event, item, type){
       if (type == 'menu'){
         this.$axios.get(item.sourceUrl).then(res => {
+          this.mainCodeData = {
+            id: res.data.id,
+            room: res.data.room,
+            name: res.data.name,
+            icon: res.data.icon,
+            enable: res.data.enable,
+            internal: res.data.internal,
+            duration: res.data.duration,
+          };
           this.setSenceData(res.data.tasks);
 
           this.drawerListVisible = false;
@@ -1864,6 +1942,14 @@ export default {
       }else {
         this.setSenceData(event);
       }
+    },
+    selRoom(){
+      this.drawerRoomVisible = true;
+    },
+    selRoomItem(event, item){
+      this.formSence.roomId = item.id;
+      this.formSence.img = "~/static/img/" + item.id + ".png";
+      this.drawerRoomVisible = false;
     },
     setSenceData(item){
       let data = item;
@@ -2180,6 +2266,7 @@ export default {
     },
     closeOprDrawer(){
       this.formSence = {
+        id: '',
         envKey: '',
         name: '',
         iconId: 1,
@@ -2373,7 +2460,7 @@ export default {
       this.formSwitchOrder.key = index;
     },
     saveOpr(){
-      console.log("----"+this.oprOtherType,this.formOrder.type,this.formSwitchOrder.type);
+      //console.log("----"+this.oprOtherType,this.formOrder.type,this.formSwitchOrder.type);
       if (this.oprType == 'order'){
         let obj = {}
 
@@ -2513,6 +2600,8 @@ export default {
         this.taskList[this.taskIndex].splice(this.oprOrderIndex, 1);
         //this.init();
         this.dialogVisible = false;
+      }else if (this.oprType == 'removeSence'){
+        this.removeSence(this.removeSenceItem.sceneId);
       }
     },
     cancelConfig(){
@@ -2526,6 +2615,126 @@ export default {
         MessageWarning(this.$t("请选择房间"));
         return;
       }
+      this.configLoading = true;
+      let taskList = [].concat(this.taskList);
+      //清理不需要的属性
+      let planList = [].concat(this.planList);
+      let taskTempArr = [];
+
+      for (let i = 0; i < taskList.length; i++){
+        for (let j = 0; j < taskList[i].length; j++){
+          if (taskList[i][j].popVisible != undefined || taskList[i][j].popVisible != null){
+            taskList[i][j].popVisible = undefined;
+          }
+          if (taskList[i][j].sec){
+            taskList[i][j].sec = undefined;
+          }
+          if (taskList[i][j].insertVisible){
+            taskList[i][j].insertVisible = undefined;
+          }
+        }
+      }
+
+      for (let i = 0; i < planList.length; i++){
+        planList[i]['i'] = taskList[i];
+      }
+      //源码用
+      let dataObj = {
+        id:this.formSence.id,
+        room: this.formSence.roomId,
+        name: this.formSence.name,
+        icon: 1,
+        enable: 1,
+        internal: 1,
+        duration: 2000,
+        tasks: planList
+      };
+      //云端用
+      let codeData = {
+        envKey: this.$route.query.envKey,
+        iconId: 1,
+        internal: false,
+        openSource: false,
+        roomId: this.formSence.roomId,
+        sceneName: this.formSence.name,
+        sceneType: 1,
+        sourceCode: JSON.stringify(dataObj)
+      };
+      if (this.formSence.id != ""){
+        codeData['sceneId'] = this.formSence.id;
+      }
+
+      codeData = this.$qs.stringify(codeData);
+      let url = (this.formSence.id == "" || this.formSence.id == undefined) ? common.createSence : common.editSence;
+
+      this.$axios.post(this.baseUrl + url, codeData, {sessionId: this.sessionId}).then(res => {
+        if (res.data.code == 200){
+          this.installSence(res.data.data.sceneId);
+        }else {
+          MessageError(res.data.msg);
+          this.configLoading = false;
+        }
+      });
+    },
+    installSence(senceId){
+      //loading: false
+      let params = {
+        envKey: this.$route.query.envKey,
+        sceneId: senceId
+      };
+      params = this.$qs.stringify(params);
+      this.$axios.post(this.baseUrl + common.installSence, params, {sessionId: this.sessionId}).then(res => {
+        if (res.data.code == 200){
+          MessageSuccess(res.data.msg);
+          this.closeOprDrawer();
+          this.drawerSenceVisible = false;
+        }else {
+          MessageError(res.data.msg);
+        }
+        this.configLoading = false;
+      });
+    },
+    removeSenceOpr(event, item){
+      this.alertMessageTips = this.$t("确认删除该场景吗？");
+      this.oprType = "removeSence";
+      this.removeSenceItem = item;
+      this.dialogVisible = true;
+    },
+    removeSence(senceId){
+      //loading: false
+      let _self = this;
+      let params = {
+        envKey: this.$route.query.envKey,
+        sceneId: senceId
+      };
+      params = this.$qs.stringify(params);
+      this.$axios.post(this.baseUrl + common.removeSence, params, {sessionId: this.sessionId}).then(res => {
+        if (res.data.code == 200){
+          this.senceItem = "";
+          clearInterval(this.timer);
+          this.timer = setInterval(function (){
+            _self.senceInfo(_self.removeSenceItem.sceneId);
+          },1000);
+        }else {
+          MessageError(res.data.msg);
+        }
+      });
+    },
+    senceInfo(senceId){
+      console.log(111);
+      let params = {
+        envKey: this.$route.query.envKey,
+        sceneId: senceId
+      };
+      params = this.$qs.stringify(params);
+      this.$axios.post(this.baseUrl + common.removeSence, params, {sessionId: this.sessionId}).then(res => {
+        if (res.data.code == 201){
+          clearInterval(this.timer);
+          this.timer = null;
+          this.dialogVisible = false;
+          this.initSenceList();
+        }
+      });
     },
     createSence(){
       this.planList = [];

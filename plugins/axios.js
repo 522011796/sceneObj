@@ -52,7 +52,7 @@ export default function({store, redirect, req, router, $axios }) {
           return res;
         } else if (res.data.code === 401) {
           hideLoading();
-          //redirect('/login');
+          redirect('/login');
           return res;
         } else if (res.data.code === 403) {
           hideLoading();
@@ -66,6 +66,7 @@ export default function({store, redirect, req, router, $axios }) {
           hideLoading();
           return res;
         }
+        hideLoading();
       }
       return Promise.reject(new Error(res.msg || 'Error'))
     },

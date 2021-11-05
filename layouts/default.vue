@@ -11,7 +11,10 @@
           </div>
           <div>
             <div class="layout-menu-header">
-              <span v-if="isCollapse == true">{{$t("任务列表")}}</span>
+              <span v-if="isCollapse == true" @click="returnSenceList">
+                <i class="fa fa-chevron-left"></i>
+                {{$t("任务列表")}}
+              </span>
             </div>
 
             <div :style="menuStyle" ref="menuRef" @scroll="handleDefaultScrollTop">
@@ -20,7 +23,11 @@
                   <span :class="mainStyle.width == '30px' ? 'index-number-collase-min-class' : 'index-number-collase-max-class'" v-if="isCollapse == false">{{index+1}}</span>
                   <span>
                     <span v-if="isCollapse == true">
-                      <img src="~/static/img/light.png" class="layout-menu-icon"/>
+                      <img v-if="item.t == 1" src="~/static/img/light.png" class="layout-menu-icon"/>
+                      <img v-else-if="item.t == 2" src="~/static/img/switch.png" class="layout-menu-icon"/>
+                      <img v-else-if="item.t == 3" src="~/static/img/curtains.png" class="layout-menu-icon"/>
+                      <img v-else-if="item.t == 5" src="~/static/img/music.png" class="layout-menu-icon"/>
+                      <img v-else-if="item.t == 0" src="~/static/img/sence.png" class="layout-menu-icon"/>
                     </span>
                     <span class="layout-menu-title" v-if="isCollapse == true">
                       {{ item.n }}
@@ -152,9 +159,9 @@
                     <div class="index-pop-item" @click="changePlainType($event, 4)">
                       <span>{{$t("音乐")}}</span>
                     </div>
-                    <div class="index-pop-item" @click="changePlainType($event, 0)">
-                      <span>{{$t("场景")}}</span>
-                    </div>
+<!--                    <div class="index-pop-item" @click="changePlainType($event, 0)">-->
+<!--                      <span>{{$t("场景")}}</span>-->
+<!--                    </div>-->
                   </div>
                   <span slot="reference" size="mini">
                     <label>{{formPlain.type == '' ? $t("请选择") : planTypeInfo(formPlain.type)}}</label>
@@ -600,6 +607,9 @@
         planTypeInfo(value){
           return planType('set', value);
         },
+        returnSenceList(){
+          this.$refs.childRef.$children[0].drawerListVisible = true;
+        },
         changePlainType(event, type){
           this.customPlainType = type;
           this.customPlainVisible = false;
@@ -650,12 +660,26 @@
           }
         },
         saveConfig(){
-          console.log(JSON.stringify(this.$refs.childRef.$children[0].taskList));
-          console.log(JSON.stringify(this.$refs.childRef.$children[0].planList));
           if (this.$refs.childRef.$children[0].taskList.length == 0){
             MessageWarning(this.$t("请先设置场景任务指令"));
             return;
           }
+          //sconsole.log(this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false);
+          this.$refs.childRef.$children[0].formSence = {
+            id: this.$refs.childRef.$children[0].mainCodeData.id,
+            envKey: '',
+            name: this.$refs.childRef.$children[0].mainCodeData.name,
+            iconId:  this.$refs.childRef.$children[0].mainCodeData.icon,
+            internal: this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false,
+            roomId: this.$refs.childRef.$children[0].mainCodeData.room,
+            sceneId: this.$refs.childRef.$children[0].mainCodeData.id,
+            sceneName: this.$refs.childRef.$children[0].mainCodeData.name,
+            sceneType: 1,
+            sourceCode: '',
+            openSource: true,
+            img: ''
+          };
+          console.log(this.$refs.childRef.$children[0].formSence);
           this.$refs.childRef.$children[0].openDialogSence();
         }
       }

@@ -1,5 +1,5 @@
 <script>
-    import {common} from "../utils/api/url";
+import {common, commonConfig} from "../utils/api/url";
     import {MessageWarning, orderValue} from "../utils/utils";
 
     export default {
@@ -14,6 +14,7 @@
           globalRoomList: [],
           globalLightGroupList: [],
           globalCurtainsGroupList: [],
+          globalRoomObj: {},
         }
       },
       created() {
@@ -23,6 +24,13 @@
         this.getLightGroupList();
       },
       methods: {
+        logout(){
+          this.$axios.get(this.baseUrl + common.logout, {sessionId: this.sessionId}).then(res => {
+            if (res.data.code == 200) {
+              this.$router.push("/login");
+            }
+          });
+        },
         orderGetAndSet(value, type){
           return orderValue(type, value);
         },
@@ -30,7 +38,7 @@
           this.minxinsScroll = flag;
         },
         getUrl(){
-          this.baseUrl = this.$route.query.url;
+          this.baseUrl = commonConfig.baseUrl;
           this.envKey = this.$route.query.envKey;
           this.sessionId = this.$route.query.sessionId;
         },
@@ -40,11 +48,18 @@
             pageNum: 1,
             pageSize: 99999
           };
+          this.globalRoomObj = {};
           this.$axios.get(this.baseUrl + common.roomList, {params: params, sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
               this.globalRoomList = res.data.data;
+              for (let i = 0; i < this.globalRoomList.length; i++){
+                this.globalRoomObj[this.globalRoomList[i].id] = this.globalRoomList[i].name;
+              }
             }
           });
+        },
+        getGlobalRoomObj(val){
+          return this.globalRoomObj[val];
         },
         getLightGroupList(){
           let params = {
@@ -81,17 +96,17 @@
           this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
               let list = res.data.data.list;
-              console.log("device",list);
+              //console.log("device",list);
               let listArr = [];
               //type不为空，过滤掉非type设备
-              // if (type || type === 0){
-              //   for (let i =0; i < list.length; i++){
-              //     if (list[i].devType === type){
-              //       listArr.push(list[i]);
-              //     }
-              //   }
-              //   list = listArr;
-              // }
+              if (type || type === 0){
+                for (let i =0; i < list.length; i++){
+                  if (list[i].devType === type){
+                    listArr.push(list[i]);
+                  }
+                }
+                list = listArr;
+              }
               let subGroupArr = [];
               let subRoomArr = [];
               let roomArr = [];

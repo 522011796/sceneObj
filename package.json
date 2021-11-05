@@ -22,6 +22,7 @@
     "element-ui": "^2.15.2",
     "moment": "^2.29.1",
     "nuxt": "^2.15.7",
+    "qs": "^6.10.1",
     "transform.js": "^2.0.2",
     "vue-i18n": "^8.25.0",
     "vue-touch": "^2.0.0-beta.4"

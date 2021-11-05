@@ -9,4 +9,19 @@ export const common = {
   roomList: '/device/getRoomInfoList',//房间列表
   lightGrouplist: '/device/getLightSubgroupInfoList',//灯组列表
   curtainsGrouplist: '/device/getCurtainSubgroupInfoList',//窗帘组列表
+  createSence: '/scene/createScene',//创建场景
+  installSence: '/scene/installScene',//安装场景
+  removeSence: '/scene/uninstallScene',//卸载场景
+  senceInfo: '/scene/querySceneInfo',//查询场景详细
+  editSence: '/scene/editScene',//编辑场景
+  login: '/loginPassword',//登录
+  envList: '/env/queryEnvList',//环境列表
+  isNeedImageCode: '/isNeedImageCode',//是否需要图片验证码
+  sendImageCode: '/sendImageCode',//图片验证码
+  logout: '/logout',//退出
+};
+
+export const commonConfig = {
+  manufacturer: 'Netmoon',
+  baseUrl: 'https://api.iot.9451.com.cn',
 };

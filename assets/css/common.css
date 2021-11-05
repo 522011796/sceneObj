@@ -242,6 +242,12 @@ span,div,button,label{
 .font-size-20{
   font-size: 20px;
 }
+.marginTop50{
+  margin-top: 50px;
+}
+.marginTop30{
+  margin-top: 30px;
+}
 .marginTop20{
   margin-top: 20px;
 }
@@ -262,6 +268,9 @@ span,div,button,label{
 }
 .marginBottom20{
   margin-bottom: 20px;
+}
+.marginBottom50{
+  margin-bottom: 50px;
 }
 .padding-full10{
   padding: 10px 10px;
@@ -304,6 +313,9 @@ span,div,button,label{
 }
 .color-disabled{
   color: #C0C4CC;
+}
+.width260{
+  width: 260px;
 }
 .disbled-icon{
   cursor: not-allowed;
@@ -470,5 +482,18 @@ span,div,button,label{
   left: 0;
   right: 0;
   top: 6px;
+}
+.room-Block-Item{
+  border-radius: 5px;
+  border: 1px solid #dddddd;
+  height: 90px;
+  margin: 0 auto;
+  margin-bottom: 20px;
+  font-size: 12px;
+  color: #434343;
+  background: #fefefe;
+}
+.room-Block-active{
+  border: 1px solid #E6A23C;
 }
 
