@@ -602,9 +602,8 @@
                     <div class="index-pop-item" v-for="(item, index) in sceneList">
                       <el-row>
                         <el-col :span="20">
-                          <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
+                          <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
                             <span>{{ item.sceneName }}</span>
-                            <span>({{$t("自身")}})</span>
                           </div>
                         </el-col>
                         <el-col :span="4">
@@ -627,7 +626,7 @@
                 <el-input-number size="mini" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="0"></el-input-number>
               </div>
             </el-form-item>
-            <el-form-item v-if="customBottomType != 9 && customBottomType != 1 && customBottomType != 2 && customBottomType != 3 && customBottomType != 4 && customBottomType != 7" label="延时时间" class="netmoon-form-item-border-dialog">
+            <el-form-item v-if="customBottomType != 9 && customBottomType != 1 && customBottomType != 2 && customBottomType != 3 && customBottomType != 4 && customBottomType != 7 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <el-input-number size="mini" v-model="formOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="0"></el-input-number>
               </div>
@@ -735,9 +734,8 @@
                     <div class="index-pop-item" v-for="(item, index) in sceneList">
                       <el-row>
                         <el-col :span="20">
-                          <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
+                          <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
                             <span>{{ item.sceneName }}</span>
-                            <span>({{$t("自身")}})</span>
                           </div>
                         </el-col>
                         <el-col :span="4">
@@ -822,7 +820,7 @@
                       </div>
                     </div>
                     <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : $t("按键")+formSwitchOrder.key}}</label>
+                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : $t("按键")+formSwitchOrder.keyArr.join()}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                   </el-popover>
@@ -1065,7 +1063,7 @@
                         width="260"
                         popper-class="pop-custom"
                         trigger="click"
-                        v-model="customDrawBottomVisible">
+                        v-model="customBottomVisible">
                         <div class="textCenter">
                           <div class="index-pop-item" @click="changeCustomBottomType($event, 1)">
                             <span>{{$t("开/关灯控制")}}</span>
@@ -1256,9 +1254,8 @@
                           <div class="index-pop-item" v-for="(item, index) in sceneList">
                             <el-row>
                               <el-col :span="20">
-                                <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
+                                <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
                                   <span>{{ item.sceneName }}</span>
-                                  <span>({{$t("自身")}})</span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
@@ -1390,9 +1387,8 @@
                           <div class="index-pop-item" v-for="(item, index) in sceneList">
                             <el-row>
                               <el-col :span="20">
-                                <div class="textLeft" @click="item.envKey != $route.query.envKey ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.envKey == $route.query.envKey" :class="item.envKey == $route.query.envKey ? 'color-disabled disbled-icon' : ''">
+                                <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
                                   <span>{{ item.sceneName }}</span>
-                                  <span>({{$t("自身")}})</span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
@@ -1460,7 +1456,7 @@
                           width="240"
                           popper-class="pop-custom"
                           trigger="click"
-                          v-model="customDrawBottomKeyVisible">
+                          v-model="customBottomKeyVisible">
                           <div class="textCenter" style="max-height: 260px; overflow-y: auto">
                             <div class="index-pop-item" v-for="(item ,index) in 8" @click="selSwitchKey($event, item, index)">
                               <el-row>
@@ -1649,6 +1645,7 @@ export default {
       mainCodeData: '',
       removeSenceItem: '',
       timer: null,
+      senceId: '',
       colors: {
         hue: 50,
         saturation: 100,
@@ -1720,7 +1717,7 @@ export default {
         type: '11',
         keyArr: [],
         key: '',
-        keyOpr: '',
+        keyOpr: '1',
         waitTime: 0,
         emptyTime: 0,
         senceRoom: '',
@@ -1975,6 +1972,7 @@ export default {
       console.log(this.formOrder.type, this.formSwitchOrder.type);
     },
     selSence(event, item, type){
+      this.senceId = item.sceneId;
       if (type == 'menu'){
         this.$axios.get(item.sourceUrl).then(res => {
           this.mainCodeData = {
@@ -2282,7 +2280,7 @@ export default {
         type: '11',
         keyArr: [],
         key: '',
-        keyOpr: '',
+        keyOpr: '1',
         waitTime: 0,
         emptyTime: 0,
         senceRoom: '',
@@ -2378,11 +2376,13 @@ export default {
       this.formOrder.open = type;
       this.customBottomOpen = type;
       this.customBottomOpenVisible = false;
+      this.customDrawBottomOpenVisible = false;
     },
     changeCustomBottomSwitchKeyOprType(event, type){
       this.formSwitchOrder.keyOpr = type;
       this.customBottomKeyOpr = type;
       this.customBottomKeyOprVisible = false;
+      this.customDrawBottomKeyOprVisible = false;
     },
     selSpeed(item, index){
       this.speed = index;
@@ -2488,6 +2488,8 @@ export default {
       }else if (type == "curtainsSub"){
         this.formCurtainsOrder.startOrder = item.i;
       }
+      this.customBottomOpenVisible = false;
+      this.customDrawBottomOpenVisible = false;
     },
     selSenceUse(event, item, index, type){
       this.senceIndex = index;
@@ -2501,10 +2503,15 @@ export default {
         this.formCurtainsOrder.senceText = item.sceneName;
         this.formCurtainsOrder.senceRoom = item.roomId;
       }
+      this.customBottomOpenVisible = false;
+      this.customDrawBottomOpenVisible = false;
     },
     selSwitchKey(event, item, index){
       if (this.formSwitchOrder.keyArr.indexOf(index) == -1){
         this.formSwitchOrder.keyArr.push(index);
+      }else{
+        let indexItem = this.formSwitchOrder.keyArr.indexOf(index);
+        this.formSwitchOrder.keyArr.splice(indexItem, 1);
       }
       this.switchIndex = index;
       this.switchItem = item;
