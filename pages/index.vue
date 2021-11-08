@@ -68,7 +68,7 @@
                         </el-row>
                       </div>
                       <div class="marginTop5">
-                        <div class="pop-child-bLock">
+                        <div ref="popChildBlock" class="pop-child-bLock">
                           <div v-for="(itemList, indexList) in itemBlock.list" class="marginBottom2 pop-child-item color-ffffff">
                             <el-row class=" padding-full5">
                               <el-col :span="8">
@@ -123,7 +123,7 @@
                                 </div>
                                 <div v-if="itemList.i == 9">
                                   <div>
-                                    {{$t("色彩")}}: <span :style="{background:  itemList.v }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
+                                    {{$t("色彩")}}: <span :style="{background:  converArgbToRgb(itemList.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
                                   </div>
                                   <div>
                                     {{$t("渐变时间")}}: {{ itemList.t }}
@@ -1039,7 +1039,7 @@
                             {{$t("渐变时间")}}: {{ item.t }}
                           </label>
                           <label v-if="item.i == 9" size="mini">
-                            {{$t("色彩")}}: <span :style="{background:  item.v }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
+                            {{$t("色彩")}}: <span :style="{background:  converArgbToRgb(item.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
                             {{$t("渐变时间")}}: {{ item.t }}
                           </label>
                           <label v-if="item.i == 10" size="mini">
@@ -1887,6 +1887,7 @@ export default {
           let aNumber = 0;
           if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2){
             aNumber = this.taskList[i][j].sec / 100;
+            console.log(this.taskList[i][j].sec,aNumber);
             //aNumber = this.taskList[i][j].sec;
           }
           // else if(this.taskList[i][j].i == 6 || this.taskList[i][j].i == 7 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4
@@ -1901,7 +1902,7 @@ export default {
 
       let ruleMax = Math.max(...this.ruleList);
       this.ruleMax = ruleMax;
-      console.log(ruleMax);
+      console.log(1111111,ruleMax);
       //this.handleScrollTop()
       //this.$router.push("/index2");
     },
@@ -1993,10 +1994,12 @@ export default {
         return this.screenOrientation;
       }
     },
-    handleScroll() {
+    handleScroll(e) {
       this.touchStatus = false;
       this.scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
-      this.hidePopVisible();
+      if(e.target.className != "pop-child-bLock"){
+        this.hidePopVisible();
+      }
     },
     handleScrollTop(){
       this.touchStatus = false;
@@ -2547,14 +2550,15 @@ export default {
     },
     changeColor(hue){
       let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
-      console.log(parseInt(hue));
-      console.log(parseInt(this.converRgbToArgb(rgb[0],rgb[1],rgb[2])) >>> 0);
+      console.log(rgb[0],rgb[1],rgb[2]);
+      console.log(Math.abs(this.converRgbToArgb(rgb[0],rgb[1],rgb[2])));
       let color = this.colorRGBtoHex(rgb[0],rgb[1],rgb[2]);
+      console.log(color);
       this.formOrder.color = "#"+color;
-      this.formOrder.colorInt = parseInt(this.converRgbToArgb(rgb[0],rgb[1],rgb[2])) >>> 0;
+      this.formOrder.colorInt = Math.abs(this.converRgbToArgb(rgb[0],rgb[1],rgb[2]));
     },
     converRgbToArgb(r,g,b){
-      var color = ((0xFF << 24)|(r << 16)|(g << 8)|b);
+      var color = ((0xFF0000 << 24)|(r << 16)|(g << 8)|b);
       return color;
     },
     converArgbToRgb(argb){
@@ -2675,20 +2679,20 @@ export default {
       this.formSwitchOrder.key = index;
     },
     saveOpr(){
-      //console.log("----"+this.oprOtherType,this.formOrder.type,this.formSwitchOrder.type);
+      console.log("----"+this.formOrder.type,this.formSwitchOrder.type,this.formCurtainsOrder.type);
       //验证
       if (this.setChildBottomType == 'lightSub'){
-        if (this.formOrder.type == 9){
+        if (outTypeObj(this.formOrder.type) == 9){
           if (this.formOrder.color == ""){
             MessageWarning(this.$t("请设置颜色！"));
             return;
           }
-        }else if (this.formOrder.type == 3){
+        }else if (outTypeObj(this.formOrder.type) == 3){
           if (this.formOrder.startOrderI == ""){
             MessageWarning(this.$t("请设置起始位置！"));
             return;
           }
-        }else if (this.formOrder.type == 4){
+        }else if (outTypeObj(this.formOrder.type) == 4){
           if (this.formOrder.sence == ""){
             MessageWarning(this.$t("请设置场景！"));
             return;
@@ -2870,9 +2874,10 @@ export default {
         return;
       }
       this.configLoading = true;
-      let taskList = [].concat(this.taskList);
+
+      let taskList = JSON.parse(JSON.stringify(this.taskList));
       //清理不需要的属性
-      let planList = [].concat(this.planList);
+      let planList = JSON.parse(JSON.stringify(this.planList));
       let taskTempArr = [];
 
       for (let i = 0; i < taskList.length; i++){
@@ -2917,7 +2922,7 @@ export default {
       if (this.formSence.id != ""){
         codeData['sceneId'] = this.formSence.id;
       }
-
+      //console.log(JSON.stringify(codeData));
       codeData = this.$qs.stringify(codeData);
       let url = (this.formSence.id == "" || this.formSence.id == undefined) ? common.createSence : common.editSence;
 

@@ -510,7 +510,7 @@ span,div,button,label{
   border-radius: 5px;
   opacity:0.5;
   color: #FFFFFF;
-  max-height: 500px;
+  max-height: 200px;
   overflow-y: auto;
 }
 .pop-child-item{
