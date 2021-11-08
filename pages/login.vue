@@ -135,6 +135,10 @@ export default {
       //return commonConfig.baseUrl + common.sendImageCode + "?radom=" + Math.random();
     },
     isNeedImageCode(){
+      if (this.form.username == "" || this.form.password == ""){
+        MessageWarning(this.$t("请输入账号信息！"));
+        return;
+      }
       let params = {
         opType: 5
       };
