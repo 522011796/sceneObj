@@ -525,4 +525,17 @@ span,div,button,label{
   border-radius: 2px;
   padding:2px 2px;
 }
+.item-tips-block{
+  display: inline-block;
+  position: absolute;
+  right: 25px;
+  top: 0px;
+  width: 15px;
+  background: #e6a23c;
+  border-radius:  2px;
+  padding: 0px 0px;
+  font-size: 10px;
+  text-align: center;
+  z-index: 99;
+}
 

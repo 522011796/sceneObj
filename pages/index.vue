@@ -1,7 +1,7 @@
 <template>
   <div @click="hidePopVisible">
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
-    <div class="demoRuleClass" :style="{'width': ruleMax * 90 + 25 + 0.1 + 'px'}">
+    <div class="demoRuleClass" :style="{'width': ruleMax * 90 + 40 + 0.1 + 'px'}">
       <div>
         <div class="demoRuleFixedClass" :style="{'width': ruleMax * 90 + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
           <div v-for="(itemNum, indexNum) in ruleMax" :key="indexNum" class="rule-class">
@@ -15,18 +15,22 @@
       </div>
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
-        <div class="demoRuleBlockClass" v-for="(item, index) in taskResetList" style="margin-bottom: 10px">
+        <div class="demoRuleBlockClass" v-for="(item, index) in taskResetList" style="margin-bottom: 10px;position: relative">
 <!--          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"-->
 <!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
 <!--          >-->
+          <div v-if="checkItemList(item,index) > 0" @click="selBlock($event, item, index, null, null)" class="item-tips-block">1+</div>
           <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item"
                v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2)"
                :style="{
                         'background': orderColorInfo(itemBlock.i),
                         'width': itemBlock.sec / 100 * 90+'px',
                         'height':'40px',
-                        'color': '#555555'}"
+                        'color': '#555555',
+                        'position': 'relative'
+                      }"
           >
+
             <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
               <el-popover
                 popper-class="indexPopVisible"
@@ -136,7 +140,7 @@
                                 </div>
                                 <div v-if="itemList.i == 11">
                                   <div>
-                                    {{$t("按键")}}: {{ itemList.v.join() }}
+                                    {{$t("继电器")}}: {{ itemList.v.join() }}
                                   </div>
                                   <div>
                                     {{$t("状态")}}: {{ keyTypeInfo(itemList.s) }}
@@ -154,10 +158,9 @@
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative">
                   <div>
                     <div class="moon-ellipsis-class index-main-item-block font-size-10">
-                      <span v-if="itemBlock.i == 1" class="color-434343">
+                      <span v-if="itemBlock.i == 1 || (itemBlock.i == 2 && itemBlock.list.length == 0)" class="color-434343">
                         {{ orderValueInfo(itemBlock.i, 'set') }}
                       </span>
-
                       <span v-for="(itemList, indexList) in itemBlock.list" class="marginBottom2 pop-child-item">
                         {{orderValueInfo(itemList.i, 'set')}}
                         <label v-if="indexList != itemBlock.list.length - 1">|</label>
@@ -316,7 +319,7 @@
     <el-drawer
       title="场景设置"
       custom-class="drawer-list"
-      :show-close="false"
+      :show-close="true"
       :modal="true"
       :size="dialogRoomSize"
       :wrapperClosable="false"
@@ -851,7 +854,7 @@
                 </el-popover>
               </div>
             </el-form-item>
-            <el-form-item v-if="customBottomType == 11" label="按键" class="netmoon-form-item-border-dialog">
+            <el-form-item v-if="customBottomType == 11" label="继电器" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <div class="textRight color-666666">
                   <el-popover
@@ -861,11 +864,11 @@
                     trigger="click"
                     v-model="customDrawBottomKeyVisible">
                     <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                      <div class="index-pop-item" v-for="(item ,index) in 8" @click="selSwitchKey($event, item, index)">
+                      <div class="index-pop-item" v-for="(item ,index) in 4" @click="selSwitchKey($event, item, index)">
                         <el-row>
                           <el-col :span="20">
                             <div class="textLeft">
-                              <span>{{ $t("按键")}}{{index+1}}</span>
+                              <span>{{ $t("继电器")}}{{index+1}}</span>
                             </div>
                           </el-col>
                           <el-col :span="4">
@@ -877,7 +880,7 @@
                       </div>
                     </div>
                     <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : $t("按键")+formSwitchOrder.keyArr.join()}}</label>
+                            <label>{{formSwitchOrder.key == '' ? $t("请选择") : $t("继电器")+formSwitchOrder.keyNoArr.join()}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                   </el-popover>
@@ -984,7 +987,7 @@
           <el-col :span="4">
             <div class="drawerHeaderDiv">
               <div class="drawerHeaderDiv">
-                <a href="javascript:;" class="drawerHeaderBtn primary-color" @click="cancelDeviceDrawer">关闭</a>
+                <a href="javascript:;" class="drawerHeaderBtn primary-color" @click="cancelDeviceDrawer">确认/关闭</a>
               </div>
             </div>
           </el-col>
@@ -1046,7 +1049,7 @@
                             {{$t("行程百分比")}}: {{ item.v * 100 }}%
                           </label>
                           <label v-if="item.i == 11" size="mini">
-                            {{$t("按键")}}: {{ item.v.join() }}
+                            {{$t("继电器")}}: {{ item.v.join() }}
                             {{$t("状态")}}: {{ keyTypeInfo(item.s) }}
                           </label>
                         </div>
@@ -1542,7 +1545,7 @@
                       </el-popover>
                     </div>
                   </el-form-item>
-                  <el-form-item v-if="customBottomType == 11" label="按键" class="netmoon-form-item-border-dialog">
+                  <el-form-item v-if="customBottomType == 11" label="继电器" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
                       <div class="textRight color-666666">
                         <el-popover
@@ -1552,11 +1555,11 @@
                           trigger="click"
                           v-model="customBottomKeyVisible">
                           <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                            <div class="index-pop-item" v-for="(item ,index) in 8" @click="selSwitchKey($event, item, index)">
+                            <div class="index-pop-item" v-for="(item ,index) in 4" @click="selSwitchKey($event, item, index)">
                               <el-row>
                                 <el-col :span="20">
                                   <div class="textLeft">
-                                    <span>{{ $t("按键")}}{{index+1}}</span>
+                                    <span>{{ $t("继电器")}}{{index+1}}</span>
                                   </div>
                                 </el-col>
                                 <el-col :span="4">
@@ -1568,7 +1571,9 @@
                             </div>
                           </div>
                           <span slot="reference" size="mini">
-                            <label>{{formSwitchOrder.keyArr == '' ? $t("请选择") : $t("按键")+formSwitchOrder.keyArr.join()}}</label>
+                            <label>
+                              {{formSwitchOrder.keyArr == '' ? $t("请选择") : $t("继电器")+formSwitchOrder.keyNoArr.join()}}
+                            </label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
                         </el-popover>
@@ -1735,6 +1740,8 @@ export default {
       taskList: [],
       taskResetList: [],
       planList:[],
+      planTempList:[],
+      taskTempList:[],
       orderList: [],
       configList: [],
       mainCodeData: '',
@@ -1747,6 +1754,7 @@ export default {
         luminosity: 50,
         alpha: 1
       },
+      valuetext: '',
       divStyle: {
         'height': '0px',
         'overflow-y': 'auto',
@@ -1814,6 +1822,7 @@ export default {
       formSwitchOrder: {
         type: '11',
         keyArr: [],
+        keyNoArr: [],
         key: '',
         keyOpr: '1',
         waitTime: 0,
@@ -1859,9 +1868,9 @@ export default {
     this.initSenceList();
 
     this.checkIndexOrient();
-    this.initRoom();
+    //this.initRoom();
     this.initDevice();
-    this.initICon();
+    //this.initICon();
     //this.initOrder();
   },
   methods:{
@@ -1887,7 +1896,6 @@ export default {
           let aNumber = 0;
           if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2){
             aNumber = this.taskList[i][j].sec / 100;
-            console.log(this.taskList[i][j].sec,aNumber);
             //aNumber = this.taskList[i][j].sec;
           }
           // else if(this.taskList[i][j].i == 6 || this.taskList[i][j].i == 7 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4
@@ -2098,11 +2106,10 @@ export default {
             duration: res.data.duration,
           };
           this.setSenceData(res.data.tasks);
-
           this.drawerListVisible = false;
         });
       }else {
-        this.setSenceData(event);
+        this.setSenceData(event, 'setChild');
       }
     },
     selRoom(){
@@ -2113,7 +2120,7 @@ export default {
       this.formSence.img = "~/static/img/" + item.id + ".png";
       this.drawerRoomVisible = false;
     },
-    setSenceData(item){
+    setSenceData(item, type){
       let data = item;
       let plans = [];
       let tasks = [];
@@ -2162,9 +2169,9 @@ export default {
       console.log(this.taskList);
       this.$parent.$parent.initMenu(this.planList);
       this.init();
-      this.setTaskList(this.taskList);
+      this.setTaskList(this.taskList, type);
     },
-    setTaskList(taskList){//重新组装tasklist，用于显示列表
+    setTaskList(taskList, type){//重新组装tasklist，用于显示列表
       let list = [];
       let array = [];
       for (let i = 0; i < taskList.length; i++){
@@ -2177,8 +2184,12 @@ export default {
           }
         }
       }
-      console.log(1,taskList);
       this.taskResetList = taskList;
+      //原始数据
+      if (type != 'setChild'){
+        this.taskTempList = JSON.parse(JSON.stringify(taskList));
+        this.planTempList = JSON.parse(JSON.stringify(this.planList));
+      }
     },
     mousedown(){
 
@@ -2331,7 +2342,12 @@ export default {
         this.formSwitchOrder.type = item.i;
         this.customBottomType = this.outEditTypeObjInfo(item.i);
         if (item.i == 11) {
+          this.formSwitchOrder.keyArr = [];
+          this.formSwitchOrder.keyNoArr = [];
           this.formSwitchOrder.keyArr = item.v;
+          for (let i = 0; i < item.v.length; i++){
+            this.formSwitchOrder.keyNoArr.push(item.v[i] + 1);
+          }
           this.formSwitchOrder.keyOpr = item.s;
         }else if (item.i == 1){
           this.formSwitchOrder.emptyTime = item.v;
@@ -2423,6 +2439,7 @@ export default {
       this.formSwitchOrder = {
         type: '11',
         keyArr: [],
+        keyNoArr: [],
         key: '',
         keyOpr: '1',
         waitTime: 0,
@@ -2550,10 +2567,7 @@ export default {
     },
     changeColor(hue){
       let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
-      console.log(rgb[0],rgb[1],rgb[2]);
-      console.log(Math.abs(this.converRgbToArgb(rgb[0],rgb[1],rgb[2])));
       let color = this.colorRGBtoHex(rgb[0],rgb[1],rgb[2]);
-      console.log(color);
       this.formOrder.color = "#"+color;
       this.formOrder.colorInt = Math.abs(this.converRgbToArgb(rgb[0],rgb[1],rgb[2]));
     },
@@ -2670,9 +2684,11 @@ export default {
     selSwitchKey(event, item, index){
       if (this.formSwitchOrder.keyArr.indexOf(index) == -1){
         this.formSwitchOrder.keyArr.push(index);
+        this.formSwitchOrder.keyNoArr.push(index+1);
       }else{
         let indexItem = this.formSwitchOrder.keyArr.indexOf(index);
         this.formSwitchOrder.keyArr.splice(indexItem, 1);
+        this.formSwitchOrder.keyNoArr.splice(indexItem, 1);
       }
       this.switchIndex = index;
       this.switchItem = item;
@@ -2701,7 +2717,7 @@ export default {
       }else if (this.setChildBottomType == 'switchSub'){
         if (this.formSwitchOrder.type == 11){
           if (this.formSwitchOrder.keyArr.length <= 0){
-            MessageWarning(this.$t("请设置按键！"));
+            MessageWarning(this.$t("请设置继电器！"));
             return;
           }
         }
@@ -2824,7 +2840,7 @@ export default {
           obj['v'] = this.formCurtainsOrder.curtainsOpenClose;
           obj['t'] = 100;
           obj['sec'] = 100;
-        }else if (outTypeObj(this.formSwitchOrder.type) == 11){//按键操作指令，时间默认1
+        }else if (outTypeObj(this.formSwitchOrder.type) == 11){//继电器操作指令，时间默认1
           obj['v'] = this.formSwitchOrder.keyArr;
           obj['s'] = this.formSwitchOrder.keyOpr;
           obj['t'] = 100;
@@ -2856,7 +2872,8 @@ export default {
         //this.clearForm();
       }else if(this.oprType == 'delOrder'){
         this.taskList[this.taskIndex].splice(this.oprOrderIndex, 1);
-        //this.init();
+        this.init();
+        this.setTaskList(this.taskList);
         this.dialogVisible = false;
       }else if (this.oprType == 'removeSence'){
         this.removeSence(this.removeSenceItem.sceneId);
@@ -3009,6 +3026,17 @@ export default {
       this.envKey = item.envKey;
       this.drawerEnvVisible = false;
       this.initSenceList();
+    },
+    checkItemList(item,index){
+      let count = 0;
+      for (let i = 0; i < this.taskResetList[index].length; i++){
+        if (this.taskResetList[index][i].i != 1 && this.taskResetList[index][i].i !=2){
+          count++;
+        }else if (this.taskResetList[index][i].list.length > 0){
+          count = 0;
+        }
+      }
+      return count;
     }
   }
 }
@@ -3082,6 +3110,7 @@ export default {
     display: inline-block;
     position: relative;
     top: 12px;
+    left: 15px;
   }
   .item-icon{
     height: 50px;

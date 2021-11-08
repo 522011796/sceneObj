@@ -608,6 +608,19 @@
           return planType('set', value);
         },
         returnSenceList(){
+          if (!this.compareArray(this.$refs.childRef.$children[0].planList, this.$refs.childRef.$children[0].planTempList)){
+            this.alertMessageTips = this.$t("系统检测到你修改过数据并未保存，返回后将清除已修改的部分");
+            this.oprType = 'return';
+            this.dialogVisible = true;
+            return;
+          }
+
+          if (!this.compareArray(this.$refs.childRef.$children[0].taskList, this.$refs.childRef.$children[0].taskTempList)){
+            this.alertMessageTips = this.$t("系统检测到你修改过数据并未保存，返回后将清除已修改的部分");
+            this.oprType = 'return';
+            this.dialogVisible = true;
+            return;
+          }
           this.$refs.childRef.$children[0].drawerListVisible = true;
         },
         changePlainType(event, type){
@@ -657,6 +670,9 @@
             this.drawer = false;
             this.dialogVisible = false;
             this.$refs.childRef.$children[0].selSence(planList, null, 'save');
+          }else if(this.oprType == "return"){
+            this.$refs.childRef.$children[0].drawerListVisible = true;
+            this.dialogVisible = false;
           }
         },
         saveConfig(){
