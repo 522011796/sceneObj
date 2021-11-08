@@ -528,8 +528,8 @@ span,div,button,label{
 .item-tips-block{
   display: inline-block;
   position: absolute;
-  right: 10px;
-  top: -15px;
+  right: 15px;
+  top: -10px;
   width: 15px;
   background: #e6a23c;
   border-radius:  2px;

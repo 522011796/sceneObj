@@ -178,7 +178,7 @@
               <div class="moon-ellipsis-class index-main-item-block">&nbsp;</div>
             </div>
           </div>
-          <span class="index-plus-item">
+          <span :class="checkItemList(item,index)[1] > 0 ? 'index-plus-list-item' : 'index-plus-item'">
             <div v-if="checkItemList(item,index)[0] > 0" @click="selBlock($event, item, index, null, null)" :class="checkItemList(item,index)[1] > 0 ? 'item-tips-list-block' : 'item-tips-block'">1+</div>
 
             <i class="fa fa-plus font-size-14" @click.stop="setSence($event, item, index, 'lightSub')"></i>
@@ -3115,6 +3115,12 @@ export default {
     height: 100%;
   }
   .index-plus-item{
+    display: inline-block;
+    position: relative;
+    top: 12px;
+    left: 20px;
+  }
+  .index-plus-list-item{
     display: inline-block;
     position: relative;
     top: 12px;
