@@ -19,7 +19,6 @@
 <!--          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"-->
 <!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
 <!--          >-->
-          <div v-if="checkItemList(item,index) > 0" @click="selBlock($event, item, index, null, null)" class="item-tips-block">1+</div>
           <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item"
                v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2)"
                :style="{
@@ -180,6 +179,8 @@
             </div>
           </div>
           <span class="index-plus-item">
+            <div v-if="checkItemList(item,index)[0] > 0" @click="selBlock($event, item, index, null, null)" :class="checkItemList(item,index)[1] > 0 ? 'item-tips-list-block' : 'item-tips-block'">1+</div>
+
             <i class="fa fa-plus font-size-14" @click.stop="setSence($event, item, index, 'lightSub')"></i>
           </span>
         </div>
@@ -2862,6 +2863,7 @@ export default {
         }else {
           this.taskList[this.taskIndex].push(obj);
         }
+        this.planList[this.taskIndex]['i'].push(obj);
         this.init();
         this.setTaskList(this.taskList);
         this.dialogVisible = false;
@@ -2872,12 +2874,14 @@ export default {
         //this.clearForm();
       }else if(this.oprType == 'delOrder'){
         this.taskList[this.taskIndex].splice(this.oprOrderIndex, 1);
+        this.planList[this.taskIndex]['i'].splice(this.oprOrderIndex, 1);;
         this.init();
         this.setTaskList(this.taskList);
         this.dialogVisible = false;
       }else if (this.oprType == 'removeSence'){
         this.removeSence(this.removeSenceItem.sceneId);
       }
+      console.log(this.planList);
     },
     cancelConfig(){
       this.drawerSenceVisible = false;
@@ -3029,14 +3033,18 @@ export default {
     },
     checkItemList(item,index){
       let count = 0;
+      let countList = 0;
       for (let i = 0; i < this.taskResetList[index].length; i++){
         if (this.taskResetList[index][i].i != 1 && this.taskResetList[index][i].i !=2){
           count++;
         }else if (this.taskResetList[index][i].list.length > 0){
           count = 0;
+          countList++;
+        }else if (this.taskResetList[index][i].list.length == 0){
+          countList = 0;
         }
       }
-      return count;
+      return [count, countList];
     }
   }
 }

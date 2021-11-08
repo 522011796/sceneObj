@@ -528,8 +528,21 @@ span,div,button,label{
 .item-tips-block{
   display: inline-block;
   position: absolute;
-  right: 25px;
-  top: 0px;
+  right: 10px;
+  top: -15px;
+  width: 15px;
+  background: #e6a23c;
+  border-radius:  2px;
+  padding: 0px 0px;
+  font-size: 10px;
+  text-align: center;
+  z-index: 99;
+}
+.item-tips-list-block{
+  display: inline-block;
+  position: absolute;
+  right: 15px;
+  top: -15px;
   width: 15px;
   background: #e6a23c;
   border-radius:  2px;
