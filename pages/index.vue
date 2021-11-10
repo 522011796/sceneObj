@@ -1,13 +1,21 @@
 <template>
   <div @click="hidePopVisible">
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
-    <div class="demoRuleClass" :style="{'width': ruleMax * 90 + 40 + 0.1 + 'px'}">
+    <div class="demoRuleClass" :style="{'width': ruleMax / 10 * 52 + 41 + 0.1 + 'px'}">
       <div>
-        <div class="demoRuleFixedClass" :style="{'width': ruleMax * 90 + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
-          <div v-for="(itemNum, indexNum) in ruleMax" :key="indexNum" class="rule-class">
+        <div class="demoRuleFixedClass" :style="{'width': ruleMax / 10 * 52 + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
+          <div v-if="taskResetList.length > 0 && JSON.stringify(taskResetList[0]) != '[]' && Math.floor(ruleMax * 100 / 1000) <= 0" v-for="(itemNum, indexNum) in 1" :key="indexNum" class="rule-class" style="width: 52px">
             <div class="num">
-              {{format(indexNum * 100)}}
+              {{format(indexNum * 1000)}}
             </div>
+
+            <div class="ver-line"></div>
+          </div>
+          <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in Math.floor(ruleMax * 100 / 1000)" :key="indexNum" class="rule-class" style="width: 52px">
+            <div class="num">
+              {{format(indexNum * 1000)}}
+            </div>
+
             <div class="ver-line"></div>
           </div>
         </div>
@@ -23,7 +31,7 @@
                v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2)"
                :style="{
                         'background': orderColorInfo(itemBlock.i),
-                        'width': itemBlock.sec / 100 * 90+'px',
+                        'width': itemBlock.sec / 1000 * 52+'px',
                         'height':'40px',
                         'color': '#555555',
                         'position': 'relative'
@@ -165,9 +173,9 @@
                         <label v-if="indexList != itemBlock.list.length - 1">|</label>
                       </span>
                     </div>
-                    <el-tag v-if="itemBlock.i == 2" size="mini" style="position: absolute; right: 5px; top: 5px;">
-                      {{itemBlock.list ? itemBlock.list.length : 0}}
-                    </el-tag>
+<!--                    <el-tag v-if="itemBlock.i == 2" size="mini" style="position: absolute; right: 5px; top: 5px;">-->
+<!--                      {{itemBlock.list ? itemBlock.list.length : 0}}-->
+<!--                    </el-tag>-->
                   </div>
                 </v-touch>
               </el-popover>
@@ -191,6 +199,7 @@
       title="提示"
       :visible.sync="dialogVisible"
       custom-class="alert-class"
+      top="30vh"
       width="300px"
       @close="closeDialog">
       <div slot="title">
@@ -282,8 +291,11 @@
         <div class="block-list-header">
           <el-row>
             <el-col :span="12">
-              <span>
+              <span v-if="this.appType != 'app'">
                 <el-button size="mini" type="error" @click="logout()">{{$t("退出")}}</el-button>
+              </span>
+              <span v-else>
+                &nbsp;
               </span>
             </el-col>
             <el-col :span="12" class="textRight">
@@ -297,13 +309,16 @@
       <div class="marginTop10">
         <div v-for="(item, index) in sceneList" class="block-list-content-item marginBottom10" @click="selSence($event, item, 'menu')">
           <el-row>
-            <el-col :span="16">
+            <el-col :span="14">
               <div class="textLeft">
                 <div class="marginTop10 fontBold">{{ item.sceneName }}</div>
-                <div class="marginTop5">{{ item.envKey }}</div>
+                <div class="marginTop5 font-size-12">
+                  <img :src="require(`~/static/img/${item.roomId}.png`)" style="height: 20px; width: 20px;">
+                  <label style="position: relative; top: -6px;">{{ getGlobalRoomObj(item.roomId) }}</label>
+                </div>
               </div>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="10">
               <div class="textRight marginTop20" style="position: relative">
                 <span class="color-666666">{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>
                 <span style="display: inline-block;position: relative; top: -9px; height: 40px;width: 40px;text-align: center" @click.stop="removeSenceOpr($event, item)">
@@ -603,7 +618,7 @@
             </el-form-item>
             <el-form-item v-if="customBottomType == 7" label="重复次数" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType == 8" label="电源" class="netmoon-form-item-border-dialog">
@@ -684,17 +699,17 @@
             </el-form-item>
             <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8 && customBottomType != 9" label="渐变时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType != 9 && customBottomType != 1 && customBottomType != 2 && customBottomType != 3 && customBottomType != 4 && customBottomType != 7 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType == 9" label="空闲时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
           </el-form>
@@ -780,7 +795,7 @@
             </el-form-item>
             <el-form-item v-if="customBottomType == 3" label="重复次数" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
+                <el-input-number size="medium" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType == 4" label="场景名称" class="netmoon-form-item-border-dialog">
@@ -816,12 +831,12 @@
             </el-form-item>
             <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4 && customBottomType != 5 && customBottomType != 1" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType == 1" label="空闲时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formCurtainsOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formCurtainsOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
           </el-form>
@@ -935,12 +950,12 @@
             </el-form-item>
             <el-form-item v-if="customBottomType == 6" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formSwitchOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formSwitchOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType == 9" label="空闲时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="mini" v-model="formSwitchOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100"></el-input-number>
+                <el-input-number size="medium" v-model="formSwitchOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
           </el-form>
@@ -1006,77 +1021,80 @@
       </div>
       <div class="marginTop10">
         <div>
-          <div class="marginTop10">
+          <div class="">
             <div class="rightDialogContent" :style="dialogRightTabOrderStyle">
-              <div class="item-list-child" v-for="(item, index) in orderList" :key="index">
+              <div class="item-list-child" v-for="(item, index) in orderList" :key="index" @click="upateChildBottomDialog($event, 'lightSub', index, item)">
                 <el-row>
                   <el-col :span="16">
-                    <span>
-                      <el-tag>
+                    <span :class="(item.i == 6 || item.i == 7 || item.i == 8 || item.i == 9 || item.i == 11) ? 'item-list-child-child-title' : 'item-list-child-child-title2'">
+                      <el-tag size="mini">
                         <label class="font-size-12 color-default">
                           {{index+1}}
                         </label>
                       </el-tag>
                     </span>
-                    <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
+                    <span class="marginLeft10" :class="(item.i == 6 || item.i == 7 || item.i == 8 || item.i == 9 || item.i == 11) ? 'item-list-child-child-title' : 'item-list-child-child-title2'">{{ orderGetAndSet(item.i, 'set')}}</span>
                     <span>
-                      <el-tooltip class="item" effect="dark" placement="bottom">
-                        <div slot="content">
-                          <label v-if="item.i == 1" size="mini">{{$t("空闲")}}:{{ item.v }}</label>
-                          <label v-if="item.i == 2" size="mini">{{$t("延时")}}:{{ item.v }}</label>
-                          <label v-if="item.i == 3" size="mini">
+                          <label v-if="item.i == 1" size="mini" class="font-size-12 color-default item-list-child-child-item2">
+                            <div>{{$t("空闲")}}:{{ item.v }}</div>
+                          </label>
+                          <label v-if="item.i == 2" size="mini" class="font-size-12 color-default item-list-child-child-item2">
+                            <div>{{$t("延时")}}:{{ item.v }}</div>
+                          </label>
+                          <label v-if="item.i == 3" size="mini" class="font-size-12">
                             {{$t("循环起始")}}: {{ item.v + 1 }}
                             {{$t("循环位置")}}: {{ orderValueInfo(orderList[item.v].i, 'set') }}
                             {{$t("重复次数")}}: {{ item.t }}
                           </label>
-                          <label v-if="item.i == 4" size="mini">{{$t("场景")}}: {{ item.n }}</label>
-                          <label v-if="item.i == 6" size="mini">
-                            {{$t("状态")}}: {{ openTypeInfo(item.v) }}
-                            {{$t("渐变时间")}}: {{ item.t }}
+                          <label v-if="item.i == 4" size="mini" class="font-size-12 item-list-child-child-item2">
+                            <div>{{$t("场景")}}: {{ item.n }}</div>
                           </label>
-                          <label v-if="item.i == 7" size="mini">
-                            {{$t("亮度百分比")}}: {{ item.v * 100 }}%
-                            {{$t("渐变时间")}}: {{ item.t }}
+                          <div v-if="item.i == 6" size="mini" class="font-size-12 color-default item-list-child-child-item">
+                            <div>{{$t("状态")}}: {{ openTypeInfo(item.v) }}</div>
+                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
+                          </div>
+                          <label v-if="item.i == 7" size="mini" class="font-size-12 color-default item-list-child-child-item">
+                            <div>{{$t("亮度百分比")}}: {{ item.v * 100 }}%</div>
+                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
                           </label>
-                          <label v-if="item.i == 8" size="mini">
-                            {{$t("色温")}}: {{ item.v }}
-                            {{$t("渐变时间")}}: {{ item.t }}
+                          <label v-if="item.i == 8" size="mini" class="font-size-12 color-default item-list-child-child-item">
+                            <div>{{$t("色温")}}: {{ item.v }}</div>
+                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
                           </label>
-                          <label v-if="item.i == 9" size="mini">
-                            {{$t("色彩")}}: <span :style="{background:  converArgbToRgb(item.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
-                            {{$t("渐变时间")}}: {{ item.t }}
+                          <div v-if="item.i == 9" size="mini" class="font-size-12 color-default item-list-child-child-item">
+                            <div>{{$t("色彩")}}: <span :style="{background:  converArgbToRgb(item.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span></div>
+                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
+                          </div>
+                          <label v-if="item.i == 10" size="mini" class="font-size-12 color-default item-list-child-child-item2">
+                            <div>{{$t("行程百分比")}}: {{ item.v * 100 }}%</div>
                           </label>
-                          <label v-if="item.i == 10" size="mini">
-                            {{$t("行程百分比")}}: {{ item.v * 100 }}%
+                          <label v-if="item.i == 11" size="mini" class="font-size-12 color-default item-list-child-child-item">
+                            <div>{{$t("继电器")}}: {{ item.v.join() }}</div>
+                            <div>{{$t("状态")}}: {{ keyTypeInfo(item.s) }}</div>
                           </label>
-                          <label v-if="item.i == 11" size="mini">
-                            {{$t("继电器")}}: {{ item.v.join() }}
-                            {{$t("状态")}}: {{ keyTypeInfo(item.s) }}
-                          </label>
-                        </div>
-                        <i class="fa fa-info-circle"></i>
-                      </el-tooltip>
                     </span>
                   </el-col>
                   <el-col :span="8">
                     <div class="textRight">
-                      <a href="javascript:;" class="color-warning" @click="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
-                      <a href="javascript:;" class="color-error" @click="delOpr($event, index, 'lightCustom')">{{$t("删除")}}</a>
-                      <el-popover
-                        width="140"
-                        placement="bottom"
-                        trigger="manual"
-                        v-model="item.insertVisible">
-                        <div class="color-666666 textCenter">
-                          <div class="index-pop-item" @click="insertOrder($event,item, index, 'pre', 'lightSub')">
-                            <span>{{$t("插入到上一行")}}</span>
+                      <span :style="(item.i != 1 && item.i != 2 && item.i != 4 && item.i != 10) ? {'position': 'relative', 'top': '6px'} : {}">
+                        <a href="javascript:;" class="color-warning item-list-child-child-opr-item" @click.stop="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
+                        <a href="javascript:;" class="color-error item-list-child-child-opr-item" @click.stop="delOpr($event, index, 'lightCustom')">{{$t("删除")}}</a>
+                        <el-popover
+                          width="140"
+                          placement="bottom"
+                          trigger="manual"
+                          v-model="item.insertVisible">
+                          <div class="color-666666 textCenter">
+                            <div class="index-pop-item" @click="insertOrder($event,item, index, 'pre', 'lightSub')">
+                              <span>{{$t("插入到上一行")}}</span>
+                            </div>
+                            <div class="index-pop-item" @click="insertOrder($event,item, index, 'next', 'lightSub')">
+                              <span>{{$t("插入到下一行")}}</span>
+                            </div>
                           </div>
-                          <div class="index-pop-item" @click="insertOrder($event,item, index, 'next', 'lightSub')">
-                            <span>{{$t("插入到下一行")}}</span>
-                          </div>
-                        </div>
-                        <label slot="reference" @click.stop="insertOrderOpr($event,item, index)">{{$t("插入")}}</label>
-                      </el-popover>
+                          <label slot="reference" class="item-list-child-child-opr-item" @click.stop="insertOrderOpr($event,item, index)">{{$t("插入")}}</label>
+                        </el-popover>
+                      </span>
                     </div>
                   </el-col>
                 </el-row>
@@ -1292,7 +1310,7 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 7" label="重复次数" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
+                      <el-input-number size="medium" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 8" label="电源" class="netmoon-form-item-border-dialog">
@@ -1373,17 +1391,17 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8 && customBottomType != 9" label="渐变时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType != 9 && customBottomType != 1 && customBottomType != 2 && customBottomType != 3 && customBottomType != 4 && customBottomType != 7 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 9" label="空闲时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                 </el-form>
@@ -1470,7 +1488,7 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 3" label="重复次数" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 4" label="场景名称" class="netmoon-form-item-border-dialog">
@@ -1506,12 +1524,12 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4 && customBottomType != 1" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 1" label="空闲时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formCurtainsOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formCurtainsOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                 </el-form>
@@ -1628,12 +1646,12 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 6" label="延时时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formSwitchOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formSwitchOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 9" label="空闲时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="mini" v-model="formSwitchOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100"></el-input-number>
+                      <el-input-number size="medium" v-model="formSwitchOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                 </el-form>
@@ -1968,7 +1986,7 @@ export default {
       hours = hours >= 10 ? hours : '0'+hours;
       mins = mins >= 10 ? mins : '0'+mins;
       secs = secs >= 10 ? secs : '0'+secs;
-      return hours + ':' + mins + ':' + secs + "." + secss;
+      return hours + ':' + mins + ':' + secs;
     },
     hhIndex(type){
       if (process.browser) {
@@ -2024,7 +2042,7 @@ export default {
         if (type == 'template'){
           this.drawerRightWidth = '100%';
         }else {
-          this.drawerRightWidth = '90%';
+          this.drawerRightWidth = '100%';
         }
         this.drawerRightChildWidth = '90%';
       }else {
@@ -2286,21 +2304,7 @@ export default {
     addChildBottomDialog(event, type, index){
       //this.drawerChildBottom = true;
       //this.setChildBottomType = type;
-      if (this.setChildBottomType == 'lightSub'){
-        this.formOrder.type = 1;
-        this.formOrder.changeTime = 100;
-        this.formOrder.open = 1;
-        this.customBottomType = 1;
-      }else if (this.setChildBottomType == 'switchSub'){
-        this.customBottomType = 11;
-        this.formSwitchOrder.type = 11;
-        this.formSwitchOrder.keyArr = [];
-        this.formSwitchOrder.keyOpr = 1;
-      }else if (this.setChildBottomType == 'curtainsSub'){
-        this.customBottomType = 10;
-        this.formCurtainsOrder.type = 10;
-        this.formCurtainsOrder.curtainsOpenClose = 0;
-      }
+      this.resetOprType();
       //this.clearForm();
       this.oprOtherType = "orderList";
       this.drawerBottomDialogVisible = true;
@@ -2372,10 +2376,29 @@ export default {
       }
       this.drawerBottomDialogVisible = true;
     },
+    resetOprType(){
+      if (this.setChildBottomType == 'lightSub'){
+        this.formOrder.type = 1;
+        this.formOrder.changeTime = 100;
+        this.formOrder.open = 1;
+        this.customBottomType = 1;
+      }else if (this.setChildBottomType == 'switchSub'){
+        this.customBottomType = 11;
+        this.formSwitchOrder.type = 11;
+        this.formSwitchOrder.keyArr = [];
+        this.formSwitchOrder.keyOpr = 1;
+      }else if (this.setChildBottomType == 'curtainsSub'){
+        this.customBottomType = 10;
+        this.formCurtainsOrder.type = 10;
+        this.formCurtainsOrder.curtainsOpenClose = 0;
+      }
+    },
     insertOrder(event, item, index, area, type){
       //this.setChildBottomType = type;
       this.areaType = area;
       this.areaIndex = index;
+      this.oprOtherType = "orderList";
+      this.resetOprType();
       this.drawerBottomDialogVisible = true;
       for (let i = 0; i < this.orderList.length; i++){
         this.orderList[i].insertVisible = false;
@@ -2806,7 +2829,7 @@ export default {
             obj['sec'] = this.formSwitchOrder.waitTime;
           }
         }else if (outTypeObj(this.formOrder.type) == 6){
-          obj['v'] = this.customBottomOpen;
+          obj['v'] = parseInt(this.customBottomOpen);
           obj['t'] = this.formOrder.changeTime;
           obj['sec'] = this.formOrder.changeTime;
         }else if (outTypeObj(this.formOrder.type) == 7){
@@ -2850,6 +2873,7 @@ export default {
         console.log(obj);
         //this.taskItem.push(obj);
 
+        console.log(this.oprOtherType, this.areaIndex);
         if (this.oprOtherType == "orderList"){
           if (this.areaType == 'pre'){
             this.orderList.splice(this.areaIndex, 0, obj);
@@ -2871,6 +2895,7 @@ export default {
         this.drawerBottomDialogVisible = false;
         this.areaIndex = "";
         this.areaItem = "";
+        this.areaType = "";
         //this.clearForm();
       }else if(this.oprType == 'delOrder'){
         this.taskList[this.taskIndex].splice(this.oprOrderIndex, 1);
@@ -2909,8 +2934,11 @@ export default {
           if (taskList[i][j].sec){
             taskList[i][j].sec = undefined;
           }
-          if (taskList[i][j].insertVisible){
+          if (taskList[i][j].insertVisible != undefined || taskList[i][j].insertVisible != null){
             taskList[i][j].insertVisible = undefined;
+          }
+          if (taskList[i][j].list != undefined || taskList[i][j].list != null){
+            taskList[i][j].list = undefined;
           }
         }
       }
@@ -2950,6 +2978,9 @@ export default {
       this.$axios.post(this.baseUrl + url, codeData, {sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
           this.installSence(res.data.data.sceneId);
+
+          this.taskTempList = this.taskList;
+          this.planTempList = this.planList;
         }else {
           MessageError(res.data.msg);
           this.configLoading = false;
@@ -3018,6 +3049,11 @@ export default {
     createSence(){
       this.planList = [];
       this.taskList = [];
+      this.planTempList = [];
+      this.taskTempList = [];
+      this.taskResetList = [];
+      this.ruleMax = 0;
+      this.$parent.$parent.initMenu(this.planList);
       this.drawerListVisible = false;
     },
     selEnv(event, item){
@@ -3037,10 +3073,10 @@ export default {
       for (let i = 0; i < this.taskResetList[index].length; i++){
         if (this.taskResetList[index][i].i != 1 && this.taskResetList[index][i].i !=2){
           count++;
-        }else if (this.taskResetList[index][i].list.length > 0){
+        }else if (this.taskResetList[index][i].list != undefined && this.taskResetList[index][i].list.length > 0){
           count = 0;
           countList++;
-        }else if (this.taskResetList[index][i].list.length == 0){
+        }else if (this.taskResetList[index][i].list != undefined && this.taskResetList[index][i].list.length == 0){
           countList = 0;
         }
       }
@@ -3071,11 +3107,12 @@ export default {
   }
   .demoRuleChildClass{
     display: inline-block;
-    min-width: 90px;
+    min-width: 10px;
     height: 45px;
     text-align: center;
     /*border-right: 0.1px solid #434343;*/
     box-shadow: 0.5px 0px 1.5px #434343;
+    vertical-align:top
   }
   .demoRuleChildEmptyClass{
     display: inline-block;
@@ -3083,7 +3120,12 @@ export default {
     height: 30px;
   }
   .rule-class {
-    min-width: 90px;
+    min-width: 10px;
+    height: 30px;
+    display: inline-block;
+  }
+  .rule-empty-class {
+    min-width: 0px;
     height: 30px;
     display: inline-block;
   }
@@ -3222,7 +3264,42 @@ export default {
   }
   .item-list-child-main{
     border-bottom: 1px solid #ededed;
-    padding: 15px 10px;
+    padding: 5px 10px;
+  }
+  .item-list-child-child-item{
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    left: 5px;
+  }
+  .item-list-child-child-item2{
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    left: 5px;
+  }
+  .item-list-child-child-title2{
+    display: inline-block;
+    position: relative;
+    top: 5px;
+    left: 0px;
+  }
+  .item-list-child-child-opr{
+    display: inline-block;
+    position: relative;
+    top: 15px;
+    left: 0px;
+  }
+  .item-list-child-child-opr-item{
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    width: 30px;
+    vertical-align: middle;
+  }
+  .item-list-child-child-title{
+    position: relative;
+    top: -8px;
   }
   .item-active{
     box-shadow:0 0 5px #888888;

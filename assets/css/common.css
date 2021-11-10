@@ -1,10 +1,5 @@
 *{
-  -webkit-touch-callout:none;
-  -webkit-user-select:none;
-  -khtml-user-select:none;
-  -moz-user-select:none;
-  -ms-user-select:none;
-  user-select:none;
+
 }
 html {
   font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
@@ -17,6 +12,12 @@ html {
   box-sizing: border-box;
   color: #dddddd;
   overflow-y: hidden;
+  -webkit-touch-callout:none;
+  -webkit-user-select:none;
+  -khtml-user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+  user-select:none;
 }
 body{
   margin: 0px !important;
@@ -550,5 +551,12 @@ span,div,button,label{
   font-size: 10px;
   text-align: center;
   z-index: 99;
+}
+/***loading***/
+.custom-g-loading .el-icon-loading{
+  font-size: 32px;
+}
+.custom-g-loading .el-loading-text{
+  font-size: 15px;
 }
 

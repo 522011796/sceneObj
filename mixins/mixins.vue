@@ -10,6 +10,7 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           baseUrl: '',
           envKey: '',
           sessionId: '',
+          appType: '',
           dataDeviceList: [],
           globalRoomList: [],
           globalLightGroupList: [],
@@ -42,6 +43,7 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           this.baseUrl = commonConfig.baseUrl;
           this.envKey = this.$route.query.envKey;
           this.sessionId = this.$route.query.sessionId;
+          this.appType = this.$route.query.appType;
         },
         getRoomList(){
           let params = {
