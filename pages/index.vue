@@ -46,121 +46,7 @@
                 trigger="manual"
                 width="240">
                 <div class="font-size-10">
-                  <div>
-                    <el-row>
-                      <el-col :span="10">
-                        {{$t("类型")}}:
-                      </el-col>
-                      <el-col :span="14">
-                        {{ orderValueInfo(itemBlock.i, 'set') }}
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <div>
-                    <div v-if="itemBlock.i == 2">
-                      <div>
-                        <el-row>
-                          <el-col :span="10">
-                            {{$t("延时时间")}}:
-                          </el-col>
-                          <el-col :span="14">
-                            {{ itemBlock.v }}
-                          </el-col>
-                        </el-row>
-                      </div>
-                      <div>
-                        <el-row>
-                          <el-col :span="10">
-                            {{$t("指令数")}}
-                          </el-col>
-                          <el-col :span="14">
-                            {{ itemBlock.list ? itemBlock.list.length : 0 }}
-                          </el-col>
-                        </el-row>
-                      </div>
-                      <div class="marginTop5">
-                        <div ref="popChildBlock" class="pop-child-bLock">
-                          <div v-for="(itemList, indexList) in itemBlock.list" class="marginBottom2 pop-child-item color-ffffff">
-                            <el-row class=" padding-full5">
-                              <el-col :span="8">
-                                {{orderValueInfo(itemList.i, 'set')}}:
-                              </el-col>
-                              <el-col :span="16">
-                                <div v-if="itemList.i == 1">
-                                  {{$t("空闲时间")}}: {{ itemList.v }}
-                                </div>
-                                <div v-if="itemList.i == 2">
-                                  {{$t("延时时间")}}: {{ itemList.v }}
-                                </div>
-                                <div v-if="itemList.i == 3">
-                                  <div>
-                                    {{$t("循环起始")}}: {{ itemList.v + 1 }}
-                                  </div>
-                                  <div>
-                                    {{$t("循环位置")}}: {{ orderValueInfo(item[itemList.v].i, 'set') }}
-                                  </div>
-                                  <div>
-                                    {{$t("重复次数")}}: {{ itemList.t }}
-                                  </div>
-                                </div>
-                                <div v-if="itemList.i == 4">
-                                  <div>
-                                    {{$t("场景名称")}}: {{ itemList.n }}
-                                  </div>
-                                </div>
-                                <div v-if="itemList.i == 6">
-                                  <div>
-                                    {{$t("状态")}}: {{ openTypeInfo(itemList.v) }}
-                                  </div>
-                                  <div>
-                                    {{$t("渐变时间")}}: {{ itemList.t }}
-                                  </div>
-                                </div>
-                                <div v-if="itemList.i == 7">
-                                  <div>
-                                    {{$t("亮度百分比")}}: {{ itemList.v * 100 }}%
-                                  </div>
-                                  <div>
-                                    {{$t("渐变时间")}}: {{ itemList.t }}
-                                  </div>
-                                </div>
-                                <div v-if="itemList.i == 8">
-                                  <div>
-                                    {{$t("色温")}}: {{ itemList.v }}
-                                  </div>
-                                  <div>
-                                    {{$t("渐变时间")}}: {{ itemList.t }}
-                                  </div>
-                                </div>
-                                <div v-if="itemList.i == 9">
-                                  <div>
-                                    {{$t("色彩")}}: <span :style="{background:  converArgbToRgb(itemList.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
-                                  </div>
-                                  <div>
-                                    {{$t("渐变时间")}}: {{ itemList.t }}
-                                  </div>
-                                </div>
-                                <div v-if="itemList.i == 10">
-                                  <div>
-                                    {{$t("行程百分比")}}: {{ itemList.v * 100 }}%
-                                  </div>
-                                </div>
-                                <div v-if="itemList.i == 11">
-                                  <div>
-                                    {{$t("继电器")}}: {{ itemList.v.join() }}
-                                  </div>
-                                  <div>
-                                    {{$t("状态")}}: {{ keyTypeInfo(itemList.s) }}
-                                  </div>
-                                </div>
-                              </el-col>
-                            </el-row>
-                            <div v-if="itemBlock.list.length-1 != indexList" style="background: #dddddd;height: 0.5px;margin: 2px 0px 0px 0px;"></div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <order-list-pop-child-dialog :item-block="itemBlock"></order-list-pop-child-dialog>
                 </div>
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative">
                   <div>
@@ -195,185 +81,33 @@
       </div>
     </div>
 
-    <el-dialog
-      title="提示"
-      :visible.sync="dialogVisible"
-      custom-class="alert-class"
-      top="30vh"
-      width="300px"
-      @close="closeDialog">
-      <div slot="title">
-        <div class="alertHeader">
-          <div class="alertTitle">
-            <span>提示</span>
-          </div>
-        </div>
-      </div>
-      <div class="alertContent">
-        <div>{{alertMessageTips}}</div>
-      </div>
-      <span slot="footer" class="dialog-footer">
-          <el-row>
-            <el-col :span="12">
-              <div class="alertFooterClass alertFooterSpanRightBorder">
-                <span class="alertFooterSpan" @click="dialogVisible = false">
-                  取 消
-                </span>
-              </div>
-            </el-col>
-            <el-col :span="12">
-              <div class="alertFooterClass">
-                <span class="alertFooterSpan" @click="saveOpr()">
-                  <i class="fa fa-spinner fa-spin" v-if="timer != null"></i>
-                  <label v-else>确 定</label>
-                </span>
-              </div>
-            </el-col>
-          </el-row>
-        </span>
-    </el-dialog>
+    <!--提示-->
+    <alert-message-dialog :alert-message-tips="alertMessageTips" :timer="timer" :dialog-visible="dialogVisible" @cancel="cancelOpr" @okClick="saveOpr" @close="closeDialog"></alert-message-dialog>
 
     <!--场所列表-->
-    <el-drawer
-      title="场景设置"
-      custom-class="drawer-list"
-      :show-close="true"
-      :modal="true"
-      :size="dialogEnvSize"
-      :wrapperClosable="false"
-      :visible.sync="drawerEnvVisible"
-      :direction="direction">
-
-      <div slot="title">
-        <div class="block-list-header">
-          <el-row>
-            <el-col :span="12">
-              <span>{{$t("场所列表")}}</span>
-            </el-col>
-            <el-col :span="12" class="textRight">
-
-            </el-col>
-          </el-row>
-        </div>
-      </div>
-
-      <div class="marginTop10">
-        <div>
-          <div v-for="(item, index) in globalEnvList" :key="index" class="block-list-content-item marginBottom10" @click="selEnv($event, item)">
-            <el-row>
-              <el-col :span="16">
-                <div class="textLeft">
-                  <div class="marginTop10 fontBold">{{ item.envName }}</div>
-                  <div class="marginTop5">{{ item.envKey }}</div>
-                </div>
-              </el-col>
-              <el-col :span="8">
-
-              </el-col>
-            </el-row>
-          </div>
-        </div>
-      </div>
-    </el-drawer>
+    <env-list-dialog :dialog-env-size="dialogEnvSize" :drawer-env-visible="drawerEnvVisible" :direction="direction" :data="globalEnvList"@click="selEnv"></env-list-dialog>
 
     <!--场景列表-->
-    <el-drawer
-      title="场景设置"
-      custom-class="drawer-list"
-      :show-close="false"
-      :modal="true"
-      :size="dialogListSize"
-      :wrapperClosable="false"
-      :visible.sync="drawerListVisible"
-      :direction="directionList">
+    <scene-list-dialog :dialog-list-size="dialogListSize"
+                       :drawer-list-visible="drawerListVisible"
+                       :direction="directionList"
+                       :data="sceneList"
+                       @logout="logout()"
+                       @selEnvList="selEnvList"
+                       @createSence="createSence"
+                       @selSence="selSence"
+                       @updateSenceOpr="updateSenceOpr"
+    >
+    </scene-list-dialog>
 
-      <div slot="title">
-        <div class="block-list-header">
-          <el-row>
-            <el-col :span="12">
-              <span v-if="this.appType != 'app'">
-                <el-button size="mini" type="error" @click="logout()">{{$t("退出")}}</el-button>
-              </span>
-              <span v-else>
-                &nbsp;
-              </span>
-            </el-col>
-            <el-col :span="12" class="textRight">
-              <el-button size="mini" type="error" @click="selEnvList()" v-if="this.appType != 'app'">{{$t("场所列表")}}</el-button>
-              <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
-
-      <div class="marginTop10">
-        <div v-for="(item, index) in sceneList" class="block-list-content-item marginBottom10" @click="selSence($event, item, 'menu')">
-          <el-row>
-            <el-col :span="14">
-              <div class="textLeft">
-                <div class="marginTop10 fontBold">{{ item.sceneName }}</div>
-                <div class="marginTop5 font-size-12">
-                  <img :src="require(`~/static/img/${item.roomId}.png`)" style="height: 20px; width: 20px;">
-                  <label style="position: relative; top: -6px;">{{ getGlobalRoomObj(item.roomId) }}</label>
-                </div>
-              </div>
-            </el-col>
-            <el-col :span="10">
-              <div class="textRight marginTop20" style="position: relative">
-<!--                <span class="color-666666">{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>-->
-                <span class="color-success" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;width: 40px;text-align: center" @click.stop="updateSenceOpr($event, item)">
-                  {{ $t("修改") }}
-                </span>
-                <span class="color-error" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;width: 40px;text-align: center" @click.stop="removeSenceOpr($event, item)">
-<!--                  <i class="fa fa-trash font-size-20 marginLeft10 color-error" style="position: relative; top: 9px;"></i>-->
-                  {{ $t("删除") }}
-                </span>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
-      </div>
-    </el-drawer>
-
-    <!--场景列表-->
-    <el-drawer
-      title="场景设置"
-      custom-class="drawer-list"
-      :show-close="true"
-      :modal="true"
-      :size="dialogRoomSize"
-      :wrapperClosable="false"
-      :visible.sync="drawerRoomVisible"
-      :direction="directionList">
-
-      <div slot="title">
-        <div class="block-list-header">
-          <el-row>
-            <el-col :span="12">
-              <span>{{$t("房间列表")}}</span>
-            </el-col>
-            <el-col :span="12" class="textRight">
-<!--              <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>-->
-            </el-col>
-          </el-row>
-        </div>
-      </div>
-
-      <div class="marginTop10">
-        <el-row :gutter="10">
-          <el-col :span="8" class="textCenter" v-for="(item, index) in globalRoomList" :key="index">
-            <div class="room-Block-Item" @click="selRoomItem($event, item)">
-              <div class="marginTop10">
-                <img :src="require(`~/static/img/${item.id}.png`)" style="height: 50px; width: 50px;">
-              </div>
-              <div class="marginTop5">
-                {{ item.name }}
-              </div>
-            </div>
-          </el-col>
-        </el-row>
-      </div>
-    </el-drawer>
+    <!--房间列表-->
+    <room-list-dialog :dialog-room-size="dialogRoomSize"
+                      :drawer-room-visible="drawerRoomVisible"
+                      :direction="directionList"
+                      :data="globalRoomList"
+                      @click="selRoomItem"
+    >
+    </room-list-dialog>
 
     <!--场景列表-->
     <el-drawer
@@ -494,38 +228,12 @@
                   trigger="click"
                   v-model="customDrawBottomVisible">
                   <div class="textCenter">
-                    <div class="index-pop-item" @click="changeCustomBottomType($event, 1)">
-                      <span>{{$t("开/关灯控制")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomType($event, 2)">
-                      <span>{{$t("亮度控制")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomType($event, 3)">
-                      <span>{{$t("色温控制")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomType($event, 4)">
-                      <span>{{$t("色彩控制")}}</span>
-                    </div>
-                    <div v-if="setChildBottomType != 'lightGroupSub'" class="index-pop-item" @click="changeCustomBottomType($event, 7)">
-                      <span>{{$t("循环操作")}}</span>
-                    </div>
-                    <div v-if="setChildBottomType != 'lightSub'" class="index-pop-item" @click="changeCustomBottomType($event, 8)">
-                      <span>{{$t("电源控制(勿与循环操作一起使用)")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomType($event, 5)">
-                      <span>{{$t("场景调用(勿使用2级以上嵌套)")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomType($event, 6)">
-                      <span>{{$t("延时")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomType($event, 9)">
-                      <span>{{$t("空闲时段")}}</span>
-                    </div>
+                    <order-light-type-dialog :set-child-bottom-type="setChildBottomType" @click="changeCustomBottomType"></order-light-type-dialog>
                   </div>
                   <span slot="reference" size="mini">
                           <label>{{formOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formOrder.type), 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
-                        </span>
+                  </span>
                 </el-popover>
               </div>
             </el-form-item>
@@ -538,17 +246,12 @@
                   trigger="click"
                   v-model="customDrawBottomOpenVisible">
                   <div class="textCenter">
-                    <div class="index-pop-item" @click="changeCustomBottomOpen($event, 1)">
-                      <span>{{$t("开灯")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomOpen($event, 0)">
-                      <span>{{$t("关灯")}}</span>
-                    </div>
+                    <light-open-type-dialog @click="changeCustomBottomOpen"></light-open-type-dialog>
                   </div>
                   <span slot="reference" size="mini">
                           <label>{{formOrder.open == '' && formOrder.open != 0 ? $t("请选择") : openTypeInfo(formOrder.open)}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
-                        </span>
+                  </span>
                 </el-popover>
               </div>
             </el-form-item>
@@ -731,21 +434,7 @@
                   trigger="click"
                   v-model="customDrawBottomVisible">
                   <div class="textCenter">
-                    <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 10)">
-                      <span>{{$t("行程控制")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 3)">
-                      <span>{{$t("循环操作")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 4)">
-                      <span>{{$t("场景调用(勿使用2级以上嵌套)")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 2)">
-                      <span>{{$t("延时")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 1)">
-                      <span>{{$t("空闲时间")}}</span>
-                    </div>
+                    <order-curtains-type-dialog @click="changeCustomBottomCurtainsType"></order-curtains-type-dialog>
                   </div>
                   <span slot="reference" size="mini">
                           <label>{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
@@ -859,15 +548,7 @@
                   trigger="click"
                   v-model="customDrawBottomVisible">
                   <div class="textCenter">
-                    <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 11)">
-                      <span>{{$t("按键操作")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 6)">
-                      <span>{{$t("延时")}}</span>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 9)">
-                      <span>{{$t("空闲时段")}}</span>
-                    </div>
+                    <order-switch-type-dialog @click="changeCustomBottomSwitchType"></order-switch-type-dialog>
                   </div>
                   <span slot="reference" size="mini">
                           <label>{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(formSwitchOrder.type, 'set')}}</label>
@@ -918,39 +599,12 @@
                   trigger="click"
                   v-model="customDrawBottomKeyOprVisible">
                   <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                    <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 0)">
-                      <el-row>
-                        <el-col :span="20">
-                          <div class="textLeft">
-                            <span>{{$t("释放")}}</span>
-                          </div>
-                        </el-col>
-                        <el-col :span="4">
-                          <div class="textRight" v-if="formSwitchOrder.keyOpr === 0">
-                            <span><i class="fa fa-check-circle color-success"></i></span>
-                          </div>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 1)">
-                      <el-row>
-                        <el-col :span="20">
-                          <div class="textLeft">
-                            <span>{{$t("按下")}}</span>
-                          </div>
-                        </el-col>
-                        <el-col :span="4">
-                          <div class="textRight" v-if="formSwitchOrder.keyOpr === 1">
-                            <span><i class="fa fa-check-circle color-success"></i></span>
-                          </div>
-                        </el-col>
-                      </el-row>
-                    </div>
+                    <order-switch-key-type-dialog :form="formSwitchOrder" @click="changeCustomBottomSwitchKeyOprType"></order-switch-key-type-dialog>
                   </div>
                   <span slot="reference" size="mini">
                             <label>{{formSwitchOrder.keyOpr === '' && formSwitchOrder.keyOpr != 0 ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
-                          </span>
+                  </span>
                 </el-popover>
               </div>
             </el-form-item>
@@ -967,32 +621,6 @@
           </el-form>
         </div>
       </div>
-
-<!--      <div class="drawerHeaderContent" :style="{'padding-bottom': paddingBottom}">-->
-<!--        <el-form class="netmoon-form-dialog" label-width="90px" ref="formPlain" :model="formPlain">-->
-<!--          <el-form-item label="场景名称" v-model="formPlain.name">-->
-<!--            <el-input :placeholder="$t('请输入任务名称')" v-model="formPlain.name"></el-input>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="控制房间">-->
-<!--            <div class="textRight color-666666" @click="addDialog($event, 'room')">-->
-<!--              <label>{{formPlain.room == '' ? $t("请选择") : formPlain.room}}</label>-->
-<!--              <label><i class="fa fa-chevron-right"></i></label>-->
-<!--            </div>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="自定义图标">-->
-<!--            <div class="textRight color-666666" @click="addDialog($event, 'icon')">-->
-<!--              <label>{{formPlain.icon == '' ? $t("请选择") : formPlain.icon}}</label>-->
-<!--              <label><i class="fa fa-chevron-right"></i></label>-->
-<!--            </div>-->
-<!--          </el-form-item>-->
-<!--          <el-form-item label="选择模版">-->
-<!--            <div class="textRight color-666666" @click="addDialog($event, 'template')">-->
-<!--              <label>{{formPlain.template == '' ? $t("请选择") : formPlain.template}}</label>-->
-<!--              <label><i class="fa fa-chevron-right"></i></label>-->
-<!--            </div>-->
-<!--          </el-form-item>-->
-<!--        </el-form>-->
-<!--      </div>-->
     </el-drawer>
 
     <!--指令列表-->
@@ -1151,33 +779,7 @@
                         trigger="click"
                         v-model="customBottomVisible">
                         <div class="textCenter">
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 1)">
-                            <span>{{$t("开/关灯控制")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 2)">
-                            <span>{{$t("亮度控制")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 3)">
-                            <span>{{$t("色温控制")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 4)">
-                            <span>{{$t("色彩控制")}}</span>
-                          </div>
-                          <div v-if="setChildBottomType != 'lightGroupSub'" class="index-pop-item" @click="changeCustomBottomType($event, 7)">
-                            <span>{{$t("循环操作")}}</span>
-                          </div>
-                          <div v-if="setChildBottomType != 'lightSub'" class="index-pop-item" @click="changeCustomBottomType($event, 8)">
-                            <span>{{$t("电源控制(勿与循环操作一起使用)")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 5)">
-                            <span>{{$t("场景调用(勿使用2级以上嵌套)")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 6)">
-                            <span>{{$t("延时")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomType($event, 9)">
-                            <span>{{$t("空闲时段")}}</span>
-                          </div>
+                          <order-light-type-dialog :set-child-bottom-type="setChildBottomType" @click="changeCustomBottomType"></order-light-type-dialog>
                         </div>
                         <span slot="reference" size="mini">
                           <label v-if="areaItem == ''">{{formOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formOrder.type), 'set')}}</label>
@@ -1196,12 +798,7 @@
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter">
-                          <div class="index-pop-item" @click="changeCustomBottomOpen($event, 1)">
-                            <span>{{$t("开灯")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomOpen($event, 0)">
-                            <span>{{$t("关灯")}}</span>
-                          </div>
+                          <light-open-type-dialog @click="changeCustomBottomOpen"></light-open-type-dialog>
                         </div>
                         <span slot="reference" size="mini">
                           <label>{{formOrder.open == '' && formOrder.open != 0 ? $t("请选择") : openTypeInfo(formOrder.open)}}</label>
@@ -1389,21 +986,7 @@
                         trigger="click"
                         v-model="customBottomVisible">
                         <div class="textCenter">
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 10)">
-                            <span>{{$t("行程控制")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 3)">
-                            <span>{{$t("循环操作")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 4)">
-                            <span>{{$t("场景调用(勿使用2级以上嵌套)")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 2)">
-                            <span>{{$t("延时")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomCurtainsType($event, 1)">
-                            <span>{{$t("空闲时间")}}</span>
-                          </div>
+                          <order-curtains-type-dialog @click="changeCustomBottomCurtainsType"></order-curtains-type-dialog>
                         </div>
                         <span slot="reference" size="mini">
                           <label v-if="areaItem == ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
@@ -1518,15 +1101,7 @@
                         trigger="click"
                         v-model="customBottomVisible">
                         <div class="textCenter">
-                          <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 11)">
-                            <span>{{$t("按键操作")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 6)">
-                            <span>{{$t("延时")}}</span>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomSwitchType($event, 9)">
-                            <span>{{$t("空闲时段")}}</span>
-                          </div>
+                          <order-switch-type-dialog @click="changeCustomBottomSwitchType"></order-switch-type-dialog>
                         </div>
                         <span slot="reference" size="mini">
                           <label v-if="areaItem == ''">{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formSwitchOrder.type), 'set')}}</label>
@@ -1580,34 +1155,7 @@
                         trigger="click"
                         v-model="customBottomKeyOprVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 0)">
-                            <el-row>
-                              <el-col :span="20">
-                                <div class="textLeft">
-                                  <span>{{$t("释放")}}</span>
-                                </div>
-                              </el-col>
-                              <el-col :span="4">
-                                <div class="textRight" v-if="formSwitchOrder.keyOpr === 0">
-                                  <span><i class="fa fa-check-circle color-success"></i></span>
-                                </div>
-                              </el-col>
-                            </el-row>
-                          </div>
-                          <div class="index-pop-item" @click="changeCustomBottomSwitchKeyOprType($event, 1)">
-                            <el-row>
-                              <el-col :span="20">
-                                <div class="textLeft">
-                                  <span>{{$t("按下")}}</span>
-                                </div>
-                              </el-col>
-                              <el-col :span="4">
-                                <div class="textRight" v-if="formSwitchOrder.keyOpr === 1">
-                                  <span><i class="fa fa-check-circle color-success"></i></span>
-                                </div>
-                              </el-col>
-                            </el-row>
-                          </div>
+                          <order-switch-key-type-dialog :form="formSwitchOrder" @click="changeCustomBottomSwitchKeyOprType"></order-switch-key-type-dialog>
                         </div>
                         <span slot="reference" size="mini">
                             <label>{{formSwitchOrder.keyOpr === '' && formSwitchOrder.keyOpr != 0 ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
@@ -1640,6 +1188,7 @@
 import mixins from "../mixins/mixins";
 import {common} from "../utils/api/url";
 import LoopItem from "../components/LoopItem";
+import OrderLightTypeDialog from "../components/OrderLightTypeDialog";
 import {
   MessageSuccess,
   MessageWarning,
@@ -1651,9 +1200,25 @@ import {
   openType,
   MessageError
 } from "../utils/utils";
+import OrderCurtainsTypeDialog from "../components/OrderCurtainsTypeDialog";
+import OrderSwitchTypeDialog from "../components/OrderSwitchTypeDialog";
+import OrderListPopChildDialog from "../components/OrderListPopChildDialog";
+import AlertMessageDialog from "../components/AlertMessageDialog";
+import EnvListDialog from "../components/EnvListDialog";
+import SceneListDialog from "../components/SceneListDialog";
+import RoomListDialog from "../components/RoomListDialog";
+import LightOpenTypeDialog from "../components/LightOpenTypeDialog";
+import OrderSwitchKeyTypeDialog from "../components/OrderSwitchKeyTypeDialog";
 export default {
   mixins: [mixins],
-  components: { LoopItem },
+  components: {
+    OrderSwitchKeyTypeDialog,
+    LightOpenTypeDialog,
+    RoomListDialog,
+    SceneListDialog,
+    EnvListDialog,
+    AlertMessageDialog,
+    OrderListPopChildDialog, OrderSwitchTypeDialog, OrderCurtainsTypeDialog, LoopItem, OrderLightTypeDialog },
   data(){
     return {
       popvisible: false,
@@ -2723,6 +2288,9 @@ export default {
       this.switchIndex = index;
       this.switchItem = item;
       this.formSwitchOrder.key = index;
+    },
+    cancelOpr(){
+      this.dialogVisible = false;
     },
     saveOpr(){
       console.log("----"+this.formOrder.type,this.formSwitchOrder.type,this.formCurtainsOrder.type);

@@ -1,6 +1,15 @@
+export { default as AlertMessageDialog } from '../../components/AlertMessageDialog.vue'
+export { default as EnvListDialog } from '../../components/EnvListDialog.vue'
+export { default as LightOpenTypeDialog } from '../../components/LightOpenTypeDialog.vue'
 export { default as LoopItem } from '../../components/LoopItem.vue'
 export { default as NuxtLogo } from '../../components/NuxtLogo.vue'
-export { default as OrderDialog } from '../../components/OrderDialog.vue'
+export { default as OrderCurtainsTypeDialog } from '../../components/OrderCurtainsTypeDialog.vue'
+export { default as OrderLightTypeDialog } from '../../components/OrderLightTypeDialog.vue'
+export { default as OrderListPopChildDialog } from '../../components/OrderListPopChildDialog.vue'
+export { default as OrderSwitchKeyTypeDialog } from '../../components/OrderSwitchKeyTypeDialog.vue'
+export { default as OrderSwitchTypeDialog } from '../../components/OrderSwitchTypeDialog.vue'
+export { default as RoomListDialog } from '../../components/RoomListDialog.vue'
+export { default as SceneListDialog } from '../../components/SceneListDialog.vue'
 export { default as Tutorial } from '../../components/Tutorial.vue'
 
 // nuxt/nuxt.js#8607

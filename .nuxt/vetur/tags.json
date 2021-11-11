@@ -1,12 +1,39 @@
 {
+  "AlertMessageDialog": {
+    "description": "Auto imported from components/AlertMessageDialog.vue"
+  },
+  "EnvListDialog": {
+    "description": "Auto imported from components/EnvListDialog.vue"
+  },
+  "LightOpenTypeDialog": {
+    "description": "Auto imported from components/LightOpenTypeDialog.vue"
+  },
   "LoopItem": {
     "description": "Auto imported from components/LoopItem.vue"
   },
   "NuxtLogo": {
     "description": "Auto imported from components/NuxtLogo.vue"
   },
-  "OrderDialog": {
-    "description": "Auto imported from components/OrderDialog.vue"
+  "OrderCurtainsTypeDialog": {
+    "description": "Auto imported from components/OrderCurtainsTypeDialog.vue"
+  },
+  "OrderLightTypeDialog": {
+    "description": "Auto imported from components/OrderLightTypeDialog.vue"
+  },
+  "OrderListPopChildDialog": {
+    "description": "Auto imported from components/OrderListPopChildDialog.vue"
+  },
+  "OrderSwitchKeyTypeDialog": {
+    "description": "Auto imported from components/OrderSwitchKeyTypeDialog.vue"
+  },
+  "OrderSwitchTypeDialog": {
+    "description": "Auto imported from components/OrderSwitchTypeDialog.vue"
+  },
+  "RoomListDialog": {
+    "description": "Auto imported from components/RoomListDialog.vue"
+  },
+  "SceneListDialog": {
+    "description": "Auto imported from components/SceneListDialog.vue"
   },
   "Tutorial": {
     "description": "Auto imported from components/Tutorial.vue"
