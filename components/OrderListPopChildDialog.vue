@@ -123,7 +123,8 @@ import {keyType, openType, orderColor, orderValue, outEditTypeObj, outTypeObj} f
 
 export default {
   props: {
-    itemBlock: Object
+    itemBlock: Object,
+    item: Array
   },
   data() {
     return {}

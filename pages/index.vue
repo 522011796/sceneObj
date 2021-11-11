@@ -31,7 +31,7 @@
                v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2)"
                :style="{
                         'background': orderColorInfo(itemBlock.i),
-                        'width': itemBlock.sec / 1000 * 52+'px',
+                        'width': itemBlock.secLoop ? itemBlock.secLoop / 1000 * 52 +'px' : itemBlock.sec / 1000 * 52 +'px',
                         'height':'40px',
                         'color': '#555555',
                         'position': 'relative'
@@ -46,7 +46,7 @@
                 trigger="manual"
                 width="240">
                 <div class="font-size-10">
-                  <order-list-pop-child-dialog :item-block="itemBlock"></order-list-pop-child-dialog>
+                  <order-list-pop-child-dialog :item-block="itemBlock" :item="item"></order-list-pop-child-dialog>
                 </div>
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative">
                   <div>
@@ -326,7 +326,7 @@
             </el-form-item>
             <el-form-item v-if="customBottomType == 7" label="重复次数" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="medium" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="100" :step="100" :step-strictly="true"></el-input-number>
+                <el-input-number size="medium" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0" :step="1" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType == 8" label="电源" class="netmoon-form-item-border-dialog">
@@ -463,7 +463,7 @@
             </el-form-item>
             <el-form-item v-if="customBottomType == 3" label="重复次数" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="medium" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
+                <el-input-number size="medium" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0" :step="1" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType == 4" label="场景名称" class="netmoon-form-item-border-dialog">
@@ -851,7 +851,7 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 7" label="重复次数" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="medium" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0"></el-input-number>
+                      <el-input-number size="medium" v-model="formOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0" :step="1" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 8" label="电源" class="netmoon-form-item-border-dialog">
@@ -989,7 +989,7 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 3" label="重复次数" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="medium" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="100" :step="100" :step-strictly="true"></el-input-number>
+                      <el-input-number size="medium" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0" :step="1" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 4" label="场景名称" class="netmoon-form-item-border-dialog">
@@ -1401,6 +1401,9 @@ export default {
     init(){
       this.dataList = [];
       this.ruleList = [];
+      let resultLoop = 0;
+      let loopNum = 0;
+      let selfLoopNumber = 0;
       for (let i = 0; i < this.taskList.length; i++){
         this.ruleCount = 0;
         for (let j = 0; j < this.taskList[i].length; j++){
@@ -1409,14 +1412,24 @@ export default {
           if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2){
             aNumber = this.taskList[i][j].sec / 100;
             //aNumber = this.taskList[i][j].sec;
+          }else if (this.taskList[i][j].i == 3){
+            let index = this.taskList[i][j].v;
+            let bNumber = 0;
+            selfLoopNumber = 0;
+            if (this.taskList[i][j].t != 0){
+              loopNum = this.taskList[i][j].t;
+              for (let k = index; k < this.taskList[i].length; k++){
+                if (k < j && (this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2)){
+                  bNumber = this.taskList[i][k].sec / 100;
+                  resultLoop += Math.floor(bNumber);
+                }
+              }
+            }
           }
-          // else if(this.taskList[i][j].i == 6 || this.taskList[i][j].i == 7 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4
-          //   || this.taskList[i][j].i == 8 || this.taskList[i][j].i == 9 || this.taskList[i][j].i == 10 || this.taskList[i][j].i == 11){
-          //   aNumber = this.taskList[i][j].sec / 100;
-          // }
           let result = Math.floor(aNumber);
           this.ruleCount += result;
         }
+        this.ruleCount = this.ruleCount + resultLoop * loopNum;
         this.ruleList.push(this.ruleCount);
       }
 
@@ -1687,16 +1700,40 @@ export default {
     setTaskList(taskList, type){//重新组装tasklist，用于显示列表
       let list = [];
       let array = [];
+      let selfLoopNumber = 0;
+      let loopNum = 0;
+      let resultLoop = 0;
+      let indexJ = 0;
       for (let i = 0; i < taskList.length; i++){
         for (let j = 0; j < taskList[i].length; j++){
           if (taskList[i][j].i != 1 && taskList[i][j].i != 2){
             array.push(taskList[i][j]);
+            if (taskList[i][j].i == 3){
+              let index = this.taskList[i][j].v;
+              let bNumber = 0;
+              selfLoopNumber = 0;
+              if (this.taskList[i][j].t != 0){
+                loopNum = this.taskList[i][j].t;
+                for (let k = index; k < this.taskList[i].length; k++){
+                  if (k < j && (this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2)){
+                    bNumber = this.taskList[i][k].sec;
+                    resultLoop += Math.floor(bNumber);
+                  }
+                }
+              }
+            }
           }else if (taskList[i][j].i == 2){
+            let selfSec = this.taskList[i][j].sec;
+            if (resultLoop * loopNum > 0){
+              this.taskList[i][j]['secLoop'] = resultLoop * loopNum + selfSec;
+            }
             taskList[i][j]['list'] = array;
             array = [];
+            resultLoop = 0;
           }
         }
       }
+      console.log(12345,taskList);
       this.taskResetList = taskList;
       //原始数据
       if (type != 'setChild'){
@@ -2458,6 +2495,9 @@ export default {
               taskList[i][j].popVisible = undefined;
             }
             if (taskList[i][j].sec){
+              taskList[i][j].sec = undefined;
+            }
+            if (taskList[i][j].popVisible != undefined || taskList[i][j].secLoop){
               taskList[i][j].sec = undefined;
             }
             if (taskList[i][j].insertVisible != undefined || taskList[i][j].insertVisible != null){
