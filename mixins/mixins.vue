@@ -41,9 +41,13 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
         },
         getUrl(){
           this.baseUrl = commonConfig.baseUrl;
-          this.envKey = this.$route.query.envKey;
           this.sessionId = this.$route.query.sessionId;
           this.appType = this.$route.query.appType;
+          if (process.client){
+            this.envKey = this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey");
+            console.log(this.envKey);
+            localStorage.setItem("envKey", this.envKey);
+          }
         },
         getRoomList(){
           let params = {

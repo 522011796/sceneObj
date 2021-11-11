@@ -1,4 +1,7 @@
 {
+  "LoopItem": {
+    "description": "Auto imported from components/LoopItem.vue"
+  },
   "NuxtLogo": {
     "description": "Auto imported from components/NuxtLogo.vue"
   },

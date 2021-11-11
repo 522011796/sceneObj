@@ -698,7 +698,7 @@
             img: ''
           };
           console.log(this.$refs.childRef.$children[0].formSence);
-          this.$refs.childRef.$children[0].openDialogSence();
+          this.$refs.childRef.$children[0].saveConfig();
         }
       }
     }

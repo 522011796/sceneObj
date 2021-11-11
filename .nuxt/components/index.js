@@ -1,3 +1,4 @@
+export { default as LoopItem } from '../../components/LoopItem.vue'
 export { default as NuxtLogo } from '../../components/NuxtLogo.vue'
 export { default as OrderDialog } from '../../components/OrderDialog.vue'
 export { default as Tutorial } from '../../components/Tutorial.vue'

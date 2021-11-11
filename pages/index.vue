@@ -299,7 +299,7 @@
               </span>
             </el-col>
             <el-col :span="12" class="textRight">
-              <el-button size="mini" type="error" @click="selEnvList()">{{$t("场所列表")}}</el-button>
+              <el-button size="mini" type="error" @click="selEnvList()" v-if="this.appType != 'app'">{{$t("场所列表")}}</el-button>
               <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
             </el-col>
           </el-row>
@@ -320,9 +320,13 @@
             </el-col>
             <el-col :span="10">
               <div class="textRight marginTop20" style="position: relative">
-                <span class="color-666666">{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>
-                <span style="display: inline-block;position: relative; top: -9px; height: 40px;width: 40px;text-align: center" @click.stop="removeSenceOpr($event, item)">
-                  <i class="fa fa-trash font-size-20 marginLeft10 color-error" style="position: relative; top: 9px;"></i>
+<!--                <span class="color-666666">{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>-->
+                <span class="color-success" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;width: 40px;text-align: center" @click.stop="updateSenceOpr($event, item)">
+                  {{ $t("修改") }}
+                </span>
+                <span class="color-error" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;width: 40px;text-align: center" @click.stop="removeSenceOpr($event, item)">
+<!--                  <i class="fa fa-trash font-size-20 marginLeft10 color-error" style="position: relative; top: 9px;"></i>-->
+                  {{ $t("删除") }}
                 </span>
               </div>
             </el-col>
@@ -562,14 +566,15 @@
                         <el-col :span="20">
                           <div class="textLeft">
                             <span>
-                              <el-tag>
+                              <el-tag size="mini">
                                 <label class="font-size-12 color-default">
-                                  {{$t("No.")}}
                                   {{index+1}}
                                 </label>
                               </el-tag>
                             </span>
-                            <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
+                            <span class="marginLeft10">
+                              <loop-item :item="item"></loop-item>
+                            </span>
                           </div>
                         </el-col>
                         <el-col :span="4">
@@ -768,14 +773,15 @@
                         <el-col :span="20">
                           <div class="textLeft">
                             <span>
-                              <el-tag>
+                              <el-tag size="mini">
                                 <label class="font-size-12 color-default">
-                                  {{$t("No.")}}
                                   {{index+1}}
                                 </label>
                               </el-tag>
                             </span>
-                            <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
+                            <span class="marginLeft10">
+                              <loop-item :item="item"></loop-item>
+                            </span>
                           </div>
                         </el-col>
                         <el-col :span="4">
@@ -1026,59 +1032,23 @@
               <div class="item-list-child" v-for="(item, index) in orderList" :key="index" @click="upateChildBottomDialog($event, 'lightSub', index, item)">
                 <el-row>
                   <el-col :span="16">
-                    <span :class="(item.i == 6 || item.i == 7 || item.i == 8 || item.i == 9 || item.i == 11) ? 'item-list-child-child-title' : 'item-list-child-child-title2'">
+                    <span>
                       <el-tag size="mini">
                         <label class="font-size-12 color-default">
                           {{index+1}}
                         </label>
                       </el-tag>
                     </span>
-                    <span class="marginLeft10" :class="(item.i == 6 || item.i == 7 || item.i == 8 || item.i == 9 || item.i == 11) ? 'item-list-child-child-title' : 'item-list-child-child-title2'">{{ orderGetAndSet(item.i, 'set')}}</span>
+<!--                    <span class="marginLeft10" :class="(item.i == 6 || item.i == 7 || item.i == 8 || item.i == 9 || item.i == 11) ? 'item-list-child-child-title' : 'item-list-child-child-title2'">{{ orderGetAndSet(item.i, 'set')}}</span>-->
                     <span>
-                          <label v-if="item.i == 1" size="mini" class="font-size-12 color-default item-list-child-child-item2">
-                            <div>{{$t("空闲")}}:{{ item.v }}</div>
-                          </label>
-                          <label v-if="item.i == 2" size="mini" class="font-size-12 color-default item-list-child-child-item2">
-                            <div>{{$t("延时")}}:{{ item.v }}</div>
-                          </label>
-                          <label v-if="item.i == 3" size="mini" class="font-size-12">
-                            {{$t("循环起始")}}: {{ item.v + 1 }}
-                            {{$t("循环位置")}}: {{ orderValueInfo(orderList[item.v].i, 'set') }}
-                            {{$t("重复次数")}}: {{ item.t }}
-                          </label>
-                          <label v-if="item.i == 4" size="mini" class="font-size-12 item-list-child-child-item2">
-                            <div>{{$t("场景")}}: {{ item.n }}</div>
-                          </label>
-                          <div v-if="item.i == 6" size="mini" class="font-size-12 color-default item-list-child-child-item">
-                            <div>{{$t("状态")}}: {{ openTypeInfo(item.v) }}</div>
-                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
-                          </div>
-                          <label v-if="item.i == 7" size="mini" class="font-size-12 color-default item-list-child-child-item">
-                            <div>{{$t("亮度百分比")}}: {{ item.v * 100 }}%</div>
-                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
-                          </label>
-                          <label v-if="item.i == 8" size="mini" class="font-size-12 color-default item-list-child-child-item">
-                            <div>{{$t("色温")}}: {{ item.v }}</div>
-                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
-                          </label>
-                          <div v-if="item.i == 9" size="mini" class="font-size-12 color-default item-list-child-child-item">
-                            <div>{{$t("色彩")}}: <span :style="{background:  converArgbToRgb(item.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span></div>
-                            <div>{{$t("渐变时间")}}: {{ item.t }}</div>
-                          </div>
-                          <label v-if="item.i == 10" size="mini" class="font-size-12 color-default item-list-child-child-item2">
-                            <div>{{$t("行程百分比")}}: {{ item.v * 100 }}%</div>
-                          </label>
-                          <label v-if="item.i == 11" size="mini" class="font-size-12 color-default item-list-child-child-item">
-                            <div>{{$t("继电器")}}: {{ item.v.join() }}</div>
-                            <div>{{$t("状态")}}: {{ keyTypeInfo(item.s) }}</div>
-                          </label>
+                      <loop-item :item="item"></loop-item>
                     </span>
                   </el-col>
                   <el-col :span="8">
                     <div class="textRight">
-                      <span :style="(item.i != 1 && item.i != 2 && item.i != 4 && item.i != 10) ? {'position': 'relative', 'top': '6px'} : {}">
-                        <a href="javascript:;" class="color-warning item-list-child-child-opr-item" @click.stop="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
-                        <a href="javascript:;" class="color-error item-list-child-child-opr-item" @click.stop="delOpr($event, index, 'lightCustom')">{{$t("删除")}}</a>
+                      <span>
+                        <a href="javascript:;" class="color-warning" @click.stop="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
+                        <a href="javascript:;" class="color-error" @click.stop="delOpr($event, index, 'lightCustom')">{{$t("删除")}}</a>
                         <el-popover
                           width="140"
                           placement="bottom"
@@ -1092,7 +1062,7 @@
                               <span>{{$t("插入到下一行")}}</span>
                             </div>
                           </div>
-                          <label slot="reference" class="item-list-child-child-opr-item" @click.stop="insertOrderOpr($event,item, index)">{{$t("插入")}}</label>
+                          <label slot="reference" class="" @click.stop="insertOrderOpr($event,item, index)">{{$t("插入")}}</label>
                         </el-popover>
                       </span>
                     </div>
@@ -1253,15 +1223,16 @@
                             <el-row>
                               <el-col :span="20">
                                 <div class="textLeft">
-                            <span>
-                              <el-tag>
-                                <label class="font-size-12 color-default">
-                                  {{$t("No.")}}
-                                  {{index+1}}
-                                </label>
-                              </el-tag>
-                            </span>
-                                  <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
+                                  <span>
+                                    <el-tag size="mini">
+                                      <label class="font-size-12 color-default">
+                                        {{index+1}}
+                                      </label>
+                                    </el-tag>
+                                  </span>
+                                  <span class="marginLeft10">
+                                    <loop-item :item="item"></loop-item>
+                                  </span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
@@ -1460,15 +1431,16 @@
                             <el-row>
                               <el-col :span="20">
                                 <div class="textLeft">
-                            <span>
-                              <el-tag>
-                                <label class="font-size-12 color-default">
-                                  {{$t("No.")}}
-                                  {{index+1}}
-                                </label>
-                              </el-tag>
-                            </span>
-                                  <span class="marginLeft10">{{ orderGetAndSet(item.i, 'set')}}</span>
+                                  <span>
+                                    <el-tag size="mini">
+                                      <label class="font-size-12 color-default">
+                                        {{index+1}}
+                                      </label>
+                                    </el-tag>
+                                  </span>
+                                  <span class="marginLeft10">
+                                    <loop-item :item="item"></loop-item>
+                                  </span>
                                 </div>
                               </el-col>
                               <el-col :span="4">
@@ -1667,6 +1639,7 @@
 <script>
 import mixins from "../mixins/mixins";
 import {common} from "../utils/api/url";
+import LoopItem from "../components/LoopItem";
 import {
   MessageSuccess,
   MessageWarning,
@@ -1680,7 +1653,7 @@ import {
 } from "../utils/utils";
 export default {
   mixins: [mixins],
-  components: { },
+  components: { LoopItem },
   data(){
     return {
       popvisible: false,
@@ -1763,6 +1736,7 @@ export default {
       taskTempList:[],
       orderList: [],
       configList: [],
+      editSceneList: [],
       mainCodeData: '',
       removeSenceItem: '',
       timer: null,
@@ -1870,9 +1844,15 @@ export default {
     // 监听窗口大小
     window.addEventListener( 'resize', () => (this.checkIndexOrient())
     );
+    if (window.history && window.history.pushState) {
+      // 向历史记录中插入了当前页
+      history.pushState(null, null, document.URL);
+      window.addEventListener('popstate', this.goBack, false);
+    }
   },
   destroyed() {
     window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
+    window.removeEventListener('popstate', this.goBack, false);
   },
   beforeMount() {
     window.addEventListener('orientationchange', (e) => {
@@ -2124,6 +2104,7 @@ export default {
             internal: res.data.internal,
             duration: res.data.duration,
           };
+          console.log(res);
           this.setSenceData(res.data.tasks);
           this.drawerListVisible = false;
         });
@@ -2233,6 +2214,27 @@ export default {
     openDialogSence(){
       this.drawerSenceVisible = true;
     },
+    updateSenceOpr($event, item){
+      this.$axios.get(item.sourceUrl).then(res => {
+        this.formSence = {
+          id: res.data.id,
+          envKey: '',
+          name: res.data.name,
+          iconId:  res.data.icon,
+          internal: res.data.internal == 1 ? true : false,
+          roomId: res.data.room,
+          sceneId: res.data.id,
+          sceneName: res.data.name,
+          sceneType: 1,
+          sourceCode: '',
+          openSource: true,
+          img: ''
+        };
+        this.oprType = 'editSceneList';
+        this.editSceneList = res.data.tasks;
+      });
+      this.drawerSenceVisible = true;
+    },
     setSence(event, item, index, type){
       this.clearForm();
       this.formOrder.type = "";
@@ -2261,6 +2263,7 @@ export default {
 
       console.log(this.formOrder.type, this.formSwitchOrder.type);
 
+      this.orderList = item;
       this.taskIndex = index;
       this.taskItem = item;
       this.drawer = true;
@@ -2499,6 +2502,8 @@ export default {
       //this.selMenuData = "";
     },
     closeOprDrawer(){
+      this.oprType = "";
+      this.editSceneList = [];
       this.formSence = {
         id: '',
         envKey: '',
@@ -2680,6 +2685,7 @@ export default {
     selLoopOrder(event, item, index, type){
       this.loopIndex = index;
       this.loopItem = item;
+      console.log(this.orderList);
       if (type == "lightSub"){
         this.formOrder.startOrder = item.i;
         this.formOrder.startOrderI = this.orderList[index].i;
@@ -2912,6 +2918,9 @@ export default {
       this.drawerSenceVisible = false;
     },
     saveConfig(){
+      let codeData = "";
+      let taskList = [];
+      let planList = [];
       if (this.formSence.name == ""){
         MessageWarning(this.$t("请输入场景名称"));
         return;
@@ -2921,31 +2930,34 @@ export default {
       }
       this.configLoading = true;
 
-      let taskList = JSON.parse(JSON.stringify(this.taskList));
-      //清理不需要的属性
-      let planList = JSON.parse(JSON.stringify(this.planList));
-      let taskTempArr = [];
+      if (this.oprType != 'editSceneList'){
+        taskList = JSON.parse(JSON.stringify(this.taskList));
+        //清理不需要的属性
+        planList = JSON.parse(JSON.stringify(this.planList));
+        let taskTempArr = [];
 
-      for (let i = 0; i < taskList.length; i++){
-        for (let j = 0; j < taskList[i].length; j++){
-          if (taskList[i][j].popVisible != undefined || taskList[i][j].popVisible != null){
-            taskList[i][j].popVisible = undefined;
+        for (let i = 0; i < taskList.length; i++){
+          for (let j = 0; j < taskList[i].length; j++){
+            if (taskList[i][j].popVisible != undefined || taskList[i][j].popVisible != null){
+              taskList[i][j].popVisible = undefined;
+            }
+            if (taskList[i][j].sec){
+              taskList[i][j].sec = undefined;
+            }
+            if (taskList[i][j].insertVisible != undefined || taskList[i][j].insertVisible != null){
+              taskList[i][j].insertVisible = undefined;
+            }
+            if (taskList[i][j].list != undefined || taskList[i][j].list != null){
+              taskList[i][j].list = undefined;
+            }
           }
-          if (taskList[i][j].sec){
-            taskList[i][j].sec = undefined;
-          }
-          if (taskList[i][j].insertVisible != undefined || taskList[i][j].insertVisible != null){
-            taskList[i][j].insertVisible = undefined;
-          }
-          if (taskList[i][j].list != undefined || taskList[i][j].list != null){
-            taskList[i][j].list = undefined;
-          }
+        }
+
+        for (let i = 0; i < planList.length; i++){
+          planList[i]['i'] = taskList[i];
         }
       }
 
-      for (let i = 0; i < planList.length; i++){
-        planList[i]['i'] = taskList[i];
-      }
       //源码用
       let dataObj = {
         id:this.formSence.id,
@@ -2955,10 +2967,10 @@ export default {
         enable: 1,
         internal: 1,
         duration: 2000,
-        tasks: planList
+        tasks: this.oprType == 'editSceneList' ? this.editSceneList : planList
       };
       //云端用
-      let codeData = {
+      codeData = {
         envKey: this.$route.query.envKey,
         iconId: 1,
         internal: false,
@@ -2971,11 +2983,12 @@ export default {
       if (this.formSence.id != ""){
         codeData['sceneId'] = this.formSence.id;
       }
-      //console.log(JSON.stringify(codeData));
+      //console.log(codeData);
       codeData = this.$qs.stringify(codeData);
+
       let url = (this.formSence.id == "" || this.formSence.id == undefined) ? common.createSence : common.editSence;
 
-      this.$axios.post(this.baseUrl + url, codeData, {sessionId: this.sessionId}).then(res => {
+      this.$axios.post(this.baseUrl + url, codeData, {sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 200){
           this.installSence(res.data.data.sceneId);
 
@@ -2998,6 +3011,9 @@ export default {
         if (res.data.code == 200){
           MessageSuccess(res.data.msg);
           this.closeOprDrawer();
+          if (this.oprType != 'editSceneList'){
+            this.initSenceList();
+          }
           this.drawerSenceVisible = false;
         }else {
           MessageError(res.data.msg);
@@ -3081,6 +3097,10 @@ export default {
         }
       }
       return [count, countList];
+    },
+    goBack () {
+      // console.log("点击了浏览器的返回按钮");
+      history.pushState(null, null, document.URL);
     }
   }
 }
