@@ -338,34 +338,7 @@
                   trigger="click"
                   v-model="customDrawBottomOpenVisible">
                   <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                    <div class="index-pop-item">
-                      <el-row>
-                        <el-col :span="20">
-                          <div class="textLeft">
-                            <span>{{$t("断电")}}</span>
-                          </div>
-                        </el-col>
-                        <el-col :span="4">
-                          <div class="textRight">
-                            <span><i class="fa fa-check-circle color-success"></i></span>
-                          </div>
-                        </el-col>
-                      </el-row>
-                    </div>
-                    <div class="index-pop-item">
-                      <el-row>
-                        <el-col :span="20">
-                          <div class="textLeft">
-                            <span>{{$t("通电")}}</span>
-                          </div>
-                        </el-col>
-                        <el-col :span="4">
-                          <div class="textRight">
-                            <span></span>
-                          </div>
-                        </el-col>
-                      </el-row>
-                    </div>
+                    <order-power-type-dialog></order-power-type-dialog>
                   </div>
                   <span slot="reference" size="mini">
                             <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
@@ -890,34 +863,7 @@
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item">
-                            <el-row>
-                              <el-col :span="20">
-                                <div class="textLeft">
-                                  <span>{{$t("断电")}}</span>
-                                </div>
-                              </el-col>
-                              <el-col :span="4">
-                                <div class="textRight">
-                                  <span><i class="fa fa-check-circle color-success"></i></span>
-                                </div>
-                              </el-col>
-                            </el-row>
-                          </div>
-                          <div class="index-pop-item">
-                            <el-row>
-                              <el-col :span="20">
-                                <div class="textLeft">
-                                  <span>{{$t("通电")}}</span>
-                                </div>
-                              </el-col>
-                              <el-col :span="4">
-                                <div class="textRight">
-                                  <span></span>
-                                </div>
-                              </el-col>
-                            </el-row>
-                          </div>
+                          <order-power-type-dialog></order-power-type-dialog>
                         </div>
                         <span slot="reference" size="mini">
                             <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
@@ -1209,9 +1155,11 @@ import SceneListDialog from "../components/SceneListDialog";
 import RoomListDialog from "../components/RoomListDialog";
 import LightOpenTypeDialog from "../components/LightOpenTypeDialog";
 import OrderSwitchKeyTypeDialog from "../components/OrderSwitchKeyTypeDialog";
+import OrderPowerTypeDialog from "../components/OrderPowerTypeDialog";
 export default {
   mixins: [mixins],
   components: {
+    OrderPowerTypeDialog,
     OrderSwitchKeyTypeDialog,
     LightOpenTypeDialog,
     RoomListDialog,

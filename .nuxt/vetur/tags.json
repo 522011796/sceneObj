@@ -17,11 +17,17 @@
   "OrderCurtainsTypeDialog": {
     "description": "Auto imported from components/OrderCurtainsTypeDialog.vue"
   },
+  "OrderEditDialog": {
+    "description": "Auto imported from components/OrderEditDialog.vue"
+  },
   "OrderLightTypeDialog": {
     "description": "Auto imported from components/OrderLightTypeDialog.vue"
   },
   "OrderListPopChildDialog": {
     "description": "Auto imported from components/OrderListPopChildDialog.vue"
+  },
+  "OrderPowerTypeDialog": {
+    "description": "Auto imported from components/OrderPowerTypeDialog.vue"
   },
   "OrderSwitchKeyTypeDialog": {
     "description": "Auto imported from components/OrderSwitchKeyTypeDialog.vue"
