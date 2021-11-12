@@ -1438,6 +1438,7 @@ export default {
               aNumber = this.taskList[i][j].secLoop / 100;
             }
           }
+          //console.log(aNumber);
           let result = Math.floor(aNumber);
           this.ruleCount += result;
         }
@@ -1446,12 +1447,12 @@ export default {
         this.ruleList.push(this.ruleCount);
       }
 
-      let ruleMax = Math.max(...this.ruleList);
+      let ruleMax = this.ruleList.length == 0 ? 0 : Math.max(...this.ruleList);
       this.ruleMax = ruleMax;
       //console.log(1111111,ruleMax);
-      if (type != 'reset'){
-        this.resetTaskOtherList();
-      }
+      // if (type != 'reset'){
+      //   this.resetTaskOtherList();
+      // }
       //this.handleScrollTop()
       //this.$router.push("/index2");
     },
@@ -1799,8 +1800,11 @@ export default {
             });
             //this.taskList[i][j].sec = this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec;
             //this.$set(this.taskList[i][j],'secLoop', this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec);
-            this.$set(this.taskList[i][j],'secLoop',ruleScene);
-            //console.log(444555,this.taskList[i][j].secLoop);
+            if (ruleScene <= 0){
+              this.$set(this.taskList[i][j],'secLoop', 1000);
+            }else {
+              this.$set(this.taskList[i][j],'secLoop',ruleScene);
+            }
           }else if (taskList[i][j].i == 2){
             let selfSec = this.taskList[i][j].sec;
             // if (resultLoop * loopNum > 0){
