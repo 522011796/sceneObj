@@ -60,6 +60,7 @@
                       </span>
                       <span v-if="(itemBlock.i == 4) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
                         {{ itemBlock.n }}
+                        <label v-if="itemBlock.sec == -1" class="color-default">({{ $t("无限循环") }})</label>
                       </span>
 
                       <span v-for="(itemList, indexList) in itemBlock.list" class="marginBottom2 pop-child-item">
@@ -70,6 +71,11 @@
                       <div v-if="itemBlock.i == 3" size="mini" class="color-error font-size-12" style="position: absolute; right: 0px; top: 0px; height:15px; width: 15px; line-height: 15px;color: #ffffff">
                         <span v-if="itemBlock.t != 0">{{ itemBlock.t }}</span>
                         <span v-if="itemBlock.t === 0" class="font-size-14">∞</span>
+                      </div>
+
+                      <div v-if="itemBlock.i == 4" size="mini" class="color-error font-size-12" style="position: absolute; right: 0px; top: 0px; height:15px; width: 15px; line-height: 15px;color: #ffffff">
+<!--                        <span v-if="itemBlock.sec != -1">{{ itemBlock.t }}</span>-->
+                        <span v-if="itemBlock.sec == -1" class="font-size-14">∞</span>
                       </div>
                     </div>
                   </div>
@@ -1413,7 +1419,7 @@ export default {
         }
       });
     },
-    init(){
+    init(type){
       this.dataList = [];
       this.ruleList = [];
       let resultLoop = 0;
@@ -1435,16 +1441,17 @@ export default {
           let result = Math.floor(aNumber);
           this.ruleCount += result;
         }
-        console.log(567,this.ruleCount,resultLoop * loopNum);
+        //console.log(567,this.ruleCount,resultLoop * loopNum);
         this.ruleCount = this.ruleCount + resultLoop * loopNum;
         this.ruleList.push(this.ruleCount);
       }
 
       let ruleMax = Math.max(...this.ruleList);
       this.ruleMax = ruleMax;
-      console.log(1111111,ruleMax);
-
-      this.resetTaskOtherList();
+      //console.log(1111111,ruleMax);
+      if (type != 'reset'){
+        this.resetTaskOtherList();
+      }
       //this.handleScrollTop()
       //this.$router.push("/index2");
     },
@@ -1624,7 +1631,7 @@ export default {
         }
       }
 
-      console.log(this.formOrder.type, this.formSwitchOrder.type);
+      //console.log(this.formOrder.type, this.formSwitchOrder.type);
     },
     selSence(event, item, type){
       if (type == 'menu'){
@@ -1639,7 +1646,7 @@ export default {
             internal: res.data.internal,
             duration: res.data.duration,
           };
-          console.log(res);
+          //console.log(res);
           this.setSenceData(res.data.tasks);
           this.drawerListVisible = false;
         });
@@ -1657,7 +1664,7 @@ export default {
     },
     async setSenceData(item, type){
       let data = item;
-      console.log(56,data);
+      //console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];
@@ -1709,41 +1716,20 @@ export default {
       this.planList = plans;
       this.taskList = tasks;
 
-      console.log(this.planList);
-      console.log(this.taskList);
+      //console.log(this.planList);
+      //console.log(this.taskList);
       this.$parent.$parent.initMenu(this.planList);
       this.setTaskList(this.taskList, type);
       this.init();
     },
     resetTaskOtherList(){
       let ruleList = [];
-      for (let i = 0; i < this.resetTaskList.length; i++){
-        if (this.ruleMax != 0 && this.resetTaskList[i].obj.t == 0){
-          let rule = this.ruleMax * 100 - this.resetTaskList[i].rule;
-          this.resetTaskList[i].obj.secLoop = rule;
-        }
-      }
-
-      // for (let i = 0; i < this.resetSenceList.length; i++){
-      //   if (this.ruleMax != 0){
-      //     let rule = this.ruleMax * 100 - this.resetSenceList[i].rule;
-      //     ruleList.push(this.resetSenceList[i].rule);
-      //   }
-      // }
-
-      // for (let i = 0; i < this.resetSenceList.length; i++){
-      //   if (this.ruleMax != 0){
-      //     let rule = this.ruleMax * 100 - this.resetSenceList[i].rule;
-      //     console.log(5678, this.ruleMax * 100, this.resetSenceList[i].rule, rule);
-      //     let ruleMax = Math.max(...ruleList);
-      //     console.log(56789, ruleList,ruleMax);
-      //
-      //     if (this.ruleMax * 100 <= this.resetSenceList[i].rule){
-      //       this.resetSenceList[i].obj.secLoop = this.resetSenceList[i].rule;
-      //       this.ruleMax = ruleMax / 100 * 2;
-      //     }else {
-      //       this.resetSenceList[i].obj.secLoop = rule;
-      //     }
+      let ruleMaxList = [];
+      let ruleMax = 0;
+      // for (let i = 0; i < this.resetTaskList.length; i++){
+      //   if (this.ruleMax != 0 && this.resetTaskList[i].obj.t == 0){
+      //     let rule = this.ruleMax * 100 - this.resetTaskList[i].rule;
+      //     this.resetTaskList[i].obj.secLoop = rule;
       //   }
       // }
     },
@@ -1807,12 +1793,14 @@ export default {
             }
             this.resetSenceList.push({
               rule: ruleScene,
-              obj: this.taskList[i][j]
+              obj: this.taskList[i][j],
+              indexJ: j,
+              indexI: i
             });
             //this.taskList[i][j].sec = this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec;
-            this.$set(this.taskList[i][j],'secLoop', this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec);
-
-            console.log(444555,this.taskList[i][j].secLoop);
+            //this.$set(this.taskList[i][j],'secLoop', this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec);
+            this.$set(this.taskList[i][j],'secLoop',ruleScene);
+            //console.log(444555,this.taskList[i][j].secLoop);
           }else if (taskList[i][j].i == 2){
             let selfSec = this.taskList[i][j].sec;
             // if (resultLoop * loopNum > 0){
@@ -1827,7 +1815,7 @@ export default {
       }
       this.taskResetList = taskList;
       //this.taskList = taskList;
-      console.log(12345,this.taskList);
+      //console.log(12345,this.taskList);
       //原始数据
       if (type != 'setChild'){
         this.taskTempList = JSON.parse(JSON.stringify(taskList));
@@ -1904,7 +1892,7 @@ export default {
         this.formCurtainsOrder.type = 10;
       }
 
-      console.log(this.formOrder.type, this.formSwitchOrder.type);
+      //console.log(this.formOrder.type, this.formSwitchOrder.type);
 
       this.orderList = item;
       this.taskIndex = index;
@@ -1971,7 +1959,7 @@ export default {
       this.areaIndex = index;
       this.areaItem = item;
       this.oprOtherType = "editOrderList";
-      console.log(item);
+      //console.log(item);
       if (this.setChildBottomType == 'lightSub'){
         this.formOrder.type = item.i;
         this.customBottomType = this.outEditTypeObjInfo(item.i);
@@ -2341,7 +2329,7 @@ export default {
     selLoopOrder(event, item, index, type){
       this.loopIndex = index;
       this.loopItem = item;
-      console.log(this.orderList);
+      //console.log(this.orderList);
       if (type == "lightSub"){
         this.formOrder.startOrder = item.i;
         this.formOrder.startOrderI = this.orderList[index].i;
@@ -2363,7 +2351,7 @@ export default {
 
       await this.getSourceUrl(item.sourceUrl);
       this.scnenDuration = this.scnenDuration;
-      console.log(6789,this.scnenDuration);
+      //console.log(6789,this.scnenDuration);
 
       if (type == "lightSub"){
         this.formOrder.sence = item.sceneId;
@@ -2462,20 +2450,20 @@ export default {
         }else if (this.formSwitchOrder.type != ""){
           if (this.oprOtherType == "editOrderList"){
             if (this.areaItem != ""){
-              console.log(1);
+              //console.log(1);
               obj = {
                 i : this.formSwitchOrder.type
               }
               this.formSwitchOrder.type = outEditTypeObj(this.formSwitchOrder.type);
             }else {
-              console.log(2);
+              //console.log(2);
               obj = {
                 i : outTypeObj(this.formSwitchOrder.type)
               }
               this.formSwitchOrder.type = this.formSwitchOrder.type;
             }
           }else {
-            console.log(3);
+            //console.log(3);
             obj = {
               i : outTypeObj(this.formSwitchOrder.type)
             }
@@ -2546,12 +2534,11 @@ export default {
           obj['t'] = 100;
           obj['sec'] = 100;
         }
-        console.log(555,obj);
+        //console.log(555,obj);
         //this.taskItem.push(obj);
 
-        console.log(this.oprOtherType, this.areaIndex);
+        //console.log(this.oprOtherType, this.areaIndex);
         if (this.oprOtherType == "orderList"){
-          console.log(1);
           if (this.areaType == 'pre'){
             this.orderList.splice(this.areaIndex, 0, obj);
           }else if(this.areaType == 'next'){
@@ -2561,15 +2548,13 @@ export default {
           }
           this.planList[this.taskIndex]['i'].push(obj);
         }else if(this.oprOtherType == "editOrderList"){
-          console.log(2);
           this.orderList[this.areaIndex] = obj;
           this.planList[this.taskIndex]['i'][this.areaIndex] = obj;
         }else {
-          console.log(3);
           this.taskList[this.taskIndex].push(obj);
           this.planList[this.taskIndex]['i'].push(obj);
         }
-        console.log(1234567,this.taskIndex, this.areaIndex);
+        //console.log(1234567,this.taskIndex, this.areaIndex);
         this.setTaskList(this.taskList);
         this.init();
         this.dialogVisible = false;
@@ -2588,7 +2573,7 @@ export default {
       }else if (this.oprType == 'removeSence'){
         this.removeSence(this.removeSenceItem.sceneId);
       }
-      console.log(6666,this.planList);
+      //console.log(6666,this.planList);
     },
     cancelConfig(){
       this.drawerSenceVisible = false;

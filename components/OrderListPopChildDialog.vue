@@ -11,6 +11,31 @@
       </el-row>
     </div>
     <div>
+      <div v-if="itemBlock.i == 4">
+        <div>
+          <div>
+            <el-row>
+              <el-col :span="10">
+                {{$t("场景名称")}}:
+              </el-col>
+              <el-col :span="14">
+                {{ itemBlock.n }}
+              </el-col>
+            </el-row>
+          </div>
+          <div>
+            <el-row>
+              <el-col :span="10">
+                {{$t("循环次数")}}:
+              </el-col>
+              <el-col :span="14">
+                <label v-if="itemBlock.sec == -1">{{ $t("无限循环") }}</label>
+                <label v-if="itemBlock.sec != -1">{{ itemBlock.t }}</label>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
       <div v-if="itemBlock.i == 2">
         <div>
           <el-row>
