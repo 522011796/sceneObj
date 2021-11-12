@@ -11,6 +11,41 @@
       </el-row>
     </div>
     <div>
+      <div v-if="itemBlock.i == 3">
+        <div>
+          <div>
+            <el-row>
+              <el-col :span="10">
+                {{$t("循环位置")}}:
+              </el-col>
+              <el-col :span="14">
+                {{ orderValueInfo(item[itemBlock.v].i, 'set') }}
+              </el-col>
+            </el-row>
+          </div>
+          <div>
+            <el-row>
+              <el-col :span="10">
+                {{$t("起始位置")}}:
+              </el-col>
+              <el-col :span="14">
+                {{ itemBlock.t }}
+              </el-col>
+            </el-row>
+          </div>
+          <div>
+            <el-row>
+              <el-col :span="10">
+                {{$t("循环次数")}}:
+              </el-col>
+              <el-col :span="14">
+                <label v-if="itemBlock.t === 0">{{ $t("无限循环") }}</label>
+                <label v-if="itemBlock.t != 0">{{ itemBlock.t }}</label>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
       <div v-if="itemBlock.i == 4">
         <div>
           <div>
