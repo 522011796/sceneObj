@@ -28,7 +28,7 @@
 <!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
 <!--          >-->
           <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item"
-               v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2)"
+               v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2 || itemBlock.i == 3 || itemBlock.i == 4)"
                :style="{
                         'background': orderColorInfo(itemBlock.i),
                         'width': itemBlock.secLoop ? itemBlock.secLoop / 1000 * 52 +'px' : itemBlock.sec / 1000 * 52 +'px',
@@ -51,28 +51,40 @@
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative">
                   <div>
                     <div class="moon-ellipsis-class index-main-item-block font-size-10">
-                      <span v-if="itemBlock.i == 1 || (itemBlock.i == 2 && itemBlock.list.length == 0)" class="color-434343">
+                      <span v-if="(itemBlock.i == 1 || itemBlock.i == 2 && (itemBlock.i != 3 || itemBlock.i != 4)) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
                         {{ orderValueInfo(itemBlock.i, 'set') }}
                       </span>
+                      <span v-if="(itemBlock.i == 3) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
+                        <label v-if="itemBlock.t > 0">{{ orderValueInfo(itemBlock.i, 'set') }}</label>
+                        <label v-if="itemBlock.t == 0">{{ $t("无限循环") }}</label>
+                      </span>
+                      <span v-if="(itemBlock.i == 4) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
+                        {{ itemBlock.n }}
+                      </span>
+
                       <span v-for="(itemList, indexList) in itemBlock.list" class="marginBottom2 pop-child-item">
                         {{orderValueInfo(itemList.i, 'set')}}
-                        <label v-if="indexList != itemBlock.list.length - 1">|</label>
+                        <label v-if="indexList != itemBlock.list.length - 1"> | </label>
                       </span>
+
+                      <div v-if="itemBlock.i == 3" size="mini" class="color-error font-size-12" style="position: absolute; right: 0px; top: 0px; height:15px; width: 15px; line-height: 15px;color: #ffffff">
+                        <span v-if="itemBlock.t != 0">{{ itemBlock.t }}</span>
+                        <span v-if="itemBlock.t === 0" class="font-size-14">∞</span>
+                      </div>
                     </div>
-<!--                    <el-tag v-if="itemBlock.i == 2" size="mini" style="position: absolute; right: 5px; top: 5px;">-->
-<!--                      {{itemBlock.list ? itemBlock.list.length : 0}}-->
-<!--                    </el-tag>-->
                   </div>
                 </v-touch>
               </el-popover>
             </v-touch>
           </div>
-          <div class="demoRuleChildEmptyClass" style="height: 40px" v-if="item.length <= 0">
+          <div class="demoRuleChildEmptyClass" style="height: 40px; width: 0px;position: relative" v-if="item.length <= 0">
             <div>
-              <div class="moon-ellipsis-class index-main-item-block">&nbsp;</div>
+              <div class="moon-ellipsis-class index-main-item-block">
+                <span>&nbsp</span>
+              </div>
             </div>
           </div>
-          <span :class="checkItemList(item,index)[1] > 0 ? 'index-plus-list-item' : 'index-plus-item'">
+          <span :class="checkItemList(item,index)[1] > 0 ? 'index-plus-list-item' : 'index-plus-item'" :style="item.length <=0 ? {float:'left'} : {}">
             <div v-if="checkItemList(item,index)[0] > 0" @click="selBlock($event, item, index, null, null)" :class="checkItemList(item,index)[1] > 0 ? 'item-tips-list-block' : 'item-tips-block'">1+</div>
 
             <i class="fa fa-plus font-size-14" @click.stop="setSence($event, item, index, 'lightSub')"></i>
@@ -356,7 +368,7 @@
                   trigger="click"
                   v-model="customDrawBottomOpenVisible">
                   <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                    <div class="index-pop-item" v-for="(item, index) in sceneList">
+                    <div class="index-pop-item" v-for="(item, index) in sceneList" v-if="item.sceneId != senceId" :class="index != sceneList.length - 1 ? 'border-bottom-item' : ''">
                       <el-row>
                         <el-col :span="20">
                           <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
@@ -475,7 +487,7 @@
                   trigger="click"
                   v-model="customDrawBottomOpenVisible">
                   <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                    <div class="index-pop-item" v-for="(item, index) in sceneList">
+                    <div class="index-pop-item" v-for="(item, index) in sceneList" v-if="item.sceneId != senceId" :class="index != sceneList.length - 1 ? 'border-bottom-item' : ''">
                       <el-row>
                         <el-col :span="20">
                           <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
@@ -881,7 +893,7 @@
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item" v-for="(item, index) in sceneList">
+                          <div class="index-pop-item" v-for="(item, index) in sceneList" v-if="item.sceneId != senceId" :class="index != sceneList.length - 1 ? 'border-bottom-item' : ''">
                             <el-row>
                               <el-col :span="20">
                                 <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
@@ -1001,7 +1013,7 @@
                         trigger="click"
                         v-model="customBottomOpenVisible">
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                          <div class="index-pop-item" v-for="(item, index) in sceneList">
+                          <div class="index-pop-item" v-for="(item, index) in sceneList" v-if="item.sceneId != senceId" :class="index != sceneList.length - 1 ? 'border-bottom-item' : ''">
                             <el-row>
                               <el-col :span="20">
                                 <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
@@ -1250,10 +1262,13 @@ export default {
       orderList: [],
       configList: [],
       editSceneList: [],
+      resetTaskList: [],
+      resetSenceList: [],
       mainCodeData: '',
       removeSenceItem: '',
       timer: null,
       senceId: '',
+      scnenDuration: '',
       colors: {
         hue: 50,
         saturation: 100,
@@ -1409,26 +1424,18 @@ export default {
         for (let j = 0; j < this.taskList[i].length; j++){
           //let aNumber = (5 - 1) * Math.random() + 1;
           let aNumber = 0;
-          if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2){
-            aNumber = this.taskList[i][j].sec / 100;
-            //aNumber = this.taskList[i][j].sec;
-          }else if (this.taskList[i][j].i == 3){
-            let index = this.taskList[i][j].v;
-            let bNumber = 0;
-            selfLoopNumber = 0;
-            if (this.taskList[i][j].t != 0){
-              loopNum = this.taskList[i][j].t;
-              for (let k = index; k < this.taskList[i].length; k++){
-                if (k < j && (this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2)){
-                  bNumber = this.taskList[i][k].sec / 100;
-                  resultLoop += Math.floor(bNumber);
-                }
-              }
+          if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4){
+            if (this.taskList[i][j].sec){
+              aNumber = this.taskList[i][j].sec / 100;
+            }
+            if (this.taskList[i][j].secLoop){
+              aNumber = this.taskList[i][j].secLoop / 100;
             }
           }
           let result = Math.floor(aNumber);
           this.ruleCount += result;
         }
+        console.log(567,this.ruleCount,resultLoop * loopNum);
         this.ruleCount = this.ruleCount + resultLoop * loopNum;
         this.ruleList.push(this.ruleCount);
       }
@@ -1436,6 +1443,8 @@ export default {
       let ruleMax = Math.max(...this.ruleList);
       this.ruleMax = ruleMax;
       console.log(1111111,ruleMax);
+
+      this.resetTaskOtherList();
       //this.handleScrollTop()
       //this.$router.push("/index2");
     },
@@ -1646,8 +1655,9 @@ export default {
       this.formSence.img = "~/static/img/" + item.id + ".png";
       this.drawerRoomVisible = false;
     },
-    setSenceData(item, type){
+    async setSenceData(item, type){
       let data = item;
+      console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];
@@ -1667,14 +1677,22 @@ export default {
             v: data[i].i[j].v
           });
           if (data[i].i[j].i == 1 || data[i].i[j].i == 2){
-            tasksTemp[j]['sec'] = data[i].i[j].v
+            tasksTemp[j]['sec'] = data[i].i[j].v;
+          }else if (data[i].i[j].i == 4){
+            for (let k = 0; k < this.sceneList.length; k++){
+              if (this.sceneList[k].sceneId == data[i].i[j].v){
+                await this.getSourceUrl(this.sceneList[k].sourceUrl);
+                let scnenDuration = this.scnenDuration;
+                tasksTemp[j]['sec'] = scnenDuration;
+              }
+            }
           }else{
             tasksTemp[j]['sec'] = 100
           }
-          if (data[i].i[j].t){
+          if (data[i].i[j].t > 0){
             tasksTemp[j]['t'] = data[i].i[j].t
           }else {
-            tasksTemp[j]['t']
+            tasksTemp[j]['t'] = 0;
           }
           if (data[i].i[j].r){
             tasksTemp[j]['r'] = data[i].i[j].r
@@ -1694,8 +1712,40 @@ export default {
       console.log(this.planList);
       console.log(this.taskList);
       this.$parent.$parent.initMenu(this.planList);
-      this.init();
       this.setTaskList(this.taskList, type);
+      this.init();
+    },
+    resetTaskOtherList(){
+      let ruleList = [];
+      for (let i = 0; i < this.resetTaskList.length; i++){
+        if (this.ruleMax != 0 && this.resetTaskList[i].obj.t == 0){
+          let rule = this.ruleMax * 100 - this.resetTaskList[i].rule;
+          this.resetTaskList[i].obj.secLoop = rule;
+        }
+      }
+
+      // for (let i = 0; i < this.resetSenceList.length; i++){
+      //   if (this.ruleMax != 0){
+      //     let rule = this.ruleMax * 100 - this.resetSenceList[i].rule;
+      //     ruleList.push(this.resetSenceList[i].rule);
+      //   }
+      // }
+
+      // for (let i = 0; i < this.resetSenceList.length; i++){
+      //   if (this.ruleMax != 0){
+      //     let rule = this.ruleMax * 100 - this.resetSenceList[i].rule;
+      //     console.log(5678, this.ruleMax * 100, this.resetSenceList[i].rule, rule);
+      //     let ruleMax = Math.max(...ruleList);
+      //     console.log(56789, ruleList,ruleMax);
+      //
+      //     if (this.ruleMax * 100 <= this.resetSenceList[i].rule){
+      //       this.resetSenceList[i].obj.secLoop = this.resetSenceList[i].rule;
+      //       this.ruleMax = ruleMax / 100 * 2;
+      //     }else {
+      //       this.resetSenceList[i].obj.secLoop = rule;
+      //     }
+      //   }
+      // }
     },
     setTaskList(taskList, type){//重新组装tasklist，用于显示列表
       let list = [];
@@ -1704,37 +1754,80 @@ export default {
       let loopNum = 0;
       let resultLoop = 0;
       let indexJ = 0;
+      let ruleScene = 0;
+      this.resetTaskList = [];
+      this.resetSenceList = [];
       for (let i = 0; i < taskList.length; i++){
         for (let j = 0; j < taskList[i].length; j++){
-          if (taskList[i][j].i != 1 && taskList[i][j].i != 2){
+          if (this.taskList[i][j].secLoop != undefined || this.taskList[i][j].secLoop){
+            this.taskList[i][j].secLoop = undefined;
+          }
+
+          if (taskList[i][j].i != 1 && taskList[i][j].i != 2 && taskList[i][j].i != 3 && taskList[i][j].i != 4){
             array.push(taskList[i][j]);
-            if (taskList[i][j].i == 3){
-              let index = this.taskList[i][j].v;
-              let bNumber = 0;
-              selfLoopNumber = 0;
-              if (this.taskList[i][j].t != 0){
-                loopNum = this.taskList[i][j].t;
-                for (let k = index; k < this.taskList[i].length; k++){
-                  if (k < j && (this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2)){
-                    bNumber = this.taskList[i][k].sec;
-                    resultLoop += Math.floor(bNumber);
-                  }
+          }else if (taskList[i][j].i == 3){
+            let index = this.taskList[i][j].v;
+            let bNumber = 0;
+            selfLoopNumber = 0;
+            ruleScene = 0;
+            loopNum = this.taskList[i][j].t === 0 ? 1 : this.taskList[i][j].t;
+
+            for (let k = index; k < this.taskList[i].length; k++){
+              if (k < j && (this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2 || this.taskList[i][k].i == 3 || this.taskList[i][k].i == 4)){
+                if (this.taskList[i][k].secLoop){
+                  bNumber = this.taskList[i][k].secLoop;
+                }else{
+                  bNumber = this.taskList[i][k].sec;
                 }
+                resultLoop += Math.floor(bNumber);
+                ruleScene += Math.floor(bNumber);
               }
             }
+            if (resultLoop * loopNum > 0){
+              //this.taskList[i][j]['secLoop'] = resultLoop * loopNum + selfSec;
+              this.resetTaskList.push({
+                rule: ruleScene,
+                obj: this.taskList[i][j]
+              });
+              this.$set(this.taskList[i][j],'secLoop', resultLoop * loopNum);
+            }
+          }else if(taskList[i][j].i == 4){
+            //obj['sec'] = this.scnenDuration == Number.MAX_SAFE_INTEGER ? this.ruleMax - sceneRule * 100 : this.scnenDuration;
+            ruleScene = 0;
+            for (let k = 0; k < this.taskList[i].length; k++){
+              if ((this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2 || this.taskList[i][k].i == 3)){
+                let sec = 0;
+                if (this.taskList[i][k].secLoop){
+                  sec = this.taskList[i][k].secLoop;
+                }else{
+                  sec = this.taskList[i][k].sec;
+                }
+                ruleScene += Math.floor(sec);
+              }
+            }
+            this.resetSenceList.push({
+              rule: ruleScene,
+              obj: this.taskList[i][j]
+            });
+            //this.taskList[i][j].sec = this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec;
+            this.$set(this.taskList[i][j],'secLoop', this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec);
+
+            console.log(444555,this.taskList[i][j].secLoop);
           }else if (taskList[i][j].i == 2){
             let selfSec = this.taskList[i][j].sec;
-            if (resultLoop * loopNum > 0){
-              this.taskList[i][j]['secLoop'] = resultLoop * loopNum + selfSec;
-            }
+            // if (resultLoop * loopNum > 0){
+            //   //this.taskList[i][j]['secLoop'] = resultLoop * loopNum + selfSec;
+            //   this.$set(this.taskList[i][j],'secLoop', resultLoop * loopNum + selfSec);
+            // }
             taskList[i][j]['list'] = array;
             array = [];
             resultLoop = 0;
           }
         }
       }
-      console.log(12345,taskList);
       this.taskResetList = taskList;
+      //this.taskList = taskList;
+      console.log(12345,this.taskList);
       //原始数据
       if (type != 'setChild'){
         this.taskTempList = JSON.parse(JSON.stringify(taskList));
@@ -1819,6 +1912,18 @@ export default {
       this.drawer = true;
     },
     okConfirm(){
+      if (this.oprOtherType != "editOrderList"){
+        for (let i = 0; i < this.taskList[this.taskIndex].length; i++){
+          if (this.taskList[this.taskIndex][i].i == 3 && this.taskList[this.taskIndex][i].t === 0){
+            MessageWarning(this.$t("存在无限循环指令，无法继续添加后续指令"));
+            return;
+          }else if (this.taskList[this.taskIndex][i].i == 4 && this.taskList[this.taskIndex][i].sec === -1){
+            MessageWarning(this.$t("存在无限循环指令，无法继续添加后续指令"));
+            return;
+          }
+        }
+      }
+
       this.alertMessageTips = this.$t("确认保存该指令？");
       this.oprType = 'order';
       this.dialogVisible = true;
@@ -1884,6 +1989,7 @@ export default {
           this.formOrder.temp = item.v;
           this.formOrder.changeTime = item.t;
         }else if (item.i == 3){
+          this.loopIndex = item.v;
           this.formOrder.startLoop = item.t;
           this.formOrder.startOrder = item.v;
           this.formOrder.startOrderI = this.orderList[item.v].i;
@@ -2246,9 +2352,19 @@ export default {
       this.customBottomOpenVisible = false;
       this.customDrawBottomOpenVisible = false;
     },
-    selSenceUse(event, item, index, type){
+    async getSourceUrl(sourceUrl){
+      await this.$axios.get(sourceUrl).then(res => {
+        this.scnenDuration = res.data.duration;
+      });
+    },
+    async selSenceUse(event, item, index, type){
       this.senceIndex = index;
       this.senceItem = item;
+
+      await this.getSourceUrl(item.sourceUrl);
+      this.scnenDuration = this.scnenDuration;
+      console.log(6789,this.scnenDuration);
+
       if (type == "lightSub"){
         this.formOrder.sence = item.sceneId;
         this.formOrder.senceText = item.sceneName;
@@ -2278,7 +2394,8 @@ export default {
       this.dialogVisible = false;
     },
     saveOpr(){
-      console.log("----"+this.formOrder.type,this.formSwitchOrder.type,this.formCurtainsOrder.type);
+      //console.log("----"+this.formOrder.type,this.formSwitchOrder.type,this.formCurtainsOrder.type);
+      let sceneRule = 0;
       //验证
       if (this.setChildBottomType == 'lightSub'){
         if (outTypeObj(this.formOrder.type) == 9){
@@ -2418,7 +2535,7 @@ export default {
             obj['n'] = this.formCurtainsOrder.senceText;
           }
           obj['t'] = 100;
-          obj['sec'] = 100;
+          obj['sec'] = this.scnenDuration == Number.MAX_SAFE_INTEGER ? -1 : this.scnenDuration;
         }else if (outTypeObj(this.formCurtainsOrder.type) == 10){//行程指令，时间默认1
           obj['v'] = this.formCurtainsOrder.curtainsOpenClose;
           obj['t'] = 100;
@@ -2429,11 +2546,12 @@ export default {
           obj['t'] = 100;
           obj['sec'] = 100;
         }
-        console.log(obj);
+        console.log(555,obj);
         //this.taskItem.push(obj);
 
         console.log(this.oprOtherType, this.areaIndex);
         if (this.oprOtherType == "orderList"){
+          console.log(1);
           if (this.areaType == 'pre'){
             this.orderList.splice(this.areaIndex, 0, obj);
           }else if(this.areaType == 'next'){
@@ -2441,14 +2559,19 @@ export default {
           }else {
             this.orderList.push(obj);
           }
+          this.planList[this.taskIndex]['i'].push(obj);
         }else if(this.oprOtherType == "editOrderList"){
+          console.log(2);
           this.orderList[this.areaIndex] = obj;
+          this.planList[this.taskIndex]['i'][this.areaIndex] = obj;
         }else {
+          console.log(3);
           this.taskList[this.taskIndex].push(obj);
+          this.planList[this.taskIndex]['i'].push(obj);
         }
-        this.planList[this.taskIndex]['i'].push(obj);
-        this.init();
+        console.log(1234567,this.taskIndex, this.areaIndex);
         this.setTaskList(this.taskList);
+        this.init();
         this.dialogVisible = false;
         this.drawer = false;
         this.drawerBottomDialogVisible = false;
@@ -2459,13 +2582,13 @@ export default {
       }else if(this.oprType == 'delOrder'){
         this.taskList[this.taskIndex].splice(this.oprOrderIndex, 1);
         this.planList[this.taskIndex]['i'].splice(this.oprOrderIndex, 1);;
-        this.init();
         this.setTaskList(this.taskList);
+        this.init();
         this.dialogVisible = false;
       }else if (this.oprType == 'removeSence'){
         this.removeSence(this.removeSenceItem.sceneId);
       }
-      console.log(this.planList);
+      console.log(6666,this.planList);
     },
     cancelConfig(){
       this.drawerSenceVisible = false;
@@ -2474,6 +2597,7 @@ export default {
       let codeData = "";
       let taskList = [];
       let planList = [];
+      let loopStatus = "";
       if (this.formSence.name == ""){
         MessageWarning(this.$t("请输入场景名称"));
         return;
@@ -2482,6 +2606,14 @@ export default {
         return;
       }
       this.configLoading = true;
+
+      for (let i = 0; i < this.taskList.length; i++){
+        for (let j = 0; j < this.taskList[i].length; j++){
+          if (this.taskList[i][j].i == 3 && this.taskList[i][j].t == 0){
+            loopStatus = Number.MAX_SAFE_INTEGER;
+          }
+        }
+      }
 
       if (this.oprType != 'editSceneList'){
         taskList = JSON.parse(JSON.stringify(this.taskList));
@@ -2497,8 +2629,8 @@ export default {
             if (taskList[i][j].sec){
               taskList[i][j].sec = undefined;
             }
-            if (taskList[i][j].popVisible != undefined || taskList[i][j].secLoop){
-              taskList[i][j].sec = undefined;
+            if (taskList[i][j].secLoop != undefined || taskList[i][j].secLoop){
+              taskList[i][j].secLoop = undefined;
             }
             if (taskList[i][j].insertVisible != undefined || taskList[i][j].insertVisible != null){
               taskList[i][j].insertVisible = undefined;
@@ -2522,7 +2654,7 @@ export default {
         icon: 1,
         enable: 1,
         internal: 1,
-        duration: 2000,
+        duration: loopStatus == Number.MAX_SAFE_INTEGER ? loopStatus : this.ruleMax * 100,
         tasks: this.oprType == 'editSceneList' ? this.editSceneList : planList
       };
       //云端用
@@ -2643,7 +2775,7 @@ export default {
       let count = 0;
       let countList = 0;
       for (let i = 0; i < this.taskResetList[index].length; i++){
-        if (this.taskResetList[index][i].i != 1 && this.taskResetList[index][i].i !=2){
+        if (this.taskResetList[index][i].i != 1 && this.taskResetList[index][i].i !=2 && this.taskResetList[index][i].i !=3 && this.taskResetList[index][i].i !=4){
           count++;
         }else if (this.taskResetList[index][i].list != undefined && this.taskResetList[index][i].list.length > 0){
           count = 0;
@@ -2884,7 +3016,9 @@ export default {
     font-size: 12px;
     padding: 0px 10px;
     position: relative;
-    top: 12px;
+    top: 0px;
+    height: 40px;
+    line-height: 40px;
   }
   .colorBlock{
     border: 1px solid #dddddd;

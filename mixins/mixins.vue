@@ -20,12 +20,15 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
         }
       },
       created() {
-        this.getUrl();
-        this.getRoomList();
-        this.getCurtainsGroupList();
-        this.getLightGroupList();
+        this.initData();
       },
       methods: {
+        async initData(){
+          this.getUrl();
+          await this.getRoomList();
+          this.getCurtainsGroupList();
+          this.getLightGroupList();
+        },
         logout(){
           this.$axios.get(this.baseUrl + common.logout, {sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
@@ -49,14 +52,14 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
             localStorage.setItem("envKey", this.envKey);
           }
         },
-        getRoomList(){
+        async getRoomList(){
           let params = {
             envKey: this.envKey,
             pageNum: 1,
             pageSize: 99999
           };
           this.globalRoomObj = {};
-          this.$axios.get(this.baseUrl + common.roomList, {params: params, sessionId: this.sessionId}).then(res => {
+          await this.$axios.get(this.baseUrl + common.roomList, {params: params, sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
               this.globalRoomList = res.data.data;
               for (let i = 0; i < this.globalRoomList.length; i++){

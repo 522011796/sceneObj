@@ -76,13 +76,19 @@ export default {
   },
   mounted() {
     this.dialogNormalVisible = this.drawerEnvVisible;
+    this.initRoomData();
   },
   data() {
     return {
-      dialogNormalVisible: false
+      dialogNormalVisible: false,
+      roomObj: {},
     }
   },
   methods: {
+    async initRoomData(){
+      await this.getRoomList();
+      this.roomObj = this.globalRoomObj;
+    },
     logout(){
       this.$emit('logout');
     },
@@ -102,7 +108,7 @@ export default {
       this.$emit('removeSenceOpr', event, item);
     },
     getGlobalRoomObj(val){
-      return this.globalRoomObj[val];
+      return this.roomObj[val];
     }
   }
 }

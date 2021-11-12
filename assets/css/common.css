@@ -381,10 +381,11 @@ span,div,button,label{
 }
 .index-pop-item{
   padding: 8px 10px;
-  border-bottom: 1px solid #f8f8f8;
   color: #777777;
 }
-
+.border-bottom-item{
+  border-bottom: 1px solid #f8f8f8;
+}
 .alertHeader{
   height: 40px;
   line-height: 40px;
@@ -516,6 +517,9 @@ span,div,button,label{
 }
 .pop-child-item{
   font-size: 10px;
+  /*display: inline-block;*/
+  /*height: 40px;*/
+  /*line-height: 40px;*/
 }
 .order-item-tag{
   display: inline-block;

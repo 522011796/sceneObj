@@ -15,8 +15,7 @@
 
       <label>{{ $t("起始") }} {{ item.v + 1 }}</label>
       |
-      <label>{{ $t("重复") }} {{ item.t }}</label>
-      <!--                            {{$t("循环位置")}}: {{ orderValueInfo(orderList[item.v].i, 'set') }}-->
+      <label>{{ $t("重复") }} {{ item.t === 0 ? '∞' : item.t }}</label>
     </span>
 
     <span v-if="item.i == 4" size="mini" class="font-size-12 color-default">

@@ -647,7 +647,7 @@
         },
         oprPlain(){
           let planList = this.$refs.childRef.$children[0].planList;
-          //console.log(planList);return;
+          console.log(12345678,planList);
           if (this.oprType == "add"){
             let planObj = {
               d: this.formPlain.deviceSelDevice,

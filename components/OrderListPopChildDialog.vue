@@ -54,7 +54,7 @@
                       {{$t("循环位置")}}: {{ orderValueInfo(item[itemList.v].i, 'set') }}
                     </div>
                     <div>
-                      {{$t("重复次数")}}: {{ itemList.t }}
+                      {{$t("重复次数")}}: {{ itemList.t === 0 ? '∞' : itemList.t }}
                     </div>
                   </div>
                   <div v-if="itemList.i == 4">
