@@ -448,7 +448,7 @@
                   trigger="click"
                   v-model="customDrawBottomOpenVisible">
                   <div class="textCenter" style="max-height: 260px; overflow-y: auto">
-                    <div class="index-pop-item" v-for="(item, index) in  this.taskList[this.taskIndex]" @click="selLoopOrder($event, item, index, 'lightSub')">
+                    <div class="index-pop-item" v-for="(item, index) in  this.taskList[this.taskIndex]" @click="selLoopOrder($event, item, index, 'curtainsSub')">
                       <el-row>
                         <el-col :span="20">
                           <div class="textLeft">
@@ -1243,6 +1243,7 @@ export default {
       setChildBottomType: '',
       templateType: '1',
       repetLoop: '无限重复',
+      editOpr: '',
       alertMessageTips: '',
       customBottomType: '1',
       customBottomOpen: '1',
@@ -1903,7 +1904,7 @@ export default {
       this.taskItem = item;
       this.drawer = true;
     },
-    okConfirm(){
+    async okConfirm(){
       if (this.oprOtherType != "editOrderList"){
         for (let i = 0; i < this.taskList[this.taskIndex].length; i++){
           if (this.taskList[this.taskIndex][i].i == 3 && this.taskList[this.taskIndex][i].t === 0){
@@ -1911,6 +1912,26 @@ export default {
             return;
           }else if (this.taskList[this.taskIndex][i].i == 4 && this.taskList[this.taskIndex][i].sec === -1){
             MessageWarning(this.$t("存在无限循环指令，无法继续添加后续指令"));
+            return;
+          }
+        }
+      }else {
+        if (this.setChildBottomType == 'lightSub'){
+          let type = this.editOpr == "edit" ? outTypeObj(this.formOrder.type) : this.formOrder.type;
+          if (this.formOrder.startLoop === 0 && type == 3 && this.taskList[this.taskIndex][this.areaIndex+1]){
+            MessageWarning(this.$t("设置无限循环指令，请将后续指令移除"));
+            return;
+          }else if (this.scnenDuration == Number.MAX_SAFE_INTEGER && type == 4 && this.taskList[this.taskIndex][this.areaIndex+1]){
+            MessageWarning(this.$t("存在无限循环指令，请将后续指令移除"));
+            return;
+          }
+        }else if (this.setChildBottomType == 'curtainsSub') {
+          let type = this.editOpr == "edit" ? this.formCurtainsOrder.type : this.formCurtainsOrder.type;
+          if (this.formCurtainsOrder.startLoop === 0 && type == 3 && this.taskList[this.taskIndex][this.areaIndex+1]){
+            MessageWarning(this.$t("设置无限循环指令，请将后续指令移除"));
+            return;
+          }else if (this.scnenDuration == Number.MAX_SAFE_INTEGER && type == 4 && this.taskList[this.taskIndex][this.areaIndex+1]){
+            MessageWarning(this.$t("存在无限循环指令，请将后续指令移除"));
             return;
           }
         }
@@ -1960,6 +1981,7 @@ export default {
       this.drawerBottomDialogVisible = true;
     },
     upateChildBottomDialog(event, type, index, item){
+      this.editOpr = "";
       this.areaIndex = index;
       this.areaItem = item;
       this.oprOtherType = "editOrderList";
@@ -2190,6 +2212,7 @@ export default {
       this.dialogVisible = true;
     },
     changeCustomBottomType(event, type){
+      this.editOpr = "edit";
       this.formOrder.type = type;
       this.areaItem = "";
       this.customBottomType = type;
@@ -2197,6 +2220,7 @@ export default {
       this.customDrawBottomVisible = false;
     },
     changeCustomBottomSwitchType(event, type){
+      this.editOpr = "edit";
       this.areaItem = "";
       this.formSwitchOrder.type = type;
       this.customBottomType = type;
@@ -2204,6 +2228,7 @@ export default {
       this.customDrawBottomVisible = false;
     },
     changeCustomBottomCurtainsType(event, type){
+      this.editOpr = "edit";
       this.areaItem = "";
       this.formCurtainsOrder.type = type;
       this.customBottomType = type;
@@ -2334,12 +2359,12 @@ export default {
       this.loopIndex = index;
       this.loopItem = item;
       //console.log(this.orderList);
-      if (type == "lightSub"){
+      if (this.setChildBottomType == 'lightSub'){
         this.formOrder.startOrder = item.i;
         this.formOrder.startOrderI = this.orderList[index].i;
-      }else if (type == "curtainsSub"){
+      }else if (this.setChildBottomType == 'curtainsSub'){
         this.formCurtainsOrder.startOrder = item.i;
-        this.formOrder.startOrderI = this.orderList[index].i;
+        this.formCurtainsOrder.startOrderI = this.orderList[index].i;
       }
       this.customBottomOpenVisible = false;
       this.customDrawBottomOpenVisible = false;
