@@ -1432,14 +1432,15 @@ export default {
           //let aNumber = (5 - 1) * Math.random() + 1;
           let aNumber = 0;
           if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4){
-            if (this.taskList[i][j].sec){
+            console.log(555,this.taskList[i][j].sec);
+            if (this.taskList[i][j].sec && this.taskList[i][j].sec != -1){
               aNumber = this.taskList[i][j].sec / 100;
             }
             if (this.taskList[i][j].secLoop){
               aNumber = this.taskList[i][j].secLoop / 100;
             }
           }
-          //console.log(aNumber);
+          console.log(66,aNumber);
           let result = Math.floor(aNumber);
           this.ruleCount += result;
         }
@@ -1450,6 +1451,7 @@ export default {
 
       let ruleMax = this.ruleList.length == 0 ? 0 : Math.max(...this.ruleList);
       this.ruleMax = ruleMax;
+      this.resetTaskOtherList();
       //console.log(1111111,ruleMax);
       // if (type != 'reset'){
       //   this.resetTaskOtherList();
@@ -1666,7 +1668,7 @@ export default {
     },
     async setSenceData(item, type){
       let data = item;
-      //console.log(56,data);
+      console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];
@@ -1692,7 +1694,7 @@ export default {
               if (this.sceneList[k].sceneId == data[i].i[j].v){
                 await this.getSourceUrl(this.sceneList[k].sourceUrl);
                 let scnenDuration = this.scnenDuration;
-                tasksTemp[j]['sec'] = scnenDuration;
+                tasksTemp[j]['sec'] = scnenDuration == Number.MAX_SAFE_INTEGER ? -1 : scnenDuration;
               }
             }
           }else{
@@ -1728,12 +1730,19 @@ export default {
       let ruleList = [];
       let ruleMaxList = [];
       let ruleMax = 0;
-      // for (let i = 0; i < this.resetTaskList.length; i++){
-      //   if (this.ruleMax != 0 && this.resetTaskList[i].obj.t == 0){
-      //     let rule = this.ruleMax * 100 - this.resetTaskList[i].rule;
-      //     this.resetTaskList[i].obj.secLoop = rule;
-      //   }
-      // }
+      for (let i = 0; i < this.resetTaskList.length; i++){
+        if (this.ruleMax != 0 && this.resetTaskList[i].obj.t == 0){
+          let rule = this.ruleMax * 100 - this.resetTaskList[i].rule;
+          this.resetTaskList[i].obj.secLoop = rule;
+        }
+      }
+
+      for (let i = 0; i < this.resetSenceList.length; i++){
+        if (this.ruleMax != 0 && this.resetSenceList[i].obj.sec == -1){
+          let rule = this.ruleMax * 100 - this.resetSenceList[i].rule;
+          this.resetSenceList[i].obj.secLoop = rule;
+        }
+      }
     },
     setTaskList(taskList, type){//重新组装tasklist，用于显示列表
       let list = [];
@@ -1782,15 +1791,15 @@ export default {
           }else if(taskList[i][j].i == 4){
             //obj['sec'] = this.scnenDuration == Number.MAX_SAFE_INTEGER ? this.ruleMax - sceneRule * 100 : this.scnenDuration;
             ruleScene = 0;
+            let bNumber = 0;
             for (let k = 0; k < this.taskList[i].length; k++){
-              if ((this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2 || this.taskList[i][k].i == 3)){
-                let sec = 0;
+              if ((this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2 || this.taskList[i][k].i == 3 || this.taskList[i][k].i == 4)){
                 if (this.taskList[i][k].secLoop){
-                  sec = this.taskList[i][k].secLoop;
+                  bNumber = this.taskList[i][k].secLoop;
                 }else{
-                  sec = this.taskList[i][k].sec;
+                  bNumber = this.taskList[i][k].sec;
                 }
-                ruleScene += Math.floor(sec);
+                ruleScene += Math.floor(bNumber);
               }
             }
             this.resetSenceList.push({
@@ -2414,7 +2423,7 @@ export default {
       //console.log("----"+this.formOrder.type,this.formSwitchOrder.type,this.formCurtainsOrder.type);
       let sceneRule = 0;
       //验证
-      if (this.setChildBottomType == 'lightSub'){
+      if (this.setChildBottomType == 'lightSub' && this.oprType != 'delOrder'){
         if (outTypeObj(this.formOrder.type) == 9){
           if (this.formOrder.color == ""){
             MessageWarning(this.$t("请设置颜色！"));
@@ -2431,14 +2440,14 @@ export default {
             return;
           }
         }
-      }else if (this.setChildBottomType == 'switchSub'){
+      }else if (this.setChildBottomType == 'switchSub' && this.oprType != 'delOrder'){
         if (this.formSwitchOrder.type == 11){
           if (this.formSwitchOrder.keyArr.length <= 0){
             MessageWarning(this.$t("请设置继电器！"));
             return;
           }
         }
-      }if (this.setChildBottomType == 'curtainsSub'){
+      }if (this.setChildBottomType == 'curtainsSub' && this.oprType != 'delOrder'){
         if (this.formCurtainsOrder.type == 3){
           if (this.formCurtainsOrder.startOrderI == ""){
             MessageWarning(this.$t("请设置起始位置！"));
@@ -2563,7 +2572,7 @@ export default {
           obj['t'] = 100;
           obj['sec'] = 100;
         }
-        //console.log(555,obj);
+        console.log(5557,obj);
         //this.taskItem.push(obj);
 
         //console.log(this.oprOtherType, this.areaIndex);
