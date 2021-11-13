@@ -154,10 +154,10 @@ export function orderValue(type, str){
 
 export function orderColor(type){
   let orderColor = {
-    "1": "#99FFCC",
-    "2": "#00CCFF",
-    "3": "#0099CC",
-    "4": "#00CC99",
+    "1": "rgba(255, 255, 255, 0.1)",
+    "2": "#E6A23C",
+    "3": "#67C23A",
+    "4": "#409EFF",
     "5": "#CCFF33",
     "6": "#CCCCFF",
     "7": "#CC99FF",

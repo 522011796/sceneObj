@@ -33,8 +33,9 @@
                         'background': orderColorInfo(itemBlock.i),
                         'width': itemBlock.secLoop ? itemBlock.secLoop / 1000 * 52 +'px' : itemBlock.sec / 1000 * 52 +'px',
                         'height':'40px',
-                        'color': '#555555',
-                        'position': 'relative'
+                        'color': itemBlock.i == 1 ? '#ffffff' : '#555555',
+                        'position': 'relative',
+                        'filter': itemBlock.i == 1 ? 'blur(0.1px) contrast(.1)' : ''
                       }"
           >
 
@@ -1714,6 +1715,9 @@ export default {
           if (data[i].i[j].s == 0 || data[i].i[j].s){
             tasksTemp[j]['s'] = data[i].i[j].s
           }
+          if (data[i].i[j].n == 0 || data[i].i[j].n){
+            tasksTemp[j]['n'] = data[i].i[j].n
+          }
         }
         tasks.push(tasksTemp);
       }
@@ -2834,7 +2838,7 @@ export default {
     margin-top: 0px;
   }
   .demoRuleBlockClass:hover .demoRuleChildClass{
-    box-shadow: 1px 1px 2px #000000;
+    box-shadow: 1px 0px 3px #000000;
   }
   .demoRuleChildClass{
     display: inline-block;
@@ -2842,7 +2846,7 @@ export default {
     height: 45px;
     text-align: center;
     /*border-right: 0.1px solid #434343;*/
-    box-shadow: 0.5px 0px 1.5px #434343;
+    box-shadow: -0.1px 0px 1px #606266;
     vertical-align:top
   }
   .demoRuleChildEmptyClass{
