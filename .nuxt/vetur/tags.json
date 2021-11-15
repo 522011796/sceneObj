@@ -29,6 +29,9 @@
   "OrderPowerTypeDialog": {
     "description": "Auto imported from components/OrderPowerTypeDialog.vue"
   },
+  "OrderSceneTypeDialog": {
+    "description": "Auto imported from components/OrderSceneTypeDialog.vue"
+  },
   "OrderSwitchKeyTypeDialog": {
     "description": "Auto imported from components/OrderSwitchKeyTypeDialog.vue"
   },

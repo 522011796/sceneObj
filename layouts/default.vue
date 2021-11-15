@@ -160,12 +160,12 @@
 <!--                    <div class="index-pop-item" @click="changePlainType($event, 4)">-->
 <!--                      <span>{{$t("音乐")}}</span>-->
 <!--                    </div>-->
-<!--                    <div class="index-pop-item" @click="changePlainType($event, 0)">-->
-<!--                      <span>{{$t("场景")}}</span>-->
-<!--                    </div>-->
+                    <div class="index-pop-item" @click="changePlainType($event, 0)">
+                      <span>{{$t("场景")}}</span>
+                    </div>
                   </div>
                   <span slot="reference" size="mini">
-                    <label>{{formPlain.type == '' ? $t("请选择") : planTypeInfo(formPlain.type)}}</label>
+                    <label>{{formPlain.type === '' ? $t("请选择") : planTypeInfo(formPlain.type)}}</label>
                     <label><i class="fa fa-chevron-right"></i></label>
                   </span>
                 </el-popover>
@@ -174,7 +174,7 @@
             <el-form-item label="任务名称" v-model="formPlain.name">
               <el-input :placeholder="$t('请输入任务名称')" v-model="formPlain.name"></el-input>
             </el-form-item>
-            <el-form-item label="添加设备">
+            <el-form-item label="添加设备" v-if="formPlain.type !== 0">
               <el-row>
                 <el-col :span="24">
                   <div class="textRight color-666666">
@@ -185,7 +185,7 @@
             </el-form-item>
           </el-form>
 
-          <div class="color-666666 block-plane" :style="drawerTreeStyle">
+          <div v-if="this.formPlain.type !== 0" class="color-666666 block-plane" :style="drawerTreeStyle">
             <el-tree
               ref="tree"
               node-key="sn"
@@ -517,13 +517,13 @@
           }
         },
         okConfirm(){
-          if (this.formPlain.type == ""){
+          if (this.formPlain.type === ""){
             MessageWarning(this.$t("请设置任务类型"));
             return;
-          }else if (this.formPlain.name == ""){
+          }else if (this.formPlain.name === ""){
             MessageWarning(this.$t("请设置任务名称"));
             return;
-          }else if (this.formPlain.deviceSelDevice.length == 0){
+          }else if (this.formPlain.type !== 0 && this.formPlain.deviceSelDevice.length == 0){
             MessageWarning(this.$t("请设置设备"));
             return;
           }
@@ -547,13 +547,15 @@
         },
         closeDialog(){
           //this.selMenuData = "";
+          if (this.formPlain.type !== 0){
+            this.$refs.tree.setCheckedKeys([]);
+          }
           this.formPlain = {
             type: '',
             name: '',
             deviceList: [],
             deviceSelDevice: []
           };
-          this.$refs.tree.setCheckedKeys([]);
         },
         addDevice(){
           this.drawerDevice = true;

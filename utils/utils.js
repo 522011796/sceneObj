@@ -183,7 +183,7 @@ export function planType(type, str){
     "3": "窗帘",
     "4": "音乐"
   };
-  if (str && type == 'set') {
+  if (type == 'set') {
     return planType[str];
   }
   if (!str && type == 'get'){
