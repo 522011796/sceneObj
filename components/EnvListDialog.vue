@@ -7,8 +7,9 @@
       :modal="true"
       :size="dialogEnvSize"
       :wrapperClosable="false"
-      :visible.sync="drawerEnvVisible"
-      :direction="direction">
+      :visible.sync="drawer_"
+      :direction="direction"
+      @closed="closeDrawer">
 
       <div slot="title">
         <div class="block-list-header">
@@ -55,6 +56,16 @@ export default {
       default: false
     }
   },
+  computed: {
+    drawer_:{
+      get(){
+        return this.drawerEnvVisible
+      },
+      set(v){
+        this.$emit("changeDrawer",v)
+      }
+    }
+  },
   mounted() {
     this.dialogNormalVisible = this.drawerEnvVisible;
   },
@@ -66,6 +77,9 @@ export default {
   methods: {
     selEnv(event, item){
       this.$emit('click', event, item);
+    },
+    closeDrawer(){
+      this.$emit('closed');
     }
   }
 }

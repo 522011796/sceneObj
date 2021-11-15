@@ -102,10 +102,10 @@
     </div>
 
     <!--提示-->
-    <alert-message-dialog :alert-message-tips="alertMessageTips" :timer="timer" :dialog-visible="dialogVisible" @cancel="cancelOpr" @okClick="saveOpr" @close="closeDialog"></alert-message-dialog>
+    <alert-message-dialog :alert-message-tips="alertMessageTips" :timer="timer" :dialog-visible="dialogVisible" @cancel="cancelOpr" @okClick="saveOpr" @changeDrawer="closeAlertDialog"></alert-message-dialog>
 
     <!--场所列表-->
-    <env-list-dialog :dialog-env-size="dialogEnvSize" :drawer-env-visible="drawerEnvVisible" :direction="direction" :data="globalEnvList"@click="selEnv"></env-list-dialog>
+    <env-list-dialog :dialog-env-size="dialogEnvSize" :drawer-env-visible="drawerEnvVisible" :direction="direction" :data="globalEnvList"@click="selEnv" @changeDrawer="closeEnvDrawer"></env-list-dialog>
 
     <!--场景列表-->
     <scene-list-dialog :dialog-list-size="dialogListSize"
@@ -2383,6 +2383,9 @@ export default {
       this.clearForm();
       this.setDialogWidth(this.setType);
     },
+    closeEnvDrawer(event){
+      this.drawerEnvVisible = event;
+    },
     closeChildDrawer(){
     },
     clearForm(){
@@ -2468,8 +2471,8 @@ export default {
         this.formSceneOrder.emptyTime = data;
       }
     },
-    closeDialog(){
-      //this.selMenuData = "";
+    closeAlertDialog(event){
+      this.dialogVisible = event;
     },
     closeOprDrawer(){
       this.oprType = "";

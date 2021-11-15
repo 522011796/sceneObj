@@ -2,7 +2,7 @@
   <div>
     <el-dialog
       title="提示"
-      :visible.sync="dialogVisible"
+      :visible.sync="drawer_"
       custom-class="alert-class"
       top="30vh"
       width="300px"
@@ -54,6 +54,16 @@ export default {
     timer: {
       type: String,
       default: null
+    }
+  },
+  computed: {
+    drawer_:{
+      get(){
+        return this.dialogVisible
+      },
+      set(v){
+        this.$emit("changeDrawer",v)
+      }
     }
   },
   mounted() {
