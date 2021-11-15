@@ -3,18 +3,21 @@
     "name": "index2",
     "path": "/index2",
     "component": "/Users/likai/工作/object/vuejs/test/test/pages/index2.vue",
-    "chunkName": "pages/index2"
+    "chunkName": "pages/index2",
+    "_name": "_c3f129d8"
   },
   {
     "name": "login",
     "path": "/login",
     "component": "/Users/likai/工作/object/vuejs/test/test/pages/login.vue",
-    "chunkName": "pages/login"
+    "chunkName": "pages/login",
+    "_name": "_628039b6"
   },
   {
     "name": "index",
     "path": "/",
     "component": "/Users/likai/工作/object/vuejs/test/test/pages/index.vue",
-    "chunkName": "pages/index"
+    "chunkName": "pages/index",
+    "_name": "_0518400e"
   }
 ]

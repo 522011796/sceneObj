@@ -609,14 +609,95 @@
           return planType('set', value);
         },
         returnSenceList(){
-          if (!this.compareArray(this.$refs.childRef.$children[0].planList, this.$refs.childRef.$children[0].planTempList)){
+          let planList = this.$refs.childRef.$children[0].planList;
+          let planTempList = this.$refs.childRef.$children[0].planList;
+          for (let i = 0; i < planList.length; i++) {
+            for (let j = 0; j < planList[i].i.length; j++) {
+              if (planList[i].i[j].popVisible != undefined || planList[i].i[j].popVisible != null) {
+                planList[i].i[j].popVisible = undefined;
+              }
+              if (planList[i].i[j].insertVisible != undefined || planList[i].i[j].insertVisible != null) {
+                planList[i].i[j].insertVisible = undefined;
+              }
+              if (planList[i].i[j].secLoop != undefined || planList[i].i[j].secLoop != null) {
+                planList[i].i[j].secLoop = undefined;
+              }
+              if (planList[i].i[j].list != undefined || planList[i].i[j].list != null) {
+                planList[i].i[j].list = undefined;
+              }
+            }
+          }
+          for (let i = 0; i < planTempList.length; i++) {
+            for (let j = 0; j < planTempList[i].i.length; j++) {
+              if (planTempList[i].i[j].popVisible != undefined || planTempList[i].i[j].popVisible != null) {
+                planTempList[i].i[j].popVisible = undefined;
+              }
+              if (planTempList[i].i[j].insertVisible != undefined || planTempList[i].i[j].insertVisible != null) {
+                planTempList[i].i[j].insertVisible = undefined;
+              }
+              if (planTempList[i].i[j].secLoop != undefined || planTempList[i].i[j].secLoop != null) {
+                planTempList[i].i[j].secLoop = undefined;
+              }
+              if (planTempList[i].i[j].list != undefined || planTempList[i].i[j].list != null) {
+                planTempList[i].i[j].list = undefined;
+              }
+            }
+          }
+
+
+          if (!this.compareArray(planList, planTempList)){
             this.alertMessageTips = this.$t("系统检测到你修改过数据并未保存，返回后将清除已修改的部分");
             this.oprType = 'return';
             this.dialogVisible = true;
             return;
           }
 
-          if (!this.compareArray(this.$refs.childRef.$children[0].taskList, this.$refs.childRef.$children[0].taskTempList)){
+          let taskList = this.$refs.childRef.$children[0].taskList;
+          let taskTempList = this.$refs.childRef.$children[0].taskTempList;
+          for (let i = 0; i < taskList.length; i++){
+            for (let j = 0; j < taskList[i].length; j++){
+              if (taskList[i][j].popVisible != undefined || taskList[i][j].popVisible != null){
+                taskList[i][j].popVisible = undefined;
+              }
+              if (taskList[i][j].sec){
+                taskList[i][j].sec = undefined;
+              }
+              if (taskList[i][j].secLoop != undefined || taskList[i][j].secLoop){
+                taskList[i][j].secLoop = undefined;
+              }
+              if (taskList[i][j].insertVisible != undefined || taskList[i][j].insertVisible != null){
+                taskList[i][j].insertVisible = undefined;
+              }
+              if (taskList[i][j].list != undefined || taskList[i][j].list != null){
+                taskList[i][j].list = undefined;
+              }
+            }
+          }
+
+          for (let i = 0; i < taskTempList.length; i++){
+            for (let j = 0; j < taskTempList[i].length; j++){
+              if (taskTempList[i][j].popVisible != undefined || taskTempList[i][j].popVisible != null){
+                taskTempList[i][j].popVisible = undefined;
+              }
+              if (taskTempList[i][j].sec){
+                taskTempList[i][j].sec = undefined;
+              }
+              if (taskTempList[i][j].secLoop != undefined || taskTempList[i][j].secLoop){
+                taskTempList[i][j].secLoop = undefined;
+              }
+              if (taskTempList[i][j].insertVisible != undefined || taskTempList[i][j].insertVisible != null){
+                taskTempList[i][j].insertVisible = undefined;
+              }
+              if (taskTempList[i][j].list != undefined || taskTempList[i][j].list != null){
+                taskTempList[i][j].list = undefined;
+              }
+            }
+          }
+
+          taskList = JSON.parse(JSON.stringify(taskList));
+          taskTempList = JSON.parse(JSON.stringify(taskTempList));
+
+          if (!this.compareArray(taskList, taskTempList)){
             this.alertMessageTips = this.$t("系统检测到你修改过数据并未保存，返回后将清除已修改的部分");
             this.oprType = 'return';
             this.dialogVisible = true;

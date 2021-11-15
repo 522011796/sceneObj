@@ -34,8 +34,7 @@
                         'width': itemBlock.secLoop ? itemBlock.secLoop / 1000 * 52 +'px' : itemBlock.sec / 1000 * 52 +'px',
                         'height':'40px',
                         'color': itemBlock.i == 1 ? '#ffffff' : '#555555',
-                        'position': 'relative',
-                        'filter': itemBlock.i == 1 ? 'blur(0.1px) contrast(.1)' : ''
+                        'position': 'relative'
                       }"
           >
 
@@ -52,7 +51,9 @@
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative">
                   <div>
                     <div class="moon-ellipsis-class index-main-item-block font-size-10">
-                      <span v-if="(itemBlock.i == 1 || itemBlock.i == 2 && (itemBlock.i != 3 || itemBlock.i != 4)) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
+                      <span v-if="(itemBlock.i == 1 || itemBlock.i == 2 && (itemBlock.i != 3 || itemBlock.i != 4)) && (!itemBlock.list || itemBlock.list.length == 0)"
+                                  :class="itemBlock.i == 1 ? 'color-ffffff' : 'color-434343'"
+                      >
                         {{ orderValueInfo(itemBlock.i, 'set') }}
                       </span>
                       <span v-if="(itemBlock.i == 3) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
@@ -1433,7 +1434,7 @@ export default {
           //let aNumber = (5 - 1) * Math.random() + 1;
           let aNumber = 0;
           if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4){
-            console.log(555,this.taskList[i][j].sec);
+            //console.log(555,this.taskList[i][j].sec);
             if (this.taskList[i][j].sec && this.taskList[i][j].sec != -1){
               aNumber = this.taskList[i][j].sec / 100;
             }
@@ -1441,7 +1442,7 @@ export default {
               aNumber = this.taskList[i][j].secLoop / 100;
             }
           }
-          console.log(66,aNumber);
+          //console.log(66,aNumber);
           let result = Math.floor(aNumber);
           this.ruleCount += result;
         }
@@ -1652,7 +1653,7 @@ export default {
             duration: res.data.duration,
           };
           //console.log(res);
-          this.setSenceData(res.data.tasks);
+          this.setSenceData(res.data.tasks, type);
           this.drawerListVisible = false;
         });
       }else {
@@ -1669,7 +1670,7 @@ export default {
     },
     async setSenceData(item, type){
       let data = item;
-      console.log(56,data);
+      //console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];
@@ -1835,7 +1836,8 @@ export default {
       //this.taskList = taskList;
       //console.log(12345,this.taskList);
       //原始数据
-      if (type != 'setChild'){
+      console.log(111111111333333, type);
+      if (type == 'menu'){
         this.taskTempList = JSON.parse(JSON.stringify(taskList));
         this.planTempList = JSON.parse(JSON.stringify(this.planList));
       }
@@ -2576,7 +2578,7 @@ export default {
           obj['t'] = 100;
           obj['sec'] = 100;
         }
-        console.log(5557,obj);
+        //console.log(5557,obj);
         //this.taskItem.push(obj);
 
         //console.log(this.oprOtherType, this.areaIndex);
