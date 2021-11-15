@@ -704,7 +704,7 @@
                     </div>
                   </div>
                   <span slot="reference" size="mini">
-                          <label>{{formCurtainsOrder.sence == '' ? $t("请选择") : formCurtainsOrder.senceText}}</label>
+                          <label>{{formSceneOrder.sence == '' ? $t("请选择") : formSceneOrder.senceText}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
                 </el-popover>
@@ -1243,7 +1243,7 @@
                           <div class="index-pop-item" v-for="(item, index) in sceneList" v-if="item.sceneId != senceId" :class="index != sceneList.length - 1 ? 'border-bottom-item' : ''">
                             <el-row>
                               <el-col :span="20">
-                                <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
+                                <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'sceneSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">
                                   <span>{{ item.sceneName }}</span>
                                 </div>
                               </el-col>
@@ -2074,7 +2074,7 @@ export default {
       //this.taskList = taskList;
       //console.log(12345,this.taskList);
       //原始数据
-      console.log(111111111333333, type);
+      //console.log(111111111333333, type);
       if (type == 'menu'){
         this.taskTempList = JSON.parse(JSON.stringify(taskList));
         this.planTempList = JSON.parse(JSON.stringify(this.planList));
@@ -2705,7 +2705,6 @@ export default {
         this.formSceneOrder.sence = item.sceneId;
         this.formSceneOrder.senceText = item.sceneName;
         this.formSceneOrder.senceRoom = item.roomId;
-        console.log(this.formSceneOrder.sence,item.sceneId);
       }
       this.customBottomOpenVisible = false;
       this.customDrawBottomOpenVisible = false;
@@ -2911,7 +2910,7 @@ export default {
           obj['t'] = 100;
           obj['sec'] = 100;
         }
-        console.log(5557,obj);
+        //console.log(5557,obj);
         //this.taskItem.push(obj);
 
         //console.log(this.oprOtherType, this.areaIndex);

@@ -2,16 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="init">
-      <change afterPath="$PROJECT_DIR$/components/OrderSceneTypeDialog.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.nuxt/components/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/components/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.nuxt/components/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/components/readme.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.nuxt/vetur/tags.json" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/vetur/tags.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/OrderCurtainsTypeDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/OrderCurtainsTypeDialog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/OrderLightTypeDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/OrderLightTypeDialog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,7 +113,7 @@
       <workItem from="1636466010931" duration="41000" />
       <workItem from="1636505706811" duration="8569000" />
       <workItem from="1636592126338" duration="82289000" />
-      <workItem from="1636938442411" duration="13623000" />
+      <workItem from="1636938442411" duration="16043000" />
     </task>
     <task id="LOCAL-00001" summary="init">
       <created>1631588103599</created>
@@ -410,7 +402,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636947313411</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="init">
+      <created>1636959971798</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1636959971798</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
