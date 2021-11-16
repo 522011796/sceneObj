@@ -110,13 +110,14 @@
     <!--场景列表-->
     <scene-list-dialog :dialog-list-size="dialogListSize"
                        :drawer-list-visible="drawerListVisible"
-                       :direction="directionList"
+                       :direction="directionEnvList"
                        :data="sceneList"
                        @logout="logout()"
                        @selEnvList="selEnvList"
                        @createSence="createSence"
                        @selSence="selSence"
                        @updateSenceOpr="updateSenceOpr"
+                       @removeSenceOpr="removeSenceOpr"
     >
     </scene-list-dialog>
 
@@ -151,7 +152,7 @@
               <span>{{$t("创建场景")}}</span>
             </el-col>
             <el-col :span="4" class="textRight">
-              <el-button size="mini" type="warning" v-if="configLoading == false" @click="saveConfig">
+              <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveConfig">
                 {{$t("保存")}}
               </el-button>
               <el-button size="mini" type="warning" v-if="configLoading == true">
@@ -1460,6 +1461,7 @@ export default {
       direction: 'btt',
       directionDevice: 'rtl',
       directionList: 'rtl',
+      directionEnvList: 'ltr',
       screenArrow: '',
       setType: '',
       setChildType: '',
@@ -2124,6 +2126,10 @@ export default {
       });
       this.drawerSenceVisible = true;
     },
+    addSenceOpr($event, item){
+      this.oprType = 'addSceneList';
+      this.drawerSenceVisible = true;
+    },
     setSence(event, item, index, type){
       this.clearForm();
       this.formOrder.type = "";
@@ -2726,6 +2732,8 @@ export default {
       this.formSwitchOrder.key = index;
     },
     cancelOpr(){
+      clearInterval(this.timer);
+      this.timer = null;
       this.dialogVisible = false;
     },
     saveOpr(){
@@ -2962,6 +2970,7 @@ export default {
       let taskList = [];
       let planList = [];
       let loopStatus = "";
+
       if (this.formSence.name == ""){
         MessageWarning(this.$t("请输入场景名称"));
         return;
@@ -3035,7 +3044,6 @@ export default {
       if (this.formSence.id != ""){
         codeData['sceneId'] = this.formSence.id;
       }
-      //console.log(codeData);
       codeData = this.$qs.stringify(codeData);
 
       let url = (this.formSence.id == "" || this.formSence.id == undefined) ? common.createSence : common.editSence;
@@ -3104,8 +3112,8 @@ export default {
         envKey: this.$route.query.envKey,
         sceneId: senceId
       };
-      params = this.$qs.stringify(params);
-      this.$axios.post(this.baseUrl + common.removeSence, params, {sessionId: this.sessionId}).then(res => {
+      //params = this.$qs.stringify(params);
+      this.$axios.get(this.baseUrl + common.senceInfo, {params: params,sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 201){
           clearInterval(this.timer);
           this.timer = null;
@@ -3121,6 +3129,7 @@ export default {
       this.taskTempList = [];
       this.taskResetList = [];
       this.ruleMax = 0;
+      this.formSence.id = "";
       this.$parent.$parent.initMenu(this.planList);
       this.drawerListVisible = false;
     },

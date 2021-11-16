@@ -30,7 +30,7 @@
               <div class="alertFooterClass">
                 <span class="alertFooterSpan" @click="saveOpr()">
                   <i class="fa fa-spinner fa-spin" v-if="timer != null"></i>
-                  <label v-else>确 定</label>
+                  <label>确 定</label>
                 </span>
               </div>
             </el-col>
@@ -52,7 +52,7 @@ export default {
       default: ''
     },
     timer: {
-      type: String,
+      type: [Number, String],
       default: null
     }
   },

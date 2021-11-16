@@ -15,6 +15,9 @@
                 <i class="fa fa-chevron-left"></i>
                 {{$t("任务列表")}}
               </span>
+              <span v-if="isCollapse == false" @click="returnSenceList">
+                <i class="fa fa-chevron-left"></i>
+              </span>
             </div>
 
             <div :style="menuStyle" ref="menuRef" @scroll="handleDefaultScrollTop">
@@ -705,6 +708,17 @@
             this.dialogVisible = true;
             return;
           }
+
+          this.$refs.childRef.$children[0].mainCodeData = {
+            id: "",
+            room: "",
+            name: "",
+            icon: "",
+            enable: "",
+            internal: "",
+            duration: "",
+          };
+
           this.$refs.childRef.$children[0].drawerListVisible = true;
         },
         changePlainType(event, type){
@@ -761,7 +775,7 @@
           }
         },
         saveConfig(){
-          if (this.$refs.childRef.$children[0].taskList.length == 0){
+          if (JSON.stringify(this.$refs.childRef.$children[0].taskList[0]) == "[]"){
             MessageWarning(this.$t("请先设置场景任务指令"));
             return;
           }
@@ -781,7 +795,13 @@
             img: ''
           };
           console.log(this.$refs.childRef.$children[0].formSence);
-          this.$refs.childRef.$children[0].saveConfig();
+          if (this.$refs.childRef.$children[0].formSence.id != undefined && this.$refs.childRef.$children[0].formSence.id != ''){
+
+            this.$refs.childRef.$children[0].saveConfig();
+          }else {
+
+            this.$refs.childRef.$children[0].addSenceOpr();
+          }
         }
       }
     }
