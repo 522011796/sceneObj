@@ -44,6 +44,9 @@
   "SceneListDialog": {
     "description": "Auto imported from components/SceneListDialog.vue"
   },
+  "TplListDialog": {
+    "description": "Auto imported from components/TplListDialog.vue"
+  },
   "Tutorial": {
     "description": "Auto imported from components/Tutorial.vue"
   }

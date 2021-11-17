@@ -13,6 +13,7 @@ export { default as OrderSwitchKeyTypeDialog } from '../../components/OrderSwitc
 export { default as OrderSwitchTypeDialog } from '../../components/OrderSwitchTypeDialog.vue'
 export { default as RoomListDialog } from '../../components/RoomListDialog.vue'
 export { default as SceneListDialog } from '../../components/SceneListDialog.vue'
+export { default as TplListDialog } from '../../components/TplListDialog.vue'
 export { default as Tutorial } from '../../components/Tutorial.vue'
 
 // nuxt/nuxt.js#8607

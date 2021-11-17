@@ -21,4 +21,5 @@ You can directly use them in pages and other components without the need to impo
 - `<OrderSwitchTypeDialog>` | `<order-switch-type-dialog>` (components/OrderSwitchTypeDialog.vue)
 - `<RoomListDialog>` | `<room-list-dialog>` (components/RoomListDialog.vue)
 - `<SceneListDialog>` | `<scene-list-dialog>` (components/SceneListDialog.vue)
+- `<TplListDialog>` | `<tpl-list-dialog>` (components/TplListDialog.vue)
 - `<Tutorial>` | `<tutorial>` (components/Tutorial.vue)

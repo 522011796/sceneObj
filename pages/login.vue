@@ -180,6 +180,15 @@ export default {
           this.sessionId = res.data.data.sessionId;
           this.envList();
 
+          //验证权限
+          let authorities = res.data.data.userInfo.authorities;
+          localStorage.removeItem("accountRole");
+          for (let i = 0; i < authorities.length; i++){
+            if (authorities[i].authority == 'ROLE_ADMIN'){
+              localStorage.setItem("accountRole", 'ROLE_ADMIN');
+            }
+          }
+
           if (this.restaurants.length == 0){
             this.restaurants.push({
               value: this.form.username,

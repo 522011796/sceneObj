@@ -19,6 +19,11 @@ export const common = {
   isNeedImageCode: '/isNeedImageCode',//是否需要图片验证码
   sendImageCode: '/sendImageCode',//图片验证码
   logout: '/logout',//退出
+  createTplInfo: '/tpl/createTplInfo',//创建模版
+  deleteTplInfo: '/tpl/deleteTplInfo',//删除模版
+  editTplInfo: '/tpl/editTplInfo',//编辑模版
+  queryTplInfoList: '/tpl/queryTplInfoList',//查询模版列表
+  queryTplInfo: '/tpl/queryTplInfo',//查询模版列表
 };
 
 export const commonConfig = {
