@@ -52,6 +52,12 @@ span,div,button,label{
 .textCenter{
   text-align: center;
 }
+.floatLeft{
+  float: left;
+}
+.floatRight{
+  float: right;
+}
 .el-button+.el-button {
   margin-left: 0px;
 }
@@ -127,6 +133,9 @@ span,div,button,label{
 .drawer-bottom .el-drawer__body, .drawer-default-bottom .el-drawer__body,.drawer-list .el-drawer__body,.drawer-opr .el-drawer__body{
   padding: 0px 10px 0px 10px;
 }
+.drawer-child-bottom .el-drawer__body{
+  padding: 0px 0px 0px 0px;
+}
 .drawer-default-bottom .el-drawer__body{
   overflow-y: hidden;
 }
@@ -140,7 +149,7 @@ span,div,button,label{
 .drawer-opr .el-drawer__body{
   background: #FFFFFF;
 }
-.drawer-bottom .el-drawer__header, .drawer-default-bottom .el-drawer__header, .drawer-list .el-drawer__header, .drawer-opr .el-drawer__header{
+.drawer-bottom .el-drawer__header, .drawer-child-bottom .el-drawer__header, .drawer-default-bottom .el-drawer__header, .drawer-list .el-drawer__header, .drawer-opr .el-drawer__header{
   align-items: center;
   color: #72767b;
   display: flex;
@@ -275,6 +284,14 @@ span,div,button,label{
 }
 .marginBottom50{
   margin-bottom: 50px;
+}
+.marginLR30{
+  margin-left: 30px !important;
+  margin-right: 30px !important;
+}
+.marginLR20{
+  margin-left: 20px !important;
+  margin-right: 20px !important;
 }
 .padding-full10{
   padding: 10px 10px;
@@ -556,6 +573,11 @@ span,div,button,label{
   text-align: center;
   z-index: 99;
 }
+.custon-card-class .el-card__header {
+  padding: 10px 10px;
+  border-bottom: 1px solid #EBEEF5;
+  box-sizing: border-box;
+}
 /***loading***/
 .custom-g-loading .el-icon-loading{
   font-size: 32px;
@@ -563,4 +585,5 @@ span,div,button,label{
 .custom-g-loading .el-loading-text{
   font-size: 15px;
 }
+
 

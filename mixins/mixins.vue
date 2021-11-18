@@ -16,7 +16,8 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           globalLightGroupList: [],
           globalCurtainsGroupList: [],
           globalRoomObj: {},
-          globalEnvList: []
+          globalEnvList: [],
+          globalScreenWidth: 0,
         }
       },
       created() {
@@ -28,6 +29,7 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           await this.getRoomList();
           this.getCurtainsGroupList();
           this.getLightGroupList();
+          this.getWindow();
         },
         logout(){
           this.$axios.get(this.baseUrl + common.logout, {sessionId: this.sessionId}).then(res => {
@@ -41,6 +43,10 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
         },
         changeFlag(flag) {
           this.minxinsScroll = flag;
+        },
+        getWindow(){
+          let screenWidth = window.innerWidth;
+          this.globalScreenWidth = screenWidth;
         },
         getUrl(){
           this.baseUrl = commonConfig.baseUrl;
@@ -96,14 +102,14 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
             }
           });
         },
-        getDeviceList(type){
+        async getDeviceList(type){
           let data = [];
           let params = {
             envKey: this.envKey,
             pageNum: 1,
             pageSize: 99999
           };
-          this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId}).then(res => {
+          await this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
             if (res.data.code == 200) {
               let list = res.data.data.list;
               //console.log("device",list);
