@@ -31,7 +31,8 @@
       </div>
 
       <div class="marginTop10">
-        <div v-for="(item, index) in data" class="block-list-content-item marginBottom10" @click="selSence($event, item, 'menu')">
+        <el-empty v-if="data.length == 0" :description="$t('暂无数据')"></el-empty>
+        <div v-else v-for="(item, index) in data" class="block-list-content-item marginBottom10" @click="selSence($event, item, 'menu')">
           <el-row>
             <el-col :span="6">
               <div class="textLeft">

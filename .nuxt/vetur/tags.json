@@ -1,4 +1,7 @@
 {
+  "AlertInpueDialog": {
+    "description": "Auto imported from components/AlertInpueDialog.vue"
+  },
   "AlertMessageDialog": {
     "description": "Auto imported from components/AlertMessageDialog.vue"
   },

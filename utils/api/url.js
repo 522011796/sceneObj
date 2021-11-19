@@ -24,6 +24,9 @@ export const common = {
   editTplInfo: '/tpl/editTplInfo',//编辑模版
   queryTplInfoList: '/tpl/queryTplInfoList',//查询模版列表
   queryTplInfo: '/tpl/queryTplInfo',//查询模版列表
+  sendShareTplInfo: '/tpl/sendShareTplInfo',//模版分享
+  queryReceiveTplShareInfoList: '/tpl/queryReceiveTplShareInfoList',//查询接收模版列表
+  handleShareTplInfo: '/tpl/handleShareTplInfo',//模版处理
 };
 
 export const commonConfig = {

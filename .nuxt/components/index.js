@@ -1,3 +1,4 @@
+export { default as AlertInpueDialog } from '../../components/AlertInpueDialog.vue'
 export { default as AlertMessageDialog } from '../../components/AlertMessageDialog.vue'
 export { default as EnvListDialog } from '../../components/EnvListDialog.vue'
 export { default as LightOpenTypeDialog } from '../../components/LightOpenTypeDialog.vue'

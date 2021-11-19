@@ -16,24 +16,29 @@
           <el-button-group>
             <el-button size="mini" :type="listType == 2 ? 'success' : 'default'" @click="initTplData($event, 2)">我的模版</el-button>
             <el-button size="mini" :type="listType == 1 ? 'success' : 'default'" @click="initTplData($event, 1)">系统模版</el-button>
+            <el-button size="mini" :type="listType == 3 ? 'success' : 'default'" @click="initTplData($event, 3)">待接收模版</el-button>
           </el-button-group>
         </div>
       </div>
 
       <div class="marginTop10">
-        <div v-for="(item, index) in data" class="block-list-content-item marginBottom10">
-          <el-row>
+        <el-empty v-if="data.length == 0" :description="$t('暂无数据')"></el-empty>
+        <div v-else v-for="(item, index) in data" class="block-list-content-item marginBottom10">
+          <el-row v-if="listType != 3">
             <el-col :span="6">
               <div class="textLeft">
-                <div class="marginTop10 fontBold">{{ item.tplName }}</div>
-                <div class="marginTop5 font-size-12">
+                <div class="marginTop10 fontBold moon-ellipsis-class">{{ item.tplName }}</div>
+                <div class="marginTop5 font-size-12 moon-ellipsis-class">
                   <label style="position: relative; top: 0px;">{{ item.tplDesc }}</label>
                 </div>
               </div>
             </el-col>
             <el-col :span="18">
               <div class="textRight marginTop10" style="position: relative">
-                <div v-if="role == 'ROLE_ADMIN'">
+                <div v-if="role == 'ROLE_ADMIN' && (listType == 1 || listType == 2)">
+                  <span v-if="listType != 1 && item.authorKey == item.userKey" class="color-default" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="shareTplOpr($event, item)">
+                    {{ $t("分享") }}
+                  </span>
                   <span class="color-warning" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="useTplOpr($event, item)">
                     {{ $t("使用") }}
                   </span>
@@ -44,14 +49,46 @@
                     {{ $t("删除") }}
                   </span>
                 </div>
-                <div v-else>
+                <div v-else-if="!role && listType == 2">
+                  <span v-if="item.authorKey == item.userKey" class="color-default" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="shareTplOpr($event, item)">
+                    {{ $t("分享") }}
+                  </span>
                   <span class="color-warning" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="useTplOpr($event, item)">
                     {{ $t("使用") }}
                   </span>
                   <span class="color-success" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="updateTplOpr($event, item)">
                     {{ $t("修改") }}
                   </span>
+                  <span class="color-error" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="removeTplOpr($event, item)">
+                    {{ $t("删除") }}
+                  </span>
                 </div>
+                <div v-else-if="!role && listType == 1">
+                  <span class="color-warning" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="useTplOpr($event, item)">
+                    {{ $t("使用") }}
+                  </span>
+                </div>
+              </div>
+            </el-col>
+          </el-row>
+
+          <el-row v-if="listType == 3">
+            <el-col :span="12">
+              <div class="textLeft">
+                <div class="marginTop10 fontBold moon-ellipsis-class">{{ item.tplName }}</div>
+                <div class="marginTop5 font-size-12 moon-ellipsis-class">
+                  <label style="position: relative; top: 0px;">{{$t("分享者")}}:{{ item.nickName }}</label>
+                </div>
+              </div>
+            </el-col>
+            <el-col :span="12">
+              <div class="textRight marginTop10" style="position: relative">
+                <span class="color-default" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="handleShareTplOpr($event, item ,3)">
+                  {{ $t("接收") }}
+                </span>
+                <span class="color-warning" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="handleShareTplOpr($event, item , 2)">
+                  {{ $t("拒绝") }}
+                </span>
               </div>
             </el-col>
           </el-row>
@@ -84,7 +121,13 @@
             </el-col>
             <el-col :span="4">
               <div class="drawerHeaderDiv">
-                <a href="javascript:;" class="drawerHeaderBtn primary-color" @click="okDeviceConfirm">确定</a>
+                <a v-if="tplLoading == false" href="javascript:;" class="drawerHeaderBtn primary-color" @click="okDeviceConfirm">
+                  确定
+                </a>
+                <a v-if="tplLoading == true" href="javascript:;" class="drawerHeaderBtn primary-color color-default">
+                  <i class="fa fa-spinner fa-spin"></i>
+                  确定
+                </a>
               </div>
             </el-col>
           </el-row>
@@ -96,7 +139,6 @@
           <div class="marginLR20">
             <span style="font-weight: bold">{{ $t("批量操作") }}</span>
             <span class="floatRight">
-              <i class="fa fa-check-circle color-success"></i>
               <el-button style="padding: 3px 0" type="text" @click="moreDevice()">更多</el-button>
             </span>
           </div>
@@ -112,7 +154,7 @@
                         @after-enter="showDeviceList($event, item, 'muti')"
                         @after-leave="closeDeviceList()">
                         <div style="max-height: 300px;overflow-y: auto">
-                          <span v-if="dataTplDeviceList.length == 0"><i class="fa fa-spinner fa-spin"></i></span>
+                          <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
                           <el-tree v-if="dataTplDeviceList.length > 0" ref="treeDevice" accordion :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, item, index, 'muti')"></el-tree>
                         </div>
                         <div slot="reference">
@@ -160,7 +202,7 @@
                     </el-col>
                     <el-col :span="12">
                       <div class="textRight">
-                        <i class="fa fa-warning color-warning"></i>
+                        <i class="fa fa-warning color-warning" v-if="item.dExtraCount != item.d.length"></i>
                         <span class="color-default">{{ item.dExtraCount }}/{{ item.d.length }}</span>
                       </div>
                     </el-col>
@@ -206,8 +248,8 @@
                     @after-enter="showDeviceList($event, itemChild, 'plan')"
                     @after-leave="closeDeviceList()">
                     <div style="max-height: 300px;overflow-y: auto">
-                      <span v-if="dataTplDeviceList.length == 0"><i class="fa fa-spinner fa-spin"></i></span>
-                      <el-tree v-if="dataTplDeviceList.length > 0" ref="treeDevice" accordion :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, 'plan')"></el-tree>
+                      <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
+                      <el-tree ref="treeDevice" accordion :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, 'plan')"></el-tree>
                     </div>
                     <div slot="reference">
                       <span class="moon-ellipsis-class color-666666 dialog-device-tag-item-left">{{ itemChild.key }}:</span>
@@ -228,17 +270,20 @@
     <!--提示-->
     <alert-message-dialog :alert-message-tips="alertMessageTips" :timer="timer" :dialog-visible="dialogVisible" @cancel="cancelOpr" @okClick="saveOpr" @changeDrawer="closeAlertDialog"></alert-message-dialog>
 
+    <alert-inpue-dialog :timer="timerShare" :dialog-visible="dialogShareVisible" @cancel="cancelShareOpr" @okClick="saveShareOpr" @changeDrawer="closeAlertDialog"></alert-inpue-dialog>
   </div>
 </template>
 
 <script>
 import mixins from "../mixins/mixins";
 import {common} from "../utils/api/url";
-import {inArray, MessageWarning} from "../utils/utils";
+import {inArray, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
 import AlertMessageDialog from "./AlertMessageDialog";
+import AlertInpueDialog from "./AlertInpueDialog";
+import { Loading } from 'element-ui';
 
 export default {
-  components: {AlertMessageDialog},
+  components: {AlertInpueDialog, AlertMessageDialog},
   mixins: [ mixins ],
   props: {
     dialogListSize: String,
@@ -273,11 +318,16 @@ export default {
       listType: 2,
       alertMessageTips: '',
       timer: null,
+      timerShare: null,
       dialogVisible: false,
       dialogDeviceVisible: false,
       dialogDeviceMoreVisible: false,
+      dialogShareVisible: false,
+      tplLoading: false,
+      deviceLoading: false,
       directionDevice: 'btt',
       item: '',
+      shareItem: '',
       role: '',
       dataTplDeviceList: [],
       planDeviceExtar: [],
@@ -289,11 +339,22 @@ export default {
   },
   methods: {
     initTplData(event, type){
-      let params = {
-        tplType: type
-      };
+      let url = '';
+      let params = {};
       this.listType = type;
-      this.$axios.get(this.baseUrl + common.queryTplInfoList, {params: params, sessionId: this.sessionId}).then(res => {
+      this.data = [];
+      if (type == 3){
+        params = {
+          statusSet: '1'
+        };
+        url = common.queryReceiveTplShareInfoList;
+      }else {
+        params = {
+          tplType: type
+        };
+        url = common.queryTplInfoList;
+      }
+      this.$axios.get(this.baseUrl + url, {params: params, sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
           this.data = res.data.data;
         }else {
@@ -307,6 +368,14 @@ export default {
       };
       let deviceExtra = [];
       let device$ = [];
+      const loading = Loading.service({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(221, 221, 221, 0.3)',
+        customClass: 'custom-g-loading',
+        target: document.querySelector('.drawer-child-bottom')//设置加载动画区域
+      });
       this.$axios.get(this.baseUrl + common.queryTplInfo, {params: params, sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
           let tplSource = JSON.parse(res.data.data.tplSource);
@@ -341,8 +410,11 @@ export default {
           }
           this.planDeviceExtar = deviceExtra;
           this.planDeviceResetData = tplSource;
+
+          loading.close();
         }else {
           MessageWarning(res.data.msg);
+          loading.close();
         }
       });
       this.dialogDeviceVisible = true;
@@ -359,6 +431,35 @@ export default {
       clearInterval(this.timer);
       this.timer = null;
       this.dialogVisible = false;
+    },
+    cancelShareOpr(){
+      clearInterval(this.timerShare);
+      this.timerShare = null;
+      this.dialogShareVisible = false;
+      this.shareItem = "";
+    },
+    saveShareOpr(data){
+      if (data == ""){
+        MessageWarning(this.$t("请输入信息"));
+        return;
+      }
+      let params = {
+        account: data,
+        tplId: this.shareItem.id
+      };
+      this.timerShare = 1;
+      params = this.$qs.stringify(params);
+      this.$axios.post(this.baseUrl + common.sendShareTplInfo, params, {sessionId: this.sessionId, loading: false}).then(res => {
+        if (res.data.code == 200){
+          MessageSuccess(res.data.msg);
+          this.dialogShareVisible = false;
+          this.shareItem = "";
+        }else {
+          MessageError(res.data.msg);
+          this.configLoading = false;
+        }
+        this.timerShare = 0;
+      });
     },
     saveOpr(){
       let params = {
@@ -380,6 +481,7 @@ export default {
     closeAlertDialog(event){
       this.item = "";
       this.dialogVisible = event;
+      this.dialogShareVisible = event;
     },
     moreDevice(event, item, index){
       if (item){
@@ -405,10 +507,30 @@ export default {
       this.dialogDeviceMoreVisible = false;
     },
     okDeviceConfirm(){
-      console.log(this.planDeviceResetData);
-      console.log(this.$refs.childRef.$children[0]);
+      let num = 0;
+      this.tplLoading = true;
+      for (let i = 0; i < this.planDeviceResetData.length; i++){
+        for (let j = 0; j < this.planDeviceResetData[i].dExtra.length; j++){
+          if (this.planDeviceResetData[i].dExtra[j].value == ""){
+            num++;
+            break;
+          }
+        }
+      }
+      this.tplLoading = false;
+      if (num > 0){
+        MessageWarning(this.$t("任务列表中存在未设置的设备，请检查！"));
+        return;
+      }
+
+      this.$parent.$parent.$parent.$parent.$refs.childRef.$children[0].setSenceData(this.planDeviceResetData);
+      this.$parent.$refs.tplList.$parent.drawerTplVisible = false;
+      this.dialogDeviceMoreVisible = false;
+      this.dialogDeviceVisible = false;
+      this.$parent.$parent.$parent.$parent.$refs.childRef.$children[0].drawerListVisible = false;
     },
     async showDeviceList(event, item, type){
+      this.deviceLoading = true;
       if (type == 'muti'){
         await this.getDeviceList(item.t);
       }else if (type == 'plan'){
@@ -416,12 +538,21 @@ export default {
       }
       this.dataTplDeviceList = [];
       this.dataTplDeviceList = this.dataDeviceList;
+      this.deviceLoading = false;
     },
     closeDeviceList(){
       this.dataTplDeviceList = [];
     },
     selTreeItem(data, node, self, item, index, type){
       if (!data.children){
+        const loading = Loading.service({
+          lock: true,
+          text: 'Loading',
+          spinner: 'el-icon-loading',
+          background: 'rgba(221, 221, 221, 0.3)',
+          customClass: 'custom-g-loading',
+          target: document.querySelector('.drawer-child-bottom')//设置加载动画区域
+        });
         if(type == 'muti'){
           this.planDeviceExtar[index].value = data.label;
           this.planDeviceExtar[index].sn = data.sn;
@@ -462,7 +593,31 @@ export default {
             }
           }
         }
+        loading.close();
       }
+    },
+    shareTplOpr(event, item){
+      this.shareItem= item;
+      this.dialogShareVisible = true;
+    },
+    handleShareTplOpr(event, item, status){
+      let params = {
+        status: status,
+        tplShareId: item.id
+      };
+      params = this.$qs.stringify(params);
+      this.$axios.post(this.baseUrl + common.handleShareTplInfo, params, {sessionId: this.sessionId, loading: false}).then(res => {
+        if (res.data.code == 200){
+          MessageSuccess(res.data.msg);
+          this.initTplData(null, this.listType);
+        }else {
+          MessageError(res.data.msg);
+          this.configLoading = false;
+        }
+      });
+    },
+    refruceShareTplOpr(event, item){
+
     }
   }
 }
@@ -505,7 +660,7 @@ export default {
 }
 .dialog-device-tag-item-left{
   display: inline-block;
-  width: 35px;
+  width: 40px;
   height: 30px;
   line-height: 30px;
   position: relative;
@@ -513,7 +668,7 @@ export default {
 }
 .dialog-device-tag-item-right{
   display: inline-block;
-  width: 60%;
+  width: 52%;
   position: relative;
   height: 30px;
   line-height: 30px
