@@ -3,13 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="init">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.nuxt/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/routes.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/RoomListDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/RoomListDialog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/TplListDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/TplListDialog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mixins/mixins.vue" beforeDir="false" afterPath="$PROJECT_DIR$/mixins/mixins.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/plugins/axios.js" beforeDir="false" afterPath="$PROJECT_DIR$/plugins/axios.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SceneListDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/SceneListDialog.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -120,14 +114,7 @@
       <workItem from="1636505706811" duration="8569000" />
       <workItem from="1636592126338" duration="82289000" />
       <workItem from="1636938442411" duration="82000000" />
-      <workItem from="1637301365202" duration="11412000" />
-    </task>
-    <task id="LOCAL-00003" summary="init">
-      <created>1631691914129</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1631691914130</updated>
+      <workItem from="1637301365202" duration="11944000" />
     </task>
     <task id="LOCAL-00004" summary="init">
       <created>1631692203642</created>
@@ -465,7 +452,14 @@
       <option name="project" value="LOCAL" />
       <updated>1637310678038</updated>
     </task>
-    <option name="localTasksCounter" value="52" />
+    <task id="LOCAL-00052" summary="init">
+      <created>1637314873232</created>
+      <option name="number" value="00052" />
+      <option name="presentableId" value="LOCAL-00052" />
+      <option name="project" value="LOCAL" />
+      <updated>1637314873232</updated>
+    </task>
+    <option name="localTasksCounter" value="53" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

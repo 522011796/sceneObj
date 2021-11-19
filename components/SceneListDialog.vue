@@ -169,7 +169,7 @@ export default {
       formTpl:{
         id: '',
         tplName: '',
-        tplOpen: false,
+        tplOpen: true,
         tplType: 2,
         tplSource: '',
         tplDesc: ''
