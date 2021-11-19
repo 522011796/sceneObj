@@ -764,7 +764,7 @@
               <div class="item-list-child" v-for="(item, index) in orderList" :key="index" @click="upateChildBottomDialog($event, 'lightSub', index, item)">
                 <el-row>
                   <el-col :span="16">
-                    <span>
+                    <span class="opr-item-title-block">
                       <el-tag size="mini">
                         <label class="font-size-12 color-default">
                           {{index+1}}
@@ -772,15 +772,15 @@
                       </el-tag>
                     </span>
 <!--                    <span class="marginLeft10" :class="(item.i == 6 || item.i == 7 || item.i == 8 || item.i == 9 || item.i == 11) ? 'item-list-child-child-title' : 'item-list-child-child-title2'">{{ orderGetAndSet(item.i, 'set')}}</span>-->
-                    <span>
+                    <span class="opr-item-title-block">
                       <loop-item :item="item"></loop-item>
                     </span>
                   </el-col>
                   <el-col :span="8">
                     <div class="textRight">
                       <span>
-                        <a href="javascript:;" class="color-warning" @click.stop="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
-                        <a href="javascript:;" class="color-error" @click.stop="delOpr($event, index, 'lightCustom')">{{$t("删除")}}</a>
+                        <a href="javascript:;" class="color-warning opr-item-block" @click.stop="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
+                        <a href="javascript:;" class="color-error opr-item-block" @click.stop="delOpr($event, index, 'lightCustom')">{{$t("删除")}}</a>
                         <el-popover
                           width="140"
                           placement="bottom"
@@ -794,7 +794,7 @@
                               <span>{{$t("插入到下一行")}}</span>
                             </div>
                           </div>
-                          <label slot="reference" class="" @click.stop="insertOrderOpr($event,item, index)">{{$t("插入")}}</label>
+                          <label slot="reference" class="opr-item-block" @click.stop="insertOrderOpr($event,item, index)">{{$t("插入")}}</label>
                         </el-popover>
                       </span>
                     </div>
@@ -2206,9 +2206,10 @@ export default {
         }
       }
 
-      this.alertMessageTips = this.$t("确认保存该指令？");
+      //this.alertMessageTips = this.$t("确认保存该指令？");
       this.oprType = 'order';
-      this.dialogVisible = true;
+      //this.dialogVisible = true;
+      this.saveOpr();
     },
     addPlain(){
       this.drawer = true;
@@ -2526,8 +2527,9 @@ export default {
     delOpr(event, index, type){
       this.oprOrderIndex = index;
       this.oprType = 'delOrder';
-      this.alertMessageTips = this.$t("确定删除该数据吗？");
-      this.dialogVisible = true;
+      //this.alertMessageTips = this.$t("确定删除该数据吗？");
+      //this.dialogVisible = true;
+      this.saveOpr();
     },
     changeCustomBottomType(event, type){
       this.editOpr = "edit";
@@ -3412,5 +3414,24 @@ export default {
     width: 25px;
     border-radius: 5px;
     display: inline-block;
+  }
+  .opr-item-title-block{
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    cursor: default;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+  }
+  .opr-item-block{
+    display: inline-block;
+    position: relative;
+    top: 0px;
+    cursor: default;
+    height: 30px;
+    line-height: 30px;
+    width: 40px;
+    text-align: center;
   }
 </style>

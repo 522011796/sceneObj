@@ -531,8 +531,9 @@
             MessageWarning(this.$t("请设置设备"));
             return;
           }
-          this.alertMessageTips = this.$t("确认保存该任务？");
-          this.dialogVisible = true;
+          //this.alertMessageTips = this.$t("确认保存该任务？");
+          //this.dialogVisible = true;
+          this.oprPlain();
         },
         addPlain(){
           this.oprType = "add";
@@ -570,8 +571,9 @@
             return;
           }
           this.oprType = 'del';
-          this.alertMessageTips = this.$t("确定删除该任务吗？");
-          this.dialogVisible = true;
+          //this.alertMessageTips = this.$t("确定删除该任务吗？");
+          //this.dialogVisible = true;
+          this.oprPlain();
         },
         updatePlain(){
           if (this.selMenuData == ""){
