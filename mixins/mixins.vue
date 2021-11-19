@@ -48,8 +48,10 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           this.minxinsScroll = flag;
         },
         getWindow(){
-          let screenWidth = window.innerWidth;
-          this.globalScreenWidth = screenWidth;
+          if (process.client){
+            let screenWidth = window.innerWidth;
+            this.globalScreenWidth = screenWidth;
+          }
         },
         getUrl(){
           this.baseUrl = commonConfig.baseUrl;

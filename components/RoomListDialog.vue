@@ -7,7 +7,7 @@
       :modal="true"
       :size="dialogRoomSize"
       :wrapperClosable="false"
-      :visible.sync="drawerRoomVisible"
+      :visible.sync="drawer_"
       :direction="direction">
 
       <div slot="title">
@@ -52,8 +52,18 @@ export default {
       default: false
     }
   },
+  computed: {
+    drawer_:{
+      get(){
+        return this.drawerRoomVisible
+      },
+      set(v){
+        this.$emit("changeDrawer",v)
+      }
+    }
+  },
   mounted() {
-    this.dialogNormalVisible = this.drawerEnvVisible;
+    this.dialogNormalVisible = this.drawerRoomVisible;
   },
   data() {
     return {

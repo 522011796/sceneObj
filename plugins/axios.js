@@ -10,7 +10,9 @@ export default function({store, redirect, req, router, $axios }) {
       // do something before request is sent
       config.withCredentials = true; // 允许携带token ,这个是解决跨域产生的相关问题
       config.timeout = 30000;
-      config.headers['IOT-SESS'] = config.sessionId;
+      if (config.sessionId){
+        config.headers['IOT-SESS'] = config.sessionId;
+      }
 
       if (config.method == "post"){
         config.headers['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8'

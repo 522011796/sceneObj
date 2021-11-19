@@ -781,13 +781,12 @@
             return;
           }
           //sconsole.log(this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false);
-          this.loading = true;
           this.$refs.childRef.$children[0].formSence = {
             id: this.$refs.childRef.$children[0].mainCodeData.id,
             envKey: '',
             name: this.$refs.childRef.$children[0].mainCodeData.name,
             iconId:  this.$refs.childRef.$children[0].mainCodeData.icon,
-            internal: this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false,
+            internal: this.$refs.childRef.$children[0].mainCodeData == "" ? true : this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false,
             roomId: this.$refs.childRef.$children[0].mainCodeData.room,
             sceneId: this.$refs.childRef.$children[0].mainCodeData.id,
             sceneName: this.$refs.childRef.$children[0].mainCodeData.name,
@@ -798,7 +797,7 @@
           };
           console.log(this.$refs.childRef.$children[0].formSence);
           if (this.$refs.childRef.$children[0].formSence.id != undefined && this.$refs.childRef.$children[0].formSence.id != ''){
-
+            this.loading = true;
             this.$refs.childRef.$children[0].saveConfig();
           }else {
 

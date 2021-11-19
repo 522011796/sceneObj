@@ -126,6 +126,7 @@
                       :drawer-room-visible="drawerRoomVisible"
                       :direction="directionList"
                       :data="globalRoomList"
+                      @changeDrawer="changeRoomDrawer"
                       @click="selRoomItem"
     >
     </room-list-dialog>
@@ -1809,14 +1810,16 @@ export default {
           this.drawerRightWidth = '100%';
         }
         this.drawerRightChildWidth = '90%';
+        this.dialogRoomSize = '100%';
       }else {
         if (screenWidth < 550){
           if (type == 'template'){
             this.drawerRightWidth = '100%';
           }else {
-            this.drawerRightWidth = '90%';
+            this.drawerRightWidth = '100%';
           }
           this.drawerRightChildWidth = '90%';
+          this.dialogRoomSize = '100%';
         }else{
           if (type == 'template'){
             this.drawerRightWidth = '60%';
@@ -1824,6 +1827,7 @@ export default {
             this.drawerRightWidth = '60%';
           }
           this.drawerRightChildWidth = '50%';
+          this.dialogRoomSize = '70%';
         }
       }
     },
@@ -1866,6 +1870,7 @@ export default {
       }
 
       this.drawerDevice = true;
+      this.drawerBottomDialogVisible = false;
       for (let i = 0; i < this.taskList.length; i++){
         for (let j = 0; j < this.taskList[i].length; j++){
           // if (i == index && indexBlock == j){
@@ -2212,6 +2217,7 @@ export default {
       this.drawer = false;
     },
     cancelDeviceDrawer(){
+      this.drawerBottomDialogVisible = false;
       this.drawerDevice = false;
     },
     cancelChildDrawer(){
@@ -2388,6 +2394,9 @@ export default {
       this.areaItem = "";
       this.clearForm();
       this.setDialogWidth(this.setType);
+    },
+    changeRoomDrawer(event){
+      this.drawerRoomVisible = event;
     },
     closeEnvDrawer(event){
       this.drawerEnvVisible = event;

@@ -23,7 +23,10 @@
 
       <div class="marginTop10">
         <el-empty v-if="data.length == 0" :description="$t('暂无数据')"></el-empty>
-        <div v-else v-for="(item, index) in data" class="block-list-content-item marginBottom10">
+        <div v-else v-for="(item, index) in data" class="block-list-content-item marginBottom10" style="position: relative">
+          <div v-if="item.authorKey != item.userKey" style="position: absolute;right: 0px;top: 0px;padding:0px;border-radius: 2px">
+            <i class="font-size-12 fa fa-handshake-o"></i>
+          </div>
           <el-row v-if="listType != 3">
             <el-col :span="6">
               <div class="textLeft">
