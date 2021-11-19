@@ -775,7 +775,7 @@
           }
         },
         saveConfig(){
-          if (JSON.stringify(this.$refs.childRef.$children[0].taskList[0]) == "[]"){
+          if (this.$refs.childRef.$children[0].taskList[0] == undefined || JSON.stringify(this.$refs.childRef.$children[0].taskList[0]) == "[]"){
             MessageWarning(this.$t("请先设置场景任务指令"));
             return;
           }

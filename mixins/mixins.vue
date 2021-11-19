@@ -54,8 +54,14 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           this.appType = this.$route.query.appType;
           if (process.client){
             this.envKey = this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey");
-            console.log(this.envKey);
             localStorage.setItem("envKey", this.envKey);
+
+            if (this.appType == "app" && this.$route.query.role != 'ROLE_ADMIN'){
+              localStorage.removeItem("accountRole");
+            }
+            if (this.appType == "app" && this.$route.query.role == 'ROLE_ADMIN'){
+              localStorage.setItem("accountRole", 'ROLE_ADMIN');
+            }
           }
         },
         async getRoomList(){

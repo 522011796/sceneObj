@@ -155,7 +155,7 @@
                         @after-leave="closeDeviceList()">
                         <div style="max-height: 300px;overflow-y: auto">
                           <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
-                          <el-tree v-if="dataTplDeviceList.length > 0" ref="treeDevice" accordion :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, item, index, 'muti')"></el-tree>
+                          <el-tree v-if="dataTplDeviceList.length > 0" ref="treeDevice" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, item, index, 'muti')"></el-tree>
                         </div>
                         <div slot="reference">
                           <span class="moon-ellipsis-class color-666666 dialog-device-tag-item-left">{{ item.key }}:</span>
@@ -249,7 +249,7 @@
                     @after-leave="closeDeviceList()">
                     <div style="max-height: 300px;overflow-y: auto">
                       <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
-                      <el-tree ref="treeDevice" accordion :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, 'plan')"></el-tree>
+                      <el-tree ref="treeDevice" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, cardIndex !== '' ?'plan' : 'muti')"></el-tree>
                     </div>
                     <div slot="reference">
                       <span class="moon-ellipsis-class color-666666 dialog-device-tag-item-left">{{ itemChild.key }}:</span>
@@ -551,8 +551,9 @@ export default {
           spinner: 'el-icon-loading',
           background: 'rgba(221, 221, 221, 0.3)',
           customClass: 'custom-g-loading',
-          target: document.querySelector('.drawer-child-bottom')//设置加载动画区域
+          target: document.querySelector('.drawer-child-bottom, .drawerBottomDialog')//设置加载动画区域
         });
+        console.log(type);
         if(type == 'muti'){
           this.planDeviceExtar[index].value = data.label;
           this.planDeviceExtar[index].sn = data.sn;
