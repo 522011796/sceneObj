@@ -59,7 +59,7 @@
           </div>
         </div>
         <div class="layout-main-footer-right" :style="footerRightStyle">
-          <el-button size="mini" type="success" @click="saveConfig()">{{$t("保存")}}</el-button>
+          <el-button :loading="loading" size="mini" type="success" @click="saveConfig()">{{$t("保存")}}</el-button>
           <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>
           <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>
           <el-button size="mini" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>
@@ -318,6 +318,7 @@
           dialogVisible: false,
           drawer: false,
           drawerDevice: false,
+          loading: false,
           direction: 'btt',
           directionDevice: 'rtl',
           selMenuData: '',
@@ -780,6 +781,7 @@
             return;
           }
           //sconsole.log(this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false);
+          this.loading = true;
           this.$refs.childRef.$children[0].formSence = {
             id: this.$refs.childRef.$children[0].mainCodeData.id,
             envKey: '',

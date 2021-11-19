@@ -9,7 +9,7 @@
       :wrapperClosable="false"
       :visible.sync="drawer_"
       :direction="direction"
-      @opened="initTplData($event, 2)">
+      @open="initTplData($event, 2)">
 
       <div slot="title">
         <div class="block-list-header" style="text-align: center">

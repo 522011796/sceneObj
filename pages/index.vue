@@ -3061,6 +3061,7 @@ export default {
           MessageError(res.data.msg);
           this.configLoading = false;
         }
+        this.$parent.$parent.loading = false;
       });
     },
     installSence(senceId){
