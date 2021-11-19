@@ -18,6 +18,9 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           globalRoomObj: {},
           globalEnvList: [],
           globalScreenWidth: 0,
+          startStatus: 'start',
+          startTime: 0,
+          endTime: 0,
         }
       },
       created() {
@@ -307,6 +310,19 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           }
           //遍历结束，所有value都深度比较相等，则两对象相等
           return true;
+        },
+        getWaitNetwork(){//延时，用于>=500毫秒发送一次比如网络请求，用于色彩、色温等实时查看
+          if (this.startStatus == 'start'){
+            let startTime = new Date().getTime();
+            this.startTime = startTime;
+            this.startStatus = "";
+          }
+          let endTime = new Date().getTime();
+          let nowTime = endTime - this.startTime;
+          if (nowTime >= 500){
+            this.startStatus = 'start';
+            return nowTime;
+          }
         }
       }
     }

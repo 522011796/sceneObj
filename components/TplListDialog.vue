@@ -137,7 +137,10 @@
       <div class="padding-full10 color-666666" style="position: relative">
         <div>
           <div class="marginLR20">
-            <span style="font-weight: bold">{{ $t("批量操作") }}</span>
+            <span style="font-weight: bold">
+              {{ $t("批量操作") }}
+              <label class="font-size-12 color-default">({{$t("任务列表对应非空设备将替换为相同")}})</label>
+            </span>
             <span class="floatRight">
               <el-button style="padding: 3px 0" type="text" @click="moreDevice()">更多</el-button>
             </span>
@@ -238,7 +241,7 @@
               </el-col>
             </el-row>
           </div>
-          <div class="padding-full10">
+          <div class="padding-full10 marginLR20">
             <el-row class="marginTop20" :gutter="8">
               <el-col :span="8" v-for="(itemChild, indexChild) in dExtra" :key="indexChild" class="marginBottom10">
                 <div class="dialog-device-tag-item-block">
@@ -249,7 +252,7 @@
                     @after-leave="closeDeviceList()">
                     <div style="max-height: 300px;overflow-y: auto">
                       <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
-                      <el-tree ref="treeDevice" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, cardIndex !== '' ?'plan' : 'muti')"></el-tree>
+                      <el-tree ref="treeDevice" v-if="dataTplDeviceList.length > 0" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, cardIndex !== '' ?'plan' : 'muti')"></el-tree>
                     </div>
                     <div slot="reference">
                       <span class="moon-ellipsis-class color-666666 dialog-device-tag-item-left">{{ itemChild.key }}:</span>

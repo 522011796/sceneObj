@@ -2583,6 +2583,9 @@ export default {
     inputColor(hue){
       let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
       let color = this.colorRGBtoHex(rgb[0],rgb[1],rgb[2]);
+      // if (this.getWaitNetwork() >= 500){
+      //   console.log(11111);
+      // }
     },
     changeColor(hue){
       let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
