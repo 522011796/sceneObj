@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="default-block-class">
       <div>
         <div class="layout-main-left" :style="mainStyle" style="position: relative">
           <div class="moon-left-menu-tag">

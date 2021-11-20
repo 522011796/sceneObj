@@ -40,6 +40,13 @@ span,div,button,label{
 .clearfix{
   clear: both;
 }
+.custom-index-loading .el-loading-text, .custom-index-loading .el-icon-loading{
+  color: #FFFFFF;
+  font-size: 12px;
+}
+.custom-index-loading .el-icon-loading{
+  font-size: 30px;
+}
 .moon-container{
   padding: 10px 10px;
 }

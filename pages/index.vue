@@ -1,5 +1,5 @@
 <template>
-  <div @click="hidePopVisible">
+  <div class="main-block-class" @click="hidePopVisible">
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
     <div class="demoRuleClass" :style="{'width': ruleMax / 10 * 52 + 41 + 0.1 + 'px'}">
       <div>
@@ -1398,6 +1398,7 @@ import LightOpenTypeDialog from "../components/LightOpenTypeDialog";
 import OrderSwitchKeyTypeDialog from "../components/OrderSwitchKeyTypeDialog";
 import OrderPowerTypeDialog from "../components/OrderPowerTypeDialog";
 import OrderSceneTypeDialog from "../components/OrderSceneTypeDialog";
+import {showChartLoading, hideChartLoading} from "../utils/loadingChart";
 export default {
   mixins: [mixins],
   components: {
@@ -1502,6 +1503,7 @@ export default {
       timer: null,
       senceId: '',
       scnenDuration: '',
+      toastLoading: '',
       colors: {
         hue: 50,
         saturation: 100,
@@ -1885,6 +1887,7 @@ export default {
       //console.log(this.formOrder.type, this.formSwitchOrder.type);
     },
     selSence(event, item, type){
+      showChartLoading();
       if (type == 'menu'){
         this.senceId = item.sceneId;
         this.$axios.get(item.sourceUrl).then(res => {
@@ -2086,6 +2089,8 @@ export default {
         this.taskTempList = JSON.parse(JSON.stringify(taskList));
         this.planTempList = JSON.parse(JSON.stringify(this.planList));
       }
+
+      hideChartLoading();
     },
     mousedown(){
 
