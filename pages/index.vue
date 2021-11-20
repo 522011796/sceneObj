@@ -763,7 +763,7 @@
             <div class="rightDialogContent" :style="dialogRightTabOrderStyle">
               <div class="item-list-child" v-for="(item, index) in orderList" :key="index" @click="upateChildBottomDialog($event, 'lightSub', index, item)">
                 <el-row>
-                  <el-col :span="16">
+                  <el-col :span="14">
                     <span class="opr-item-title-block">
                       <el-tag size="mini">
                         <label class="font-size-12 color-default">
@@ -776,7 +776,7 @@
                       <loop-item :item="item"></loop-item>
                     </span>
                   </el-col>
-                  <el-col :span="8">
+                  <el-col :span="10">
                     <div class="textRight">
                       <span>
                         <a href="javascript:;" class="color-warning opr-item-block" @click.stop="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
