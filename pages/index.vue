@@ -3115,7 +3115,7 @@ export default {
         sceneId: senceId
       };
       params = this.$qs.stringify(params);
-      this.$axios.post(this.baseUrl + common.removeSence, params, {sessionId: this.sessionId}).then(res => {
+      this.$axios.post(this.baseUrl + common.removeSence, params, {sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 200){
           this.senceItem = "";
           clearInterval(this.timer);
