@@ -37,6 +37,9 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
         logout(){
           this.$axios.get(this.baseUrl + common.logout, {sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
+              localStorage.removeItem("envKey");
+              localStorage.removeItem("sessionId");
+              localStorage.removeItem("accountRole");
               this.$router.push("/login");
             }
           });
@@ -60,6 +63,9 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           if (process.client){
             this.envKey = this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey");
             localStorage.setItem("envKey", this.envKey);
+
+            this.sessionId = this.$route.query.sessionId != "" && this.$route.query.sessionId != undefined ? this.$route.query.sessionId : localStorage.getItem("sessionId");
+            localStorage.setItem("sessionId", this.sessionId);
 
             if (this.appType == "app" && this.$route.query.role != 'ROLE_ADMIN'){
               localStorage.removeItem("accountRole");

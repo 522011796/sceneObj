@@ -62,7 +62,25 @@
       <label v-for="(itemKey, indexKey) in item.v" :key="indexKey">{{ itemKey + 1 }}<template v-if="indexKey != item.v.length-1">,</template></label></label>
       |
       <label>{{ keyTypeInfo(item.s) }}</label>
-  </span>
+    </span>
+    <span v-if="item.i == 12" size="mini" class="font-size-12 color-default">
+      <label class="color-666666 font-size-14">{{ $t("音乐音量") }}</label>
+
+      <label>{{ item.v * 100 }}%</label>
+    </span>
+    <span v-if="item.i == 13" size="mini" class="font-size-12 color-default">
+      <label class="color-666666 font-size-14">{{ $t("音乐名称") }}</label>
+
+      <label>{{ item.v}}</label>
+    </span>
+    <span v-if="item.i == 14" size="mini" class="font-size-12 color-default">
+      <label class="color-666666 font-size-14">{{ $t("音乐暂停") }}</label>
+    </span>
+    <span v-if="item.i == 15" size="mini" class="font-size-12 color-default">
+      <label class="color-666666 font-size-14">{{ $t("音乐进度") }}</label>
+
+      <label>{{ item.v}}秒</label>
+    </span>
   </span>
 </template>
 

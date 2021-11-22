@@ -8,6 +8,7 @@ export { default as OrderCurtainsTypeDialog } from '../../components/OrderCurtai
 export { default as OrderEditDialog } from '../../components/OrderEditDialog.vue'
 export { default as OrderLightTypeDialog } from '../../components/OrderLightTypeDialog.vue'
 export { default as OrderListPopChildDialog } from '../../components/OrderListPopChildDialog.vue'
+export { default as OrderMusicTypeDialog } from '../../components/OrderMusicTypeDialog.vue'
 export { default as OrderPowerTypeDialog } from '../../components/OrderPowerTypeDialog.vue'
 export { default as OrderSceneTypeDialog } from '../../components/OrderSceneTypeDialog.vue'
 export { default as OrderSwitchKeyTypeDialog } from '../../components/OrderSwitchKeyTypeDialog.vue'

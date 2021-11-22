@@ -205,6 +205,11 @@ span,div,button,label{
 .textCenter{
   text-align: center;
 }
+.custon-input-item .el-input__inner, .netmoon-form-item-dialog .el-input__inner{
+  border: 0px;
+  text-align: right;
+  padding: 0px;
+}
 .netmoon-form-dialog .el-input__inner, .netmoon-form-item-dialog .el-input__inner{
   border: 0px;
   text-align: right;
@@ -225,6 +230,9 @@ span,div,button,label{
 .netmoon-form-dialog input:-ms-input-placeholder,.netmoon-form-item-dialog input::-ms-input-placeholder {
   /* Internet Explorer 10+ */
   color: #dddddd;
+}
+.el-input-border-important{
+
 }
 .fontBold{
   font-weight: bold;

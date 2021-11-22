@@ -29,6 +29,9 @@
   "OrderListPopChildDialog": {
     "description": "Auto imported from components/OrderListPopChildDialog.vue"
   },
+  "OrderMusicTypeDialog": {
+    "description": "Auto imported from components/OrderMusicTypeDialog.vue"
+  },
   "OrderPowerTypeDialog": {
     "description": "Auto imported from components/OrderPowerTypeDialog.vue"
   },

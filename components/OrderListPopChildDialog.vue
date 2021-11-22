@@ -167,6 +167,26 @@
                       {{$t("状态")}}: {{ keyTypeInfo(itemList.s) }}
                     </div>
                   </div>
+                  <div v-if="itemList.i == 12">
+                    <div>
+                      {{$t("音量")}}: {{ itemList.v * 100 }}%
+                    </div>
+                  </div>
+                  <div v-if="itemList.i == 13">
+                    <div>
+                      {{$t("名称")}}: {{ itemList.v }}
+                    </div>
+                  </div>
+                  <div v-if="itemList.i == 14">
+                    <div>
+                      {{$t("暂停")}}
+                    </div>
+                  </div>
+                  <div v-if="itemList.i == 15">
+                    <div>
+                      {{$t("进度")}}: {{ itemList.v }}秒
+                    </div>
+                  </div>
                 </el-col>
               </el-row>
               <div v-if="itemBlock.list.length-1 != indexList" style="background: #dddddd;height: 0.5px;margin: 2px 0px 0px 0px;"></div>

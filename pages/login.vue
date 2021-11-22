@@ -225,11 +225,13 @@ export default {
       });
     },
     selEnv(event, item){
+      localStorage.setItem("envKey", item.envKey);
+      localStorage.setItem("sessionId", this.sessionId);
       this.$router.replace({
         path: '/',
         query: {
-          envKey: item.envKey,
-          sessionId: this.sessionId
+          //envKey: item.envKey,
+          //sessionId: this.sessionId
         }
       });
     },

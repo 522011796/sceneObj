@@ -140,7 +140,7 @@ export function orderValue(type, str){
     "12":"音量量控制",
     "13":"播放控制",
     "14":"暂停控制",
-    "15":"时间跳转控制",
+    "15":"音乐进度控制",
     "16":"点状灯效",
     "17":"线状灯效"
   };
@@ -181,7 +181,7 @@ export function planType(type, str){
     "1": "灯",
     "2": "开关",
     "3": "窗帘",
-    "4": "音乐"
+    "5": "音乐"
   };
   if (type == 'set') {
     return planType[str];

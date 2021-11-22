@@ -38,7 +38,7 @@
               <div class="textLeft">
                 <div class="marginTop10 fontBold">{{ item.sceneName }}</div>
                 <div class="marginTop5 font-size-12">
-                  <img :src="require(`~/static/img/${item.roomId}.png`)" style="height: 20px; width: 20px;">
+                  <img v-if="item.roomId" :src="require(`~/static/img/${item.roomId}.png`)" style="height: 20px; width: 20px;">
                   <label style="position: relative; top: -6px;">{{ getGlobalRoomObj(item.roomId) }}</label>
                 </div>
               </div>

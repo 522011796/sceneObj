@@ -488,37 +488,6 @@
                 <el-input-number size="medium" v-model="formCurtainsOrder.startLoop" @change="handleChange($event, 'startLoop')" :min="0" :step="1" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
-<!--            <el-form-item v-if="customBottomType == 4" label="场景名称" class="netmoon-form-item-border-dialog">-->
-<!--              <div class="textRight color-666666">-->
-<!--                <el-popover-->
-<!--                  placement="left"-->
-<!--                  width="240"-->
-<!--                  popper-class="pop-custom"-->
-<!--                  trigger="click"-->
-<!--                  v-model="customDrawBottomOpenVisible">-->
-<!--                  <div class="textCenter" style="max-height: 260px; overflow-y: auto">-->
-<!--                    <div class="index-pop-item" v-for="(item, index) in sceneList" v-if="item.sceneId != senceId" :class="index != sceneList.length - 1 ? 'border-bottom-item' : ''">-->
-<!--                      <el-row>-->
-<!--                        <el-col :span="20">-->
-<!--                          <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'curtainsSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">-->
-<!--                            <span>{{ item.sceneName }}</span>-->
-<!--                          </div>-->
-<!--                        </el-col>-->
-<!--                        <el-col :span="4">-->
-<!--                          <div class="textRight">-->
-<!--                            <span v-if="(senceIndex != '' || senceIndex === 0) && index === senceIndex" style="position: relative; top: 0px;"><i class="fa fa-check-circle color-success"></i></span>-->
-<!--                          </div>-->
-<!--                        </el-col>-->
-<!--                      </el-row>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <span slot="reference" size="mini">-->
-<!--                          <label>{{formCurtainsOrder.sence == '' ? $t("请选择") : formCurtainsOrder.senceText}}</label>-->
-<!--                          <label><i class="fa fa-chevron-right"></i></label>-->
-<!--                        </span>-->
-<!--                </el-popover>-->
-<!--              </div>-->
-<!--            </el-form-item>-->
             <el-form-item v-if="customBottomType != 10 && customBottomType != 3 && customBottomType != 4 && customBottomType != 5 && customBottomType != 1" label="延时时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <el-input-number size="medium" v-model="formCurtainsOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
@@ -527,6 +496,50 @@
             <el-form-item v-if="customBottomType == 1" label="空闲时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <el-input-number size="medium" v-model="formCurtainsOrder.emptyTime" @change="handleChange($event, 'emptyTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
+
+        <div v-if="setChildBottomType == 'musicSub'" >
+          <el-form class="padding-tb10-lr20" label-width="95px" ref="formMusicOrder" :model="formMusicOrder">
+            <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
+              <div class="textRight color-666666">
+                <el-popover
+                  placement="left"
+                  width="260"
+                  popper-class="pop-custom"
+                  trigger="click"
+                  v-model="customDrawBottomVisible">
+                  <div class="textCenter">
+                    <order-music-type-dialog @click="changeCustomBottomMusicType"></order-music-type-dialog>
+                  </div>
+                  <span slot="reference" size="mini">
+                          <label>{{formMusicOrder.type == '' ? $t("请选择") : orderValueInfo(formMusicOrder.type, 'set')}}</label>
+                          <label><i class="fa fa-chevron-right"></i></label>
+                        </span>
+                </el-popover>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="customBottomType == 13" label="音乐播放" class="netmoon-form-item-border-dialog custon-input-item">
+              <div class="textRight color-666666">
+                <el-input :placeholder="$t('请输入音乐名称')" v-model="formMusicOrder.musicName"></el-input>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="customBottomType == 12" label="音乐音量" class="netmoon-form-item-border-dialog">
+              <div class="textRight color-666666">
+                <el-slider v-model="formMusicOrder.musicVoice" :step="0.01" :max="1" :format-tooltip="musicVoiceFormatTooltip" @change="handleChange($event, 'musicVoice')"></el-slider>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="customBottomType == 15" label="音乐进度" class="netmoon-form-item-border-dialog custon-input-item">
+              <div class="textRight color-666666">
+<!--                <el-slider v-model="formMusicOrder.musicProcess" :step="1" :max="65535" :format-tooltip="musicProcessFormatTooltip" @change="handleChange($event, 'musicVoice')"></el-slider>-->
+                <el-input :placeholder="$t('范围:0-65535秒')" v-model="formMusicOrder.musicProcess" maxlength="5"></el-input>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="customBottomType == 2" label="延时时间" class="netmoon-form-item-border-dialog">
+              <div class="textRight color-666666">
+                <el-input-number size="medium" v-model="formMusicOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
           </el-form>
@@ -826,7 +839,7 @@
                 <el-col :span="16">
                   <div class="drawerHeaderDiv color-666666">
                     <span v-if="setChildBottomType == 'change'">{{$t("速度设置")}}</span>
-                    <span v-if="setChildBottomType == 'lightSub' || setChildBottomType == 'curtainsSub' || setChildBottomType == 'switchSub' || setChildBottomType == 'lightGroupSub' || setChildBottomType == 'sceneSub'">{{$t("指令设置")}}</span>
+                    <span v-if="setChildBottomType == 'lightSub' || setChildBottomType == 'curtainsSub' || setChildBottomType == 'switchSub' || setChildBottomType == 'lightGroupSub' || setChildBottomType == 'sceneSub' || setChildBottomType == 'musicSub'">{{$t("指令设置")}}</span>
                   </div>
                 </el-col>
                 <el-col :span="4">
@@ -1167,6 +1180,51 @@
                 </el-form>
               </div>
 
+              <div v-if="setChildBottomType == 'musicSub'" >
+                <el-form class="padding-tb10-lr20" label-width="95px" ref="formMusicOrder" :model="formMusicOrder">
+                  <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
+                    <div class="textRight color-666666">
+                      <el-popover
+                        placement="left"
+                        width="260"
+                        popper-class="pop-custom"
+                        trigger="click"
+                        v-model="customBottomVisible">
+                        <div class="textCenter">
+                          <order-music-type-dialog @click="changeCustomBottomMusicType"></order-music-type-dialog>
+                        </div>
+                        <span slot="reference" size="mini">
+                          <label v-if="areaItem == ''">{{formMusicOrder.type == '' ? $t("请选择") : orderValueInfo(formMusicOrder.type, 'set')}}</label>
+                          <label v-if="areaItem != ''">{{formMusicOrder.type == '' ? $t("请选择") : orderValueInfo(formMusicOrder.type, 'set')}}</label>
+                          <label><i class="fa fa-chevron-right"></i></label>
+                        </span>
+                      </el-popover>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 13" label="音乐播放" class="netmoon-form-item-border-dialog custon-input-item">
+                    <div class="textRight color-666666">
+                      <el-input :placeholder="$t('请输入音乐名称')" v-model="formMusicOrder.musicName"></el-input>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 12" label="音乐音量" class="netmoon-form-item-border-dialog">
+                    <div class="textRight color-666666">
+                      <el-slider v-model="formMusicOrder.musicVoice" :step="0.01" :max="1" :format-tooltip="musicVoiceFormatTooltip" @change="handleChange($event, 'musicVoice')"></el-slider>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 15" label="音乐进度" class="netmoon-form-item-border-dialog custon-input-item">
+                    <div class="textRight color-666666">
+<!--                      <el-slider v-model="formMusicOrder.musicProcess" :step="1" :max="600" show-stops :format-tooltip="musicProcessFormatTooltip" @change="handleChange($event, 'musicProcess')"></el-slider>-->
+                      <el-input :placeholder="$t('范围:0-65535秒')" v-model="formMusicOrder.musicProcess" maxlength="5"></el-input>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 2" label="延时时间" class="netmoon-form-item-border-dialog">
+                    <div class="textRight color-666666">
+                      <el-input-number size="medium" v-model="formMusicOrder.waitTime" @change="handleChange($event, 'waitTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
+                    </div>
+                  </el-form-item>
+                </el-form>
+              </div>
+
               <div v-if="setChildBottomType == 'sceneSub'" >
                 <el-form class="padding-tb10-lr20" label-width="95px" ref="formSceneOrder" :model="formSceneOrder">
                   <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
@@ -1385,7 +1443,8 @@ import {
   orderColor,
   outEditTypeObj,
   openType,
-  MessageError
+  MessageError,
+  getLength
 } from "../utils/utils";
 import OrderCurtainsTypeDialog from "../components/OrderCurtainsTypeDialog";
 import OrderSwitchTypeDialog from "../components/OrderSwitchTypeDialog";
@@ -1399,9 +1458,11 @@ import OrderSwitchKeyTypeDialog from "../components/OrderSwitchKeyTypeDialog";
 import OrderPowerTypeDialog from "../components/OrderPowerTypeDialog";
 import OrderSceneTypeDialog from "../components/OrderSceneTypeDialog";
 import {showChartLoading, hideChartLoading} from "../utils/loadingChart";
+import OrderMusicTypeDialog from "../components/OrderMusicTypeDialog";
 export default {
   mixins: [mixins],
   components: {
+    OrderMusicTypeDialog,
     OrderSceneTypeDialog,
     OrderPowerTypeDialog,
     OrderSwitchKeyTypeDialog,
@@ -1564,6 +1625,22 @@ export default {
       },
       formCurtainsOrder: {
         type: 10,
+        waitTime: 0,
+        sence: '',
+        startLoop: 0,
+        startOrder: '',
+        startOrderI: '',
+        senceText: '',
+        senceRoom: '',
+        senceName: '',
+        curtainsOpenClose: 0,
+        emptyTime: 0
+      },
+      formMusicOrder: {
+        type: 13,
+        musicName: '',
+        musicProcess: 0,
+        musicVoice: 0,
         waitTime: 0,
         sence: '',
         startLoop: 0,
@@ -1865,6 +1942,10 @@ export default {
         this.setChildBottomType = 'curtainsSub';
         this.customBottomType = 10;
         this.formCurtainsOrder.type = 10;
+      }else if (this.planList[index].t == 5){
+        this.setChildBottomType = 'musicSub';
+        this.customBottomType = 13;
+        this.formMusicOrder.type = 13;
       }else if (this.planList[index].t == 0){
         this.setChildBottomType = 'sceneSub';
         this.customBottomType = 4;
@@ -1913,7 +1994,9 @@ export default {
     },
     selRoomItem(event, item){
       this.formSence.roomId = item.id;
-      this.formSence.img = "~/static/img/" + item.id + ".png";
+      if (item.id){
+        this.formSence.img = "~/static/img/" + item.id + ".png";
+      }
       this.drawerRoomVisible = false;
     },
     async setSenceData(item, type){
@@ -2074,7 +2157,8 @@ export default {
             //   //this.taskList[i][j]['secLoop'] = resultLoop * loopNum + selfSec;
             //   this.$set(this.taskList[i][j],'secLoop', resultLoop * loopNum + selfSec);
             // }
-            taskList[i][j]['list'] = array;
+            //taskList[i][j]['list'] = array;
+            this.$set(taskList[i][j], 'list', array);
             array = [];
             resultLoop = 0;
           }
@@ -2146,6 +2230,7 @@ export default {
       this.formCurtainsOrder.type = "";
       this.formSwitchOrder.type = "";
       this.formSceneOrder.type = "";
+      this.formMusicOrder.type = "";
       this.loopIndex = "";
       this.loopItem = "";
       this.senceIndex = "";
@@ -2169,6 +2254,10 @@ export default {
         this.setChildBottomType = 'sceneSub';
         this.customBottomType = 4;
         this.formSceneOrder.type = 4;
+      }else if (this.planList[index].t === 5){
+        this.setChildBottomType = 'musicSub';
+        this.customBottomType = 13;
+        this.formMusicOrder.type = 13;
       }
 
       //console.log(this.formOrder.type, this.formSwitchOrder.type);
@@ -2327,6 +2416,20 @@ export default {
         }else if (item.i == 2){
           this.formCurtainsOrder.waitTime = item.v;
         }
+      }else if (this.setChildBottomType == 'musicSub') {
+        this.formMusicOrder.type = item.i;
+        this.customBottomType = item.i;
+        if (item.i == 12) {
+          this.formMusicOrder.musicVoice = item.v;
+        }else if (item.i == 13) {
+          this.formMusicOrder.musicName = item.v;
+        }else if (item.i == 14) {
+
+        }else if (item.i == 15) {
+          this.formMusicOrder.musicProcess = item.v;
+        }else if (item.i == 2){
+          this.formMusicOrder.waitTime = item.v;
+        }
       }else if (this.setChildBottomType == 'sceneSub') {
         this.formSceneOrder.type = item.i;
         this.customBottomType = item.i;
@@ -2348,6 +2451,7 @@ export default {
       this.drawerBottomDialogVisible = true;
     },
     resetOprType(){
+      console.log(this.setChildBottomType);
       if (this.setChildBottomType == 'lightSub'){
         this.formOrder.type = 1;
         this.formOrder.changeTime = 100;
@@ -2362,6 +2466,10 @@ export default {
         this.customBottomType = 10;
         this.formCurtainsOrder.type = 10;
         this.formCurtainsOrder.curtainsOpenClose = 0;
+      }else if (this.setChildBottomType == 'musicSub'){
+        this.customBottomType = 13;
+        this.formSceneOrder.type = 13;
+        this.formSceneOrder.musicName = "";
       }else if (this.setChildBottomType == 'sceneSub'){
         this.customBottomType = 4;
         this.formSceneOrder.type = 4;
@@ -2464,6 +2572,22 @@ export default {
         emptyTime: 0,
         senceRoom: '',
         senceName: '',
+      };
+      this.formMusicOrder = {
+        type: 13,
+        musicName: '',
+        musicProcess: 0,
+        musicVoice: 0,
+        waitTime: 0,
+        sence: '',
+        startLoop: 0,
+        startOrder: '',
+        startOrderI: '',
+        senceText: '',
+        senceRoom: '',
+        senceName: '',
+        curtainsOpenClose: 0,
+        emptyTime: 0
       }
     },
     handleChange(data, type){
@@ -2473,10 +2597,11 @@ export default {
         this.formTemplate.loop = data;
       }else if (type == 'changeTime'){
         this.formOrder.changeTime = data;
-      }else if (type == 'waiteTime'){
-        this.formOrder.waiteTime = data;
-        this.formSwitchOrder.waiteTime = data;
-        this.formSceneOrder.waiteTime = data;
+      }else if (type == 'waitTime'){
+        this.formOrder.waitTime = data;
+        this.formSwitchOrder.waitTime = data;
+        this.formSceneOrder.waitTime = data;
+        this.formMusicOrder.waitTime = data;
       }else if (type == 'light'){
         this.formOrder.light = data;
       }else if (type == 'temp'){
@@ -2490,6 +2615,10 @@ export default {
         this.formCurtainsOrder.emptyTime = data;
         this.formSwitchOrder.emptyTime = data;
         this.formSceneOrder.emptyTime = data;
+      }else if (type == 'musicVoice'){
+        this.formMusicOrder.musicVoice = data;
+      }else if (type == 'musicProcess'){
+        this.formMusicOrder.musicProcess = data;
       }
     },
     closeAlertDialog(event){
@@ -2556,6 +2685,14 @@ export default {
       this.editOpr = "edit";
       this.areaItem = "";
       this.formCurtainsOrder.type = type;
+      this.customBottomType = type;
+      this.customBottomVisible = false;
+      this.customDrawBottomVisible = false;
+    },
+    changeCustomBottomMusicType(event, type){
+      this.editOpr = "edit";
+      this.areaItem = "";
+      this.formMusicOrder.type = type;
       this.customBottomType = type;
       this.customBottomVisible = false;
       this.customDrawBottomVisible = false;
@@ -2691,6 +2828,16 @@ export default {
         return val.toFixed(2) * 100 + "%";
       }
     },
+    musicVoiceFormatTooltip(val){
+      if (val){
+        return val.toFixed(2) * 100 + "%";
+      }
+    },
+    musicProcessFormatTooltip(val){
+      if (val){
+        return val + "秒";
+      }
+    },
     selLoopOrder(event, item, index, type){
       this.loopIndex = index;
       this.loopItem = item;
@@ -2733,6 +2880,10 @@ export default {
         this.formSceneOrder.sence = item.sceneId;
         this.formSceneOrder.senceText = item.sceneName;
         this.formSceneOrder.senceRoom = item.roomId;
+      }else if (type == "musicSub"){
+        this.formMusicOrder.sence = item.sceneId;
+        this.formMusicOrder.senceText = item.sceneName;
+        this.formMusicOrder.senceRoom = item.roomId;
       }
       this.customBottomOpenVisible = false;
       this.customDrawBottomOpenVisible = false;
@@ -2758,6 +2909,8 @@ export default {
     saveOpr(){
       //console.log("----"+this.formOrder.type,this.formSwitchOrder.type,this.formCurtainsOrder.type);
       let sceneRule = 0;
+      let numberNoZeroReg = /^[1-9][0-9]*$/;
+      let num0_65535 = /^([0-9]{0,5}|65535)$/;
       //验证
       if (this.setChildBottomType == 'lightSub' && this.oprType != 'delOrder'){
         if (outTypeObj(this.formOrder.type) == 9){
@@ -2793,6 +2946,27 @@ export default {
           if (this.formCurtainsOrder.sence == ""){
             MessageWarning(this.$t("请设置场景！"));
             return;
+          }
+        }
+      }else if (this.setChildBottomType == 'musicSub' && this.oprType != 'delOrder'){
+        if (this.formMusicOrder.type == 13){
+          if (this.formMusicOrder.musicName == ""){
+            MessageWarning(this.$t("请输入音乐名称！"));
+            return;
+          }else if (getLength(this.formMusicOrder.musicName) > 24){
+            MessageWarning(this.$t("音乐名称长度最长24位！"));
+            return;
+          }
+        }
+        if (this.formMusicOrder.type == 15){
+          if (this.formMusicOrder.musicProcess == ""){
+            MessageWarning(this.$t("请输入音乐进度！"));
+            return;
+          }else if (this.formMusicOrder.musicProcess != ""){
+            if (!num0_65535.test(this.formMusicOrder.musicProcess)){
+              MessageWarning(this.$t("范围:0-65535秒"));
+              return;
+            }
           }
         }
       }else if (this.setChildBottomType == 'sceneSub' && this.oprType != 'delOrder'){
@@ -2832,6 +3006,10 @@ export default {
         }else if (this.formCurtainsOrder.type != ""){
           obj = {
             i : this.formCurtainsOrder.type
+          }
+        }else if (this.formMusicOrder.type != ""){
+          obj = {
+            i : this.formMusicOrder.type
           }
         }else if (this.formSceneOrder.type != ""){
           obj = {
@@ -2874,7 +3052,7 @@ export default {
             obj['v'] = this.formSceneOrder.emptyTime;
             obj['sec'] = this.formSceneOrder.emptyTime;
           }
-        }else if (outTypeObj(this.formOrder.type) == 2 || this.formCurtainsOrder.type == 2 || outTypeObj(this.formSwitchOrder.type) == 2 || this.formSceneOrder.type == 2){
+        }else if (outTypeObj(this.formOrder.type) == 2 || this.formCurtainsOrder.type == 2 || outTypeObj(this.formSwitchOrder.type) == 2 || this.formSceneOrder.type == 2 || this.formMusicOrder.type == 2){
           if (this.formOrder.type != ""){
             obj['v'] = this.formOrder.waitTime;
             obj['sec'] = this.formOrder.waitTime;
@@ -2887,6 +3065,9 @@ export default {
           }else if (this.formSceneOrder.type != ""){
             obj['v'] = this.formSceneOrder.waitTime;
             obj['sec'] = this.formSceneOrder.waitTime;
+          }else if (this.formMusicOrder.type != ""){
+            obj['v'] = this.formMusicOrder.waitTime;
+            obj['sec'] = this.formMusicOrder.waitTime;
           }
         }else if (outTypeObj(this.formOrder.type) == 6){
           obj['v'] = parseInt(this.customBottomOpen);
@@ -2939,6 +3120,14 @@ export default {
           obj['s'] = this.formSwitchOrder.keyOpr;
           obj['t'] = 100;
           obj['sec'] = 100;
+        }else if (this.formMusicOrder.type == 12){
+          obj['v'] = this.formMusicOrder.musicVoice;
+        }else if (this.formMusicOrder.type == 13){
+          obj['v'] = this.formMusicOrder.musicName;
+        }else if (this.formMusicOrder.type == 14){
+
+        }else if (this.formMusicOrder.type == 15){
+          obj['v'] = this.formMusicOrder.musicProcess;
         }
         //console.log(5557,obj);
         //this.taskItem.push(obj);
@@ -3051,7 +3240,7 @@ export default {
       };
       //云端用
       codeData = {
-        envKey: this.$route.query.envKey,
+        envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
         iconId: 1,
         internal: false,
         openSource: false,
@@ -3083,7 +3272,7 @@ export default {
     installSence(senceId){
       //loading: false
       let params = {
-        envKey: this.$route.query.envKey,
+        envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
         sceneId: senceId
       };
       params = this.$qs.stringify(params);
@@ -3111,7 +3300,7 @@ export default {
       //loading: false
       let _self = this;
       let params = {
-        envKey: this.$route.query.envKey,
+        envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
         sceneId: senceId
       };
       params = this.$qs.stringify(params);
@@ -3129,7 +3318,7 @@ export default {
     },
     senceInfo(senceId){
       let params = {
-        envKey: this.$route.query.envKey,
+        envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
         sceneId: senceId
       };
       //params = this.$qs.stringify(params);
@@ -3154,13 +3343,15 @@ export default {
       this.drawerListVisible = false;
     },
     selEnv(event, item){
-      this.$router.replace({
-        query: {
-          envKey: item.envKey,
-          sessionId: this.sessionId
-        }
-      });
+      // this.$router.replace({
+      //   query: {
+      //     envKey: item.envKey,
+      //     sessionId: this.sessionId
+      //   }
+      // });
       this.envKey = item.envKey;
+      localStorage.setItem("envKey", this.envKey);
+      localStorage.setItem("sessionId", this.sessionId);
       this.drawerEnvVisible = false;
       this.initSenceList();
     },

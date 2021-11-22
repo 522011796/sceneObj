@@ -160,9 +160,9 @@
                     <div class="index-pop-item" @click="changePlainType($event, 3)">
                       <span>{{$t("窗帘")}}</span>
                     </div>
-<!--                    <div class="index-pop-item" @click="changePlainType($event, 4)">-->
-<!--                      <span>{{$t("音乐")}}</span>-->
-<!--                    </div>-->
+                    <div class="index-pop-item" @click="changePlainType($event, 5)">
+                      <span>{{$t("音乐")}}</span>
+                    </div>
                     <div class="index-pop-item" @click="changePlainType($event, 0)">
                       <span>{{$t("场景")}}</span>
                     </div>

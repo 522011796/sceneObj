@@ -16,6 +16,7 @@ You can directly use them in pages and other components without the need to impo
 - `<OrderEditDialog>` | `<order-edit-dialog>` (components/OrderEditDialog.vue)
 - `<OrderLightTypeDialog>` | `<order-light-type-dialog>` (components/OrderLightTypeDialog.vue)
 - `<OrderListPopChildDialog>` | `<order-list-pop-child-dialog>` (components/OrderListPopChildDialog.vue)
+- `<OrderMusicTypeDialog>` | `<order-music-type-dialog>` (components/OrderMusicTypeDialog.vue)
 - `<OrderPowerTypeDialog>` | `<order-power-type-dialog>` (components/OrderPowerTypeDialog.vue)
 - `<OrderSceneTypeDialog>` | `<order-scene-type-dialog>` (components/OrderSceneTypeDialog.vue)
 - `<OrderSwitchKeyTypeDialog>` | `<order-switch-key-type-dialog>` (components/OrderSwitchKeyTypeDialog.vue)
