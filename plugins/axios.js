@@ -70,7 +70,8 @@ export default function({store, redirect, req, router, $axios }) {
         }
         hideLoading();
       }
-      return Promise.reject(new Error(res.msg || 'Error'))
+      //return Promise.reject(new Error(res.msg || 'Error'))
+      return response;
     },
     error => {
       //console.log('err' + error) // for debug

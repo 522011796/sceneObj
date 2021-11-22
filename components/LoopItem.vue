@@ -31,7 +31,7 @@
     <span v-if="item.i == 7" size="mini" class="font-size-12 color-default">
       <label class="color-666666 font-size-14">{{ $t("亮度") }}</label>
 
-      <label>{{ item.v * 100 }}%</label>
+      <label>{{ item.v.toFixed(2) * 100 }}%</label>
       |
       <label>{{ $t("渐变") }}: {{ item.t }}</label>
     </span>
@@ -53,7 +53,7 @@
     <span v-if="item.i == 10" size="mini" class="font-size-12 color-default">
       <label class="color-666666 font-size-14">{{ $t("行程") }}</label>
 
-      <label>{{ item.v * 100 }}%</label>
+      <label>{{ item.v.toFixed(2) * 100 }}%</label>
     </span>
     <span v-if="item.i == 11" size="mini" class="font-size-12 color-default">
       <label class="color-666666 font-size-14">{{ $t("继电器") }}</label>
@@ -66,7 +66,7 @@
     <span v-if="item.i == 12" size="mini" class="font-size-12 color-default">
       <label class="color-666666 font-size-14">{{ $t("音乐音量") }}</label>
 
-      <label>{{ item.v * 100 }}%</label>
+      <label>{{ item.v.toFixed(2) * 100 }}%</label>
     </span>
     <span v-if="item.i == 13" size="mini" class="font-size-12 color-default">
       <label class="color-666666 font-size-14">{{ $t("音乐名称") }}</label>

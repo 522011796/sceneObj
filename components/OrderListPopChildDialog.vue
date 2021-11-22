@@ -132,7 +132,7 @@
                   </div>
                   <div v-if="itemList.i == 7">
                     <div>
-                      {{$t("亮度百分比")}}: {{ itemList.v * 100 }}%
+                      {{$t("亮度百分比")}}: {{ itemList.v.toFixed(2) * 100 }}%
                     </div>
                     <div>
                       {{$t("渐变时间")}}: {{ itemList.t }}
@@ -156,7 +156,7 @@
                   </div>
                   <div v-if="itemList.i == 10">
                     <div>
-                      {{$t("行程百分比")}}: {{ itemList.v * 100 }}%
+                      {{$t("行程百分比")}}: {{ itemList.v.toFixed(2) * 100 }}%
                     </div>
                   </div>
                   <div v-if="itemList.i == 11">
@@ -169,7 +169,7 @@
                   </div>
                   <div v-if="itemList.i == 12">
                     <div>
-                      {{$t("音量")}}: {{ itemList.v * 100 }}%
+                      {{$t("音量")}}: {{ itemList.v.toFixed(2) * 100 }}%
                     </div>
                   </div>
                   <div v-if="itemList.i == 13">
