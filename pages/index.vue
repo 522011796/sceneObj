@@ -3115,11 +3115,11 @@ export default {
             obj['r'] = this.formSceneOrder.senceRoom;
             obj['n'] = this.formSceneOrder.senceText;
           }
-          obj['t'] = 100;
+          //obj['t'] = 100;
           obj['sec'] = this.scnenDuration == Number.MAX_SAFE_INTEGER ? -1 : this.scnenDuration;
         }else if (outTypeObj(this.formCurtainsOrder.type) == 10){//行程指令，时间默认1
           obj['v'] = this.formCurtainsOrder.curtainsOpenClose;
-          obj['t'] = 100;
+          //obj['t'] = 100;
           obj['sec'] = 100;
         }else if (outTypeObj(this.formSwitchOrder.type) == 11){//继电器操作指令，时间默认1
           obj['v'] = this.formSwitchOrder.keyArr;
@@ -3133,7 +3133,7 @@ export default {
         }else if (this.formMusicOrder.type == 14){
 
         }else if (this.formMusicOrder.type == 15){
-          obj['v'] = this.formMusicOrder.musicProcess;
+          obj['v'] = parseInt(this.formMusicOrder.musicProcess);
         }
         console.log(5557,obj);
         //this.taskItem.push(obj);
