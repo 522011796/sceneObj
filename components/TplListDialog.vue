@@ -363,8 +363,6 @@ export default {
       this.$axios.get(this.baseUrl + url, {params: params, sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
           this.data = res.data.data;
-        }else {
-          MessageWarning(res.data.msg);
         }
       });
     },
