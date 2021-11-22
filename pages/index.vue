@@ -2037,7 +2037,7 @@ export default {
           }
           if (data[i].i[j].t > 0){
             tasksTemp[j]['t'] = data[i].i[j].t
-          }else {
+          }else if (data[i].i[j].t == 0){
             tasksTemp[j]['t'] = 0;
           }
           if (data[i].i[j].r){
