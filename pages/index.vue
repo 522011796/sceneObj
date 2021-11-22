@@ -2001,7 +2001,7 @@ export default {
     },
     async setSenceData(item, type){
       let data = item;
-      console.log(56,data);
+      //console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];
@@ -2451,7 +2451,7 @@ export default {
       this.drawerBottomDialogVisible = true;
     },
     resetOprType(){
-      console.log(this.setChildBottomType);
+      //console.log(this.setChildBottomType);
       if (this.setChildBottomType == 'lightSub'){
         this.formOrder.type = 1;
         this.formOrder.changeTime = 100;
