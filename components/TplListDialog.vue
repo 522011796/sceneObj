@@ -559,7 +559,7 @@ export default {
           customClass: 'custom-g-loading',
           target: document.querySelector('.drawer-child-bottom, .drawerBottomDialog')//设置加载动画区域
         });
-        console.log(type);
+        //console.log(type);
         if(type == 'muti'){
           this.planDeviceExtar[index].value = data.label;
           this.planDeviceExtar[index].sn = data.sn;
@@ -578,7 +578,7 @@ export default {
 
             for (let k = 0; k < dExtraD.length; k++){
               if(dExtraD[k] == item.key){
-                console.log(dExtraD[k]);
+                //console.log(dExtraD[k]);
                 this.planDeviceResetData[i].d[k] = data.sn;
               }
             }
@@ -595,7 +595,7 @@ export default {
               this.planDeviceResetData[this.cardIndex].d[i] = data.sn;
             }
             if(this.planDeviceResetData[this.cardIndex].d[i] != this.dExtra[index].sn){
-              console.log(this.dExtra[index].sn);
+              //console.log(this.dExtra[index].sn);
               this.planDeviceResetData[this.cardIndex].d[i] = data.sn;
             }
           }

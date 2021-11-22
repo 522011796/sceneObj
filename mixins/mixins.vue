@@ -96,7 +96,7 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           };
           this.$axios.get(this.baseUrl + common.lightGrouplist, {params: params, sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
-              console.log("lightgroup", res.data.data);
+              //console.log("lightgroup", res.data.data);
               this.globalLightGroupList = res.data.data;
             }
           });
@@ -228,7 +228,7 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
                   }
                 }
               }
-              console.log(111,att);
+              //console.log(111,att);
               this.dataDeviceList = att;
             }
           });

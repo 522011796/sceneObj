@@ -588,7 +588,7 @@
             deviceSelDevice: this.selMenuData.d
           }
           this.oprType = 'update';
-          console.log(this.formPlain);
+          //console.log(this.formPlain);
           this.drawer = true;
         },
         copyPlain(){
@@ -596,7 +596,7 @@
             MessageWarning(this.$t("请选择需要复制的任务"));
             return;
           }
-          console.log(this.selMenuData);
+          //console.log(this.selMenuData);
           this.menuList.push(this.selMenuData);
           //this.initMenu(this.menuList);
           //setSenceData();
@@ -747,7 +747,7 @@
         },
         oprPlain(){
           let planList = this.$refs.childRef.$children[0].planList;
-          console.log(12345678,planList);
+          //console.log(12345678,planList);
           if (this.oprType == "add"){
             let planObj = {
               d: this.formPlain.deviceSelDevice,
@@ -797,7 +797,7 @@
             openSource: true,
             img: ''
           };
-          console.log(this.$refs.childRef.$children[0].formSence);
+          //console.log(this.$refs.childRef.$children[0].formSence);
           if (this.$refs.childRef.$children[0].formSence.id != undefined && this.$refs.childRef.$children[0].formSence.id != ''){
             this.loading = true;
             this.$refs.childRef.$children[0].saveConfig();

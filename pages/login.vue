@@ -145,7 +145,7 @@ export default {
       this.loading = true;
       this.$axios.get(commonConfig.baseUrl + common.isNeedImageCode, {params: params, loading: false}).then(res => {
         if (res.data.code == 200){
-          console.log(res.data.data.imageCode);
+          //console.log(res.data.data.imageCode);
           if (res.data.data.imageCode == false){
             let paramsLogin = {
               username: this.form.username,
@@ -251,7 +251,7 @@ export default {
     },
     removeAccount(event, item){
       for (let i = 0; i < this.restaurants.length; i++){
-        console.log(item.value ,this.restaurants[i].value);
+        //console.log(item.value ,this.restaurants[i].value);
         if (item.value == this.restaurants[i].value){
 
           this.restaurants.splice(i, 1);

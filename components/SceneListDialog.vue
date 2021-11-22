@@ -274,7 +274,7 @@ export default {
             sourceDataExtra[i]['d'].push("$"+sourceKeyIndex);
           }
         }
-        console.log(sourceDataExtra);
+        //console.log(sourceDataExtra);
         params['tplSource'] = JSON.stringify(sourceDataExtra);
       }
 
