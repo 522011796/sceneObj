@@ -402,7 +402,7 @@
                 this.footerRightStyle["margin-left"] = '105px';
               }else{
                 this.mainStyle.width = this.isCollapse == false ? '8%' : '15%';
-                this.footerLeftStyle.width = '15%';
+                this.footerLeftStyle.width = '10%';
                 this.contentStyle["margin-left"] = this.isCollapse == false ? '8.5%' :'15.5%';
                 this.footerRightStyle["margin-left"] = '15.5%';
               }
@@ -414,7 +414,7 @@
                 this.footerRightStyle["margin-left"] = '105px';
               }else{
                 this.mainStyle.width = this.isCollapse == false ? '8%' : '15%';
-                this.footerLeftStyle.width = '15%';
+                this.footerLeftStyle.width = '10%';
                 this.contentStyle["margin-left"] = this.isCollapse == false ? '8.5%' :'15.5%';
                 this.footerRightStyle["margin-left"] = '15.5%';
               }

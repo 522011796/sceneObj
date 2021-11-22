@@ -1923,6 +1923,8 @@ export default {
       this.formOrder.type = "";
       this.formCurtainsOrder.type = "";
       this.formSwitchOrder.type = "";
+      this.formSceneOrder.type = "";
+      this.formMusicOrder.type = "";
       this.loopIndex = "";
       this.loopItem = "";
       this.senceIndex = "";
@@ -3129,7 +3131,7 @@ export default {
         }else if (this.formMusicOrder.type == 15){
           obj['v'] = this.formMusicOrder.musicProcess;
         }
-        //console.log(5557,obj);
+        console.log(5557,obj);
         //this.taskItem.push(obj);
 
         //console.log(this.oprOtherType, this.areaIndex);
