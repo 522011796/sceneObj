@@ -2822,17 +2822,20 @@ export default {
     },
     lightFormatTooltip(val){
       if (val){
-        return val.toFixed(2) * 100 + "%";
+        let num = (val * 100).toFixed(2) + "%";
+        return num;
       }
     },
     curtainsFormatTooltip(val){
       if (val){
-        return val.toFixed(2) * 100 + "%";
+        let num = (val * 100).toFixed(0) + "%";
+        return num;
       }
     },
     musicVoiceFormatTooltip(val){
       if (val){
-        return val.toFixed(2) * 100 + "%";
+        let num = (val * 100).toFixed(0) + "%";
+        return num;
       }
     },
     musicProcessFormatTooltip(val){
@@ -2915,17 +2918,18 @@ export default {
       let num0_65535 = /^([0-9]{0,5}|65535)$/;
       //验证
       if (this.setChildBottomType == 'lightSub' && this.oprType != 'delOrder'){
-        if (outTypeObj(this.formOrder.type) == 9){
+        let type = this.editOpr == "edit" ? outTypeObj(this.formOrder.type) : this.formOrder.type;
+        if (type == 9){
           if (this.formOrder.color == ""){
             MessageWarning(this.$t("请设置颜色！"));
             return;
           }
-        }else if (outTypeObj(this.formOrder.type) == 3){
+        }else if (type == 3){
           if (this.formOrder.startOrderI == ""){
             MessageWarning(this.$t("请设置起始位置！"));
             return;
           }
-        }else if (outTypeObj(this.formOrder.type) == 4){
+        }else if (type == 4){
           if (this.formOrder.sence == ""){
             MessageWarning(this.$t("请设置场景！"));
             return;
