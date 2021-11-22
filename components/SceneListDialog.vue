@@ -68,6 +68,7 @@
       :drawer-tpl-visible="drawerTplVisible"
       @changeDrawer="changeTplDrawer"
       @updateTplOpr="updateTplOpr"
+      @returnIndex="changeTplDrawer"
     >
     </tpl-list-dialog>
 

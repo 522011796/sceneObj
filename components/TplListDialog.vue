@@ -3,7 +3,7 @@
     <el-drawer
       title="场景设置"
       custom-class="drawer-list"
-      :show-close="true"
+      :show-close="false"
       :modal="true"
       size="100%"
       :wrapperClosable="false"
@@ -13,6 +13,9 @@
 
       <div slot="title">
         <div class="block-list-header" style="text-align: center">
+          <el-button size="mini" type="text" class="floatLeft color-default" style="margin-top: 7px" @click="returnIndex">
+            <i class="fa fa-close" style="font-size: 15px"></i>
+          </el-button>
           <el-button-group>
             <el-button size="mini" :type="listType == 2 ? 'success' : 'default'" @click="initTplData($event, 2)">我的模版</el-button>
             <el-button size="mini" :type="listType == 1 ? 'success' : 'default'" @click="initTplData($event, 1)">系统模版</el-button>
@@ -623,6 +626,9 @@ export default {
     },
     refruceShareTplOpr(event, item){
 
+    },
+    returnIndex(){
+      this.$emit("returnIndex");
     }
   }
 }
