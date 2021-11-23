@@ -140,8 +140,7 @@
       :size="dialogListSize"
       :wrapperClosable="false"
       :visible.sync="drawerSenceVisible"
-      :direction="directionList"
-      @closed="closeOprDrawer">
+      :direction="directionList">
 
       <div slot="title">
         <div class="block-opr-header">
@@ -402,7 +401,7 @@
 <!--            </el-form-item>-->
             <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8 && customBottomType != 9" label="渐变时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <el-input-number size="medium" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
+                <el-input-number size="medium" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="0" :step="100" :step-strictly="true"></el-input-number>
               </div>
             </el-form-item>
             <el-form-item v-if="customBottomType != 9 && customBottomType != 1 && customBottomType != 2 && customBottomType != 3 && customBottomType != 4 && customBottomType != 7 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
@@ -1049,7 +1048,7 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8 && customBottomType != 9" label="渐变时间" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <el-input-number size="medium" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="100" :step="100" :step-strictly="true"></el-input-number>
+                      <el-input-number size="medium" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="0" :step="100" :step-strictly="true"></el-input-number>
                     </div>
                   </el-form-item>
                   <el-form-item v-if="customBottomType != 9 && customBottomType != 1 && customBottomType != 2 && customBottomType != 3 && customBottomType != 4 && customBottomType != 7 && customBottomType != 5" label="延时时间" class="netmoon-form-item-border-dialog">
@@ -1559,12 +1558,17 @@ export default {
       editSceneList: [],
       resetTaskList: [],
       resetSenceList: [],
+      sceneIdList: [],
+      sceneTimeList: [],
       mainCodeData: '',
       removeSenceItem: '',
       timer: null,
+      timerScene: null,
+      timerDeviceStatus: null,
       senceId: '',
       scnenDuration: '',
       toastLoading: '',
+      envPopStatus: '',
       colors: {
         hue: 50,
         saturation: 100,
@@ -1693,6 +1697,7 @@ export default {
     }
   },
   mounted() {
+    this.initSenceList();
     window.addEventListener('scroll', this.handleScroll, true) // 监听（绑定）滚轮滚动事件
     // 监听窗口大小
     window.addEventListener( 'resize', () => (this.checkIndexOrient())
@@ -1717,8 +1722,6 @@ export default {
     this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
     this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
 
-    this.initSenceList();
-
     this.checkIndexOrient();
     //this.initRoom();
     this.initDevice();
@@ -1727,14 +1730,37 @@ export default {
   },
   methods:{
     initSenceList(){
+      let timeMax = '';
       let params = {
-        envKey: this.envKey
+        envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey")
       };
-      this.$axios.get(this.baseUrl + common.senceList, {params: params, sessionId: this.sessionId}).then(res => {
+      //console.log(this.sceneList);
+      clearTimeout(this.timerScene);
+      this.$axios.get(this.baseUrl + common.senceList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 200){
+          this.sceneTimeList = [];
+          for (let i = 0; i < res.data.data.length; i++){
+            if (res.data.data[i].successCount != res.data.data[i].totalCount){
+              this.sceneTimeList.push(res.data.data[i].lastTime);
+            }
+            if(this.envPopStatus === i){
+              res.data.data[i]['_visible'] = true;
+            }else {
+              res.data.data[i]['_visible'] = false;
+            }
+
+          }
           this.sceneList = res.data.data;
-        }else {
-          MessageWarning(res.data.msg);
+
+          timeMax = Math.max(...this.sceneTimeList);
+          //console.log(new Date().getTime() - timeMax);
+          if (new Date().getTime() - timeMax > 60*1000){
+            clearTimeout(this.timerScene);
+          }else {
+            this.timerScene = setTimeout(() => {
+              this.initSenceList();
+            },5000);
+          }
         }
       });
     },
@@ -3135,7 +3161,7 @@ export default {
         }else if (this.formMusicOrder.type == 15){
           obj['v'] = parseInt(this.formMusicOrder.musicProcess);
         }
-        console.log(5557,obj);
+        //console.log(5557,obj);
         //this.taskItem.push(obj);
 
         //console.log(this.oprOtherType, this.areaIndex);
@@ -3240,7 +3266,7 @@ export default {
         name: this.formSence.name,
         icon: 1,
         enable: 1,
-        internal: 1,
+        internal: this.formSence.internal == false ? 0 : 1,
         duration: loopStatus == Number.MAX_SAFE_INTEGER ? loopStatus : this.ruleMax * 100,
         tasks: this.oprType == 'editSceneList' ? this.editSceneList : planList
       };
@@ -3248,7 +3274,7 @@ export default {
       codeData = {
         envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
         iconId: 1,
-        internal: false,
+        internal: this.formSence.internal,
         openSource: false,
         roomId: this.formSence.roomId,
         sceneName: this.formSence.name,
@@ -3285,10 +3311,20 @@ export default {
       this.$axios.post(this.baseUrl + common.installSence, params, {sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
           MessageSuccess(res.data.msg);
-          this.closeOprDrawer();
+          //this.closeOprDrawer();
           if (this.oprType != 'editSceneList'){
-            this.initSenceList();
+            this.oprType = 'editSceneList';
+            this.mainCodeData = {
+              id: senceId,
+              room: this.formSence.roomId,
+              name: this.formSence.name,
+              icon: 1,
+              enable: true,
+              internal: this.formSence.internal,
+              duration: '',
+            };
           }
+          this.initSenceList();
           this.drawerSenceVisible = false;
         }else {
           MessageError(res.data.msg);

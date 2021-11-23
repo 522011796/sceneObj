@@ -21,6 +21,7 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
           startStatus: 'start',
           startTime: 0,
           endTime: 0,
+          globalEnvPopStatus: ""
         }
       },
       created() {

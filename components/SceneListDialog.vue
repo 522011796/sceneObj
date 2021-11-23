@@ -34,16 +34,21 @@
         <el-empty v-if="data.length == 0" :description="$t('暂无数据')"></el-empty>
         <div v-else v-for="(item, index) in data" class="block-list-content-item marginBottom10" @click="selSence($event, item, 'menu')">
           <el-row>
-            <el-col :span="6">
+            <el-col :span="10">
               <div class="textLeft">
-                <div class="marginTop10 fontBold">{{ item.sceneName }}</div>
+                <div class="marginTop10 fontBold">
+                  <span slot="reference" @click.stop="showDeviceStatus($event, item, index)" style="padding: 10px 2px;">
+                    <label class="moon-ellipsis-class" style="display: inline-block;max-width: 70% !important;position: relative; top: 4px">{{ item.sceneName }}</label>
+                    (<label class="color-success">{{item.successCount}}</label>/<label class="color-default">{{item.totalCount}}</label>)
+                  </span>
+                </div>
                 <div class="marginTop5 font-size-12">
                   <img v-if="item.roomId" :src="require(`~/static/img/${item.roomId}.png`)" style="height: 20px; width: 20px;">
                   <label style="position: relative; top: -6px;">{{ getGlobalRoomObj(item.roomId) }}</label>
                 </div>
               </div>
             </el-col>
-            <el-col :span="18">
+            <el-col :span="14">
               <div class="textRight marginTop10" style="position: relative">
                 <!--                <span class="color-666666">{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>-->
                 <span class="color-warning" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 70px;text-align: center" @click.stop="createTplOpr($event, item)">
@@ -133,6 +138,76 @@
         </el-form>
       </div>
     </el-drawer>
+
+    <el-drawer
+      title="场景设置"
+      custom-class="drawer-bottom"
+      :show-close="false"
+      :modal="true"
+      size="50%"
+      :wrapperClosable="false"
+      :visible.sync="drawerDeviceVisible"
+      direction="btt"
+      :style="{'width': screenOrientation == 'landscape' ? '90% !important' : '100% !important', 'margin': '0px auto'}">
+
+      <div slot="title">
+        <div class="drawerHeader">
+          <el-row>
+            <el-col :span="4">
+              <div class="drawerHeaderDiv">
+                <a href="javascript:;" class="drawerHeaderBtn error-color" @click="cancelDrawer">关闭</a>
+              </div>
+            </el-col>
+            <el-col :span="16">
+              <div class="drawerHeaderDiv">
+                {{$t("设备列表")}}
+              </div>
+            </el-col>
+            <el-col :span="4">
+              <div class="drawerHeaderDiv">
+                <label class="drawerHeaderBtn color-disabled">
+                  <i class="fa fa-spinner fa-spin color-disabled"></i>
+                </label>
+              </div>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+      <div class="drawerBottomDialogContent">
+        <div>
+          <div class="font-size-14" style="font-weight: normal; height: 45px; line-height: 45px; position: relative;border-bottom: 1px dashed #dddddd" v-for="(itemDevice, indexDevice) in deviceStatusData">
+            <el-row>
+              <el-col :span="16">
+                <div class="moon-ellipsis-class color-666666">
+                  <span v-if="itemDevice.deviceInfo">
+                    {{itemDevice.deviceInfo.name}}
+                  </span>
+                  <span>
+                    ({{itemDevice.sn}})
+                  </span>
+                </div>
+              </el-col>
+              <el-col :span="8">
+                <div class="textRight">
+                  <span v-if="itemDevice.actionStatus == 1" class="color-success">
+                    已安装
+                  </span>
+                  <span v-if="itemDevice.actionStatus == 2" class="color-warning">
+                    安装中
+                  </span>
+                  <span v-if="itemDevice.actionStatus == 3" class="color-success">
+                    安装成功
+                  </span>
+                  <span v-if="itemDevice.actionStatus == 4" class="color-error">
+                    安装失败
+                  </span>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
+    </el-drawer>
   </div>
 </template>
 
@@ -166,7 +241,11 @@ export default {
       drawerTplVisible: false,
       drawerCreateTplVisible: false,
       configLoading: false,
+      deviceStatusVisible: false,
+      drawerDeviceVisible: false,
       role: '',
+      deviceStatusData: [],
+      timer: null,
       formTpl:{
         id: '',
         tplName: '',
@@ -195,6 +274,7 @@ export default {
       this.$emit('createSence');
     },
     selSence(event, item, type){
+      this.hideDeviceStatus();
       this.$emit('selSence', event, item, type);
     },
     async createTplOpr(event, item){
@@ -305,6 +385,51 @@ export default {
         tplDesc: item.tplDesc
       };
       this.drawerCreateTplVisible = true;
+    },
+    hideDeviceStatus(){
+      for (let i = 0; i < this.data.length; i++){
+        this.data[i]['_visible'] = false;
+      }
+      this.$parent.$parent.$parent.$refs.childRef.$children[0].envPopStatus = "";
+    },
+    showDeviceStatus(event, item, index){
+      this.installSenceDeviceStauts(event, item);
+      this.drawerDeviceVisible = true;
+    },
+    closeTimer(){
+      clearInterval(this.timer);
+      this.timer = null;
+      this.$parent.$parent.$parent.$refs.childRef.$children[0].envPopStatus = "";
+    },
+    installSenceDeviceStauts(event, item){
+      let params = {
+        envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
+        sceneId: item.sceneId
+      };
+      this.$axios.get(this.baseUrl + common.querySceneActionList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
+        if (res.data.code == 200){
+          //console.log(res.data.data);
+          this.deviceStatusData = res.data.data;
+        }
+      });
+
+      clearTimeout(this.timer);
+      this.timer = null;
+      this.timer = setTimeout(() => {
+        this.installSenceDeviceStauts(event, item);
+      }, 3000);
+    },
+    closeDevicePop(event, item){
+      item._visible = false;
+      this.$parent.$parent.$parent.$refs.childRef.$children[0].envPopStatus = "";
+      clearTimeout(this.timer);
+      this.timer = null;
+    },
+    cancelDrawer(){
+      this.deviceStatusData = [];
+      clearTimeout(this.timer);
+      this.timer = null;
+      this.drawerDeviceVisible = false;
     }
   }
 }

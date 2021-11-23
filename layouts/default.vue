@@ -722,6 +722,23 @@
             duration: "",
           };
 
+          this.$refs.childRef.$children[0].oprType = "";
+          this.$refs.childRef.$children[0].editSceneList = "";
+          this.$refs.childRef.$children[0].formSence = {
+            id: '',
+            envKey: '',
+            name: '',
+            iconId: 1,
+            internal: true,
+            roomId: '',
+            sceneId: '',
+            sceneName: '',
+            sceneType: 1,
+            sourceCode: '',
+            openSource: true,
+            img: ''
+          };
+
           this.$refs.childRef.$children[0].drawerListVisible = true;
         },
         changePlainType(event, type){
@@ -782,7 +799,7 @@
             MessageWarning(this.$t("请先设置场景任务指令"));
             return;
           }
-          //sconsole.log(this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false);
+          //console.log(this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false);
           this.$refs.childRef.$children[0].formSence = {
             id: this.$refs.childRef.$children[0].mainCodeData.id,
             envKey: '',
@@ -802,7 +819,6 @@
             this.loading = true;
             this.$refs.childRef.$children[0].saveConfig();
           }else {
-
             this.$refs.childRef.$children[0].addSenceOpr();
           }
         }

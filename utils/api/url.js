@@ -27,6 +27,7 @@ export const common = {
   sendShareTplInfo: '/tpl/sendShareTplInfo',//模版分享
   queryReceiveTplShareInfoList: '/tpl/queryReceiveTplShareInfoList',//查询接收模版列表
   handleShareTplInfo: '/tpl/handleShareTplInfo',//模版处理
+  querySceneActionList: '/scene/querySceneActionList',//查询场景详细信息
 };
 
 export const commonConfig = {
