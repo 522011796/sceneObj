@@ -555,6 +555,7 @@
           if (this.formPlain.type !== 0){
             this.$refs.tree.setCheckedKeys([]);
           }
+          this.dataDeviceList = [];
           this.formPlain = {
             type: '',
             name: '',

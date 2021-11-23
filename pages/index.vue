@@ -3260,6 +3260,9 @@ export default {
         }
       }
 
+      console.log(this.oprType);
+      console.log(this.editSceneList);
+      console.log(planList);
       //源码用
       let dataObj = {
         id:this.formSence.id,
@@ -3291,7 +3294,7 @@ export default {
 
       this.$axios.post(this.baseUrl + url, codeData, {sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 200){
-          this.installSence(res.data.data.sceneId);
+          this.installSence(res.data.data.sceneId, dataObj.tasks);
 
           this.taskTempList = this.taskList;
           this.planTempList = this.planList;
@@ -3302,7 +3305,7 @@ export default {
         this.$parent.$parent.loading = false;
       });
     },
-    installSence(senceId){
+    installSence(senceId, tasks){
       //loading: false
       let params = {
         envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
@@ -3324,6 +3327,7 @@ export default {
               internal: this.formSence.internal,
               duration: '',
             };
+            this.editSceneList = tasks;
           }
           this.initSenceList();
           this.drawerSenceVisible = false;
@@ -3382,6 +3386,7 @@ export default {
       this.taskResetList = [];
       this.ruleMax = 0;
       this.formSence.id = "";
+      this.$parent.$parent.formPlain.deviceSelDevice = [];
       this.$parent.$parent.initMenu(this.planList);
       this.drawerListVisible = false;
     },
