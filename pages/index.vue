@@ -1741,7 +1741,6 @@ export default {
           this.sceneTimeList = [];
           for (let i = 0; i < res.data.data.length; i++){
             if (res.data.data[i].successCount != res.data.data[i].totalCount){
-              //console.log(res.data.data[i].lastTime);
               this.sceneTimeList.push(res.data.data[i].lastTime);
             }
             if(this.envPopStatus === i){
@@ -1754,8 +1753,9 @@ export default {
           this.sceneList = res.data.data;
 
           timeMax = Math.max(...this.sceneTimeList);
-          //console.log(new Date().getTime() - timeMax);
-          if (new Date().getTime() - timeMax > 60*1000){
+          //console.log(Date.parse(new Date()), timeMax);
+          //console.log(Date.parse(new Date()) / 1000 - timeMax / 1000);
+          if (Date.parse(new Date()) / 1000 - timeMax / 1000 > 60){
             clearTimeout(this.timerScene);
           }else {
             this.timerScene = setTimeout(() => {

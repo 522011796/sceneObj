@@ -177,6 +177,11 @@
       </div>
       <div class="drawerBottomDialogContent">
         <div>
+          <div v-if="deviceStatusData.length == 0" class="textCenter">
+            <div style="margin-top: 25%">
+              <i class="fa fa-spinner fa-spin" style="font-size: 40px"></i>
+            </div>
+          </div>
           <div class="font-size-14 padding-lf20" style="font-weight: normal; height: 45px; line-height: 45px; position: relative;border-bottom: 1px dashed #dddddd" v-for="(itemDevice, indexDevice) in deviceStatusData">
             <el-row>
               <el-col :span="16">
