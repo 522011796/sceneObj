@@ -38,8 +38,10 @@
               <div class="textLeft">
                 <div class="marginTop10 fontBold">
                   <span slot="reference" @click.stop="showDeviceStatus($event, item, index)" style="padding: 10px 2px;">
-                    <label class="moon-ellipsis-class" style="display: inline-block;max-width: 70% !important;position: relative; top: 4px">{{ item.sceneName }}</label>
-                    (<label class="color-success">{{item.successCount}}</label>/<label class="color-default">{{item.totalCount}}</label>)
+                    <label class="moon-ellipsis-class" style="display: inline-block;max-width: 70% !important;position: relative; top: 0px">{{ item.sceneName }}</label>
+                    <label style="position: relative; top: -4px">
+                      (<label class="color-success">{{item.successCount}}</label>/<label class="color-default">{{item.totalCount}}</label>)
+                    </label>
                   </span>
                 </div>
                 <div class="marginTop5 font-size-12">
@@ -144,11 +146,11 @@
       custom-class="drawer-bottom"
       :show-close="false"
       :modal="true"
-      size="50%"
+      size="80%"
       :wrapperClosable="false"
       :visible.sync="drawerDeviceVisible"
       direction="btt"
-      :style="{'width': screenOrientation == 'landscape' ? '90% !important' : '100% !important', 'margin': '0px auto'}">
+      :style="{'width': '100% !important', 'margin': '0px auto'}">
 
       <div slot="title">
         <div class="drawerHeader">
@@ -175,7 +177,7 @@
       </div>
       <div class="drawerBottomDialogContent">
         <div>
-          <div class="font-size-14" style="font-weight: normal; height: 45px; line-height: 45px; position: relative;border-bottom: 1px dashed #dddddd" v-for="(itemDevice, indexDevice) in deviceStatusData">
+          <div class="font-size-14 padding-lf20" style="font-weight: normal; height: 45px; line-height: 45px; position: relative;border-bottom: 1px dashed #dddddd" v-for="(itemDevice, indexDevice) in deviceStatusData">
             <el-row>
               <el-col :span="16">
                 <div class="moon-ellipsis-class color-666666">

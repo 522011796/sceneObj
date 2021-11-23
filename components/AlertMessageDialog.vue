@@ -2,6 +2,7 @@
   <div>
     <el-dialog
       title="提示"
+      :show-close="false"
       :visible.sync="drawer_"
       custom-class="alert-class"
       top="30vh"

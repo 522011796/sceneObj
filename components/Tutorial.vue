@@ -158,7 +158,6 @@
         scrollLeft: 0,
         testStr: 'test str',
         appType: 'app',
-        dialogVisible: false,
         dialogHeight: '50%',
         posX: 0,
         posY: 0,

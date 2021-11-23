@@ -1741,6 +1741,7 @@ export default {
           this.sceneTimeList = [];
           for (let i = 0; i < res.data.data.length; i++){
             if (res.data.data[i].successCount != res.data.data[i].totalCount){
+              //console.log(res.data.data[i].lastTime);
               this.sceneTimeList.push(res.data.data[i].lastTime);
             }
             if(this.envPopStatus === i){
