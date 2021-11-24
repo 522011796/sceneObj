@@ -376,7 +376,15 @@
       beforeMount() {
         window.addEventListener('orientationchange', (e) => {
           this.checkOrient();
-        })
+        });
+        document.addEventListener('touchstart', function(e) {
+          if (e.touches.length > 1) {
+            e.preventDefault()
+          }
+        });
+        document.addEventListener('gesturestart', function(e) {
+          e.preventDefault()
+        });
       },
       destroyed() {
         //window.removeEventListener('scroll', this.handleScroll) //  离开页面清除（移除）滚轮滚动事件
@@ -739,13 +747,14 @@
             openSource: true,
             img: ''
           };
-
+          this.selMenuData = "";
           this.$refs.childRef.$children[0].drawerListVisible = true;
         },
         changePlainType(event, type){
           this.customPlainType = type;
           this.customPlainVisible = false;
           this.formPlain.type = type;
+          this.formPlain.deviceSelDevice = [];
           this.getDeviceList(this.customPlainType);
         },
         checkChangeDevice(event){
@@ -787,6 +796,7 @@
             planList[this.selMenuIndex].i = planList[this.selMenuIndex].i;
             planList[this.selMenuIndex].n = this.formPlain.name;
             planList[this.selMenuIndex].t = this.formPlain.type;
+
             this.drawer = false;
             this.dialogVisible = false;
             this.$refs.childRef.$children[0].selSence(planList, null, 'save');

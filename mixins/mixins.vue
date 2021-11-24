@@ -1,6 +1,6 @@
 <script>
 import {common, commonConfig} from "../utils/api/url";
-import {MessageError, MessageWarning, orderValue} from "../utils/utils";
+import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils";
 
     export default {
       name: "mixins",
@@ -182,9 +182,9 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
                 att.push({
                   type: 'room',
                   label: roomName,
-                  room: room,
-                  children: []
+                  room: room
                 });
+                att[j]['children'] = [];
 
                 let arrTemp;
                 for(let i = 0;i < arr.length;i++) {
@@ -209,7 +209,7 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
 
                       e['label'] = subGroupName;
                       e['subGroupName'] = subGroupName;
-                      e['devType'] = e.devType,
+                      e['devType'] = e.devType;
                       e['type'] = 'device';
                       return e.subgroup == arr[i].subgroup;
                     });
@@ -221,7 +221,10 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
                       children: arrTemp
                     };
 
-                    att[j]['children'].push(child);
+                    let sel = inArray(child, att[j]['children'], 'subGroup');
+                    if (sel == -1){
+                      att[j]['children'].push(child);
+                    }
                   }else {
                     let child = {
                       type: 'device',
@@ -230,12 +233,13 @@ import {MessageError, MessageWarning, orderValue} from "../utils/utils";
                       devType: arr[i].devType,
                       subGroup: arr[i].subgroup
                     };
-
-                    att[j]['children'].push(child);
+                    let sel = inArray(child, att[j]['children'], 'subGroup');
+                    if (sel == -1){
+                      att[j]['children'].push(child);
+                    }
                   }
                 }
               }
-              //console.log(111,att);
               this.dataDeviceList = att;
             }
           });

@@ -149,7 +149,7 @@
               <el-button size="mini" @click="cancelConfig">{{$t("取消")}}</el-button>
             </el-col>
             <el-col :span="16" class="textCenter">
-              <span>{{$t("创建场景")}}</span>
+              <span>{{$t("场景设置")}}</span>
             </el-col>
             <el-col :span="4" class="textRight">
               <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveConfig">
@@ -1739,29 +1739,30 @@ export default {
       this.$axios.get(this.baseUrl + common.senceList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 200){
           this.sceneTimeList = [];
+          this.sceneList = res.data.data;
+          let flag = false;
+          let num = 0;
           for (let i = 0; i < res.data.data.length; i++){
             if (res.data.data[i].successCount != res.data.data[i].totalCount){
-              this.sceneTimeList.push(res.data.data[i].lastTime);
+              //this.sceneTimeList.push(res.data.data[i].lastTime);
+              if (res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000 > 60){
+                flag = true;
+                break;
+              }
             }
-            if(this.envPopStatus === i){
-              res.data.data[i]['_visible'] = true;
-            }else {
-              res.data.data[i]['_visible'] = false;
-            }
-
           }
-          this.sceneList = res.data.data;
 
-          timeMax = Math.max(...this.sceneTimeList);
-          //console.log(Date.parse(new Date()), timeMax);
-          //console.log(Date.parse(new Date()) / 1000 - timeMax / 1000);
-          if (Date.parse(new Date()) / 1000 - timeMax / 1000 > 60){
+          if (res.data.data.length == 0 || flag == true){
             clearTimeout(this.timerScene);
           }else {
             this.timerScene = setTimeout(() => {
               this.initSenceList();
             },5000);
           }
+
+          //timeMax = Math.max(...this.sceneTimeList);
+          //console.log(Date.parse(new Date()), timeMax);
+          //console.log(Date.parse(new Date()) / 1000 - timeMax / 1000);
         }
       });
     },
@@ -1993,7 +1994,6 @@ export default {
           this.taskList[i][j].popVisible = false;
         }
       }
-
       //console.log(this.formOrder.type, this.formSwitchOrder.type);
     },
     selSence(event, item, type){
@@ -2017,6 +2017,7 @@ export default {
       }else {
         this.setSenceData(event, 'setChild');
       }
+      clearTimeout(this.timerScene);
     },
     selRoom(){
       this.drawerRoomVisible = true;
@@ -3204,6 +3205,7 @@ export default {
       //console.log(6666,this.planList);
     },
     cancelConfig(){
+      this.oprType = '';
       this.drawerSenceVisible = false;
     },
     saveConfig(){
@@ -3211,11 +3213,10 @@ export default {
       let taskList = [];
       let planList = [];
       let loopStatus = "";
-
-      if (this.formSence.name == ""){
+      if (this.formSence.name == undefined || this.formSence.name == ""){
         MessageWarning(this.$t("请输入场景名称"));
         return;
-      }else if (this.formSence.roomId == ""){
+      }else if (this.formSence.roomId == undefined || this.formSence.roomId == ""){
         MessageWarning(this.$t("请选择房间"));
         return;
       }
@@ -3254,15 +3255,12 @@ export default {
             }
           }
         }
-
+        console.log(planList);
         for (let i = 0; i < planList.length; i++){
           planList[i]['i'] = taskList[i];
         }
       }
 
-      console.log(this.oprType);
-      console.log(this.editSceneList);
-      console.log(planList);
       //源码用
       let dataObj = {
         id:this.formSence.id,
@@ -3285,6 +3283,8 @@ export default {
         sceneType: 1,
         sourceCode: JSON.stringify(dataObj)
       };
+      console.log(this.oprType);
+      console.log(this.oprType == 'editSceneList' ? this.editSceneList : planList);
       if (this.formSence.id != ""){
         codeData['sceneId'] = this.formSence.id;
       }
@@ -3317,7 +3317,7 @@ export default {
           MessageSuccess(res.data.msg);
           //this.closeOprDrawer();
           if (this.oprType != 'editSceneList'){
-            this.oprType = 'editSceneList';
+            //this.oprType = 'editSceneList';
             this.mainCodeData = {
               id: senceId,
               room: this.formSence.roomId,
@@ -3330,6 +3330,7 @@ export default {
             this.editSceneList = tasks;
           }
           this.initSenceList();
+          this.oprType = '';
           this.drawerSenceVisible = false;
         }else {
           MessageError(res.data.msg);

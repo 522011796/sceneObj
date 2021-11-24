@@ -37,14 +37,14 @@
             <el-col :span="10">
               <div class="textLeft">
                 <div class="marginTop10 fontBold">
-                  <span slot="reference" @click.stop="showDeviceStatus($event, item, index)" style="padding: 10px 2px;">
-                    <label class="moon-ellipsis-class" style="display: inline-block;max-width: 70% !important;position: relative; top: 0px">{{ item.sceneName }}</label>
-                    <label style="position: relative; top: -4px">
+                  <span slot="reference" style="display: inline-block">
+                    <label class="moon-ellipsis-class" style="display: inline-block;max-width: 70% !important;position: relative;vertical-align:middle;">{{ item.sceneName }}</label>
+                    <label @click.stop="showDeviceStatus($event, item, index)"  style="position: relative;padding: 10px 0px 0px 0px;vertical-align:middle;">
                       (<label class="color-success">{{item.successCount}}</label>/<label class="color-default">{{item.totalCount}}</label>)
                     </label>
                   </span>
                 </div>
-                <div class="marginTop5 font-size-12">
+                <div class="font-size-12">
                   <img v-if="item.roomId" :src="require(`~/static/img/${item.roomId}.png`)" style="height: 20px; width: 20px;">
                   <label style="position: relative; top: -6px;">{{ getGlobalRoomObj(item.roomId) }}</label>
                 </div>
@@ -168,7 +168,8 @@
             <el-col :span="4">
               <div class="drawerHeaderDiv">
                 <label class="drawerHeaderBtn color-disabled">
-                  <i class="fa fa-spinner fa-spin color-disabled"></i>
+<!--                  <i class="fa fa-spinner fa-spin color-disabled"></i>-->
+                  <span class="font-size-12 color-default">自动更新</span>
                 </label>
               </div>
             </el-col>

@@ -28,7 +28,7 @@
           <el-col :span="8" class="textCenter" v-for="(item, index) in data" :key="index">
             <div class="room-Block-Item" @click="selRoomItem($event, item)">
               <div class="marginTop10">
-                <img v-if="item.id" :src="require(`~/static/img/${item.id}.png`)" style="height: 50px; width: 50px;">
+                <img v-if="item.id" :src="require(`~/static/img/${item.icon}.png`)" style="height: 50px; width: 50px;">
               </div>
               <div class="marginTop5">
                 {{ item.name }}
