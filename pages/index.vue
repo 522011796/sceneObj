@@ -1,7 +1,7 @@
 <template>
   <div class="main-block-class" @click="hidePopVisible">
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
-    <div class="demoRuleClass" :style="{'width': ruleMax / 10 * 52 + 41 + 0.1 + 'px'}">
+    <div class="demoRuleClass" :style="{'width': ruleMax / 10 * 52 + 43 + 0.1 + 'px'}">
       <div>
         <div class="demoRuleFixedClass" :style="{'width': ruleMax / 10 * 52 + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
           <div v-if="taskResetList.length > 0 && JSON.stringify(taskResetList[0]) != '[]' && Math.floor(ruleMax * 100 / 1000) <= 0" v-for="(itemNum, indexNum) in 1" :key="indexNum" class="rule-class" style="width: 52px">
@@ -3478,7 +3478,7 @@ export default {
     bottom: 0px;
   }
   .num{
-    font-size: 12px;
+    font-size: 10px;
   }
   .demoRuleChildClass:hover{
     /*box-shadow: 0px 0px 10px #000000;*/
