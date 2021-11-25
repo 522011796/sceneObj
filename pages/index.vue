@@ -85,12 +85,16 @@
               </el-popover>
             </v-touch>
           </div>
-          <div class="demoRuleChildEmptyClass" style="height: 40px; width: 0px;position: relative" v-if="item.length <= 0">
+          <div class="demoRuleChildEmptyClass" style="height: 40px; width: 0px;display: inline-block;position: relative" v-if="item.length <= 0">
             <div>
               <div class="moon-ellipsis-class index-main-item-block">
                 <span>&nbsp</span>
               </div>
             </div>
+          </div>
+
+          <div style="height: 40px;width: 0px;display: inline-block;" v-if="item.length > 0 && checkItemList(item,index)[1] <= 0">
+            <span>&nbsp;</span>
           </div>
           <span :class="checkItemList(item,index)[1] > 0 ? 'index-plus-list-item' : 'index-plus-item'" :style="item.length <=0 ? {float:'left'} : {}">
             <div v-if="checkItemList(item,index)[0] > 0" @click="selBlock($event, item, index, null, null)" :class="checkItemList(item,index)[1] > 0 ? 'item-tips-list-block' : 'item-tips-block'">1+</div>

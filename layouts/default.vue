@@ -11,13 +11,24 @@
           </div>
           <div>
             <div class="layout-menu-header">
-              <span v-if="isCollapse == true" @click="returnSenceList">
-                <i class="fa fa-chevron-left"></i>
-                {{$t("任务列表")}}
-              </span>
-              <span v-if="isCollapse == false" @click="returnSenceList">
-                <i class="fa fa-chevron-left"></i>
-              </span>
+              <div v-if="globalDeviceType != 'ios'">
+                <span v-if="isCollapse == true" @click="returnSenceList">
+                  <i class="fa fa-chevron-left"></i>
+                  {{$t("任务列表")}}
+                </span>
+                  <span v-if="isCollapse == false" @click="returnSenceList">
+                  <i class="fa fa-chevron-left"></i>
+                </span>
+              </div>
+
+              <div v-if="globalDeviceType == 'ios'">
+                <span v-if="isCollapse == true">
+                  {{$t("任务列表")}}
+                </span>
+                <span v-if="isCollapse == false">
+                  <i class="fa fa-list"></i>
+                </span>
+              </div>
             </div>
 
             <div :style="menuStyle" ref="menuRef" @scroll="handleDefaultScrollTop">
@@ -811,8 +822,17 @@
           }
         },
         saveConfig(){
-          if (this.$refs.childRef.$children[0].taskList[0] == undefined || JSON.stringify(this.$refs.childRef.$children[0].taskList[0]) == "[]"){
-            MessageWarning(this.$t("请先设置场景任务指令"));
+          let flag = false;
+          let indexRow = 0;
+          for (let i = 0; i < this.$refs.childRef.$children[0].taskList.length; i++){
+            if (this.$refs.childRef.$children[0].taskList[i] == undefined || JSON.stringify(this.$refs.childRef.$children[0].taskList[i]) == "[]"){
+              flag = true;
+              indexRow = i + 1;
+              break;
+            }
+          }
+          if (flag == true){
+            MessageWarning(this.$t("场景任务第") + indexRow + this.$t("行指令集为空，请设置！"));
             return;
           }
           //console.log(this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false);

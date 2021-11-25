@@ -593,8 +593,8 @@ span,div,button,label{
 .item-tips-list-block{
   display: inline-block;
   position: absolute;
-  right: 15px;
-  top: -15px;
+  right: 12px;
+  top: -12px;
   width: 15px;
   background: #e6a23c;
   border-radius:  2px;

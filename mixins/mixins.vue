@@ -23,7 +23,8 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           startTime: 0,
           endTime: 0,
           globalEnvPopStatus: "",
-          globalPhoneXbar: false
+          globalPhoneXbar: false,
+          globalDeviceType: '',
         }
       },
       mounted() {
@@ -67,6 +68,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           this.sessionId = this.$route.query.sessionId;
           this.appType = this.$route.query.appType;
           this.globalPhoneXbar = this.$route.query.XBAR;
+          this.globalDeviceType = this.$route.query.deviceType;
           if (process.client){
             this.envKey = this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey");
             localStorage.setItem("envKey", this.envKey);
@@ -349,8 +351,8 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           window.WVJBCallbacks = [callback];
           var WVJBIframe = document.createElement('iframe');
           WVJBIframe.style.display = 'none';
-          //WVJBIframe.src = 'https://__bridge_loaded__';
-          WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+          WVJBIframe.src = 'https://__bridge_loaded__';
+          //WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
           document.documentElement.appendChild(WVJBIframe);
           setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
         },
