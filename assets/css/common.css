@@ -2,7 +2,7 @@
 
 }
 html {
-  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+  font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑","华文细黑",Arial,sans-serif,Helvetica Bold,MyraidPro;
   font-size: 12px;
   word-spacing: 1px;
   -ms-text-size-adjust: 100%;
@@ -260,6 +260,9 @@ span,div,button,label{
 .font-size-17{
   font-size: 16px;
 }
+.font-size-17_5{
+  font-size: 17.5px;
+}
 .font-size-18{
   font-size: 18px;
 }
@@ -289,6 +292,9 @@ span,div,button,label{
 }
 .marginLeft10{
   margin-left: 10px;
+}
+.marginRight10{
+  margin-right: 10px;
 }
 .marginBottom2{
   margin-bottom: 2px;
@@ -321,6 +327,9 @@ span,div,button,label{
 }
 .padding-lf5{
   padding: 0px 5px;
+}
+.padding-lf10{
+  padding: 0px 10px;
 }
 .padding-lf15{
   padding: 0px 15px;
@@ -620,6 +629,9 @@ span,div,button,label{
   font-size: 12px;
   position: relative;
   top: -1px;
+}
+.app-block-list-header{
+  background: rgba(53,54,55,1);
 }
 /***loading***/
 .custom-g-loading .el-icon-loading{

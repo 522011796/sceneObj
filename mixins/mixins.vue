@@ -21,7 +21,8 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           startStatus: 'start',
           startTime: 0,
           endTime: 0,
-          globalEnvPopStatus: ""
+          globalEnvPopStatus: "",
+          globalPhoneXbar: false
         }
       },
       created() {
@@ -61,6 +62,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           this.baseUrl = commonConfig.baseUrl;
           this.sessionId = this.$route.query.sessionId;
           this.appType = this.$route.query.appType;
+          this.globalPhoneXbar = this.$route.query.XBAR;
           if (process.client){
             this.envKey = this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey");
             localStorage.setItem("envKey", this.envKey);

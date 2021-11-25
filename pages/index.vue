@@ -109,6 +109,7 @@
 
     <!--场景列表-->
     <scene-list-dialog :dialog-list-size="dialogListSize"
+                       :dialog-bottom-size="dialogBottomSize"
                        :drawer-list-visible="drawerListVisible"
                        :direction="directionEnvList"
                        :data="sceneList"
@@ -122,9 +123,9 @@
     </scene-list-dialog>
 
     <!--房间列表-->
-    <room-list-dialog :dialog-room-size="dialogRoomSize"
+    <room-list-dialog :dialog-room-size="dialogFullSize"
                       :drawer-room-visible="drawerRoomVisible"
-                      :direction="directionList"
+                      :direction="appType != 'app' ? directionList : 'btt'"
                       :data="globalRoomList"
                       @changeDrawer="changeRoomDrawer"
                       @click="selRoomItem"
@@ -137,10 +138,10 @@
       custom-class="drawer-opr"
       :show-close="false"
       :modal="true"
-      :size="dialogListSize"
+      :size="dialogBottomSize"
       :wrapperClosable="false"
       :visible.sync="drawerSenceVisible"
-      :direction="directionList">
+      :direction="appType != 'app' ? directionList : 'btt'">
 
       <div slot="title">
         <div class="block-opr-header">
@@ -1517,6 +1518,8 @@ export default {
       dialogEnvSize: '70%',
       dialogHeight: '50%',
       dialogListSize: '100%',
+      dialogFullSize: '100%',
+      dialogBottomSize: '100%',
       dialogRoomSize: '70%',
       drawerRightWidth: '90%',
       drawerRightChildWidth: '90%',
@@ -1743,17 +1746,17 @@ export default {
           let flag = false;
           let num = 0;
           for (let i = 0; i < res.data.data.length; i++){
-            if (res.data.data[i].successCount != res.data.data[i].totalCount){
+            if ((res.data.data[i].successCount == 0 && res.data.data[i].totalCount == 0) || res.data.data[i].successCount != res.data.data[i].totalCount){
               //this.sceneTimeList.push(res.data.data[i].lastTime);
-              //console.log(res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000);
-              if (res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000 > 60){
+              //console.log(res.data.data[i].systemTime , res.data.data[i].lastTime, res.data.data[i].systemTime - res.data.data[i].lastTime);
+              if (res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000 < 60){
                 flag = true;
                 break;
               }
             }
           }
-
-          if (res.data.data.length == 0 || flag == true){
+          //console.log(flag);
+          if (flag == false){
             clearTimeout(this.timerScene);
           }else {
             this.timerScene = setTimeout(() => {
@@ -1882,12 +1885,16 @@ export default {
           this.dialogHeight = '50%';
           this.paddingBottom = this.appType == 'app' ? '84px' : '0px';
           this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
+          // this.dialogFullSize = this.appType == 'app' ? '100%' : '100%';
+          // this.dialogBottomSize = this.appType == 'app' ? '45%' : '45%';
         }
         else if (window.orientation == 90 || window.orientation == -90){
           this.screenOrientation = 'landscape';
           this.dialogHeight = '80%';
           this.paddingBottom = this.appType == 'app' ? '35px' : '0px';
           this.appType == 'app' ? this.paddingMainBottom = '55px' : this.paddingMainBottom = '0px';
+          // this.dialogFullSize = this.appType == 'app' ? '100%' : '100%';
+          // this.dialogBottomSize = this.appType == 'app' ? '100%' : '100%';
         }
         this.hhIndex(this.screenOrientation);
         this.setDialogWidth(this.setType);
@@ -1919,6 +1926,14 @@ export default {
         }
         this.drawerRightChildWidth = '90%';
         this.dialogRoomSize = '100%';
+
+        if (this.screenOrientation == 'landscape'){
+          this.dialogFullSize = '100%';
+          this.dialogBottomSize = '100%';
+        }else {
+          this.dialogFullSize = '100%';
+          this.dialogBottomSize = '45%';
+        }
       }else {
         if (screenWidth < 550){
           if (type == 'template'){
@@ -1928,6 +1943,8 @@ export default {
           }
           this.drawerRightChildWidth = '90%';
           this.dialogRoomSize = '100%';
+          this.dialogFullSize = '100%';
+          this.dialogBottomSize = '100%';
         }else{
           if (type == 'template'){
             this.drawerRightWidth = '60%';
@@ -1936,6 +1953,8 @@ export default {
           }
           this.drawerRightChildWidth = '50%';
           this.dialogRoomSize = '70%';
+          this.dialogFullSize = '45%';
+          this.dialogBottomSize = '45%';
         }
       }
     },

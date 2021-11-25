@@ -11,6 +11,31 @@
       :direction="direction">
 
       <div slot="title">
+<!--        <div v-if="appType == 'app'" class="app-block-list-header padding-lf10">-->
+<!--          <div v-if="globalPhoneXbar == false" style="height: 20px;line-height: 20px"></div>-->
+<!--          <div v-if="globalPhoneXbar == true" style="height: 44px;line-height: 44px"></div>-->
+<!--          <div style="height: 44px;line-height: 44px">-->
+<!--            <el-row>-->
+<!--              <el-col :span="8">-->
+<!--              <span class="font-size-17_5 color-ffffff">-->
+<!--                <i class="fa fa-angle-left" style="font-size: 32px;position: relative; top:3px;"></i>-->
+<!--                <label style="margin-left: 5px">{{$t("返回")}}</label>-->
+<!--              </span>-->
+<!--              </el-col>-->
+<!--              <el-col :span="8">-->
+<!--                <div class="textCenter font-size-17_5 color-ffffff" style="font-weight: 500">-->
+<!--                  {{$t("场景管理V2")}}-->
+<!--                </div>-->
+<!--              </el-col>-->
+<!--              <el-col :span="8">-->
+<!--                <div class="textRight font-size-14 color-ffffff">-->
+<!--                  <span class="marginRight10">{{$t("模版")}}</span>-->
+<!--                  <i class="fa fa-plus-circle marginRight10" style="font-size: 20px;position: relative; top:3px;"></i>-->
+<!--                </div>-->
+<!--              </el-col>-->
+<!--            </el-row>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="block-list-header">
           <el-row>
             <el-col :span="3">
@@ -84,10 +109,10 @@
       custom-class="drawer-opr"
       :show-close="false"
       :modal="true"
-      :size="dialogListSize"
+      :size="dialogBottomSize"
       :wrapperClosable="false"
       :visible.sync="drawerCreateTplVisible"
-      direction="rtl"
+      :direction="appType != 'app' ? 'rtl' : 'btt'"
       @closed="closeTplOprDrawer">
 
       <div slot="title">
@@ -232,6 +257,7 @@ export default {
     data: Array,
     direction: String,
     dialogListSize: String,
+    dialogBottomSize: String,
     drawerListVisible: {
       type: Boolean,
       default: false
