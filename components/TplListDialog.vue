@@ -145,10 +145,10 @@
           <div class="marginLR20">
             <span style="font-weight: bold">
               {{ $t("批量操作") }}
-              <label class="font-size-12 color-default">({{$t("任务列表对应非空设备将替换为相同")}})</label>
+              <label class="font-size-12 color-default">({{$t("任务非空设备将替换为相同")}})</label>
             </span>
             <span class="floatRight">
-              <el-button style="padding: 3px 0" type="text" @click="moreDevice()">更多</el-button>
+              <el-button style="padding: 3px 0;font-size: 12px" type="text" @click="moreDevice()">更多</el-button>
             </span>
           </div>
           <div class="custon-card-class marginTop10">
@@ -167,8 +167,8 @@
                           <el-tree v-if="dataTplDeviceList.length > 0" ref="treeDevice" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, item, index, 'muti')"></el-tree>
                         </div>
                         <div slot="reference">
-                          <span class="moon-ellipsis-class color-666666 dialog-device-tag-item-left">{{ item.key }}:</span>
-                          <span class="moon-ellipsis-class dialog-device-tag-item-right">
+                          <span class="moon-ellipsis-class color-666666" :class="globalScreenWidth < 350 ? 'dialog-device-tag-item-left-min' : 'dialog-device-tag-item-left'">{{ item.key }}:</span>
+                          <span class="moon-ellipsis-class" :class="globalScreenWidth < 350 ? 'dialog-device-tag-item-right-min' : 'dialog-device-tag-item-right'">
                             <label v-if="item.value != ''" class="color-success" style="position: relative; top: 2px">{{ item.value }}</label>
                             <label v-if="item.value == ''" class="fa fa-plus-circle color-success" style="position: relative; top: 2px"></label>
                           </span>
@@ -261,8 +261,8 @@
                       <el-tree ref="treeDevice" v-if="dataTplDeviceList.length > 0" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, cardIndex !== '' ?'plan' : 'muti')"></el-tree>
                     </div>
                     <div slot="reference">
-                      <span class="moon-ellipsis-class color-666666 dialog-device-tag-item-left">{{ itemChild.key }}:</span>
-                      <span class="moon-ellipsis-class dialog-device-tag-item-right">
+                      <span class="moon-ellipsis-class color-666666" :class="globalScreenWidth < 350 ? 'dialog-device-tag-item-left-min' : 'dialog-device-tag-item-left'">{{ itemChild.key }}:</span>
+                      <span class="moon-ellipsis-class" :class="globalScreenWidth < 350 ? 'dialog-device-tag-item-right-min' : 'dialog-device-tag-item-right'">
                         <label v-if="itemChild.value != ''" class="color-success" style="position: relative; top: 2px">{{ itemChild.value }}</label>
                         <label v-if="itemChild.value == ''" class="fa fa-plus-circle color-success" style="position: relative; top: 2px"></label>
                       </span>
@@ -677,9 +677,24 @@ export default {
   position: relative;
   top: 2px
 }
+.dialog-device-tag-item-left-min{
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  position: relative;
+  top: 2px
+}
 .dialog-device-tag-item-right{
   display: inline-block;
-  width: 52%;
+  width: 46%;
+  position: relative;
+  height: 30px;
+  line-height: 30px
+}
+.dialog-device-tag-item-right-min{
+  display: inline-block;
+  width: 45%;
   position: relative;
   height: 30px;
   line-height: 30px

@@ -13,7 +13,7 @@
       <div slot="title">
         <div class="block-list-header">
           <el-row>
-            <el-col :span="6">
+            <el-col :span="3">
               <span v-if="this.appType != 'app'">
                 <el-button size="mini" type="error" @click="logout()">{{$t("退出")}}</el-button>
               </span>
@@ -21,7 +21,7 @@
                 &nbsp;
               </span>
             </el-col>
-            <el-col :span="18" class="textRight">
+            <el-col :span="21" class="textRight">
               <el-button size="mini" type="error" @click="selEnvList()" v-if="this.appType != 'app'">{{$t("场所列表")}}</el-button>
               <el-button size="mini" type="success" @click="selEnvTplList()">{{$t("模版列表")}}</el-button>
               <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
@@ -34,7 +34,7 @@
         <el-empty v-if="data.length == 0" :description="$t('暂无数据')"></el-empty>
         <div v-else v-for="(item, index) in data" class="block-list-content-item marginBottom10" @click="selSence($event, item, 'menu')">
           <el-row>
-            <el-col :span="10">
+            <el-col :span="12">
               <div class="textLeft">
                 <div class="marginTop10 fontBold">
                   <span slot="reference" style="display: inline-block">
@@ -50,16 +50,16 @@
                 </div>
               </div>
             </el-col>
-            <el-col :span="14">
+            <el-col :span="12">
               <div class="textRight marginTop10" style="position: relative">
                 <!--                <span class="color-666666">{{ $moment(item.lastTime).format("yyyy-MM-DD") }}</span>-->
-                <span class="color-warning" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 70px;text-align: center" @click.stop="createTplOpr($event, item)">
+                <span class="color-warning" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 50px;text-align: center" @click.stop="createTplOpr($event, item)">
                   {{ $t("创建模版") }}
                 </span>
-                <span class="color-success" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="updateSenceOpr($event, item)">
+                <span class="color-success" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 30px;text-align: center" @click.stop="updateSenceOpr($event, item)">
                   {{ $t("修改") }}
                 </span>
-                <span class="color-error" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 40px;text-align: center" @click.stop="removeSenceOpr($event, item)">
+                <span class="color-error" style="display: inline-block;position: relative; top: 0px; cursor: default; height: 40px;line-height: 40px; width: 30px;text-align: center" @click.stop="removeSenceOpr($event, item)">
 <!--                  <i class="fa fa-trash font-size-20 marginLeft10 color-error" style="position: relative; top: 9px;"></i>-->
                   {{ $t("删除") }}
                 </span>

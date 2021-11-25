@@ -167,7 +167,7 @@
                       <span>{{$t("场景")}}</span>
                     </div>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span class="font-size-12" slot="reference" size="mini">
                     <label>{{formPlain.type === '' ? $t("请选择") : planTypeInfo(formPlain.type)}}</label>
                     <label><i class="fa fa-chevron-right"></i></label>
                   </span>
@@ -180,7 +180,7 @@
             <el-form-item label="添加设备" v-if="formPlain.type !== 0">
               <el-row>
                 <el-col :span="24">
-                  <div class="textRight color-666666">
+                  <div class="textRight color-666666 font-size-12">
                     <label>({{$t("已选择")}}{{formPlain.deviceSelDevice.length}}{{$t("台设备")}})</label>
                   </div>
                 </el-col>

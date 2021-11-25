@@ -171,8 +171,8 @@
           </el-form-item>
           <el-form-item label="房间" class="netmoon-form-item-border-dialog" v-model="formSence.roomId">
             <div class="textRight" @click="selRoom($event)">
-              <label class="color-666666">{{formSence.roomId == '' ? $t("请选择") : getGlobalRoomObj(formSence.roomId)}}</label>
-              <label><i class="fa fa-chevron-right"></i></label>
+              <label class="color-666666 font-size-12">{{formSence.roomId == '' ? $t("请选择") : getGlobalRoomObj(formSence.roomId)}}</label>
+              <label><i class="fa fa-chevron-right" style="font-size: 12px"></i></label>
             </div>
           </el-form-item>
           <el-form-item label="场景开源" class="netmoon-form-item-border-dialog">
@@ -251,7 +251,7 @@
                   <div class="textCenter">
                     <order-light-type-dialog :set-child-bottom-type="setChildBottomType" @click="changeCustomBottomType"></order-light-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formOrder.type), 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                   </span>
@@ -269,7 +269,7 @@
                   <div class="textCenter">
                     <light-open-type-dialog @click="changeCustomBottomOpen"></light-open-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formOrder.open == '' && formOrder.open != 0 ? $t("请选择") : openTypeInfo(formOrder.open)}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                   </span>
@@ -309,7 +309,7 @@
                       </el-row>
                     </div>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formOrder.startOrderI == '' ? $t("请选择") : orderValueInfo(formOrder.startOrderI, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -361,7 +361,7 @@
                   <div class="textCenter" style="max-height: 260px; overflow-y: auto">
                     <order-power-type-dialog></order-power-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -430,7 +430,7 @@
                   <div class="textCenter">
                     <order-curtains-type-dialog @click="changeCustomBottomCurtainsType"></order-curtains-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -475,7 +475,7 @@
                       </el-row>
                     </div>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formOrder.startOrderI == '' ? $t("请选择") : orderValueInfo(formOrder.startOrderI, 'set')}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -513,7 +513,7 @@
                   <div class="textCenter">
                     <order-music-type-dialog @click="changeCustomBottomMusicType"></order-music-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formMusicOrder.type == '' ? $t("请选择") : orderValueInfo(formMusicOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -557,7 +557,7 @@
                   <div class="textCenter">
                     <order-switch-type-dialog @click="changeCustomBottomSwitchType"></order-switch-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(formSwitchOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -589,7 +589,7 @@
                         </el-row>
                       </div>
                     </div>
-                    <span slot="reference" size="mini">
+                    <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formSwitchOrder.key == '' ? $t("请选择") : $t("继电器")+formSwitchOrder.keyNoArr.join()}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -608,7 +608,7 @@
                   <div class="textCenter" style="max-height: 260px; overflow-y: auto">
                     <order-switch-key-type-dialog :form="formSwitchOrder" @click="changeCustomBottomSwitchKeyOprType"></order-switch-key-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formSwitchOrder.keyOpr === '' && formSwitchOrder.keyOpr != 0 ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                   </span>
@@ -641,7 +641,7 @@
                   <div class="textCenter">
                     <order-scene-type-dialog @click="changeSceneBottomCurtainsType"></order-scene-type-dialog>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formSceneOrder.type == '' ? $t("请选择") : orderValueInfo(formSceneOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -681,7 +681,7 @@
                       </el-row>
                     </div>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formOrder.startOrderI == '' ? $t("请选择") : orderValueInfo(formOrder.startOrderI, 'set')}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -717,7 +717,7 @@
                       </el-row>
                     </div>
                   </div>
-                  <span slot="reference" size="mini">
+                  <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formSceneOrder.sence == '' ? $t("请选择") : formSceneOrder.senceText}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -775,7 +775,7 @@
             <div class="rightDialogContent" :style="dialogRightTabOrderStyle">
               <div class="item-list-child" v-for="(item, index) in orderList" :key="index" @click="upateChildBottomDialog($event, 'lightSub', index, item)">
                 <el-row>
-                  <el-col :span="14">
+                  <el-col :span="15">
                     <span class="opr-item-title-block">
                       <el-tag size="mini">
                         <label class="font-size-12 color-default">
@@ -788,7 +788,7 @@
                       <loop-item :item="item"></loop-item>
                     </span>
                   </el-col>
-                  <el-col :span="10">
+                  <el-col :span="9">
                     <div class="textRight">
                       <span>
                         <a href="javascript:;" class="color-warning opr-item-block" @click.stop="upateChildBottomDialog($event, 'lightSub', index, item)">{{$t("修改")}}</a>
@@ -897,7 +897,7 @@
                         <div class="textCenter">
                           <order-light-type-dialog :set-child-bottom-type="setChildBottomType" @click="changeCustomBottomType"></order-light-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label v-if="areaItem == ''">{{formOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formOrder.type), 'set')}}</label>
                           <label v-if="areaItem != ''">{{formOrder.type == '' ? $t("请选择") : orderValueInfo(formOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
@@ -916,7 +916,7 @@
                         <div class="textCenter">
                           <light-open-type-dialog @click="changeCustomBottomOpen"></light-open-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formOrder.open == '' && formOrder.open != 0 ? $t("请选择") : openTypeInfo(formOrder.open)}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -956,7 +956,7 @@
                             </el-row>
                           </div>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formOrder.startOrderI == '' ? $t("请选择") : orderValueInfo(formOrder.startOrderI, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -1008,7 +1008,7 @@
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
                           <order-power-type-dialog></order-power-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.sence}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -1039,7 +1039,7 @@
                             </el-row>
                           </div>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.senceText}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -1077,7 +1077,7 @@
                         <div class="textCenter">
                           <order-curtains-type-dialog @click="changeCustomBottomCurtainsType"></order-curtains-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label v-if="areaItem == ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
                           <label v-if="areaItem != ''">{{formCurtainsOrder.type == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
@@ -1123,7 +1123,7 @@
                             </el-row>
                           </div>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formCurtainsOrder.startOrderI == '' ? $t("请选择") : orderValueInfo(formCurtainsOrder.startOrderI, 'set')}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -1159,7 +1159,7 @@
                             </el-row>
                           </div>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formCurtainsOrder.sence == '' ? $t("请选择") : formCurtainsOrder.senceText}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -1192,7 +1192,7 @@
                         <div class="textCenter">
                           <order-music-type-dialog @click="changeCustomBottomMusicType"></order-music-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label v-if="areaItem == ''">{{formMusicOrder.type == '' ? $t("请选择") : orderValueInfo(formMusicOrder.type, 'set')}}</label>
                           <label v-if="areaItem != ''">{{formMusicOrder.type == '' ? $t("请选择") : orderValueInfo(formMusicOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
@@ -1237,7 +1237,7 @@
                         <div class="textCenter">
                           <order-scene-type-dialog @click="changeSceneBottomCurtainsType"></order-scene-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label v-if="areaItem == ''">{{formSceneOrder.type == '' ? $t("请选择") : orderValueInfo(formSceneOrder.type, 'set')}}</label>
                           <label v-if="areaItem != ''">{{formSceneOrder.type == '' ? $t("请选择") : orderValueInfo(formSceneOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
@@ -1278,7 +1278,7 @@
                             </el-row>
                           </div>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formSceneOrder.startOrderI == '' ? $t("请选择") : orderValueInfo(formSceneOrder.startOrderI, 'set')}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -1314,7 +1314,7 @@
                             </el-row>
                           </div>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label>{{formSceneOrder.sence == '' ? $t("请选择") : formSceneOrder.senceText}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
                         </span>
@@ -1347,7 +1347,7 @@
                         <div class="textCenter">
                           <order-switch-type-dialog @click="changeCustomBottomSwitchType"></order-switch-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                           <label v-if="areaItem == ''">{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(outTypeObjInfo(formSwitchOrder.type), 'set')}}</label>
                           <label v-if="areaItem != ''">{{formSwitchOrder.type == '' ? $t("请选择") : orderValueInfo(formSwitchOrder.type, 'set')}}</label>
                           <label><i class="fa fa-chevron-right"></i></label>
@@ -1380,7 +1380,7 @@
                               </el-row>
                             </div>
                           </div>
-                          <span slot="reference" size="mini">
+                          <span slot="reference" size="mini" class="font-size-12">
                             <label>
                               {{formSwitchOrder.keyArr == '' ? $t("请选择") : $t("继电器")+formSwitchOrder.keyNoArr.join()}}
                             </label>
@@ -1401,7 +1401,7 @@
                         <div class="textCenter" style="max-height: 260px; overflow-y: auto">
                           <order-switch-key-type-dialog :form="formSwitchOrder" @click="changeCustomBottomSwitchKeyOprType"></order-switch-key-type-dialog>
                         </div>
-                        <span slot="reference" size="mini">
+                        <span slot="reference" size="mini" class="font-size-12">
                             <label>{{formSwitchOrder.keyOpr === '' && formSwitchOrder.keyOpr != 0 ? $t("请选择") : keyTypeInfo(formSwitchOrder.keyOpr)}}</label>
                             <label><i class="fa fa-chevron-right"></i></label>
                           </span>
@@ -1745,6 +1745,7 @@ export default {
           for (let i = 0; i < res.data.data.length; i++){
             if (res.data.data[i].successCount != res.data.data[i].totalCount){
               //this.sceneTimeList.push(res.data.data[i].lastTime);
+              //console.log(res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000);
               if (res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000 > 60){
                 flag = true;
                 break;
@@ -3676,7 +3677,7 @@ export default {
     cursor: default;
     height: 30px;
     line-height: 30px;
-    width: 40px;
+    width: 30px;
     text-align: center;
   }
 </style>

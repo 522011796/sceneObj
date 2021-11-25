@@ -1,17 +1,17 @@
 <template>
   <span>
     <span v-if="item.i == 1" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("空闲") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("空闲") }}</label>
 
       <label>{{ item.v }}</label>
     </span>
     <span v-if="item.i == 2" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("延时") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("延时") }}</label>
 
       <label>{{ item.v }}</label>
     </span>
     <span v-if="item.i == 3" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("循环") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("循环") }}</label>
 
       <label>{{ $t("起始") }} {{ item.v + 1 }}</label>
       |
@@ -19,44 +19,44 @@
     </span>
 
     <span v-if="item.i == 4" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("场景") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("场景") }}</label>
 
       <label>{{ item.n }}</label>
     </span>
     <span v-if="item.i == 6" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ openTypeInfo(item.v) }}</label>
+      <label class="color-666666 font-size-12" style="display: inline-block;vertical-align: middle;">{{ openTypeInfo(item.v) }}</label>
 
-      <label>{{ $t("渐变") }}: {{ item.t }}</label>
+      <label class="moon-ellipsis-class" style="max-width: 100px;display: inline-block;vertical-align: middle;">{{ $t("渐变") }}: {{ item.t }}</label>
     </span>
     <span v-if="item.i == 7" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("亮度") }}</label>
+      <label style="display: inline-block;vertical-align: middle;" class="color-666666 font-size-12">{{ $t("亮度") }}</label>
 
-      <label>{{ item.v.toFixed(2) * 100 }}%</label>
+      <label style="display: inline-block;vertical-align: middle;">{{ item.v.toFixed(2) * 100 }}%</label>
       |
-      <label>{{ $t("渐变") }}: {{ item.t }}</label>
+      <label class="moon-ellipsis-class" style="max-width: 80px;display: inline-block;vertical-align: middle;">{{ $t("渐变") }}: {{ item.t }}</label>
     </span>
     <span v-if="item.i == 8" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("色温") }}</label>
+      <label style="display: inline-block;vertical-align: middle;" class="color-666666 font-size-12">{{ $t("色温") }}</label>
 
-      <label>{{ item.v }}</label>
+      <label style="display: inline-block;vertical-align: middle;">{{ item.v }}</label>
       |
-      <label>{{ $t("渐变") }}: {{ item.t }}</label>
+      <label class="moon-ellipsis-class" style="max-width: 80px;display: inline-block;vertical-align: middle;">{{ $t("渐变") }}: {{ item.t }}</label>
     </span>
     <span v-if="item.i == 9" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("色彩") }}</label>
+      <label style="display: inline-block;vertical-align: middle;" class="color-666666 font-size-12">{{ $t("色彩") }}</label>
 
-      <span :style="{background:  converArgbToRgb(item.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;"></span>
+      <span :style="{background:  converArgbToRgb(item.v) }" style="height: 10px; width: 10px;display: inline-block;position: relative; top: 1px;vertical-align: middle"></span>
       |
-      <label>{{ $t("渐变时间") }}: {{ item.t }}</label>
+      <label class="moon-ellipsis-class" style="max-width: 80px;display: inline-block;vertical-align: middle;">{{ $t("渐变") }}: {{ item.t }}</label>
     </span>
 
     <span v-if="item.i == 10" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("行程") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("行程") }}</label>
 
       <label>{{ item.v.toFixed(2) * 100 }}%</label>
     </span>
     <span v-if="item.i == 11" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("继电器") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("继电器") }}</label>
 
       <label>
       <label v-for="(itemKey, indexKey) in item.v" :key="indexKey">{{ itemKey + 1 }}<template v-if="indexKey != item.v.length-1">,</template></label></label>
@@ -64,20 +64,20 @@
       <label>{{ keyTypeInfo(item.s) }}</label>
     </span>
     <span v-if="item.i == 12" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("音乐音量") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("音量") }}</label>
 
       <label>{{ item.v.toFixed(2) * 100 }}%</label>
     </span>
     <span v-if="item.i == 13" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("音乐名称") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("名称") }}</label>
 
       <label>{{ item.v}}</label>
     </span>
     <span v-if="item.i == 14" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("音乐暂停") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("暂停") }}</label>
     </span>
     <span v-if="item.i == 15" size="mini" class="font-size-12 color-default">
-      <label class="color-666666 font-size-14">{{ $t("音乐进度") }}</label>
+      <label class="color-666666 font-size-12">{{ $t("进度") }}</label>
 
       <label>{{ item.v}}秒</label>
     </span>
