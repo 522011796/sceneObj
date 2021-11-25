@@ -934,7 +934,7 @@
   display: flex;
   right: -15px;
   transition: all .2s ease-in-out;
-  z-index: 99;
+  z-index: 9;
 }
 .moon-left-menu-tag .moon-left-menu-tag-container {
   width: 100%;
