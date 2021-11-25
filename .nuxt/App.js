@@ -4,6 +4,8 @@ import { decode, parsePath, withoutBase, withoutTrailingSlash, normalizeURL } fr
 import { getMatchedComponentsInstances, getChildrenComponentInstancesUsingFetch, promisify, globalHandleError, urlJoin, sanitizeComponent } from './utils'
 import NuxtError from './components/nuxt-error.vue'
 
+import NuxtBuildIndicator from './components/nuxt-build-indicator'
+
 import '../node_modules/element-ui/lib/theme-chalk/index.css'
 
 import '../node_modules/@radial-color-picker/vue-color-picker/dist/vue-color-picker.min.css'
@@ -48,6 +50,7 @@ export default {
       }
     }, [
 
+      h(NuxtBuildIndicator),
       transitionEl
     ])
   },
@@ -167,6 +170,10 @@ export default {
     },
 
     setLayout (layout) {
+      if(layout && typeof layout !== 'string') {
+        throw new Error('[nuxt] Avoid using non-string value as layout property.')
+      }
+
       if (!layout || !layouts['_' + layout]) {
         layout = 'default'
       }

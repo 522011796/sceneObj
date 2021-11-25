@@ -733,6 +733,11 @@
 
           this.$refs.childRef.$children[0].oprType = "";
           this.$refs.childRef.$children[0].editSceneList = "";
+          this.$refs.childRef.$children[0].editSceneList = "";
+          this.$refs.childRef.$children[0].drawerDevice = false;
+          this.$refs.childRef.$children[0].drawerBottomDialogVisible = false;
+          this.$refs.childRef.$children[0].drawer = false;
+          this.drawer = false;
           this.$refs.childRef.$children[0].formSence = {
             id: '',
             envKey: '',

@@ -6,6 +6,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
       name: "mixins",
       data(){
         return {
+          globalTest: '1',
           minxinsScroll: false,
           baseUrl: '',
           envKey: '',
@@ -24,6 +25,9 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           globalEnvPopStatus: "",
           globalPhoneXbar: false
         }
+      },
+      mounted() {
+        this.initBridage();
       },
       created() {
         this.initData();
@@ -338,6 +342,38 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             this.startStatus = 'start';
             return nowTime;
           }
+        },
+        setupWebViewJavascriptBridge(callback) {
+          if (window.WebViewJavascriptBridge) { return callback(WebViewJavascriptBridge); }
+          if (window.WVJBCallbacks) { return window.WVJBCallbacks.push(callback); }
+          window.WVJBCallbacks = [callback];
+          var WVJBIframe = document.createElement('iframe');
+          WVJBIframe.style.display = 'none';
+          //WVJBIframe.src = 'https://__bridge_loaded__';
+          WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+          document.documentElement.appendChild(WVJBIframe);
+          setTimeout(function() { document.documentElement.removeChild(WVJBIframe) }, 0)
+        },
+        setPageStatus(value){
+          /**
+           * value: 1:首页，2:场景列表
+           */
+          let _self = this;
+          this.setupWebViewJavascriptBridge(function(bridge) {
+            //JS 调用 OC 的方法，方法名就是 OC 中提前注册的方法
+            bridge.callHandler('setPageStatus', {'key': value}, function responseCallback(responseData) {
+
+            });
+          })
+        },
+        initBridage(){
+          let _self = this;
+          this.setupWebViewJavascriptBridge(function(bridge) {
+            bridge.registerHandler('JS Echo', function(data, responseCallback) {
+              _self.returnSenceList();
+              responseCallback(data);
+            });
+          })
         }
       }
     }

@@ -1700,6 +1700,7 @@ export default {
     }
   },
   mounted() {
+    this.initBridage();
     this.initSenceList();
     window.addEventListener('scroll', this.handleScroll, true) // 监听（绑定）滚轮滚动事件
     // 监听窗口大小
@@ -2032,6 +2033,7 @@ export default {
           };
           //console.log(res);
           this.setSenceData(res.data.tasks, type);
+          this.setPageStatus(1);
           this.drawerListVisible = false;
         });
       }else {
