@@ -373,7 +373,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           this.setupWebViewJavascriptBridge(function(bridge) {
             //JS 调用 OC 的方法，方法名就是 OC 中提前注册的方法
             bridge.callHandler('setOkConfirm', {'key': value}, function responseCallback(responseData) {
-
+              _self.changeStatus = 0;
             });
           })
         },
@@ -385,7 +385,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
                 _self.returnSenceList();
               }
               if (data['value'] == 2){
-                _self.returnSenceList();
+                _self.returnSenceList(2);
               }
               if (_self.changeStatus == 1){
                 data['change'] = _self.changeStatus;

@@ -637,7 +637,11 @@
         planTypeInfo(value){
           return planType('set', value);
         },
-        returnSenceList(){
+        returnSenceList(value){
+          if (value == 2){
+            this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible = false;
+            return;
+          }
           let planList = this.$refs.childRef.$children[0].planList;
           let planTempList = this.$refs.childRef.$children[0].planList;
           this.changeStatus = 0;
@@ -769,8 +773,6 @@
           };
           this.selMenuData = "";
           this.$refs.childRef.$children[0].drawerListVisible = true;
-          console.log(this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible);
-          this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible = false;
         },
         changePlainType(event, type){
           this.customPlainType = type;
