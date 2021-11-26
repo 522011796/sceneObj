@@ -112,7 +112,7 @@
     <env-list-dialog :dialog-env-size="dialogEnvSize" :drawer-env-visible="drawerEnvVisible" :direction="direction" :data="globalEnvList"@click="selEnv" @changeDrawer="closeEnvDrawer"></env-list-dialog>
 
     <!--场景列表-->
-    <scene-list-dialog :dialog-list-size="dialogListSize"
+    <scene-list-dialog ref="sceneIndexRef" :dialog-list-size="dialogListSize"
                        :dialog-bottom-size="dialogBottomSize"
                        :drawer-list-visible="drawerListVisible"
                        :direction="directionEnvList"

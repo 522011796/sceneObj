@@ -769,6 +769,8 @@
           };
           this.selMenuData = "";
           this.$refs.childRef.$children[0].drawerListVisible = true;
+          console.log(this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible);
+          this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible = false;
         },
         changePlainType(event, type){
           this.customPlainType = type;

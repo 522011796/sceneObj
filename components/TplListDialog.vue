@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-drawer
+      ref="tplListParent"
       title="场景设置"
       custom-class="drawer-list"
       :show-close="false"
@@ -13,7 +14,7 @@
 
       <div slot="title">
         <div class="block-list-header" style="text-align: center">
-          <el-button size="mini" type="text" class="floatLeft color-default" style="margin-top: 7px" @click="returnIndex">
+          <el-button v-if="globalDeviceType != 'ios'" size="mini" type="text" class="floatLeft color-default" style="margin-top: 7px" @click="returnIndex">
             <i class="fa fa-close" style="font-size: 15px"></i>
           </el-button>
           <el-button-group>

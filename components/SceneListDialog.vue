@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-drawer
+      ref="sceneList"
       title="场景设置"
       custom-class="drawer-list"
       :show-close="false"
@@ -302,6 +303,7 @@ export default {
       this.$emit('selEnvList');
     },
     selEnvTplList(){
+      this.setPageStatus(2);
       this.drawerTplVisible = true;
     },
     createSence(){
