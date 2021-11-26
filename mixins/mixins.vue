@@ -382,7 +382,9 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           this.setupWebViewJavascriptBridge(function(bridge) {
             bridge.registerHandler('JS Echo', function(data, responseCallback) {
               _self.returnSenceList();
-              data['change'] = this.changeStatus;
+              if (_self.changeStatus == 1){
+                data['change'] = _self.changeStatus;
+              }
               responseCallback(data);
             });
           })
