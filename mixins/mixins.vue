@@ -368,11 +368,21 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             });
           })
         },
+        setOkConfirm(value){
+          let _self = this;
+          this.setupWebViewJavascriptBridge(function(bridge) {
+            //JS 调用 OC 的方法，方法名就是 OC 中提前注册的方法
+            bridge.callHandler('setOkConfirm', {'key': value}, function responseCallback(responseData) {
+
+            });
+          })
+        },
         initBridage(){
           let _self = this;
           this.setupWebViewJavascriptBridge(function(bridge) {
             bridge.registerHandler('JS Echo', function(data, responseCallback) {
               _self.returnSenceList();
+              data['change'] = this.changeStatus;
               responseCallback(data);
             });
           })

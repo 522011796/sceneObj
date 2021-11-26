@@ -336,6 +336,7 @@
           selMenuIndex: '',
           alertMessageTips: '',
           customPlainType: '',
+          changeStatus: 0,
           test: '',
           taskList: [],
           planList:[],
@@ -639,6 +640,7 @@
         returnSenceList(){
           let planList = this.$refs.childRef.$children[0].planList;
           let planTempList = this.$refs.childRef.$children[0].planList;
+          this.changeStatus = 0;
           for (let i = 0; i < planList.length; i++) {
             for (let j = 0; j < planList[i].i.length; j++) {
               if (planList[i].i[j].popVisible != undefined || planList[i].i[j].popVisible != null) {
@@ -677,6 +679,7 @@
             this.alertMessageTips = this.$t("系统检测到你修改过数据并未保存，返回后将清除已修改的部分");
             this.oprType = 'return';
             this.dialogVisible = true;
+            this.changeStatus = 1;
             return;
           }
 
@@ -729,6 +732,7 @@
             this.alertMessageTips = this.$t("系统检测到你修改过数据并未保存，返回后将清除已修改的部分");
             this.oprType = 'return';
             this.dialogVisible = true;
+            this.changeStatus = 1;
             return;
           }
 
@@ -818,6 +822,7 @@
             this.$refs.childRef.$children[0].selSence(planList, null, 'save');
           }else if(this.oprType == "return"){
             this.$refs.childRef.$children[0].drawerListVisible = true;
+            this.setOkConfirm(1);
             this.dialogVisible = false;
           }
         },
