@@ -3415,6 +3415,7 @@ export default {
       this.formSence.id = "";
       this.$parent.$parent.formPlain.deviceSelDevice = [];
       this.$parent.$parent.initMenu(this.planList);
+      this.setPageStatus(1);
       this.drawerListVisible = false;
     },
     selEnv(event, item){
