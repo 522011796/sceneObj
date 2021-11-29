@@ -353,6 +353,15 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             }
           }
         },
+        compareValue(value1,value2){
+          if (value1 < value2){
+            return -1;
+          }else if (value1 > value2){
+            return 1;
+          }else{
+            return 0;
+          }
+        },
         getWaitNetwork(){//延时，用于>=500毫秒发送一次比如网络请求，用于色彩、色温等实时查看
           if (this.startStatus == 'start'){
             let startTime = new Date().getTime();

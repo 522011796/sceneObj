@@ -376,6 +376,7 @@ export default {
       };
       let deviceExtra = [];
       let device$ = [];
+      let deviceOtherData = [];
       const loading = Loading.service({
         lock: true,
         text: 'Loading',
@@ -387,20 +388,50 @@ export default {
       this.$axios.get(this.baseUrl + common.queryTplInfo, {params: params, sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
           let tplSource = JSON.parse(res.data.data.tplSource);
+          let tplAbstract = JSON.parse(res.data.data.tplAbstract);
+          let data = [];
+
+          for (let item in tplAbstract) {
+            for (let itemChild in tplAbstract[item]) {
+              deviceOtherData.push({
+                key: itemChild,
+                value: tplAbstract[item][itemChild]
+              })
+            }
+          }
+
           for (let i = 0; i < tplSource.length; i++){
             tplSource[i]['dExtra'] = [];
             tplSource[i]['dExtraCount'] = 0;
             let t = tplSource[i].t;
+
             for (let j = 0; j < tplSource[i].d.length; j++){
+              let keyName = "";
+              let arr = deviceOtherData.filter((e) => {
+                return e.key == tplSource[i].d[j];
+              });
+
+              if (t == 1){
+                keyName = tplAbstract.light[tplSource[i].d[j]];
+              }else if (t == 2){
+                keyName = tplAbstract.switch[tplSource[i].d[j]];
+              }if (t == 3){
+                keyName = tplAbstract.curtains[tplSource[i].d[j]];
+              }if (t == 5){
+                keyName = tplAbstract.music[tplSource[i].d[j]];
+              }
+
               device$.push({
-                key: tplSource[i].d[j],
+                key: keyName,
+                extraKey: tplSource[i].d[j],
                 value: '',
                 t: t,
                 sn: ''
               });
 
               tplSource[i]['dExtra'].push({
-                key: tplSource[i].d[j],
+                key: keyName,
+                extraKey: tplSource[i].d[j],
                 value: "",
                 set: false,
                 t: t,
@@ -416,7 +447,9 @@ export default {
               deviceExtra.push(item);
             }
           }
-          this.planDeviceExtar = deviceExtra;
+          this.planDeviceExtar = deviceExtra.sort((a, b) => {
+            return this.compareValue(a.t, b.t)
+          });
           this.planDeviceResetData = tplSource;
 
           loading.close();
@@ -530,7 +563,6 @@ export default {
         MessageWarning(this.$t("任务列表中存在未设置的设备，请检查！"));
         return;
       }
-
       this.$parent.$parent.$parent.$parent.$refs.childRef.$children[0].setSenceData(this.planDeviceResetData);
       this.$parent.$refs.tplList.$parent.drawerTplVisible = false;
       this.dialogDeviceMoreVisible = false;
@@ -579,7 +611,7 @@ export default {
             }
 
             for (let k = 0; k < dExtraD.length; k++){
-              if(dExtraD[k] == item.key){
+              if(dExtraD[k] == item.extraKey){
                 //console.log(dExtraD[k]);
                 this.planDeviceResetData[i].d[k] = data.sn;
               }

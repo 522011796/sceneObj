@@ -2063,7 +2063,7 @@ export default {
     },
     async setSenceData(item, type){
       let data = item;
-      //console.log(56,data);
+      console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];

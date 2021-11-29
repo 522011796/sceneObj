@@ -222,8 +222,25 @@
               <el-col class="marginBottom10" :span="12" v-for="(item, index) in itemMain.d" :key="index">
                 <div class="tpl-item-child-main-block">
                   <div class="tpl-item-child-title-block" style="">
-                    <span class="moon-ellipsis-class font-size-12" style="display: inline-block;max-width: 80%;vertical-align: middle">{{ item.name }}</span>
-                    <span style="display: inline-block;vertical-align: middle"><i class="fa fa-edit color-warning font-size-12"></i></span>
+                    <el-popover
+                      placement="top"
+                      width="160"
+                      v-model="item.editVisible"
+                      @hide="cancelEditPop($event, item)">
+                      <div>
+                        <el-input size="mini" v-model="item.name"></el-input>
+                      </div>
+                      <div style="text-align: right; margin-top: 10px">
+                        <el-button size="mini" type="text" @click="cancelEditPop($event, item, index)">取消</el-button>
+                        <el-button type="success" size="mini" @click="saveEditPop($event, item, index)">确定</el-button>
+                      </div>
+                      <div slot="reference">
+                        <span class="moon-ellipsis-class font-size-12" style="display: inline-block;max-width: 80%;vertical-align: middle">
+                          <label>{{ item.name }}</label>
+                        </span>
+                        <span style="display: inline-block;vertical-align: middle; float: right" @click="editDeviceName($event, item)"><i class="fa fa-edit color-warning font-size-12"></i></span>
+                      </div>
+                    </el-popover>
                   </div>
                   <div class="tpl-item-child-content-block">
                     <el-popover
@@ -496,9 +513,11 @@ export default {
               device.push({
                 extra: "$" + deviceIndex,
                 name: deviceType(taskType[j]) + deviceIndex,
+                nickname: deviceType(taskType[j]) + deviceIndex,
                 sn: taskD[i],
                 extraSn: '',
                 extraName: '',
+                editVisible: false,
                 visible: false
               });
             }
@@ -658,12 +677,25 @@ export default {
       }
       item.visible = false;
     },
+    editDeviceName(event, item){
+
+    },
+    cancelEditPop(event, item, index){
+      item.name = item.nickname;
+      item.editVisible = false;
+    },
+    saveEditPop(event, item, index){
+      item.name = item.name;
+      item.nickname = item.name;
+      item.editVisible = false;
+    },
     cancelTplSetConfig(){
       this.tplSetDeviceVisible = false;
     },
     saveTplSetConfig(){
       let dataObj = [];
       let data = [];
+      let dataExtraJSon = [];
       let dataIndex = 0;
       let errorCount = 0;
       let params = {
@@ -680,35 +712,8 @@ export default {
         let dataJSon = {};
         let sourceIndex = 0;
         let sourceKeyIndex = 0;
-        for (let i = 0; i < sourceData.length; i++){
-          let d = sourceData[i].d;
-          sourceDataExtra.push({
-            i: sourceData[i].i,
-            n: sourceData[i].n,
-            t: sourceData[i].t,
-            d: []
-          });
-          for (let j = 0; j < d.length; j++){
-            if (dArr.indexOf(d[j]) == -1){
-              dArr.push(d[j]);
-            }
-          }
-          //console.log(dArr);
-          for (let j = 0; j < d.length; j++){
-            //console.log(dArr.indexOf(d[j]),sourceIndex++);
-            if (dArr.indexOf(d[j]) == -1){
-              sourceIndex++;
-              sourceKeyIndex = sourceIndex;
-            }else{
-              sourceKeyIndex = dArr.indexOf(d[j]) + 1;
-            }
-            sourceDataExtra[i]['d'].push("$"+sourceKeyIndex);
-          }
-        }
-        //console.log(sourceDataExtra);
-        params['tplSource'] = JSON.stringify(sourceDataExtra);
 
-        console.log(this.deviceTplData);
+        //console.log(this.deviceTplData);
         for (let i = 0; i < this.deviceTplData.length; i++){
           let extraT = this.deviceTplData[i]['t'];
           let extraD = this.deviceTplData[i]['d'];
@@ -726,10 +731,14 @@ export default {
             }
             dataIndex++;
             let key = '$'+dataIndex;
-            dataObj[key] = extraD[j]['extraName'] == "" ? extraD[j]['name'] : extraD[j]['extraName'];
+            dataObj[key] = extraD[j]['name'];
             dataArr.push(dataObj);
+
+            dataExtraJSon.push({
+              key: key,
+              sn: extraD[j]['extraSn']
+            });
           }
-          //dataJSon.light = dataObj;
 
           if (extraT == 1){
             dataJSon['light'] = dataObj;
@@ -741,7 +750,44 @@ export default {
             dataJSon['music'] = dataObj;
           }
         }
+
         params['tplAbstract'] = JSON.stringify(dataJSon);
+
+        for (let i = 0; i < sourceData.length; i++){
+          let d = sourceData[i].d;
+          let extraT = sourceData[i].t;
+          sourceDataExtra.push({
+            i: sourceData[i].i,
+            n: sourceData[i].n,
+            t: sourceData[i].t,
+            d: []
+          });
+          for (let j = 0; j < d.length; j++){
+            if (dArr.indexOf(d[j]) == -1){
+              dArr.push(d[j]);
+            }
+          }
+          //console.log(dArr);
+          for (let j = 0; j < d.length; j++){
+            let key = "";
+            // if (dArr.indexOf(d[j]) == -1){
+            //   sourceIndex++;
+            //   sourceKeyIndex = sourceIndex;
+            // }else{
+            //   sourceKeyIndex = dArr.indexOf(d[j]) + 1;
+            // }
+
+            for (let k = 0; k < dataExtraJSon.length; k++){
+              if (d[j] == dataExtraJSon[k].sn){
+                key = dataExtraJSon[k].key;
+              }
+            }
+
+            //sourceDataExtra[i]['d'].push("$"+sourceKeyIndex);
+            sourceDataExtra[i]['d'].push(key);
+          }
+        }
+        params['tplSource'] = JSON.stringify(sourceDataExtra);
       }
 
       if (errorCount > 0){
@@ -754,7 +800,6 @@ export default {
       }
 
       params = this.$qs.stringify(params);
-
       let url = (this.formTpl.id == "" || this.formTpl.id == undefined) ? common.createTplInfo : common.editTplInfo;
       this.configLoading = true;
       this.$axios.post(this.baseUrl + url, params, {sessionId: this.sessionId, loading: false}).then(res => {
