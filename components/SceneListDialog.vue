@@ -212,7 +212,7 @@
         </div>
       </div>
 
-      <div class="custom-collapse-block marginTop5">
+      <div class="custom-collapse-block marginTop5 padding-lf10">
         <el-collapse accordion>
           <el-collapse-item v-for="(itemMain, indexMain) in deviceTplData" :key="indexMain">
             <template slot="title">
