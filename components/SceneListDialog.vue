@@ -119,20 +119,32 @@
       <div slot="title">
         <div class="block-opr-header">
           <el-row>
-            <el-col :span="4" class="textLeft">
+            <el-col :span="6" class="textLeft">
               <el-button size="mini" @click="cancelTplConfig">{{$t("取消")}}</el-button>
             </el-col>
-            <el-col :span="16" class="textCenter">
+            <el-col :span="12" class="textCenter">
               <span>{{$t("创建模版")}}</span>
             </el-col>
-            <el-col :span="4" class="textRight">
-              <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplConfig">
-                {{$t("保存")}}
-              </el-button>
-              <el-button size="mini" type="warning" v-if="configLoading == true">
-                <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
-                {{$t("保存")}}
-              </el-button>
+            <el-col :span="6" class="textRight">
+              <div v-if="formTpl.id == ''">
+                <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplConfig">
+                  {{$t("位置设置")}}
+                </el-button>
+                <el-button size="mini" type="warning" v-if="configLoading == true">
+                  <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
+                  {{$t("位置设置")}}
+                </el-button>
+              </div>
+
+              <div v-if="formTpl.id != ''">
+                <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplSetConfig">
+                  {{$t("保存")}}
+                </el-button>
+                <el-button size="mini" type="warning" v-if="configLoading == true">
+                  <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
+                  {{$t("保存")}}
+                </el-button>
+              </div>
             </el-col>
           </el-row>
         </div>
@@ -164,6 +176,89 @@
             <el-input type="textarea" :rows="5" :placeholder="$t('请输入模版描述')" v-model="formTpl.tplDesc"></el-input>
           </el-form-item>
         </el-form>
+      </div>
+    </el-drawer>
+
+    <el-drawer
+      title="场景设置"
+      custom-class="drawer-opr"
+      :show-close="false"
+      :modal="true"
+      :size="dialogSubChildSize"
+      :wrapperClosable="false"
+      :visible.sync="tplSetDeviceVisible"
+      :direction="appType != 'app' ? 'rtl' : 'btt'"
+      @closed="closeTplSetOprDrawer">
+
+      <div slot="title">
+        <div class="block-opr-header">
+          <el-row>
+            <el-col :span="4" class="textLeft">
+              <el-button size="mini" @click="cancelTplSetConfig">{{$t("取消")}}</el-button>
+            </el-col>
+            <el-col :span="16" class="textCenter">
+              <span>{{$t("位置设置")}}</span>
+            </el-col>
+            <el-col :span="4" class="textRight">
+              <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplSetConfig">
+                {{$t("保存")}}
+              </el-button>
+              <el-button size="mini" type="warning" v-if="configLoading == true">
+                <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
+                {{$t("保存")}}
+              </el-button>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <div class="custom-collapse-block marginTop5">
+        <el-collapse accordion>
+          <el-collapse-item v-for="(itemMain, indexMain) in deviceTplData" :key="indexMain">
+            <template slot="title">
+              <span class="color-success font-size-12">{{deviceTypeInfo(itemMain.t)}}</span>
+            </template>
+            <el-row :gutter="16" class="marginTop5">
+              <el-col class="marginBottom10" :span="12" v-for="(item, index) in itemMain.d" :key="index">
+                <div class="tpl-item-child-main-block">
+                  <div class="tpl-item-child-title-block" style="">
+                    <span class="moon-ellipsis-class font-size-12" style="display: inline-block;max-width: 80%;vertical-align: middle">{{ item.name }}</span>
+                    <span style="display: inline-block;vertical-align: middle"><i class="fa fa-edit color-warning font-size-12"></i></span>
+                  </div>
+                  <div class="tpl-item-child-content-block">
+                    <el-popover
+                      placement="bottom"
+                      trigger="click"
+                      @after-enter=""
+                      @after-leave=""
+                      v-model="item.visible">
+                      <div style="max-height: 300px;overflow-y: auto">
+                        <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
+                        <el-tree ref="treeDevice" v-if="itemMain.dd.length > 0" accordion empty-text="" :data="itemMain.dd" @node-click="(data, node, self) => selTreeItem(data, node, self, itemMain.dd, item)">
+                          <span class="custom-tree-node" slot-scope="{ node, data }">
+                            <label class="font-size-12">{{ data.label }}</label>
+                            <label class="font-size-12 color-disabled">({{ data.n }})</label>
+                          </span>
+                        </el-tree>
+                      </div>
+                      <div slot="reference">
+                        <span v-if="item.extraSn != ''">
+                          <label class="moon-ellipsis-class font-size-12" style="display: inline-block;max-width: 85%;vertical-align: middle">{{ item.extraName }}</label>
+                          <label @click="removeDeviceItem($event ,itemMain.dd, item)">
+                            <i class="fa fa-close"></i>
+                          </label>
+                        </span>
+                        <div v-if="item.extraSn == ''">
+                          <i class="fa fa-plus-circle color-warning"></i>
+                        </div>
+                      </div>
+                    </el-popover>
+                  </div>
+                </div>
+              </el-col>
+            </el-row>
+          </el-collapse-item>
+        </el-collapse>
       </div>
     </el-drawer>
 
@@ -249,7 +344,7 @@
 import mixins from "../mixins/mixins";
 import TplListDialog from "./TplListDialog";
 import {common} from "../utils/api/url";
-import {MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
+import {deviceType, inArray, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
 
 export default {
   components: {TplListDialog},
@@ -259,6 +354,7 @@ export default {
     direction: String,
     dialogListSize: String,
     dialogBottomSize: String,
+    dialogSubChildSize: String,
     drawerListVisible: {
       type: Boolean,
       default: false
@@ -280,7 +376,10 @@ export default {
       drawerDeviceVisible: false,
       role: '',
       deviceStatusData: [],
+      deviceTplData: [],
       timer: null,
+      tplSetDeviceVisible: false,
+      deviceLoading: false,
       formTpl:{
         id: '',
         tplName: '',
@@ -344,20 +443,80 @@ export default {
         tplDesc: ''
       }
     },
+    closeTplSetOprDrawer(){
+
+    },
     cancelTplConfig(){
       this.drawerCreateTplVisible = false;
     },
-    saveTplConfig(){
+    async saveTplConfig(){
       if (this.formTpl.tplName == ""){
         MessageWarning(this.$t("请输入模版名称"));
         return;
       }
 
+      await this.getDeviceOldList();
+
+      let taskType = [];
+      let taskDevice = [];
+      //缓存场景中的设备列表，用于后期选择
+      let task = this.formTpl.tplSource.tasks;
+      task.map((e) => {
+        taskType.push(e['t']);
+      });
+      //数组去重
+      taskType = taskType.filter((e, i, self) => {
+        return self.indexOf(e) == i
+      });
+      for (let j = 0; j < taskType.length; j++){
+        let device = [];
+        let deviceIndex = 0;
+        let deviceList = [];
+
+        taskDevice.push({
+          t: taskType[j]
+        });
+        let arr = task.filter((e) => {
+          return e['t'] == taskType[j];
+        });
+        for(let k = 0; k < arr.length; k++) {
+          let taskD = arr[k].d;
+          for(let i = 0; i < taskD.length; i++) {
+            let child = {
+              sn: taskD[i],
+            };
+            let sel = inArray(child, device, 'sn');
+            if (sel == -1){
+              deviceIndex++;
+              deviceList.push({
+                n: taskD[i],
+                name: this.getDeviceName(taskD[i]),
+                label: this.getDeviceName(taskD[i]),
+              });
+              device.push({
+                extra: "$" + deviceIndex,
+                name: deviceType(taskType[j]) + deviceIndex,
+                sn: taskD[i],
+                extraSn: '',
+                extraName: '',
+                visible: false
+              });
+            }
+          }
+          taskDevice[j]['dd'] = deviceList;
+          taskDevice[j]['d'] = device;
+        }
+      }
+      this.deviceTplData = taskDevice;
+      this.tplSetDeviceVisible = true;
+    },
+    saveTplOpr(){
       let params = {
         tplName: this.formTpl.tplName,
         tplOpen: this.formTpl.tplOpen,
         tplType: this.formTpl.tplType,
         tplDesc: this.formTpl.tplDesc,
+        tplSource: ''
       };
 
       if (this.formTpl.id == "" || this.formTpl.id == undefined){
@@ -466,6 +625,149 @@ export default {
       clearTimeout(this.timer);
       this.timer = null;
       this.drawerDeviceVisible = false;
+    },
+    deviceTypeInfo(val){
+      return deviceType(val);
+    },
+    removeDeviceItem(event, itemMainDD, item){
+      itemMainDD.splice(itemMainDD.length ,0, {
+        label: item.extraName,
+        n: item.extraSn,
+        name: item.extraName,
+      });
+      item.label = '';
+      item.extraSn = '';
+      item.extraName = '';
+    },
+    selTreeItem(data, node, self, itemMainDD, item){
+      let deviceList = JSON.parse(JSON.stringify(itemMainDD));
+      if(item.extraName != ""){
+        itemMainDD.splice(itemMainDD.length ,0, {
+          label: item.extraName,
+          n: item.extraSn,
+          name: item.extraName,
+        });
+      }
+      item.extraSn = data.n;
+      item.extraName = data.label;
+      item.label = data.label;
+      for (let i = 0; i < deviceList.length; i++){
+        if (data.n == deviceList[i].n){
+          itemMainDD.splice(i,1);
+        }
+      }
+      item.visible = false;
+    },
+    cancelTplSetConfig(){
+      this.tplSetDeviceVisible = false;
+    },
+    saveTplSetConfig(){
+      let dataObj = [];
+      let data = [];
+      let dataIndex = 0;
+      let errorCount = 0;
+      let params = {
+        tplName: this.formTpl.tplName,
+        tplOpen: this.formTpl.tplOpen,
+        tplType: this.formTpl.tplType,
+        tplDesc: this.formTpl.tplDesc
+      };
+
+      if (this.formTpl.id == "" || this.formTpl.id == undefined){
+        let sourceData = this.formTpl.tplSource.tasks;
+        let dArr = [];
+        let sourceDataExtra = [];
+        let dataJSon = {};
+        let sourceIndex = 0;
+        let sourceKeyIndex = 0;
+        for (let i = 0; i < sourceData.length; i++){
+          let d = sourceData[i].d;
+          sourceDataExtra.push({
+            i: sourceData[i].i,
+            n: sourceData[i].n,
+            t: sourceData[i].t,
+            d: []
+          });
+          for (let j = 0; j < d.length; j++){
+            if (dArr.indexOf(d[j]) == -1){
+              dArr.push(d[j]);
+            }
+          }
+          //console.log(dArr);
+          for (let j = 0; j < d.length; j++){
+            //console.log(dArr.indexOf(d[j]),sourceIndex++);
+            if (dArr.indexOf(d[j]) == -1){
+              sourceIndex++;
+              sourceKeyIndex = sourceIndex;
+            }else{
+              sourceKeyIndex = dArr.indexOf(d[j]) + 1;
+            }
+            sourceDataExtra[i]['d'].push("$"+sourceKeyIndex);
+          }
+        }
+        //console.log(sourceDataExtra);
+        params['tplSource'] = JSON.stringify(sourceDataExtra);
+
+        console.log(this.deviceTplData);
+        for (let i = 0; i < this.deviceTplData.length; i++){
+          let extraT = this.deviceTplData[i]['t'];
+          let extraD = this.deviceTplData[i]['d'];
+          let dataObj = {};
+          let dataArr = [];
+
+          if (errorCount > 0){
+            break;
+          }
+
+          for (let j = 0; j < extraD.length; j++){
+            if (extraD[j]['extraSn'] == "" || extraD[j]['extraSn'] == undefined){
+              errorCount++;
+              break;
+            }
+            dataIndex++;
+            let key = '$'+dataIndex;
+            dataObj[key] = extraD[j]['extraName'] == "" ? extraD[j]['name'] : extraD[j]['extraName'];
+            dataArr.push(dataObj);
+          }
+          //dataJSon.light = dataObj;
+
+          if (extraT == 1){
+            dataJSon['light'] = dataObj;
+          }else if (extraT == 2){
+            dataJSon['switch'] = dataObj;
+          }else if (extraT == 3){
+            dataJSon['curtains'] = dataObj;
+          }else if (extraT == 5){
+            dataJSon['music'] = dataObj;
+          }
+        }
+        params['tplAbstract'] = JSON.stringify(dataJSon);
+      }
+
+      if (errorCount > 0){
+        MessageWarning(this.$t("有未设置的设备位置,请设置！"));
+        return;
+      }
+
+      if (this.formTpl.id != "" || this.formTpl.id != undefined){
+        params['tplId'] = this.formTpl.id;
+      }
+
+      params = this.$qs.stringify(params);
+
+      let url = (this.formTpl.id == "" || this.formTpl.id == undefined) ? common.createTplInfo : common.editTplInfo;
+      this.configLoading = true;
+      this.$axios.post(this.baseUrl + url, params, {sessionId: this.sessionId, loading: false}).then(res => {
+        if (res.data.code == 200){
+          this.$refs.tplList.initTplData(null, this.$refs.tplList.listType);
+          this.drawerCreateTplVisible = false;
+          this.tplSetDeviceVisible = false;
+          MessageSuccess(res.data.msg);
+        }else {
+          MessageError(res.data.msg);
+        }
+        this.configLoading = false;
+      });
     }
   }
 }

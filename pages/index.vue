@@ -114,6 +114,7 @@
     <!--场景列表-->
     <scene-list-dialog ref="sceneIndexRef" :dialog-list-size="dialogListSize"
                        :dialog-bottom-size="dialogBottomSize"
+                       :dialog-sub-child-size="dialogSubChildSize"
                        :drawer-list-visible="drawerListVisible"
                        :direction="directionEnvList"
                        :data="sceneList"
@@ -1524,6 +1525,7 @@ export default {
       dialogListSize: '100%',
       dialogFullSize: '100%',
       dialogBottomSize: '100%',
+      dialogSubChildSize: '100%',
       dialogRoomSize: '70%',
       drawerRightWidth: '90%',
       drawerRightChildWidth: '90%',
@@ -1935,9 +1937,11 @@ export default {
         if (this.screenOrientation == 'landscape'){
           this.dialogFullSize = '100%';
           this.dialogBottomSize = '100%';
+          this.dialogSubChildSize = '100%';
         }else {
           this.dialogFullSize = '100%';
           this.dialogBottomSize = '45%';
+          this.dialogSubChildSize = '100%';
         }
       }else {
         if (screenWidth < 550){
@@ -1950,6 +1954,7 @@ export default {
           this.dialogRoomSize = '100%';
           this.dialogFullSize = '100%';
           this.dialogBottomSize = '100%';
+          this.dialogSubChildSize = '100%';
         }else{
           if (type == 'template'){
             this.drawerRightWidth = '60%';
@@ -1960,6 +1965,7 @@ export default {
           this.dialogRoomSize = '70%';
           this.dialogFullSize = '45%';
           this.dialogBottomSize = '45%';
+          this.dialogSubChildSize = '45%';
         }
       }
     },

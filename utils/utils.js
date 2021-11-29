@@ -207,6 +207,16 @@ export function openType(type){
   return openType[type];
 }
 
+export function deviceType(type){
+  let deviceType = {
+    "1": "灯",
+    "2": "开关",
+    "3": "窗帘",
+    "5": "音乐"
+  };
+  return deviceType[type];
+}
+
 export function inArray(search,array,tag){
   for(var i in array){
     if (tag){

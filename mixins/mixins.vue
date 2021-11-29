@@ -25,6 +25,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           globalEnvPopStatus: "",
           globalPhoneXbar: false,
           globalDeviceType: '',
+          globalDeviceOldList: [],
         }
       },
       mounted() {
@@ -125,6 +126,19 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           this.$axios.get(this.baseUrl + common.curtainsGrouplist, {params: params, sessionId: this.sessionId}).then(res => {
             if (res.data.code == 200) {
               this.globalCurtainsGroupList = res.data.data;
+            }
+          });
+        },
+        async getDeviceOldList(type){
+          let data = [];
+          let params = {
+            envKey: this.envKey,
+            pageNum: 1,
+            pageSize: 99999
+          };
+          await this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
+            if (res.data.code == 200) {
+              this.globalDeviceOldList = res.data.data.list;
             }
           });
         },
@@ -331,6 +345,13 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           }
           //遍历结束，所有value都深度比较相等，则两对象相等
           return true;
+        },
+        getDeviceName(val){
+          for (let i = 0; i < this.globalDeviceOldList.length; i++){
+            if (val == this.globalDeviceOldList[i].sn){
+              return this.globalDeviceOldList[i].name;
+            }
+          }
         },
         getWaitNetwork(){//延时，用于>=500毫秒发送一次比如网络请求，用于色彩、色温等实时查看
           if (this.startStatus == 'start'){
