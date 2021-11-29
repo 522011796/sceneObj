@@ -679,6 +679,9 @@ span,div,button,label{
 .custom-collapse-block .el-collapse-item:last-child {
   margin-bottom: -1px;
 }
+.layout-main-footer-right .el-button--mini, .el-button--mini.is-round {
+  padding: 7px 5px;
+}
 /***loading***/
 .custom-g-loading .el-icon-loading{
   font-size: 32px;

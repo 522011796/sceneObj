@@ -901,7 +901,7 @@
   line-height: 60px;
   background: #454545;
   text-align: right;
-  padding: 0px 25px 0px 0px;
+  padding: 0px 20px 0px 0px;
 }
 .layout-menu-header{
   color: #cccccc;
