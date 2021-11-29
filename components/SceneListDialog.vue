@@ -127,11 +127,11 @@
             </el-col>
             <el-col :span="6" class="textRight">
               <div v-if="formTpl.id == ''">
-                <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplConfig">
+                <el-button v-if="setTplLoading == false" size="mini" type="warning" @click="saveTplConfig">
                   {{$t("位置设置")}}
                 </el-button>
-                <el-button size="mini" type="warning" v-if="configLoading == true">
-                  <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
+                <el-button size="mini" type="warning" v-if="setTplLoading == true">
+                  <i class="fa fa-spinner fa-spin" v-if="setTplLoading == true"></i>
                   {{$t("位置设置")}}
                 </el-button>
               </div>
@@ -181,7 +181,7 @@
 
     <el-drawer
       title="场景设置"
-      custom-class="drawer-opr"
+      custom-class="drawer-opr drawer-opr-loading"
       :show-close="false"
       :modal="true"
       :size="dialogSubChildSize"
@@ -362,6 +362,7 @@ import mixins from "../mixins/mixins";
 import TplListDialog from "./TplListDialog";
 import {common} from "../utils/api/url";
 import {deviceType, inArray, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
+import {Loading} from "element-ui";
 
 export default {
   components: {TplListDialog},
@@ -397,6 +398,7 @@ export default {
       timer: null,
       tplSetDeviceVisible: false,
       deviceLoading: false,
+      setTplLoading: false,
       formTpl:{
         id: '',
         tplName: '',
@@ -431,6 +433,7 @@ export default {
     },
     async createTplOpr(event, item){
       await this.getSourceUrl(item.sourceUrl);
+      await this.getDeviceOldList();
       this.drawerCreateTplVisible = true;
     },
     changeTplDrawer(event){
@@ -459,6 +462,7 @@ export default {
         tplSource: '',
         tplDesc: ''
       }
+      this.setTplLoading = false;
     },
     closeTplSetOprDrawer(){
 
@@ -471,62 +475,72 @@ export default {
         MessageWarning(this.$t("请输入模版名称"));
         return;
       }
-
-      await this.getDeviceOldList();
-
-      let taskType = [];
-      let taskDevice = [];
-      //缓存场景中的设备列表，用于后期选择
-      let task = this.formTpl.tplSource.tasks;
-      task.map((e) => {
-        taskType.push(e['t']);
+      const loading = Loading.service({
+        lock: true,
+        text: 'Loading',
+        spinner: 'el-icon-loading',
+        background: 'rgba(221, 221, 221, 0.3)',
+        customClass: 'custom-g-loading',
+        target: document.querySelector('.drawer-opr-loading')//设置加载动画区域
       });
-      //数组去重
-      taskType = taskType.filter((e, i, self) => {
-        return self.indexOf(e) == i
-      });
-      for (let j = 0; j < taskType.length; j++){
-        let device = [];
-        let deviceIndex = 0;
-        let deviceList = [];
+      setTimeout(() => {
+        this.setTplLoading = true;
+        let taskType = [];
+        let taskDevice = [];
+        //缓存场景中的设备列表，用于后期选择
+        let task = this.formTpl.tplSource.tasks;
+        task.map((e) => {
+          taskType.push(e['t']);
+        });
+        //数组去重
+        taskType = taskType.filter((e, i, self) => {
+          return self.indexOf(e) == i
+        });
+        for (let j = 0; j < taskType.length; j++){
+          let device = [];
+          let deviceIndex = 0;
+          let deviceList = [];
 
-        taskDevice.push({
-          t: taskType[j]
-        });
-        let arr = task.filter((e) => {
-          return e['t'] == taskType[j];
-        });
-        for(let k = 0; k < arr.length; k++) {
-          let taskD = arr[k].d;
-          for(let i = 0; i < taskD.length; i++) {
-            let child = {
-              sn: taskD[i],
-            };
-            let sel = inArray(child, device, 'sn');
-            if (sel == -1){
-              deviceIndex++;
-              deviceList.push({
-                n: taskD[i],
-                name: this.getDeviceName(taskD[i]),
-                label: this.getDeviceName(taskD[i]),
-              });
-              device.push({
-                extra: "$" + deviceIndex,
-                name: deviceType(taskType[j]) + deviceIndex,
-                nickname: deviceType(taskType[j]) + deviceIndex,
+          taskDevice.push({
+            t: taskType[j]
+          });
+          let arr = task.filter((e) => {
+            return e['t'] == taskType[j];
+          });
+          for(let k = 0; k < arr.length; k++) {
+            let taskD = arr[k].d;
+            for(let i = 0; i < taskD.length; i++) {
+              let child = {
                 sn: taskD[i],
-                extraSn: '',
-                extraName: '',
-                editVisible: false,
-                visible: false
-              });
+              };
+              let sel = inArray(child, device, 'sn');
+              if (sel == -1){
+                deviceIndex++;
+                deviceList.push({
+                  n: taskD[i],
+                  name: this.getDeviceName(taskD[i]),
+                  label: this.getDeviceName(taskD[i]),
+                });
+                device.push({
+                  extra: "$" + deviceIndex,
+                  name: deviceType(taskType[j]) + deviceIndex,
+                  nickname: deviceType(taskType[j]) + deviceIndex,
+                  sn: taskD[i],
+                  extraSn: '',
+                  extraName: '',
+                  editVisible: false,
+                  visible: false
+                });
+              }
             }
+            taskDevice[j]['dd'] = deviceList;
+            taskDevice[j]['d'] = device;
           }
-          taskDevice[j]['dd'] = deviceList;
-          taskDevice[j]['d'] = device;
         }
-      }
-      this.deviceTplData = taskDevice;
+        this.deviceTplData = taskDevice;
+        this.setTplLoading = false;
+      }, 500);
+      loading.close();
       this.tplSetDeviceVisible = true;
     },
     saveTplOpr(){
