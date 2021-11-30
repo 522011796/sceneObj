@@ -640,6 +640,8 @@
         returnSenceList(value){
           if (value == 2){
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible = false;
+            this.$refs.childRef.$children[0].$refs.sceneIndexRef.$refs.tplList.dialogDeviceMoreVisible = false;
+            this.$refs.childRef.$children[0].$refs.sceneIndexRef.$refs.tplList.dialogDeviceVisible = false
             return;
           }
           let planList = this.$refs.childRef.$children[0].planList;

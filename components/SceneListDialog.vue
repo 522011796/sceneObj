@@ -410,6 +410,7 @@ export default {
       tplSetDeviceVisible: false,
       deviceLoading: false,
       setTplLoading: false,
+      loopTime: 60,
       formTpl:{
         id: '',
         tplName: '',
@@ -646,18 +647,43 @@ export default {
         envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
         sceneId: item.sceneId
       };
+      clearTimeout(this.timer);
       this.$axios.get(this.baseUrl + common.querySceneActionList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 200){
-          //console.log(res.data.data);
+          let flag = false;
           this.deviceStatusData = res.data.data;
+          if (res.data.data.length == 0){
+            if (this.loopTime > 0){
+              this.timer = setTimeout(() => {
+                this.installSenceDeviceStauts(event, item);
+              }, 3000);
+              this.loopTime = this.loopTime - 3;
+            }else {
+              this.loopTime = 60;
+              clearTimeout(this.timer);
+            }
+          }else {
+            this.loopTime = 60;
+            for (let i = 0; i < res.data.data.length; i++){
+              if (res.data.data[i].actionStatus != 1){
+                if (res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000 < 60){
+                  //console.log(res.data.data[i].systemTime / 1000 - res.data.data[i].lastTime / 1000);
+                  flag = true;
+                  break;
+                }
+              }
+            }
+            //console.log(flag);
+            if (flag == false){
+              clearTimeout(this.timer);
+            }else {
+              this.timer = setTimeout(() => {
+                this.installSenceDeviceStauts(event, item);
+              }, 3000);
+            }
+          }
         }
       });
-
-      clearTimeout(this.timer);
-      this.timer = null;
-      this.timer = setTimeout(() => {
-        this.installSenceDeviceStauts(event, item);
-      }, 3000);
     },
     closeDevicePop(event, item){
       item._visible = false;
