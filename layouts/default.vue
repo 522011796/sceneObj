@@ -36,16 +36,17 @@
                 <el-popover
                   placement="right"
                   popper-class="pop-menu-custom"
-                  trigger="click">
+                  trigger="click"
+                  v-model="item.visible">
                   <div class="textLeft">
                     <div>
-                      <el-button size="mini" type="danger" plain @click="delPlain">{{$t("删除")}}</el-button>
+                      <el-button size="mini" type="danger" plain @click.stop="delPlain">{{$t("删除")}}</el-button>
                     </div>
                     <div class="marginTop5">
-                      <el-button size="mini" type="warning" plain @click="updatePlain">{{$t("修改")}}</el-button>
+                      <el-button size="mini" type="warning" plain @click.stop="updatePlain">{{$t("修改")}}</el-button>
                     </div>
                     <div class="marginTop5">
-                      <el-button size="mini" type="info" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>
+                      <el-button size="mini" type="info" plain @click.stop="copyPlain">{{$t("复制并粘贴")}}</el-button>
                     </div>
                   </div>
                   <span slot="reference" size="mini" class="font-size-12">
@@ -67,7 +68,7 @@
                   </span>
                 </el-popover>
               </div>
-              <div class="layout-menu-add" v-show="showMenuAdd == false" :style="showMenuAdd == false ? {'height': '40px','line-height': '40px'} : {'height': '0px','line-height': '0px'}">
+              <div v-if="globalDeviceType != 'ios'" class="layout-menu-add" v-show="showMenuAdd == false" :style="showMenuAdd == false ? {'height': '40px','line-height': '40px'} : {'height': '0px','line-height': '0px'}">
                 <el-button type="warning" size="mini" icon="el-icon-plus" @click="addPlain">{{$t("添加任务")}}</el-button>
               </div>
             </div>
@@ -79,7 +80,7 @@
         <div class="clearfix"></div>
       </div>
 
-      <div class="layout-main-footer">
+      <div class="layout-main-footer" :style="globalDeviceType == 'ios' ? footerAppStyle : footerStyle">
         <div class="layout-main-footer-left" :style="footerLeftStyle">
           <div v-show="showMenuAdd == true">
             <div class="layout-menu-add" :style="showMenuAdd == true ? {'height': '60px','line-height': '60px'} : {'height': '0px','line-height': '0px'}">
@@ -88,7 +89,7 @@
           </div>
         </div>
         <div class="layout-main-footer-right" :style="footerRightStyle">
-          <el-button :loading="loading" size="mini" type="success" @click="saveConfig()">{{$t("保存")}}</el-button>
+          <el-button v-if="globalDeviceType != 'ios'" :loading="loading" size="mini" type="success" @click="saveConfig()">{{$t("保存")}}</el-button>
 <!--          <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>-->
 <!--          <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>-->
 <!--          <el-button size="mini" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>-->
@@ -323,8 +324,8 @@
 </template>
 
 <script>
-    import mixins from "/mixins/mixins";
     import {MessageSuccess, MessageWarning, planType} from "../utils/utils";
+    import mixins from "../mixins/mixins";
     export default {
       name: "default",
       mixins: [mixins],
@@ -376,6 +377,14 @@
           menuStyle: {
             'height': '0px',
             'overflow-y': 'auto',
+          },
+          footerStyle:{
+            'height': '60px',
+            'line-height': '60px',
+          },
+          footerAppStyle:{
+            'height': '0px',
+            'line-height': '0px',
           },
           footerLeftStyle:{
             'height': '0px',
@@ -430,7 +439,7 @@
         hh(){
           if (process.browser) {
             let screenWidth = window.innerWidth;
-            this.contentStyle.height = window.innerHeight-60 + 'px';
+            this.contentStyle.height = this.globalDeviceType == 'ios' ? window.innerHeight + 'px' : window.innerHeight - 60 + 'px';
             this.appType = this.$route.query.appType;
             if (this.appType == 'app'){
               if (screenWidth < 550){
@@ -457,7 +466,7 @@
                 this.footerRightStyle["margin-left"] = '15.5%';
               }
             }
-            this.menuStyle.height = window.innerHeight-40-60 + 'px';
+            this.menuStyle.height = this.globalDeviceType == 'ios' ? window.innerHeight - 40 + 'px' : window.innerHeight-40-60 + 'px';
             this.drawerTreeStyle.height = window.innerHeight-40-160 + 'px';
             this.$set(this.dialogRightTabStyle,'height', window.innerHeight-45-60-30 + 'px');
             this.test = window.innerHeight;
@@ -470,6 +479,7 @@
             //menuList[i]['selected'] = false;
             menuListTemp.push({
               selected: false,
+              visible: false,
               n: menuList[i].n,
               t: menuList[i].t,
               d: menuList[i].d,
@@ -481,6 +491,11 @@
 
           this.setMenuAdd();
           //this.handleDefaultScrollTop();
+        },
+        hiddenMenuPop(){
+          for (let i = 0; i < this.menuList.length; i++){
+            this.menuList[i].visible = false;
+          }
         },
         setMenuAdd(){
           let menuListCount = this.menuList.length;
@@ -555,6 +570,7 @@
         handleDefaultScrollTop(){
           this.changeFlag(false);
           if (!this.minxinsScroll) {
+            this.hiddenMenuPop();
             this.$refs.childRef.$children[0].$refs.wrapper.scrollTop = this.$refs.menuRef.scrollTop;
           }
         },
@@ -660,6 +676,14 @@
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible = false;
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.$refs.tplList.dialogDeviceMoreVisible = false;
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.$refs.tplList.dialogDeviceVisible = false
+            return;
+          }
+          if (value == 100){
+            this.saveConfig();
+            return;
+          }
+          if (value == 200){
+            this.addPlain();
             return;
           }
           let planList = this.$refs.childRef.$children[0].planList;

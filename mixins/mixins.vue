@@ -70,6 +70,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           this.appType = this.$route.query.appType;
           this.globalPhoneXbar = this.$route.query.XBAR;
           this.globalDeviceType = this.$route.query.deviceType;
+          //this.globalDeviceType = 'ios';
           if (process.client){
             this.envKey = this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey");
             localStorage.setItem("envKey", this.envKey);
@@ -416,6 +417,12 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
               }
               if (data['value'] == 2){
                 _self.returnSenceList(2);
+              }
+              if (data['value'] == 100){//保存场景指令
+                _self.returnSenceList(100);
+              }
+              if (data['value'] == 200){//添加任务
+                _self.returnSenceList(200);
               }
               if (_self.changeStatus == 1){
                 data['change'] = _self.changeStatus;

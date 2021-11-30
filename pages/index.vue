@@ -1879,7 +1879,7 @@ export default {
         let heightChild = window.innerHeight-45-60;
         let heightBottomChild = type == 'landscape' ? window.innerHeight * 0.7-45 : window.innerHeight * 0.5-45;
         let heightOrder = window.innerHeight-45-60;
-        this.$set(this.divStyle,'height', window.innerHeight-40-60 + 'px');
+        this.$set(this.divStyle,'height', this.globalDeviceType == 'ios' ? window.innerHeight-40 + 'px' : window.innerHeight-40-60 + "px");
         this.$set(this.dialogRightTabStyle,'height', height + 'px');
         this.$set(this.dialogRightChildTabStyle,'height', heightChild + 'px');
         this.$set(this.drawerBottomDialogStyle,'height', heightBottomChild + 'px');
@@ -1914,6 +1914,7 @@ export default {
       this.scrollLeft = document.documentElement.scrollLeft || document.body.scrollLeft;
       if(e.target.className != "pop-child-bLock"){
         this.hidePopVisible();
+        this.$parent.$parent.hiddenMenuPop();
       }
     },
     handleScrollTop(){
