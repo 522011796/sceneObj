@@ -33,21 +33,39 @@
 
             <div :style="menuStyle" ref="menuRef" @scroll="handleDefaultScrollTop">
               <div class="layout-menu-list moon-ellipsis-class" v-for="(item, index) in menuList">
-                <div @click="selMenu($event, item, index)" class="moon-ellipsis-class" :class="item.selected == true ? 'menu-active' : ''">
-                  <span :class="mainStyle.width == '30px' ? 'index-number-collase-min-class' : 'index-number-collase-max-class'" v-if="isCollapse == false">{{index+1}}</span>
-                  <span>
-                    <span v-if="isCollapse == true">
-                      <img v-if="item.t == 1" src="~/static/img/light.png" class="layout-menu-icon"/>
-                      <img v-else-if="item.t == 2" src="~/static/img/switch.png" class="layout-menu-icon"/>
-                      <img v-else-if="item.t == 3" src="~/static/img/curtains.png" class="layout-menu-icon"/>
-                      <img v-else-if="item.t == 5" src="~/static/img/music.png" class="layout-menu-icon"/>
-                      <img v-else-if="item.t == 0" src="~/static/img/sence.png" class="layout-menu-icon"/>
-                    </span>
-                    <span class="layout-menu-title" v-if="isCollapse == true">
-                      {{ item.n }}
-                    </span>
+                <el-popover
+                  placement="right"
+                  popper-class="pop-menu-custom"
+                  trigger="click">
+                  <div class="textLeft">
+                    <div>
+                      <el-button size="mini" type="danger" plain @click="delPlain">{{$t("删除")}}</el-button>
+                    </div>
+                    <div class="marginTop5">
+                      <el-button size="mini" type="warning" plain @click="updatePlain">{{$t("修改")}}</el-button>
+                    </div>
+                    <div class="marginTop5">
+                      <el-button size="mini" type="info" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>
+                    </div>
+                  </div>
+                  <span slot="reference" size="mini" class="font-size-12">
+                    <div @click="selMenu($event, item, index)" class="moon-ellipsis-class" :class="item.selected == true ? 'menu-active' : ''">
+                      <span :class="mainStyle.width == '30px' ? 'index-number-collase-min-class' : 'index-number-collase-max-class'" v-if="isCollapse == false">{{index+1}}</span>
+                      <span>
+                        <span v-if="isCollapse == true">
+                          <img v-if="item.t == 1" src="~/static/img/light.png" class="layout-menu-icon"/>
+                          <img v-else-if="item.t == 2" src="~/static/img/switch.png" class="layout-menu-icon"/>
+                          <img v-else-if="item.t == 3" src="~/static/img/curtains.png" class="layout-menu-icon"/>
+                          <img v-else-if="item.t == 5" src="~/static/img/music.png" class="layout-menu-icon"/>
+                          <img v-else-if="item.t == 0" src="~/static/img/sence.png" class="layout-menu-icon"/>
+                        </span>
+                        <span class="layout-menu-title" v-if="isCollapse == true">
+                          {{ item.n }}
+                        </span>
+                      </span>
+                    </div>
                   </span>
-                </div>
+                </el-popover>
               </div>
               <div class="layout-menu-add" v-show="showMenuAdd == false" :style="showMenuAdd == false ? {'height': '40px','line-height': '40px'} : {'height': '0px','line-height': '0px'}">
                 <el-button type="warning" size="mini" icon="el-icon-plus" @click="addPlain">{{$t("添加任务")}}</el-button>
@@ -71,9 +89,9 @@
         </div>
         <div class="layout-main-footer-right" :style="footerRightStyle">
           <el-button :loading="loading" size="mini" type="success" @click="saveConfig()">{{$t("保存")}}</el-button>
-          <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>
-          <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>
-          <el-button size="mini" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>
+<!--          <el-button size="mini" plain @click="delPlain">{{$t("删除")}}</el-button>-->
+<!--          <el-button size="mini" plain @click="updatePlain">{{$t("修改")}}</el-button>-->
+<!--          <el-button size="mini" plain @click="copyPlain">{{$t("复制并粘贴")}}</el-button>-->
 <!--          <el-button size="mini" plain @click="changeDevice">{{$t("设备")}}</el-button>-->
         </div>
         <div class="clearfix"></div>

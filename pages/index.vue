@@ -2065,7 +2065,7 @@ export default {
     },
     async setSenceData(item, type){
       let data = item;
-      console.log(56,data);
+      //console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];
@@ -2244,7 +2244,7 @@ export default {
 
     },
     hidePopVisible(){
-      console.log(111);
+      //console.log(111);
       if (this.touchStatus == true){
         return;
       };
