@@ -216,7 +216,18 @@
         <el-collapse accordion>
           <el-collapse-item v-for="(itemMain, indexMain) in deviceTplData" :key="indexMain">
             <template slot="title">
-              <span class="color-success font-size-12">{{deviceTypeInfo(itemMain.t)}}</span>
+              <el-row style="width: 100%">
+                <el-col :span="20">
+                  <span class="color-success font-size-12">{{deviceTypeInfo(itemMain.t)}}</span>
+                </el-col>
+                <el-col :span="4">
+                  <div class="textRight">
+                    <label class="color-warning">{{itemMain.extraCount}}</label>
+                    /
+                    <label class="color-success">{{itemMain.d.length}}</label>
+                  </div>
+                </el-col>
+              </el-row>
             </template>
             <el-row :gutter="16" class="marginTop5">
               <el-col class="marginBottom10" :span="12" v-for="(item, index) in itemMain.d" :key="index">
@@ -251,7 +262,7 @@
                       v-model="item.visible">
                       <div style="max-height: 300px;overflow-y: auto">
                         <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
-                        <el-tree ref="treeDevice" v-if="itemMain.dd.length > 0" accordion empty-text="" :data="itemMain.dd" @node-click="(data, node, self) => selTreeItem(data, node, self, itemMain.dd, item)">
+                        <el-tree ref="treeDevice" v-if="itemMain.dd.length > 0" accordion empty-text="" :data="itemMain.dd" @node-click="(data, node, self) => selTreeItem(data, node, self, itemMain.dd, item, itemMain)">
                           <span class="custom-tree-node" slot-scope="{ node, data }">
                             <label class="font-size-12">{{ data.label }}</label>
                             <label class="font-size-12 color-disabled">({{ data.n }})</label>
@@ -261,7 +272,7 @@
                       <div slot="reference">
                         <span v-if="item.extraSn != ''">
                           <label class="moon-ellipsis-class font-size-12" style="display: inline-block;max-width: 85%;vertical-align: middle">{{ item.extraName }}</label>
-                          <label @click="removeDeviceItem($event ,itemMain.dd, item)">
+                          <label @click="removeDeviceItem($event ,itemMain.dd, item, itemMain)">
                             <i class="fa fa-close"></i>
                           </label>
                         </span>
@@ -535,6 +546,7 @@ export default {
             }
             taskDevice[j]['dd'] = deviceList;
             taskDevice[j]['d'] = device;
+            taskDevice[j]['extraCount'] = 0;
           }
         }
         this.deviceTplData = taskDevice;
@@ -662,7 +674,7 @@ export default {
     deviceTypeInfo(val){
       return deviceType(val);
     },
-    removeDeviceItem(event, itemMainDD, item){
+    removeDeviceItem(event, itemMainDD, item, itemMain){
       itemMainDD.splice(itemMainDD.length ,0, {
         label: item.extraName,
         n: item.extraSn,
@@ -671,8 +683,9 @@ export default {
       item.label = '';
       item.extraSn = '';
       item.extraName = '';
+      itemMain.extraCount--;
     },
-    selTreeItem(data, node, self, itemMainDD, item){
+    selTreeItem(data, node, self, itemMainDD, item, itemMain){
       let deviceList = JSON.parse(JSON.stringify(itemMainDD));
       if(item.extraName != ""){
         itemMainDD.splice(itemMainDD.length ,0, {
@@ -680,6 +693,7 @@ export default {
           n: item.extraSn,
           name: item.extraName,
         });
+        itemMain.extraCount--;
       }
       item.extraSn = data.n;
       item.extraName = data.label;
@@ -689,6 +703,7 @@ export default {
           itemMainDD.splice(i,1);
         }
       }
+      itemMain.extraCount++;
       item.visible = false;
     },
     editDeviceName(event, item){
@@ -704,6 +719,7 @@ export default {
       item.editVisible = false;
     },
     cancelTplSetConfig(){
+      this.deviceTplData = [];
       this.tplSetDeviceVisible = false;
     },
     saveTplSetConfig(){
