@@ -161,6 +161,7 @@
                       <el-popover
                         placement="right"
                         trigger="click"
+                        v-model="item.visible"
                         @after-enter="showDeviceList($event, item, 'muti')"
                         @after-leave="closeDeviceList()">
                         <div style="max-height: 300px;overflow-y: auto">
@@ -255,6 +256,7 @@
                   <el-popover
                     placement="right"
                     trigger="click"
+                    v-model="itemChild.visibleMore"
                     @after-enter="showDeviceList($event, itemChild, 'plan')"
                     @after-leave="closeDeviceList()">
                     <div style="max-height: 300px;overflow-y: auto">
@@ -426,7 +428,8 @@ export default {
                 extraKey: tplSource[i].d[j],
                 value: '',
                 t: t,
-                sn: ''
+                sn: '',
+                visible: false
               });
 
               tplSource[i]['dExtra'].push({
@@ -435,7 +438,8 @@ export default {
                 value: "",
                 set: false,
                 t: t,
-                sn: ''
+                sn: '',
+                visibleMore: false
               });
             }
           }
@@ -563,6 +567,7 @@ export default {
         MessageWarning(this.$t("任务列表中存在未设置的设备，请检查！"));
         return;
       }
+      this.setPageStatus(1);
       this.$parent.$parent.$parent.$parent.$refs.childRef.$children[0].setSenceData(this.planDeviceResetData);
       this.$parent.$refs.tplList.$parent.drawerTplVisible = false;
       this.dialogDeviceMoreVisible = false;
@@ -617,6 +622,8 @@ export default {
               }
             }
           }
+          item.visible = false;
+          item.visibleMore = false;
         }else if(type == 'plan'){
           if(this.dExtra[index].value == ""){
             this.planDeviceResetData[this.cardIndex].dExtraCount++;
@@ -633,6 +640,8 @@ export default {
               this.planDeviceResetData[this.cardIndex].d[i] = data.sn;
             }
           }
+          item.visible = false;
+          item.visibleMore = false;
         }
         loading.close();
       }

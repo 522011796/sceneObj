@@ -1,7 +1,7 @@
 <template>
     <div class="default-block-class">
       <div>
-        <div class="layout-main-left" :style="mainStyle" style="position: relative">
+        <div class="layout-main-left" :style="mainStyle" style="position: relative" @click="hideIndexPop($event)">
           <div class="moon-left-menu-tag">
             <div class="moon-left-menu-tag-container">
               <div class="moon-left-menu-tag_indicator" @click="isCollapse == true ? toggleLeftMenu($event) : toggleRightMenu($event)">
@@ -780,6 +780,9 @@
           this.formPlain.type = type;
           this.formPlain.deviceSelDevice = [];
           this.getDeviceList(this.customPlainType);
+        },
+        hideIndexPop(event){
+          this.$refs.childRef.$children[0].hidePopDocumentVisible(event)
         },
         checkChangeDevice(event){
 

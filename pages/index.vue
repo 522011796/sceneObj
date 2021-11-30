@@ -1,5 +1,5 @@
 <template>
-  <div class="main-block-class" @click="hidePopVisible">
+  <div class="main-block-class" @click="hidePopDocumentVisible($event, touchType)">
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
     <div class="demoRuleClass" :style="{'width': ruleMax / 10 * 52 + 43 + 0.1 + 'px'}">
       <div>
@@ -1578,6 +1578,7 @@ export default {
       scnenDuration: '',
       toastLoading: '',
       envPopStatus: '',
+      touchType: '',
       colors: {
         hue: 50,
         saturation: 100,
@@ -1977,6 +1978,7 @@ export default {
       this.orderList = item;
       this.taskIndex = index;
       this.oprOtherType = "orderList";
+      this.touchType = "tap";
 
       this.clearForm();
       this.formOrder.type = "";
@@ -2242,6 +2244,7 @@ export default {
 
     },
     hidePopVisible(){
+      console.log(111);
       if (this.touchStatus == true){
         return;
       };
@@ -2782,6 +2785,12 @@ export default {
     selSpeed(item, index){
       this.speed = index;
     },
+    hidePopDocumentVisible(event, type){
+      if (event.target.className == "demoRuleContentClass" || event.target.className == "rule-class" || event.target.className == "" || event.target.className.indexOf('menu-active') > -1){
+        this.touchStatus = false;
+        this.hidePopVisible();
+      }
+    },
     selPressBlock(event, item, index, itemBlock, indexBlock){
       event.preventDefault();
       for (let i = 0; i < this.taskList.length; i++){
@@ -2794,6 +2803,7 @@ export default {
         }
       }
       this.touchStatus = true;
+      this.touchType = "press";
     },
     inputColor(hue){
       let rgb = this.hsltorgb(hue, this.colors.saturation, this.colors.luminosity);
