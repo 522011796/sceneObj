@@ -150,7 +150,8 @@ export default {
             let paramsLogin = {
               username: this.form.username,
               password: this.form.password,
-              manufacturer: commonConfig.manufacturer
+              manufacturer: commonConfig.manufacturer,
+              needMqtt: false
             };
             this.login(paramsLogin);
           }else {
@@ -161,7 +162,8 @@ export default {
                 username: this.form.username,
                 password: this.form.password,
                 imageCode: this.form.imageCode,
-                manufacturer: commonConfig.manufacturer
+                manufacturer: commonConfig.manufacturer,
+                needMqtt: false
               };
               this.login(paramsLogin);
             }
