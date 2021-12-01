@@ -672,6 +672,7 @@
           return planType('set', value);
         },
         returnSenceList(value){
+          console.log(this);
           if (value == 2){
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible = false;
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.$refs.tplList.dialogDeviceMoreVisible = false;
@@ -684,6 +685,14 @@
           }
           if (value == 200){
             this.addPlain();
+            return;
+          }
+          if (value == 300){
+            this.$refs.childRef.$children[0].createSence();
+            return;
+          }
+          if (value == 400){
+            this.$refs.childRef.$children[0].$refs.sceneIndexRef.selEnvTplList();
             return;
           }
           let planList = this.$refs.childRef.$children[0].planList;
@@ -880,6 +889,10 @@
         saveConfig(){
           let flag = false;
           let indexRow = 0;
+          if (this.$refs.childRef.$children[0].taskList.length == 0){
+            MessageWarning(this.$t("请设置场景中的任务和指令！"));
+            return;
+          }
           for (let i = 0; i < this.$refs.childRef.$children[0].taskList.length; i++){
             if (this.$refs.childRef.$children[0].taskList[i] == undefined || JSON.stringify(this.$refs.childRef.$children[0].taskList[i]) == "[]"){
               flag = true;

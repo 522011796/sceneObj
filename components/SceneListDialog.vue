@@ -39,18 +39,20 @@
 <!--        </div>-->
         <div class="block-list-header">
           <el-row>
-            <el-col :span="3">
+            <el-col :span="this.appType != 'app' ? 3 : 12">
               <span v-if="this.appType != 'app'">
                 <el-button size="mini" type="error" @click="logout()">{{$t("退出")}}</el-button>
               </span>
-              <span v-else>
-                &nbsp;
+              <span v-else class="fontBold">
+                <label>{{$t("场景列表")}}</label>
+                :
+                <label>{{data.length}}</label>
               </span>
             </el-col>
             <el-col :span="21" class="textRight">
               <el-button size="mini" type="error" @click="selEnvList()" v-if="this.appType != 'app'">{{$t("场所列表")}}</el-button>
-              <el-button size="mini" type="success" @click="selEnvTplList()">{{$t("模版列表")}}</el-button>
-              <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
+              <el-button v-if="globalDeviceType != 'ios'" size="mini" type="success" @click="selEnvTplList()">{{$t("模版列表")}}</el-button>
+              <el-button v-if="globalDeviceType != 'ios'" size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
             </el-col>
           </el-row>
         </div>

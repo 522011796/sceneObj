@@ -424,6 +424,12 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
               if (data['value'] == 200){//添加任务
                 _self.returnSenceList(200);
               }
+              if (data['value'] == 300){//添加场景
+                _self.returnSenceList(300);
+              }
+              if (data['value'] == 400){//模版列表
+                _self.returnSenceList(400);
+              }
               if (_self.changeStatus == 1){
                 data['change'] = _self.changeStatus;
               }
