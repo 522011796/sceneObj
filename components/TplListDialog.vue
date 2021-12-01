@@ -289,7 +289,7 @@
 <script>
 import mixins from "../mixins/mixins";
 import {common} from "../utils/api/url";
-import {inArray, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
+import {inArray, MessageCommonTips, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
 import AlertMessageDialog from "./AlertMessageDialog";
 import AlertInpueDialog from "./AlertInpueDialog";
 import { Loading } from 'element-ui';
@@ -458,7 +458,7 @@ export default {
 
           loading.close();
         }else {
-          MessageWarning(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'warning');
           loading.close();
         }
       });
@@ -485,7 +485,7 @@ export default {
     },
     saveShareOpr(data){
       if (data == ""){
-        MessageWarning(this.$t("请输入信息"));
+        MessageCommonTips(this, this.$t("请输入信息"), 'warning');
         return;
       }
       let params = {
@@ -496,11 +496,11 @@ export default {
       params = this.$qs.stringify(params);
       this.$axios.post(this.baseUrl + common.sendShareTplInfo, params, {sessionId: this.sessionId, loading: false}).then(res => {
         if (res.data.code == 200){
-          MessageSuccess(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'success');
           this.dialogShareVisible = false;
           this.shareItem = "";
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'success');
           this.configLoading = false;
         }
         this.timerShare = 0;
@@ -518,7 +518,7 @@ export default {
           this.item = "";
           this.dialogVisible = false;
         }else {
-          MessageWarning(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'warning');
         }
         this.timer = null;
       });
@@ -564,7 +564,7 @@ export default {
       }
       this.tplLoading = false;
       if (num > 0){
-        MessageWarning(this.$t("任务列表中存在未设置的设备，请检查！"));
+        MessageCommonTips(this, this.$t("任务列表中存在未设置的设备，请检查！"), 'warning');
         return;
       }
       this.setPageStatus(1);
@@ -661,7 +661,7 @@ export default {
           MessageSuccess(res.data.msg);
           this.initTplData(null, this.listType);
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
           this.configLoading = false;
         }
       });

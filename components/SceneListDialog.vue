@@ -72,7 +72,7 @@
                     </label>
                   </span>
                 </div>
-                <div class="font-size-12">
+                <div class="font-size-12 marginTop5">
                   <img v-if="item.roomId" :src="require(`~/static/img/${item.roomId}.png`)" style="height: 20px; width: 20px;">
                   <label style="position: relative; top: -6px;">{{ getGlobalRoomObj(item.roomId) }}</label>
                 </div>
@@ -374,7 +374,7 @@
 import mixins from "../mixins/mixins";
 import TplListDialog from "./TplListDialog";
 import {common} from "../utils/api/url";
-import {deviceType, inArray, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
+import {deviceType, inArray, MessageCommonTips, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
 import {Loading} from "element-ui";
 
 export default {
@@ -486,7 +486,7 @@ export default {
     },
     async saveTplConfig(){
       if (this.formTpl.tplName == ""){
-        MessageWarning(this.$t("请输入模版名称"));
+        MessageCommonTips(this, this.$t("请输入模版名称"), 'warning');
         return;
       }
       const loading = Loading.service({
@@ -614,9 +614,9 @@ export default {
         if (res.data.code == 200){
           this.$refs.tplList.initTplData(null, this.$refs.tplList.listType);
           this.drawerCreateTplVisible = false;
-          MessageSuccess(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'success');
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
         }
         this.configLoading = false;
       });
@@ -849,7 +849,7 @@ export default {
       }
 
       if (errorCount > 0){
-        MessageWarning(this.$t("有未设置的设备位置,请设置！"));
+        MessageCommonTips(this, this.$t("有未设置的设备位置,请设置！"), 'warning');
         return;
       }
 
@@ -865,9 +865,9 @@ export default {
           this.$refs.tplList.initTplData(null, this.$refs.tplList.listType);
           this.drawerCreateTplVisible = false;
           this.tplSetDeviceVisible = false;
-          MessageSuccess(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'success');
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
         }
         this.configLoading = false;
       });

@@ -324,7 +324,7 @@
 </template>
 
 <script>
-    import {MessageSuccess, MessageWarning, planType} from "../utils/utils";
+import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../utils/utils";
     import mixins from "../mixins/mixins";
     export default {
       name: "default",
@@ -576,13 +576,13 @@
         },
         okConfirm(){
           if (this.formPlain.type === ""){
-            MessageWarning(this.$t("请设置任务类型"));
+            MessageCommonTips(this, this.$t("请设置任务类型"), 'warning');
             return;
           }else if (this.formPlain.name === ""){
-            MessageWarning(this.$t("请设置任务名称"));
+            MessageCommonTips(this, this.$t("请设置任务名称"), 'warning');
             return;
           }else if (this.formPlain.type !== 0 && this.formPlain.deviceSelDevice.length == 0){
-            MessageWarning(this.$t("请设置设备"));
+            MessageCommonTips(this, this.$t("请设置设备"), 'warning');
             return;
           }
           //this.alertMessageTips = this.$t("确认保存该任务？");
@@ -622,7 +622,7 @@
         },
         delPlain(){
           if (this.selMenuData == ""){
-            MessageWarning(this.$t("请选择需要删除的任务"));
+            MessageCommonTips(this, this.$t("请选择需要删除的任务"), 'warning');
             return;
           }
           this.oprType = 'del';
@@ -632,7 +632,7 @@
         },
         updatePlain(){
           if (this.selMenuData == ""){
-            MessageWarning(this.$t("请选择需要修改的任务"));
+            MessageCommonTips(this, this.$t("请选择需要修改的任务"), 'warning');
             return;
           }
           this.getDeviceList(this.selMenuData.t);
@@ -648,7 +648,7 @@
         },
         copyPlain(){
           if (this.selMenuData == ""){
-            MessageWarning(this.$t("请选择需要复制的任务"));
+            MessageCommonTips(this, this.$t("请选择需要复制的任务"), 'warning');
             return;
           }
           //console.log(this.selMenuData);
@@ -656,11 +656,11 @@
           //this.initMenu(this.menuList);
           //setSenceData();
           this.$refs.childRef.$children[0].setSenceData(this.menuList);
-          MessageSuccess(this.$t("复制任务成功"));
+          MessageCommonTips(this, this.$t("复制任务成功"), 'success');
         },
         changeDevice(){
           if (this.selMenuData == ""){
-            MessageWarning(this.$t("请选择需要调整设备的任务"));
+            MessageCommonTips(this, this.$t("请选择需要调整设备的任务"), 'warning');
             return;
           }
           this.drawerDevice = true;
@@ -890,7 +890,7 @@
           let flag = false;
           let indexRow = 0;
           if (this.$refs.childRef.$children[0].taskList.length == 0){
-            MessageWarning(this.$t("请设置场景中的任务和指令！"));
+            MessageCommonTips(this, this.$t("请设置场景中的任务和指令！"), 'warning');
             return;
           }
           for (let i = 0; i < this.$refs.childRef.$children[0].taskList.length; i++){
@@ -901,7 +901,7 @@
             }
           }
           if (flag == true){
-            MessageWarning(this.$t("场景任务第") + indexRow + this.$t("行指令集为空，请设置！"));
+            MessageCommonTips(this, this.$t("场景任务第") + indexRow + this.$t("行指令集为空，请设置！"), 'warning');
             return;
           }
           //console.log(this.$refs.childRef.$children[0].mainCodeData.internal == 1 ? true : false);

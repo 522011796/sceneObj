@@ -1449,7 +1449,7 @@ import {
   outEditTypeObj,
   openType,
   MessageError,
-  getLength
+  getLength, MessageCommonTips
 } from "../utils/utils";
 import OrderCurtainsTypeDialog from "../components/OrderCurtainsTypeDialog";
 import OrderSwitchTypeDialog from "../components/OrderSwitchTypeDialog";
@@ -2337,10 +2337,10 @@ export default {
       if (this.oprOtherType != "editOrderList"){
         for (let i = 0; i < this.taskList[this.taskIndex].length; i++){
           if (this.taskList[this.taskIndex][i].i == 3 && this.taskList[this.taskIndex][i].t === 0){
-            MessageWarning(this.$t("存在无限循环指令，无法继续添加后续指令"));
+            MessageCommonTips(this, this.$t("存在无限循环指令，无法继续添加后续指令"), 'warning');
             return;
           }else if (this.taskList[this.taskIndex][i].i == 4 && this.taskList[this.taskIndex][i].sec === -1){
-            MessageWarning(this.$t("存在无限循环指令，无法继续添加后续指令"));
+            MessageCommonTips(this, this.$t("存在无限循环指令，无法继续添加后续指令"), 'warning');
             return;
           }
         }
@@ -2348,19 +2348,19 @@ export default {
         if (this.setChildBottomType == 'lightSub'){
           let type = this.editOpr == "edit" ? outTypeObj(this.formOrder.type) : this.formOrder.type;
           if (this.formOrder.startLoop === 0 && type == 3 && this.taskList[this.taskIndex][this.areaIndex+1]){
-            MessageWarning(this.$t("设置无限循环指令，请将后续指令移除"));
+            MessageCommonTips(this, this.$t("设置无限循环指令，请将后续指令移除"), 'warning');
             return;
           }else if (this.scnenDuration == Number.MAX_SAFE_INTEGER && type == 4 && this.taskList[this.taskIndex][this.areaIndex+1]){
-            MessageWarning(this.$t("存在无限循环指令，请将后续指令移除"));
+            MessageCommonTips(this, this.$t("存在无限循环指令，请将后续指令移除"), 'warning');
             return;
           }
         }else if (this.setChildBottomType == 'curtainsSub') {
           let type = this.editOpr == "edit" ? this.formCurtainsOrder.type : this.formCurtainsOrder.type;
           if (this.formCurtainsOrder.startLoop === 0 && type == 3 && this.taskList[this.taskIndex][this.areaIndex+1]){
-            MessageWarning(this.$t("设置无限循环指令，请将后续指令移除"));
+            MessageCommonTips(this, this.$t("设置无限循环指令，请将后续指令移除"), 'warning');
             return;
           }else if (this.scnenDuration == Number.MAX_SAFE_INTEGER && type == 4 && this.taskList[this.taskIndex][this.areaIndex+1]){
-            MessageWarning(this.$t("存在无限循环指令，请将后续指令移除"));
+            MessageCommonTips(this, this.$t("存在无限循环指令，请将后续指令移除"), 'warning');
             return;
           }
         }
@@ -2992,56 +2992,56 @@ export default {
         let type = this.editOpr == "edit" ? outTypeObj(this.formOrder.type) : this.formOrder.type;
         if (type == 9){
           if (this.formOrder.color == ""){
-            MessageWarning(this.$t("请设置颜色！"));
+            MessageCommonTips(this, this.$t("请设置颜色！"), 'warning');
             return;
           }
         }else if (type == 3){
           if (this.formOrder.startOrderI == ""){
-            MessageWarning(this.$t("请设置起始位置！"));
+            MessageCommonTips(this, this.$t("请设置起始位置！"), 'warning');
             return;
           }
         }else if (type == 4){
           if (this.formOrder.sence == ""){
-            MessageWarning(this.$t("请设置场景！"));
+            MessageCommonTips(this, this.$t("请设置场景！"), 'warning');
             return;
           }
         }
       }else if (this.setChildBottomType == 'switchSub' && this.oprType != 'delOrder'){
         if (this.formSwitchOrder.type == 11){
           if (this.formSwitchOrder.keyArr.length <= 0){
-            MessageWarning(this.$t("请设置继电器！"));
+            MessageCommonTips(this, this.$t("请设置继电器！"), 'warning');
             return;
           }
         }
       }else if (this.setChildBottomType == 'curtainsSub' && this.oprType != 'delOrder'){
         if (this.formCurtainsOrder.type == 3){
           if (this.formCurtainsOrder.startOrderI == ""){
-            MessageWarning(this.$t("请设置起始位置！"));
+            MessageCommonTips(this, this.$t("请设置起始位置！"), 'warning');
             return;
           }
         }else if (this.formOrder.type == 4){
           if (this.formCurtainsOrder.sence == ""){
-            MessageWarning(this.$t("请设置场景！"));
+            MessageCommonTips(this, this.$t("请设置场景！"), 'warning');
             return;
           }
         }
       }else if (this.setChildBottomType == 'musicSub' && this.oprType != 'delOrder'){
         if (this.formMusicOrder.type == 13){
           if (this.formMusicOrder.musicName == ""){
-            MessageWarning(this.$t("请输入音乐名称！"));
+            MessageCommonTips(this, this.$t("请输入音乐名称！"), 'warning');
             return;
           }else if (getLength(this.formMusicOrder.musicName) > 24){
-            MessageWarning(this.$t("音乐名称长度最长24位！"));
+            MessageCommonTips(this, this.$t("音乐名称长度最长24位！"), 'warning');
             return;
           }
         }
         if (this.formMusicOrder.type == 15){
           if (this.formMusicOrder.musicProcess == ""){
-            MessageWarning(this.$t("请输入音乐进度！"));
+            MessageCommonTips(this, this.$t("请输入音乐进度！"), 'warning');
             return;
           }else if (this.formMusicOrder.musicProcess != ""){
             if (!num0_65535.test(this.formMusicOrder.musicProcess)){
-              MessageWarning(this.$t("范围:0-65535秒"));
+              MessageCommonTips(this, this.$t("范围:0-65535秒"), 'warning');
               return;
             }
           }
@@ -3049,12 +3049,12 @@ export default {
       }else if (this.setChildBottomType == 'sceneSub' && this.oprType != 'delOrder'){
         if (this.formSceneOrder.type == 3){
           if (this.formSceneOrder.startOrderI == ""){
-            MessageWarning(this.$t("请设置起始位置！"));
+            MessageCommonTips(this, this.$t("请设置起始位置！"), 'warning');
             return;
           }
         }else if (this.formSceneOrder.type == 4){
           if (this.formSceneOrder.sence == ""){
-            MessageWarning(this.$t("请设置场景！"));
+            MessageCommonTips(this, this.$t("请设置场景！"), 'warning');
             return;
           }
         }
@@ -3257,10 +3257,10 @@ export default {
       let planList = [];
       let loopStatus = "";
       if (this.formSence.name == undefined || this.formSence.name == ""){
-        MessageWarning(this.$t("请输入场景名称"));
+        MessageCommonTips(this, this.$t("请输入场景名称"), 'warning');
         return;
       }else if (this.formSence.roomId == undefined || this.formSence.roomId == ""){
-        MessageWarning(this.$t("请选择房间"));
+        MessageCommonTips(this, this.$t("请选择房间"), 'warning');
         return;
       }
       this.configLoading = true;
@@ -3342,7 +3342,7 @@ export default {
           this.taskTempList = this.taskList;
           this.planTempList = this.planList;
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
           this.configLoading = false;
         }
         this.$parent.$parent.loading = false;
@@ -3357,7 +3357,7 @@ export default {
       params = this.$qs.stringify(params);
       this.$axios.post(this.baseUrl + common.installSence, params, {sessionId: this.sessionId}).then(res => {
         if (res.data.code == 200){
-          MessageSuccess(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'success');
           //this.closeOprDrawer();
           if (this.oprType != 'editSceneList'){
             //this.oprType = 'editSceneList';
@@ -3376,7 +3376,7 @@ export default {
           this.oprType = '';
           this.drawerSenceVisible = false;
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
         }
         this.configLoading = false;
       });
@@ -3403,7 +3403,7 @@ export default {
             _self.senceInfo(_self.removeSenceItem.sceneId);
           },1000);
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
         }
       });
     },

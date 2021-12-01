@@ -2,7 +2,7 @@
   <div>
     <el-drawer
       title="场景设置"
-      custom-class="drawer-list"
+      custom-class="drawer-sub-list"
       :show-close="true"
       :modal="true"
       :size="dialogEnvSize"
@@ -12,7 +12,7 @@
       @closed="closeDrawer">
 
       <div slot="title">
-        <div class="block-list-header">
+        <div class="block-list-sub-header">
           <el-row>
             <el-col :span="12">
               <span>{{$t("场所列表")}}</span>

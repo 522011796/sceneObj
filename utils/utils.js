@@ -1,4 +1,4 @@
-import { Message } from 'element-ui'
+import { Message } from 'element-ui';
 
 export function oneOf (value, validList) {
   for (let i = 0; i < validList.length; i++) {
@@ -37,6 +37,22 @@ export function MessageWarning(text = '警告') {
     type: 'warning',
     duration: 3 * 1000
   })
+}
+
+export function MessageCommonTips(_self, value, type) {
+  if (_self.appType == 'app'){
+    _self.$toast(value);
+  }else {
+    if (type == 'success'){
+      MessageSuccess(value);
+    }else if (type == 'warning'){
+      MessageWarning(value);
+    }else if (type == 'error'){
+      MessageError(value);
+    }else {
+      MessageWarning(value);
+    }
+  }
 }
 
 export function getLength (str) {

@@ -55,5 +55,8 @@
   },
   "Tutorial": {
     "description": "Auto imported from components/Tutorial.vue"
+  },
+  "Toast": {
+    "description": "Auto imported from components/toast/index.js"
   }
 }

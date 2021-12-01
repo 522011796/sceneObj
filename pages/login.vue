@@ -93,7 +93,7 @@
 import {
   MessageSuccess,
   MessageWarning,
-  MessageError
+  MessageError, MessageCommonTips
 } from "../utils/utils";
 import {common, commonConfig} from "../utils/api/url";
 export default {
@@ -136,7 +136,7 @@ export default {
     },
     isNeedImageCode(){
       if (this.form.username == "" || this.form.password == ""){
-        MessageWarning(this.$t("请输入账号信息！"));
+        MessageCommonTips(this, this.$t("请输入账号信息！"), 'warning');
         return;
       }
       let params = {
@@ -169,7 +169,7 @@ export default {
             }
           }
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
         }
         this.loading = false;
       });
@@ -207,7 +207,7 @@ export default {
             localStorage.setItem("account", JSON.stringify(this.restaurants));
           }
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
           this.getImageCode();
         }
         this.loading = false;
@@ -222,7 +222,7 @@ export default {
           this.envListData = res.data.data;
           this.drawerVisible = true;
         }else {
-          MessageError(res.data.msg);
+          MessageCommonTips(this, res.data.msg, 'error');
         }
       });
     },
