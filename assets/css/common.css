@@ -126,8 +126,8 @@ span,div,button,label{
   border-top-right-radius: 0px;
 }
 .drawer-bottom{
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 .drawer-default-bottom{
   border-top-left-radius: 0px;
@@ -427,13 +427,13 @@ span,div,button,label{
   border-left-width: 0;
 }
 .drawerHeader{
-  height: 45px;
-  line-height: 45px;
+  height: 40px;
+  line-height: 40px;
   background: #dddddd;
 }
 .drawerRightHeader{
-  height: 45px;
-  line-height: 45px;
+  height: 40px;
+  line-height: 40px;
   background: #dddddd;
 }
 .drawerHeaderDiv{

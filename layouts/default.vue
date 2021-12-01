@@ -672,7 +672,6 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           return planType('set', value);
         },
         returnSenceList(value){
-          console.log(this);
           if (value == 2){
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.drawerTplVisible = false;
             this.$refs.childRef.$children[0].$refs.sceneIndexRef.$refs.tplList.dialogDeviceMoreVisible = false;

@@ -1747,7 +1747,7 @@ export default {
       };
       //console.log(this.sceneList);
       clearTimeout(this.timerScene);
-      this.$axios.get(this.baseUrl + common.senceList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.get(this.baseUrl + common.senceList, {params: params, sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           this.sceneTimeList = [];
           this.sceneList = res.data.data;
@@ -3335,7 +3335,7 @@ export default {
 
       let url = (this.formSence.id == "" || this.formSence.id == undefined) ? common.createSence : common.editSence;
 
-      this.$axios.post(this.baseUrl + url, codeData, {sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.post(this.baseUrl + url, codeData, {sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           this.installSence(res.data.data.sceneId, dataObj.tasks);
 
@@ -3355,7 +3355,7 @@ export default {
         sceneId: senceId
       };
       params = this.$qs.stringify(params);
-      this.$axios.post(this.baseUrl + common.installSence, params, {sessionId: this.sessionId}).then(res => {
+      this.$axios.post(this.baseUrl + common.installSence, params, {sessionId: this.sessionId, userKey: this.userKey}).then(res => {
         if (res.data.code == 200){
           MessageCommonTips(this, res.data.msg, 'success');
           //this.closeOprDrawer();
@@ -3395,7 +3395,7 @@ export default {
         sceneId: senceId
       };
       params = this.$qs.stringify(params);
-      this.$axios.post(this.baseUrl + common.removeSence, params, {sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.post(this.baseUrl + common.removeSence, params, {sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           this.senceItem = "";
           clearInterval(this.timer);
@@ -3413,7 +3413,7 @@ export default {
         sceneId: senceId
       };
       //params = this.$qs.stringify(params);
-      this.$axios.get(this.baseUrl + common.senceInfo, {params: params,sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.get(this.baseUrl + common.senceInfo, {params: params,sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 201){
           clearInterval(this.timer);
           this.timer = null;

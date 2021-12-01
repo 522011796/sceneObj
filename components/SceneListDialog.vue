@@ -109,7 +109,7 @@
 
     <el-drawer
       title="场景设置"
-      custom-class="drawer-opr"
+      custom-class="drawer-opr drawer-model-edit-opr"
       :show-close="false"
       :modal="true"
       :size="dialogBottomSize"
@@ -128,32 +128,40 @@
               <span>{{$t("创建模版")}}</span>
             </el-col>
             <el-col :span="6" class="textRight">
-              <div v-if="formTpl.id == ''">
-                <el-button v-if="setTplLoading == false" size="mini" type="warning" @click="saveTplConfig">
-                  {{$t("位置设置")}}
-                </el-button>
-                <el-button size="mini" type="warning" v-if="setTplLoading == true">
-                  <i class="fa fa-spinner fa-spin" v-if="setTplLoading == true"></i>
-                  {{$t("位置设置")}}
-                </el-button>
-              </div>
+              <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplSetConfig">
+                {{$t("保存")}}
+              </el-button>
+              <el-button size="mini" type="warning" v-if="configLoading == true">
+                <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
+                {{$t("保存")}}
+              </el-button>
 
-              <div v-if="formTpl.id != ''">
-                <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplSetConfig">
-                  {{$t("保存")}}
-                </el-button>
-                <el-button size="mini" type="warning" v-if="configLoading == true">
-                  <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
-                  {{$t("保存")}}
-                </el-button>
-              </div>
+<!--              <div v-if="formTpl.id == ''">-->
+<!--                <el-button v-if="setTplLoading == false" size="mini" type="warning" @click="saveTplConfig">-->
+<!--                  {{$t("位置设置")}}-->
+<!--                </el-button>-->
+<!--                <el-button size="mini" type="warning" v-if="setTplLoading == true">-->
+<!--                  <i class="fa fa-spinner fa-spin" v-if="setTplLoading == true"></i>-->
+<!--                  {{$t("位置设置")}}-->
+<!--                </el-button>-->
+<!--              </div>-->
+
+<!--              <div v-if="formTpl.id != ''">-->
+<!--                <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplSetConfig">-->
+<!--                  {{$t("保存")}}-->
+<!--                </el-button>-->
+<!--                <el-button size="mini" type="warning" v-if="configLoading == true">-->
+<!--                  <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>-->
+<!--                  {{$t("保存")}}-->
+<!--                </el-button>-->
+<!--              </div>-->
             </el-col>
           </el-row>
         </div>
       </div>
 
       <div>
-        <el-form class="netmoon-form-dialog padding-tb10-lr20" label-width="80px" ref="formTpl" :model="formTpl">
+        <el-form class="netmoon-form-dialog padding-tb10-lr20" label-width="90px" ref="formTpl" :model="formTpl">
           <el-form-item label="模版名称" v-model="formTpl.tplName" class="netmoon-form-item-border-dialog">
             <el-input :placeholder="$t('请输入模版名称')" v-model="formTpl.tplName"></el-input>
           </el-form-item>
@@ -172,6 +180,17 @@
                 <el-radio :label="1" v-if="role != 'ROLE_ADMIN'" disabled>系统</el-radio>
                 <el-radio :label="1" v-if="role == 'ROLE_ADMIN'">系统</el-radio>
               </el-radio-group>
+            </div>
+          </el-form-item>
+          <el-form-item v-if="formTpl.id == '' || formTpl.id == undefined" label="编辑设备名称" class="netmoon-form-item-border-dialog">
+            <div class="textRight">
+              <span class="fontBold">
+                <label class="color-warning">{{deviceSetCount}}</label> / <label class="color-success">{{deviceListCount}}</label>
+              </span>
+              <el-button size="mini" plain type="success" :loading="setTplLoading == true" @click="editDeviceModelName">
+                {{$t("编辑")}}
+                <i class="fa fa-edit"></i>
+              </el-button>
             </div>
           </el-form-item>
           <el-form-item label="模版描述" v-model="formTpl.tplDesc" class="netmoon-form-item-border-dialog">
@@ -199,15 +218,15 @@
               <el-button size="mini" @click="cancelTplSetConfig">{{$t("取消")}}</el-button>
             </el-col>
             <el-col :span="16" class="textCenter">
-              <span>{{$t("位置设置")}}</span>
+              <span>{{$t("编辑设备列表")}}</span>
             </el-col>
             <el-col :span="4" class="textRight">
-              <el-button v-if="configLoading == false" size="mini" type="warning" @click="saveTplSetConfig">
-                {{$t("保存")}}
+              <el-button v-if="configLoading == false" size="mini" type="warning" @click="okTplSetConfig">
+                {{$t("确定")}}
               </el-button>
               <el-button size="mini" type="warning" v-if="configLoading == true">
                 <i class="fa fa-spinner fa-spin" v-if="configLoading == true"></i>
-                {{$t("保存")}}
+                {{$t("确定")}}
               </el-button>
             </el-col>
           </el-row>
@@ -408,11 +427,14 @@ export default {
       role: '',
       deviceStatusData: [],
       deviceTplData: [],
+      deviceTplBakData: [],
       timer: null,
       tplSetDeviceVisible: false,
       deviceLoading: false,
       setTplLoading: false,
       loopTime: 60,
+      deviceSetCount: 0,
+      deviceListCount: 0,
       formTpl:{
         id: '',
         tplName: '',
@@ -448,6 +470,11 @@ export default {
     async createTplOpr(event, item){
       await this.getSourceUrl(item.sourceUrl);
       await this.getDeviceOldList();
+      await this.saveTplConfig();
+      if (this.deviceListCount == 0){
+        MessageCommonTips(this, this.$t("该场景暂不允许创建模版！"), 'warning');
+        return;
+      }
       this.drawerCreateTplVisible = true;
     },
     changeTplDrawer(event){
@@ -482,25 +509,37 @@ export default {
 
     },
     cancelTplConfig(){
+      this.deviceTplData = [];
+      this.deviceTplBakData = [];
       this.drawerCreateTplVisible = false;
     },
+    editDeviceModelName(){
+      this.deviceTplData = JSON.parse(JSON.stringify(this.deviceTplBakData));
+      this.tplSetDeviceVisible = true;
+    },
     async saveTplConfig(){
-      if (this.formTpl.tplName == ""){
-        MessageCommonTips(this, this.$t("请输入模版名称"), 'warning');
-        return;
-      }
+      // if (this.formTpl.tplName == ""){
+      //   MessageCommonTips(this, this.$t("请输入模版名称"), 'warning');
+      //   return;
+      // }
       const loading = Loading.service({
         lock: true,
         text: 'Loading',
         spinner: 'el-icon-loading',
         background: 'rgba(221, 221, 221, 0.3)',
         customClass: 'custom-g-loading',
-        target: document.querySelector('.drawer-opr-loading')//设置加载动画区域
+        target: document.querySelector('.drawer-model-edit-opr')//设置加载动画区域
       });
-      setTimeout(() => {
+      //setTimeout(() => {
         this.setTplLoading = true;
         let taskType = [];
         let taskDevice = [];
+        let taskTempDevice = [];
+        this.deviceSetCount = 0;
+        this.deviceListCount = 0;
+        let deviceSetCount = 0;
+        let deviceListCount = 0;
+        let deviceCountIndex = 0;
         //缓存场景中的设备列表，用于后期选择
         let task = this.formTpl.tplSource.tasks;
         task.map((e) => {
@@ -530,6 +569,7 @@ export default {
               let sel = inArray(child, device, 'sn');
               if (sel == -1){
                 deviceIndex++;
+                deviceCountIndex++;
                 deviceList.push({
                   n: taskD[i],
                   name: this.getDeviceName(taskD[i]),
@@ -550,13 +590,20 @@ export default {
             taskDevice[j]['dd'] = deviceList;
             taskDevice[j]['d'] = device;
             taskDevice[j]['extraCount'] = 0;
+            deviceSetCount = 0;
+            deviceListCount = deviceCountIndex;
           }
         }
-        this.deviceTplData = taskDevice;
+        this.deviceSetCount = deviceSetCount;
+        this.deviceListCount = deviceListCount;
+        //this.deviceTplData = taskDevice;
+        taskTempDevice = taskDevice;
+        this.deviceTplBakData = taskDevice;
         this.setTplLoading = false;
-      }, 500);
+      //}, 500);
       loading.close();
-      this.tplSetDeviceVisible = true;
+      //console.log(this.deviceTplData);
+      //this.tplSetDeviceVisible = true;
     },
     saveTplOpr(){
       let params = {
@@ -610,7 +657,7 @@ export default {
 
       let url = (this.formTpl.id == "" || this.formTpl.id == undefined) ? common.createTplInfo : common.editTplInfo;
       this.configLoading = true;
-      this.$axios.post(this.baseUrl + url, params, {sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.post(this.baseUrl + url, params, {sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           this.$refs.tplList.initTplData(null, this.$refs.tplList.listType);
           this.drawerCreateTplVisible = false;
@@ -650,7 +697,7 @@ export default {
         sceneId: item.sceneId
       };
       clearTimeout(this.timer);
-      this.$axios.get(this.baseUrl + common.querySceneActionList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.get(this.baseUrl + common.querySceneActionList, {params: params, sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           let flag = false;
           this.deviceStatusData = res.data.data;
@@ -750,6 +797,28 @@ export default {
       this.deviceTplData = [];
       this.tplSetDeviceVisible = false;
     },
+    okTplSetConfig(){
+      let num = 0;
+      let deviceSetCount = 0;
+      let deviceListCount = 0;
+      this.deviceSetCount = 0;
+      for (let i = 0; i < this.deviceTplData.length; i++){
+        if (this.deviceTplData[i].extraCount <= 0){
+          num++;
+          break;
+        }
+        deviceListCount += this.deviceTplData[i].d.length;
+        deviceSetCount += this.deviceTplData[i].extraCount;
+      }
+      if (num > 0){
+        MessageCommonTips(this, this.$t("有未设置的设备,请设置！"), 'warning');
+        return;
+      }
+      this.deviceSetCount = deviceSetCount;
+      this.deviceListCount = deviceListCount;
+      this.deviceTplBakData = JSON.parse(JSON.stringify(this.deviceTplData));
+      this.tplSetDeviceVisible = false;
+    },
     saveTplSetConfig(){
       let dataObj = [];
       let data = [];
@@ -770,6 +839,15 @@ export default {
         let dataJSon = {};
         let sourceIndex = 0;
         let sourceKeyIndex = 0;
+
+        if (this.formTpl.tplName == ""){
+          MessageCommonTips(this, this.$t("请输入模版名称"), 'warning');
+          return;
+        }
+        if (this.deviceSetCount != this.deviceListCount){
+          MessageCommonTips(this, this.$t("请编辑设备名称"), 'warning');
+          return;
+        }
 
         //console.log(this.deviceTplData);
         for (let i = 0; i < this.deviceTplData.length; i++){
@@ -860,7 +938,7 @@ export default {
       params = this.$qs.stringify(params);
       let url = (this.formTpl.id == "" || this.formTpl.id == undefined) ? common.createTplInfo : common.editTplInfo;
       this.configLoading = true;
-      this.$axios.post(this.baseUrl + url, params, {sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.post(this.baseUrl + url, params, {sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           this.$refs.tplList.initTplData(null, this.$refs.tplList.listType);
           this.drawerCreateTplVisible = false;

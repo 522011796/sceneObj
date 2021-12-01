@@ -11,7 +11,9 @@ export default function({store, redirect, req, router, $axios }) {
       config.withCredentials = true; // 允许携带token ,这个是解决跨域产生的相关问题
       config.timeout = 30000;
       if (config.sessionId){
-        config.headers['IOT-SESS'] = config.sessionId;
+        let session = config.sessionId + ";" + config.userKey;
+        //console.log(session);
+        config.headers['IOT-SESS'] = session;
       }
 
       if (config.method == "post"){

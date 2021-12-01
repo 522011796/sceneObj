@@ -109,6 +109,7 @@ export default {
       direction: 'rtl',
       dialogSize: '70%',
       sessionId: '',
+      userKey: '',
       imageCodeAuth: false,
       imageCode: '',
       envListData: [],
@@ -180,6 +181,7 @@ export default {
       this.$axios.post(commonConfig.baseUrl + common.login, params, {loading: false}).then(res => {
         if (res.data.code == 200){
           this.sessionId = res.data.data.sessionId;
+          this.userKey = res.data.data.userInfo.userKey;
           this.envList();
 
           //验证权限
@@ -217,7 +219,7 @@ export default {
       let params = {
 
       };
-      this.$axios.get(commonConfig.baseUrl + common.envList, {params: params,sessionId: this.sessionId}).then(res => {
+      this.$axios.get(commonConfig.baseUrl + common.envList, {params: params,sessionId: this.sessionId, userKey: this.userKey}).then(res => {
         if (res.data.code == 200){
           this.envListData = res.data.data;
           this.drawerVisible = true;
@@ -229,6 +231,7 @@ export default {
     selEnv(event, item){
       localStorage.setItem("envKey", item.envKey);
       localStorage.setItem("sessionId", this.sessionId);
+      localStorage.setItem("userKey", this.userKey);
       this.$router.replace({
         path: '/',
         query: {

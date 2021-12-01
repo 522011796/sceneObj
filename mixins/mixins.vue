@@ -12,6 +12,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           envKey: '',
           sessionId: '',
           appType: '',
+          userKey: '',
           dataDeviceList: [],
           globalRoomList: [],
           globalLightGroupList: [],
@@ -43,7 +44,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           this.getWindow();
         },
         logout(){
-          this.$axios.get(this.baseUrl + common.logout, {sessionId: this.sessionId}).then(res => {
+          this.$axios.get(this.baseUrl + common.logout, {sessionId: this.sessionId, userKey: this.userKey}).then(res => {
             if (res.data.code == 200) {
               localStorage.removeItem("envKey");
               localStorage.removeItem("sessionId");
@@ -67,6 +68,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
         getUrl(){
           this.baseUrl = commonConfig.baseUrl;
           this.sessionId = this.$route.query.sessionId;
+          this.userKey = this.$route.query.userKey;
           this.appType = this.$route.query.appType;
           this.globalPhoneXbar = this.$route.query.XBAR;
           this.globalDeviceType = this.$route.query.deviceType;
@@ -77,6 +79,9 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
 
             this.sessionId = this.$route.query.sessionId != "" && this.$route.query.sessionId != undefined ? this.$route.query.sessionId : localStorage.getItem("sessionId");
             localStorage.setItem("sessionId", this.sessionId);
+
+            this.userKey = this.$route.query.userKey != "" && this.$route.query.userKey != undefined ? this.$route.query.userKey : localStorage.getItem("userKey");
+            localStorage.setItem("userKey", this.userKey);
 
             if (this.appType == "app" && this.$route.query.role != 'ROLE_ADMIN'){
               localStorage.removeItem("accountRole");
@@ -93,7 +98,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             pageSize: 99999
           };
           this.globalRoomObj = {};
-          await this.$axios.get(this.baseUrl + common.roomList, {params: params, sessionId: this.sessionId}).then(res => {
+          await this.$axios.get(this.baseUrl + common.roomList, {params: params, sessionId: this.sessionId, userKey: this.userKey}).then(res => {
             if (res.data.code == 200) {
               this.globalRoomList = res.data.data;
               for (let i = 0; i < this.globalRoomList.length; i++){
@@ -111,7 +116,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             pageNum: 1,
             pageSize: 99999
           };
-          this.$axios.get(this.baseUrl + common.lightGrouplist, {params: params, sessionId: this.sessionId}).then(res => {
+          this.$axios.get(this.baseUrl + common.lightGrouplist, {params: params, sessionId: this.sessionId, userKey: this.userKey}).then(res => {
             if (res.data.code == 200) {
               //console.log("lightgroup", res.data.data);
               this.globalLightGroupList = res.data.data;
@@ -124,7 +129,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             pageNum: 1,
             pageSize: 99999
           };
-          this.$axios.get(this.baseUrl + common.curtainsGrouplist, {params: params, sessionId: this.sessionId}).then(res => {
+          this.$axios.get(this.baseUrl + common.curtainsGrouplist, {params: params, sessionId: this.sessionId, userKey: this.userKey}).then(res => {
             if (res.data.code == 200) {
               this.globalCurtainsGroupList = res.data.data;
             }
@@ -137,7 +142,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             pageNum: 1,
             pageSize: 99999
           };
-          await this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
+          await this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
             if (res.data.code == 200) {
               this.globalDeviceOldList = res.data.data.list;
             }
@@ -150,7 +155,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             pageNum: 1,
             pageSize: 99999
           };
-          await this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId, loading: false}).then(res => {
+          await this.$axios.get(this.baseUrl + common.deviceList, {params: params, sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
             if (res.data.code == 200) {
               let list = res.data.data.list;
               //console.log("device",list);
@@ -271,7 +276,7 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
           let params = {
 
           };
-          this.$axios.get(commonConfig.baseUrl + common.envList, {params: params,sessionId: this.sessionId}).then(res => {
+          this.$axios.get(commonConfig.baseUrl + common.envList, {params: params,sessionId: this.sessionId, userKey: this.userKey}).then(res => {
             if (res.data.code == 200){
               this.globalEnvList = res.data.data;
             }

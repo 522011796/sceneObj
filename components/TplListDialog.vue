@@ -159,11 +159,12 @@
                   <el-col :span="8" v-for="(item, index) in planDeviceExtar" :key="index" v-if="index < 10" class="marginBottom10">
                     <div class="dialog-device-tag-item-block">
                       <el-popover
+                        ref="onlyPop"
                         placement="right"
                         trigger="click"
                         v-model="item.visible"
                         @after-enter="showDeviceList($event, item, 'muti')"
-                        @after-leave="closeDeviceList()">
+                        @after-leave="closeDeviceList(item)">
                         <div style="max-height: 300px;overflow-y: auto">
                           <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
                           <el-tree v-if="dataTplDeviceList.length > 0" ref="treeDevice" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, item, index, 'muti')"></el-tree>
@@ -254,14 +255,15 @@
               <el-col :span="8" v-for="(itemChild, indexChild) in dExtra" :key="indexChild" class="marginBottom10">
                 <div class="dialog-device-tag-item-block">
                   <el-popover
+                    ref="morePop"
                     placement="right"
                     trigger="click"
                     v-model="itemChild.visibleMore"
-                    @after-enter="showDeviceList($event, itemChild, 'plan')"
-                    @after-leave="closeDeviceList()">
+                    @after-enter="showDeviceList($event, itemChild, cardIndex !== '' ?'plan' : 'muti')"
+                    @after-leave="closeDeviceList(itemChild)">
                     <div style="max-height: 300px;overflow-y: auto">
                       <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
-                      <el-tree ref="treeDevice" v-if="dataTplDeviceList.length > 0" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, cardIndex !== '' ?'plan' : 'muti')"></el-tree>
+                      <el-tree ref="treeDeviceMore" v-if="dataTplDeviceList.length > 0" accordion empty-text="" :data="dataTplDeviceList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemChild, indexChild, cardIndex !== '' ?'plan' : 'muti')"></el-tree>
                     </div>
                     <div slot="reference">
                       <span class="moon-ellipsis-class color-666666" :class="globalScreenWidth < 350 ? 'dialog-device-tag-item-left-min' : 'dialog-device-tag-item-left'">{{ itemChild.key }}:</span>
@@ -366,7 +368,7 @@ export default {
         };
         url = common.queryTplInfoList;
       }
-      this.$axios.get(this.baseUrl + url, {params: params, sessionId: this.sessionId}).then(res => {
+      this.$axios.get(this.baseUrl + url, {params: params, sessionId: this.sessionId, userKey: this.userKey}).then(res => {
         if (res.data.code == 200){
           this.data = res.data.data;
         }
@@ -387,7 +389,7 @@ export default {
         customClass: 'custom-g-loading',
         target: document.querySelector('.drawer-child-bottom')//设置加载动画区域
       });
-      this.$axios.get(this.baseUrl + common.queryTplInfo, {params: params, sessionId: this.sessionId}).then(res => {
+      this.$axios.get(this.baseUrl + common.queryTplInfo, {params: params, sessionId: this.sessionId, userKey: this.userKey}).then(res => {
         if (res.data.code == 200){
           let tplSource = JSON.parse(res.data.data.tplSource);
           let tplAbstract = JSON.parse(res.data.data.tplAbstract);
@@ -494,7 +496,7 @@ export default {
       };
       this.timerShare = 1;
       params = this.$qs.stringify(params);
-      this.$axios.post(this.baseUrl + common.sendShareTplInfo, params, {sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.post(this.baseUrl + common.sendShareTplInfo, params, {sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           MessageCommonTips(this, res.data.msg, 'success');
           this.dialogShareVisible = false;
@@ -512,7 +514,7 @@ export default {
       };
       params = this.$qs.stringify(params);
       this.timer = 1;
-      this.$axios.post(this.baseUrl + common.deleteTplInfo, params, {sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.post(this.baseUrl + common.deleteTplInfo, params, {sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           this.initTplData(null, this.listType);
           this.item = "";
@@ -585,7 +587,9 @@ export default {
       this.dataTplDeviceList = this.dataDeviceList;
       this.deviceLoading = false;
     },
-    closeDeviceList(){
+    closeDeviceList(item){
+      item.visibleMore = false;
+      item.visible = false;
       this.dataTplDeviceList = [];
     },
     selTreeItem(data, node, self, item, index, type){
@@ -624,6 +628,7 @@ export default {
           }
           item.visible = false;
           item.visibleMore = false;
+          this.$forceUpdate();
         }else if(type == 'plan'){
           if(this.dExtra[index].value == ""){
             this.planDeviceResetData[this.cardIndex].dExtraCount++;
@@ -656,7 +661,7 @@ export default {
         tplShareId: item.id
       };
       params = this.$qs.stringify(params);
-      this.$axios.post(this.baseUrl + common.handleShareTplInfo, params, {sessionId: this.sessionId, loading: false}).then(res => {
+      this.$axios.post(this.baseUrl + common.handleShareTplInfo, params, {sessionId: this.sessionId, userKey: this.userKey, loading: false}).then(res => {
         if (res.data.code == 200){
           MessageSuccess(res.data.msg);
           this.initTplData(null, this.listType);
