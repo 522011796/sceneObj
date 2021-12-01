@@ -14,9 +14,9 @@
 </template>
 <style>
 .et-wrapper {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5);
   border-radius: 5px;
-  padding: 10px 30px;
+  padding: 12px 30px;
   display: inline-block;
   white-space: nowrap; text-overflow: ellipsis; overflow: hidden;
   max-width: 300px;
@@ -44,7 +44,7 @@
   top: 80%;
 }
 .et-wrapper.et-center {
-  top: 50%;
+  top: 40%;
 }
 .et-wrapper.et-alert {
   background-color: rgba(189, 19, 19, 0.7);
