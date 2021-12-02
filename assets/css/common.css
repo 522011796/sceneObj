@@ -160,6 +160,9 @@ span,div,button,label{
 .drawer-opr .el-drawer__body{
   background: #FFFFFF;
 }
+.drawer-login-env .el-drawer__header{
+  background: rgba(21,21,21,0.8) !important;
+}
 .drawer-bottom .el-drawer__header, .drawer-child-bottom .el-drawer__header, .drawer-default-bottom .el-drawer__header, .drawer-list .el-drawer__header, .drawer-sub-list .el-drawer__header, .drawer-opr .el-drawer__header{
   align-items: center;
   color: #72767b;

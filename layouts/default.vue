@@ -144,7 +144,7 @@
         :size="dialogHeight"
         :wrapperClosable="false"
         :visible.sync="drawer"
-        :direction="direction"
+        :direction="appType == 'app' ? direction : 'rtl'"
         @close="closeDialog"
         :style="{'width': screenOrientation == 'landscape' ? '100% !important' : '100% !important', 'margin': '0px auto'}">
 
@@ -453,17 +453,20 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
                 this.contentStyle["margin-left"] = this.isCollapse == false ? '8.5%' :'15.5%';
                 this.footerRightStyle["margin-left"] = '15.5%';
               }
+              this.dialogHeight = '100%';
             }else {
               if (screenWidth < 550){
                 this.mainStyle.width = this.isCollapse == false ? '30px' : '100px';
                 this.footerLeftStyle.width = '100px';
                 this.contentStyle["margin-left"] = this.isCollapse == false ? '30px' : '105px';
                 this.footerRightStyle["margin-left"] = '105px';
+                this.dialogHeight = '100%';
               }else{
                 this.mainStyle.width = this.isCollapse == false ? '8%' : '15%';
                 this.footerLeftStyle.width = '10%';
                 this.contentStyle["margin-left"] = this.isCollapse == false ? '8.5%' :'15.5%';
                 this.footerRightStyle["margin-left"] = '15.5%';
+                this.dialogHeight = '50%';
               }
             }
             this.menuStyle.height = this.globalDeviceType == 'ios' ? window.innerHeight - 40 + 'px' : window.innerHeight-40-60 + 'px';

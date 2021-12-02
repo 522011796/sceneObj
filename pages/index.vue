@@ -1520,7 +1520,7 @@ export default {
       drawerListVisible: true,
       drawerRoomVisible: false,
       drawerSenceVisible: false,
-      dialogEnvSize: '70%',
+      dialogEnvSize: '30%',
       dialogHeight: '50%',
       dialogListSize: '100%',
       dialogFullSize: '100%',
@@ -1529,7 +1529,7 @@ export default {
       dialogRoomSize: '70%',
       drawerRightWidth: '90%',
       drawerRightChildWidth: '90%',
-      direction: 'btt',
+      direction: 'rtl',
       directionDevice: 'rtl',
       directionList: 'rtl',
       directionEnvList: 'ltr',
@@ -1945,6 +1945,7 @@ export default {
           this.dialogBottomSize = '45%';
           this.dialogSubChildSize = '100%';
         }
+        this.dialogEnvSize = '100%';
       }else {
         if (screenWidth < 550){
           if (type == 'template'){
@@ -1957,6 +1958,7 @@ export default {
           this.dialogFullSize = '100%';
           this.dialogBottomSize = '100%';
           this.dialogSubChildSize = '100%';
+          this.dialogEnvSize = '100%';
         }else{
           if (type == 'template'){
             this.drawerRightWidth = '60%';
@@ -1968,6 +1970,7 @@ export default {
           this.dialogFullSize = '45%';
           this.dialogBottomSize = '45%';
           this.dialogSubChildSize = '45%';
+          this.dialogEnvSize = '30%';
         }
       }
     },
