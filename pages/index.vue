@@ -220,7 +220,7 @@
       :visible.sync="drawer"
       :direction="direction"
       @closed="closeDrawder"
-      :style="{'width': screenOrientation == 'landscape' ? '90% !important' : '100% !important', 'margin': '0px auto'}">
+      :style="{'width': screenOrientation == 'landscape' ? '100% !important' : '100% !important', 'margin': '0px auto'}">
 
       <div slot="title">
         <div class="drawerHeader">
@@ -1890,7 +1890,7 @@ export default {
       if (process.browser) {
         if (window.orientation == 0 || window.orientation == 180){
           this.screenOrientation = 'portrait';
-          this.dialogHeight = '50%';
+          //this.dialogHeight = this.appType == 'app' ? '100%' : '50%';
           this.paddingBottom = this.appType == 'app' ? '84px' : '0px';
           this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
           // this.dialogFullSize = this.appType == 'app' ? '100%' : '100%';
@@ -1898,7 +1898,7 @@ export default {
         }
         else if (window.orientation == 90 || window.orientation == -90){
           this.screenOrientation = 'landscape';
-          this.dialogHeight = '80%';
+          //this.dialogHeight = this.appType == 'app' ? '100%' : '80%';
           this.paddingBottom = this.appType == 'app' ? '35px' : '0px';
           this.appType == 'app' ? this.paddingMainBottom = '55px' : this.paddingMainBottom = '0px';
           // this.dialogFullSize = this.appType == 'app' ? '100%' : '100%';
@@ -1946,6 +1946,7 @@ export default {
           this.dialogSubChildSize = '100%';
         }
         this.dialogEnvSize = '100%';
+        this.dialogHeight = '100%';
       }else {
         if (screenWidth < 550){
           if (type == 'template'){
@@ -1959,6 +1960,7 @@ export default {
           this.dialogBottomSize = '100%';
           this.dialogSubChildSize = '100%';
           this.dialogEnvSize = '100%';
+          this.dialogHeight = '100%';
         }else{
           if (type == 'template'){
             this.drawerRightWidth = '60%';
@@ -1971,6 +1973,7 @@ export default {
           this.dialogBottomSize = '45%';
           this.dialogSubChildSize = '45%';
           this.dialogEnvSize = '30%';
+          this.dialogHeight = '50%';
         }
       }
     },
@@ -2031,10 +2034,12 @@ export default {
           this.taskList[i][j].popVisible = false;
         }
       }
+      this.showDialogStatus();
       //console.log(this.formOrder.type, this.formSwitchOrder.type);
     },
     selSence(event, item, type){
       showChartLoading();
+      this.dismissDialogStatus();
       if (type == 'menu'){
         this.senceId = item.sceneId;
         this.$axios.get(item.sourceUrl).then(res => {
@@ -2287,6 +2292,7 @@ export default {
         this.oprType = 'editSceneList';
         this.editSceneList = res.data.tasks;
       });
+      this.showDialogStatus();
       this.drawerSenceVisible = true;
     },
     addSenceOpr($event, item){
@@ -2334,6 +2340,8 @@ export default {
       this.orderList = item;
       this.taskIndex = index;
       this.taskItem = item;
+
+      this.showDialogStatus();
       this.drawer = true;
     },
     async okConfirm(){
@@ -2378,10 +2386,15 @@ export default {
       this.drawer = true;
     },
     cancelDrawer(){
+      console.log(this.oprOtherType);
+      if(this.oprOtherType != 'orderList'){
+        this.dismissDialogStatus();
+      }
       this.drawer = false;
     },
     cancelDeviceDrawer(){
       this.drawerBottomDialogVisible = false;
+      this.dismissDialogStatus();
       this.drawerDevice = false;
     },
     cancelChildDrawer(){
@@ -2691,6 +2704,9 @@ export default {
       }
     },
     closeAlertDialog(event){
+      if (event == false){
+        this.dismissDialogStatus();
+      }
       this.dialogVisible = event;
     },
     closeOprDrawer(){
@@ -2983,6 +2999,7 @@ export default {
     cancelOpr(){
       clearInterval(this.timer);
       this.timer = null;
+      this.dismissDialogStatus();
       this.dialogVisible = false;
     },
     saveOpr(){
@@ -3228,6 +3245,7 @@ export default {
         }else {
           this.taskList[this.taskIndex].push(obj);
           this.planList[this.taskIndex]['i'].push(obj);
+          this.dismissDialogStatus();
         }
         //console.log(1234567,this.taskIndex, this.areaIndex);
         this.setTaskList(this.taskList);
@@ -3252,6 +3270,7 @@ export default {
     },
     cancelConfig(){
       this.oprType = '';
+      this.dismissDialogStatus();
       this.drawerSenceVisible = false;
     },
     saveConfig(){
@@ -3301,7 +3320,7 @@ export default {
             }
           }
         }
-        console.log(planList);
+        //console.log(planList);
         for (let i = 0; i < planList.length; i++){
           planList[i]['i'] = taskList[i];
         }
@@ -3329,8 +3348,8 @@ export default {
         sceneType: 1,
         sourceCode: JSON.stringify(dataObj)
       };
-      console.log(this.oprType);
-      console.log(this.oprType == 'editSceneList' ? this.editSceneList : planList);
+      //console.log(this.oprType);
+      //console.log(this.oprType == 'editSceneList' ? this.editSceneList : planList);
       if (this.formSence.id != ""){
         codeData['sceneId'] = this.formSence.id;
       }
@@ -3377,6 +3396,7 @@ export default {
           }
           this.initSenceList();
           this.oprType = '';
+          this.dismissDialogStatus();
           this.drawerSenceVisible = false;
         }else {
           MessageCommonTips(this, res.data.msg, 'error');
@@ -3388,6 +3408,7 @@ export default {
       this.alertMessageTips = this.$t("确认删除该场景吗？");
       this.oprType = "removeSence";
       this.removeSenceItem = item;
+      this.showDialogStatus();
       this.dialogVisible = true;
     },
     removeSence(senceId){
@@ -3422,6 +3443,7 @@ export default {
           this.timer = null;
           this.dialogVisible = false;
           this.initSenceList();
+          this.dismissDialogStatus();
         }
       });
     },

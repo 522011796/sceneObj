@@ -404,6 +404,24 @@ import {inArray, MessageError, MessageWarning, orderValue} from "../utils/utils"
             });
           })
         },
+        showDialogStatus(){
+          let _self = this;
+          this.setupWebViewJavascriptBridge(function(bridge) {
+            //JS 调用 OC 的方法，方法名就是 OC 中提前注册的方法
+            bridge.callHandler('showDialogStatus', null, function responseCallback(responseData) {
+
+            });
+          })
+        },
+        dismissDialogStatus(){
+          let _self = this;
+          this.setupWebViewJavascriptBridge(function(bridge) {
+            //JS 调用 OC 的方法，方法名就是 OC 中提前注册的方法
+            bridge.callHandler('dismissDialogStatus', null, function responseCallback(responseData) {
+
+            });
+          })
+        },
         setOkConfirm(value){
           let _self = this;
           this.setupWebViewJavascriptBridge(function(bridge) {

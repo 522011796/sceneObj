@@ -10,6 +10,7 @@
       :wrapperClosable="false"
       :visible.sync="drawer_"
       :direction="direction"
+      @close="closeDialog"
       @open="initTplData($event, 2)">
 
       <div slot="title">
@@ -111,7 +112,8 @@
       :size="globalScreenWidth < 550 || appType == 'app' ? '100%' : '50%'"
       :wrapperClosable="false"
       :visible.sync="dialogDeviceVisible"
-      direction="rtl">
+      direction="rtl"
+      @close="closeDialog">
 
       <div slot="title">
         <div class="drawerHeader">
@@ -464,6 +466,8 @@ export default {
           loading.close();
         }
       });
+
+      this.showDialogStatus();
       this.dialogDeviceVisible = true;
     },
     updateTplOpr(event, item){
@@ -472,11 +476,13 @@ export default {
     removeTplOpr(event, item){
       this.alertMessageTips = this.$t("确认删除该模版吗？");
       this.item = item;
+      this.showDialogStatus();
       this.dialogVisible = true;
     },
     cancelOpr(){
       clearInterval(this.timer);
       this.timer = null;
+      this.dismissDialogStatus();
       this.dialogVisible = false;
     },
     cancelShareOpr(){
@@ -484,6 +490,7 @@ export default {
       this.timerShare = null;
       this.dialogShareVisible = false;
       this.shareItem = "";
+      this.dismissDialogStatus();
     },
     saveShareOpr(data){
       if (data == ""){
@@ -501,11 +508,13 @@ export default {
           MessageCommonTips(this, res.data.msg, 'success');
           this.dialogShareVisible = false;
           this.shareItem = "";
+          this.dismissDialogStatus();
         }else {
           MessageCommonTips(this, res.data.msg, 'success');
           this.configLoading = false;
         }
         this.timerShare = 0;
+        this.timerShare = null;
       });
     },
     saveOpr(){
@@ -519,6 +528,7 @@ export default {
           this.initTplData(null, this.listType);
           this.item = "";
           this.dialogVisible = false;
+          this.dismissDialogStatus();
         }else {
           MessageCommonTips(this, res.data.msg, 'warning');
         }
@@ -526,9 +536,13 @@ export default {
       });
     },
     closeAlertDialog(event){
+      console.log(event);
       this.item = "";
       this.dialogVisible = event;
       this.dialogShareVisible = event;
+      if (event == false){
+        this.dismissDialogStatus();
+      }
     },
     moreDevice(event, item, index){
       if (item){
@@ -543,6 +557,9 @@ export default {
     closeDeviceMore(){
       this.cardIndex = "";
       this.dialogDeviceMoreVisible = false;
+    },
+    closeDialog(){
+      this.dismissDialogStatus();
     },
     okDeviceMoreConfirm(){
       this.cardIndex = "";
@@ -653,6 +670,7 @@ export default {
     },
     shareTplOpr(event, item){
       this.shareItem= item;
+      this.showDialogStatus();
       this.dialogShareVisible = true;
     },
     handleShareTplOpr(event, item, status){

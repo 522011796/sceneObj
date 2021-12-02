@@ -595,6 +595,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
         addPlain(){
           this.oprType = "add";
           //this.getDeviceList();
+          this.showDialogStatus();
           this.drawer = true;
         },
         cancelDrawer(){
@@ -606,6 +607,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
         closeDelDialog(){
           //this.selMenuData = "";
           //this.selMenuIndex = "";
+          this.dismissDialogStatus();
         },
         closeDialog(){
           //this.selMenuData = "";
@@ -619,6 +621,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
             deviceList: [],
             deviceSelDevice: []
           };
+          this.dismissDialogStatus();
         },
         addDevice(){
           this.drawerDevice = true;
@@ -647,6 +650,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           }
           this.oprType = 'update';
           //console.log(this.formPlain);
+          this.showDialogStatus();
           this.drawer = true;
         },
         copyPlain(){
@@ -739,6 +743,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
             this.oprType = 'return';
             this.dialogVisible = true;
             this.changeStatus = 1;
+            this.showDialogStatus();
             return;
           }
 
@@ -792,6 +797,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
             this.oprType = 'return';
             this.dialogVisible = true;
             this.changeStatus = 1;
+            this.showDialogStatus();
             return;
           }
 
@@ -827,6 +833,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
             img: ''
           };
           this.selMenuData = "";
+          this.dismissDialogStatus();
           this.$refs.childRef.$children[0].drawerListVisible = true;
         },
         changePlainType(event, type){

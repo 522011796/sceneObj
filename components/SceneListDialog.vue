@@ -475,6 +475,7 @@ export default {
         MessageCommonTips(this, this.$t("该场景暂不允许创建模版！"), 'warning');
         return;
       }
+      this.showDialogStatus();
       this.drawerCreateTplVisible = true;
     },
     changeTplDrawer(event){
@@ -503,6 +504,7 @@ export default {
         tplSource: '',
         tplDesc: ''
       }
+      this.dismissDialogStatus();
       this.setTplLoading = false;
     },
     closeTplSetOprDrawer(){
@@ -511,6 +513,7 @@ export default {
     cancelTplConfig(){
       this.deviceTplData = [];
       this.deviceTplBakData = [];
+      this.dismissDialogStatus();
       this.drawerCreateTplVisible = false;
     },
     editDeviceModelName(){
@@ -674,6 +677,7 @@ export default {
         tplName: item.tplName,
         tplDesc: item.tplDesc
       };
+      this.showDialogStatus();
       this.drawerCreateTplVisible = true;
     },
     hideDeviceStatus(){
