@@ -40,6 +40,38 @@ span,div,button,label{
 .clearfix{
   clear: both;
 }
+.main-block-class{
+  position: relative;
+}
+.main-block-scale-class{
+  position: fixed;
+  right: 10px;
+  bottom: 84px;
+  z-index: 9999;
+}
+.main-block-scale-app-p-class{
+  position: fixed;
+  right: 10px;
+  bottom: 44px;
+  z-index: 9999;
+}
+.main-block-scale-app-v-class{
+  position: fixed;
+  right: 10px;
+  bottom: 20px;
+  z-index: 9999;
+}
+.scale-item-block{
+  height: 40px;
+  line-height: 40px;
+  width: 40px;
+  border: 1px solid #dddddd;
+  text-align: center;
+}
+.scale-item-block:hover{
+  background: rgba(21,21,21,0.2) !important;
+  color: #ffffff;
+}
 .custom-index-loading .el-loading-text, .custom-index-loading .el-icon-loading{
   color: #FFFFFF;
   font-size: 12px;

@@ -718,6 +718,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               if (planList[i].i[j].list != undefined || planList[i].i[j].list != null) {
                 planList[i].i[j].list = undefined;
               }
+              if (planList[i].i[j].width != undefined || planList[i].i[j].width != null) {
+                planList[i].i[j].width = undefined;
+              }
             }
           }
           for (let i = 0; i < planTempList.length; i++) {
@@ -733,6 +736,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               }
               if (planTempList[i].i[j].list != undefined || planTempList[i].i[j].list != null) {
                 planTempList[i].i[j].list = undefined;
+              }
+              if (planTempList[i].i[j].width != undefined || planTempList[i].i[j].width != null) {
+                planTempList[i].i[j].width = undefined;
               }
             }
           }
@@ -766,6 +772,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               if (taskList[i][j].list != undefined || taskList[i][j].list != null){
                 taskList[i][j].list = undefined;
               }
+              if (taskList[i][j].width != undefined || taskList[i][j].width != null){
+                taskList[i][j].width = undefined;
+              }
             }
           }
 
@@ -785,6 +794,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               }
               if (taskTempList[i][j].list != undefined || taskTempList[i][j].list != null){
                 taskTempList[i][j].list = undefined;
+              }
+              if (taskTempList[i][j].width != undefined || taskTempList[i][j].width != null){
+                taskTempList[i][j].width = undefined;
               }
             }
           }
@@ -833,6 +845,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
             img: ''
           };
           this.selMenuData = "";
+          this.$refs.childRef.$children[0].ruleDefaultWith = 52;
+          this.$refs.childRef.$children[0].ruleColWidth = 1;
+
           this.dismissDialogStatus();
           this.$refs.childRef.$children[0].drawerListVisible = true;
         },

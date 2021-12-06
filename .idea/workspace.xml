@@ -3,11 +3,19 @@
   <component name="ChangeListManager">
     <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="init">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/client.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/client.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/components/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/components/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/components/nuxt-error.vue" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/components/nuxt-error.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/loading.html" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/loading.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/mixins/fetch.server.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/mixins/fetch.server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/server.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/server.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/store.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/store.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/utils.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/utils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/views/error.html" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/views/error.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/common.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/SceneListDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/SceneListDialog.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/TplListDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/TplListDialog.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/locales/zh-CN.json" beforeDir="false" afterPath="$PROJECT_DIR$/locales/zh-CN.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mixins/mixins.vue" beforeDir="false" afterPath="$PROJECT_DIR$/mixins/mixins.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -55,7 +63,7 @@
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
     <property name="node.js.selected.package.standard" value="" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="settings.editor.selected.configurable" value="configurable.group.appearance" />
+    <property name="settings.editor.selected.configurable" value="vcs.Git" />
     <property name="show.migrate.to.gradle.popup" value="false" />
     <property name="ts.external.directory.path" value="$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/jsLanguageServicesImpl/external" />
     <property name="vue.rearranger.settings.migration" value="true" />
@@ -123,14 +131,10 @@
       <workItem from="1636938442411" duration="82000000" />
       <workItem from="1637301365202" duration="15911000" />
       <workItem from="1637388889710" duration="160871000" />
-      <workItem from="1638234002026" duration="60050000" />
-    </task>
-    <task id="LOCAL-00051" summary="init">
-      <created>1637310678037</created>
-      <option name="number" value="00051" />
-      <option name="presentableId" value="LOCAL-00051" />
-      <option name="project" value="LOCAL" />
-      <updated>1637310678038</updated>
+      <workItem from="1638234002026" duration="65904000" />
+      <workItem from="1638509881477" duration="1435000" />
+      <workItem from="1638754831390" duration="3220000" />
+      <workItem from="1638758298212" duration="27106000" />
     </task>
     <task id="LOCAL-00052" summary="init">
       <created>1637314873232</created>
@@ -468,7 +472,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638413006943</updated>
     </task>
-    <option name="localTasksCounter" value="100" />
+    <task id="LOCAL-00100" summary="init">
+      <created>1638437923660</created>
+      <option name="number" value="00100" />
+      <option name="presentableId" value="LOCAL-00100" />
+      <option name="project" value="LOCAL" />
+      <updated>1638437923660</updated>
+    </task>
+    <option name="localTasksCounter" value="101" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

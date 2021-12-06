@@ -1,9 +1,28 @@
 <template>
   <div class="main-block-class" @click="hidePopDocumentVisible($event, touchType)">
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
-    <div class="demoRuleClass" :style="{'width': ruleMax / 10 * 52 + 43 + 0.1 + 'px'}">
+
+    <div v-if="appType == 'app' && drawerListVisible == false" :class="screenOrientation == 'landscape' ? 'main-block-scale-app-v-class' : 'main-block-scale-app-p-class'">
+      <div class="scale-item-block" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
+        <span><i class="fa fa-plus"></i></span>
+      </div>
+      <div class="scale-item-block marginTop5" @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
+        <span><i class="fa fa-minus"></i></span>
+      </div>
+    </div>
+
+    <div v-else-if="drawerListVisible == false" class="main-block-scale-class">
+      <div class="scale-item-block" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
+        <span><i class="fa fa-plus"></i></span>
+      </div>
+      <div class="scale-item-block marginTop5" @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
+        <span><i class="fa fa-minus"></i></span>
+      </div>
+    </div>
+
+    <div class="demoRuleClass" :style="{'width': ruleMax / 10 * ruleDefaultWith + 43 + 0.1 + 'px'}">
       <div>
-        <div class="demoRuleFixedClass" :style="{'width': ruleMax / 10 * 52 + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
+        <div class="demoRuleFixedClass" :style="{'width': ruleMax / 10 * ruleDefaultWith + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
           <div v-if="taskResetList.length > 0 && JSON.stringify(taskResetList[0]) != '[]' && Math.floor(ruleMax * 100 / 1000) <= 0" v-for="(itemNum, indexNum) in 1" :key="indexNum" class="rule-class" style="width: 52px">
             <div class="num">
               {{format(indexNum * 1000)}}
@@ -11,27 +30,29 @@
 
             <div class="ver-line"></div>
           </div>
-          <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in Math.floor(ruleMax * 100 / 1000)" :key="indexNum" class="rule-class" style="width: 52px">
-            <div class="num">
-              {{format(indexNum * 1000)}}
-            </div>
+          <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in Math.floor(ruleMax * 100 / 1000)" :key="indexNum" class="rule-class" :style="{width: ruleDefaultWith + 'px'}">
+            <div v-if="indexNum % ruleColWidth == 0">
+              <div class="num">
+                {{format(indexNum * 1000)}}
+              </div>
 
-            <div class="ver-line"></div>
+              <div class="ver-line"></div>
+            </div>
+            <div v-else>
+              &nbsp;
+            </div>
           </div>
         </div>
-        <!--<el-slider v-model="sliderValue"></el-slider>-->
       </div>
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
         <div class="demoRuleBlockClass" v-for="(item, index) in taskResetList" style="margin-bottom: 10px;position: relative">
-<!--          <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item.list" :style="{'background': indexBlock % 2 == 0 ? '#f56c6c' : '#67c23a', 'width': itemBlock.sec * 70+'px', 'height':'40px'}"-->
-<!--               @click.stop="selBlock($event, item, index, itemBlock, indexBlock)"-->
-<!--          >-->
           <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item"
                v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2 || itemBlock.i == 3 || itemBlock.i == 4)"
                :style="{
                         'background': orderColorInfo(itemBlock.i),
-                        'width': itemBlock.secLoop ? itemBlock.secLoop / 1000 * 52 +'px' : itemBlock.sec / 1000 * 52 +'px',
+                        //'width': itemBlock.secLoop ? itemBlock.secLoop / 1000 * ruleDefaultWith +'px' : itemBlock.sec / 1000 * ruleDefaultWith +'px',
+                        'width': itemBlock.width +'px',
                         'height':'40px',
                         'color': itemBlock.i == 1 ? '#ffffff' : '#555555',
                         'position': 'relative'
@@ -50,22 +71,22 @@
                 </div>
                 <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative">
                   <div>
-                    <div class="moon-ellipsis-class index-main-item-block font-size-10">
+                    <div class="moon-ellipsis-class index-main-item-block font-size-12">
                       <span v-if="(itemBlock.i == 1 || itemBlock.i == 2 && (itemBlock.i != 3 || itemBlock.i != 4)) && (!itemBlock.list || itemBlock.list.length == 0)"
                                   :class="itemBlock.i == 1 ? 'color-ffffff' : 'color-434343'"
                       >
                         {{ orderValueInfo(itemBlock.i, 'set') }}
                       </span>
-                      <span v-if="(itemBlock.i == 3) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
+                      <span v-if="(itemBlock.i == 3) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343 font-size-12">
                         <label v-if="itemBlock.t > 0">{{ orderValueInfo(itemBlock.i, 'set') }}</label>
                         <label v-if="itemBlock.t == 0">{{ $t("无限循环") }}</label>
                       </span>
-                      <span v-if="(itemBlock.i == 4) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343">
+                      <span v-if="(itemBlock.i == 4) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343 font-size-12">
                         {{ itemBlock.n }}
                         <label v-if="itemBlock.sec == -1" class="color-default">({{ $t("无限循环") }})</label>
                       </span>
 
-                      <span v-for="(itemList, indexList) in itemBlock.list" class="marginBottom2 pop-child-item">
+                      <span v-for="(itemList, indexList) in itemBlock.list" class="marginBottom2 pop-child-item font-size-12">
                         {{orderValueInfo(itemList.i, 'set')}}
                         <label v-if="indexList != itemBlock.list.length - 1"> | </label>
                       </span>
@@ -76,7 +97,6 @@
                       </div>
 
                       <div v-if="itemBlock.i == 4" size="mini" class="color-error font-size-12" style="position: absolute; right: 0px; top: 0px; height:15px; width: 15px; line-height: 15px;color: #ffffff">
-<!--                        <span v-if="itemBlock.sec != -1">{{ itemBlock.t }}</span>-->
                         <span v-if="itemBlock.sec == -1" class="font-size-14">∞</span>
                       </div>
                     </div>
@@ -334,8 +354,6 @@
             </el-form-item>
             <el-form-item v-if="customBottomType == 4" label="色彩" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
-                <!--                        <el-color-picker v-model="formOrder.color"></el-color-picker>-->
-                <!--                        <v-swatches v-model="formOrder.color" fallback-input-type="color"></v-swatches>-->
                 <el-popover
                   placement="left"
                   width="180"
@@ -374,37 +392,7 @@
                 </el-popover>
               </div>
             </el-form-item>
-<!--            <el-form-item v-if="customBottomType == 5" label="场景名称" class="netmoon-form-item-border-dialog">-->
-<!--              <div class="textRight color-666666">-->
-<!--                <el-popover-->
-<!--                  placement="left"-->
-<!--                  width="240"-->
-<!--                  popper-class="pop-custom"-->
-<!--                  trigger="click"-->
-<!--                  v-model="customDrawBottomOpenVisible">-->
-<!--                  <div class="textCenter" style="max-height: 260px; overflow-y: auto">-->
-<!--                    <div class="index-pop-item" v-for="(item, index) in sceneList" v-if="item.sceneId != senceId" :class="index != sceneList.length - 1 ? 'border-bottom-item' : ''">-->
-<!--                      <el-row>-->
-<!--                        <el-col :span="20">-->
-<!--                          <div class="textLeft" @click="item.sceneId != senceId ? selSenceUse($event, item, index, 'lightSub') : ''" v-if="item.sceneId != senceId" :class="item.sceneId != senceId ? '' : 'color-disabled disbled-icon'">-->
-<!--                            <span>{{ item.sceneName }}</span>-->
-<!--                          </div>-->
-<!--                        </el-col>-->
-<!--                        <el-col :span="4">-->
-<!--                          <div class="textRight">-->
-<!--                            <span v-if="(senceIndex != '' || senceIndex === 0) && index === senceIndex" style="position: relative; top: 0px;"><i class="fa fa-check-circle color-success"></i></span>-->
-<!--                          </div>-->
-<!--                        </el-col>-->
-<!--                      </el-row>-->
-<!--                    </div>-->
-<!--                  </div>-->
-<!--                  <span slot="reference" size="mini">-->
-<!--                            <label>{{formOrder.sence == '' ? $t("请选择") : formOrder.senceText}}</label>-->
-<!--                            <label><i class="fa fa-chevron-right"></i></label>-->
-<!--                          </span>-->
-<!--                </el-popover>-->
-<!--              </div>-->
-<!--            </el-form-item>-->
+
             <el-form-item v-if="customBottomType != 5 && customBottomType != 6 && customBottomType != 7 && customBottomType != 8 && customBottomType != 9" label="渐变时间" class="netmoon-form-item-border-dialog">
               <div class="textRight color-666666">
                 <el-input-number size="medium" v-model="formOrder.changeTime" @change="handleChange($event, 'changeTime')" :min="0" :step="100" :step-strictly="true"></el-input-number>
@@ -538,7 +526,6 @@
             </el-form-item>
             <el-form-item v-if="customBottomType == 15" label="音乐进度" class="netmoon-form-item-border-dialog custon-input-item">
               <div class="textRight color-666666">
-<!--                <el-slider v-model="formMusicOrder.musicProcess" :step="1" :max="65535" :format-tooltip="musicProcessFormatTooltip" @change="handleChange($event, 'musicVoice')"></el-slider>-->
                 <el-input :placeholder="$t('范围:0-65535秒')" v-model="formMusicOrder.musicProcess" maxlength="5"></el-input>
               </div>
             </el-form-item>
@@ -789,7 +776,7 @@
                         </label>
                       </el-tag>
                     </span>
-<!--                    <span class="marginLeft10" :class="(item.i == 6 || item.i == 7 || item.i == 8 || item.i == 9 || item.i == 11) ? 'item-list-child-child-title' : 'item-list-child-child-title2'">{{ orderGetAndSet(item.i, 'set')}}</span>-->
+
                     <span class="opr-item-title-block">
                       <loop-item :item="item"></loop-item>
                     </span>
@@ -825,7 +812,6 @@
       </div>
 
       <!--底部弹出-->
-      <!--<div class="mask" v-show="drawerBottomDialogVisible" @click="cancelChildBottomDrawer"></div>-->
       <div class="mask" v-show="drawerBottomDialogVisible"></div>
       <transition :name="screenOrientation == 'landscape' ? 'myboxV' : 'mybox'">
         <div :class="screenOrientation == 'landscape' ? 'drawerBottomDialogV' : 'drawerBottomDialog'" class="share" v-show="drawerBottomDialogVisible"
@@ -981,8 +967,6 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 4" label="色彩" class="netmoon-form-item-border-dialog">
                     <div class="textRight color-666666">
-                      <!--                        <el-color-picker v-model="formOrder.color"></el-color-picker>-->
-                      <!--                        <v-swatches v-model="formOrder.color" fallback-input-type="color"></v-swatches>-->
                       <el-popover
                         placement="left"
                         width="180"
@@ -1218,7 +1202,6 @@
                   </el-form-item>
                   <el-form-item v-if="customBottomType == 15" label="音乐进度" class="netmoon-form-item-border-dialog custon-input-item">
                     <div class="textRight color-666666">
-<!--                      <el-slider v-model="formMusicOrder.musicProcess" :step="1" :max="600" show-stops :format-tooltip="musicProcessFormatTooltip" @change="handleChange($event, 'musicProcess')"></el-slider>-->
                       <el-input :placeholder="$t('范围:0-65535秒')" v-model="formMusicOrder.musicProcess" maxlength="5"></el-input>
                     </div>
                   </el-form-item>
@@ -1479,6 +1462,8 @@ export default {
     OrderListPopChildDialog, OrderSwitchTypeDialog, OrderCurtainsTypeDialog, LoopItem, OrderLightTypeDialog },
   data(){
     return {
+      ruleDefaultWith: 52,
+      ruleColWidth: 1,
       popvisible: false,
       configLoading: false,
       sliderValue: 0,
@@ -1545,6 +1530,7 @@ export default {
       customBottomOpen: '1',
       customBottomKeyOpr: '',
       timeOutEvent: 0,
+      oprMinsNum: 0,
       speed: '',
       touchStatus: false,
       taskIndex: '',
@@ -1579,6 +1565,8 @@ export default {
       toastLoading: '',
       envPopStatus: '',
       touchType: '',
+      loopClick: null,
+      loopType: '',
       colors: {
         hue: 50,
         saturation: 100,
@@ -1740,6 +1728,9 @@ export default {
     //this.initOrder();
   },
   methods:{
+    pinchScan(){
+      console.log(111);
+    },
     initSenceList(){
       let timeMax = '';
       let params = {
@@ -2095,16 +2086,19 @@ export default {
           });
           if (data[i].i[j].i == 1 || data[i].i[j].i == 2){
             tasksTemp[j]['sec'] = data[i].i[j].v;
+            tasksTemp[j]['width'] = data[i].i[j].v / 1000 * this.ruleDefaultWith;
           }else if (data[i].i[j].i == 4){
             for (let k = 0; k < this.sceneList.length; k++){
               if (this.sceneList[k].sceneId == data[i].i[j].v){
                 await this.getSourceUrl(this.sceneList[k].sourceUrl);
                 let scnenDuration = this.scnenDuration;
                 tasksTemp[j]['sec'] = scnenDuration == Number.MAX_SAFE_INTEGER ? -1 : scnenDuration;
+                tasksTemp[j]['width'] = tasksTemp[j]['sec'] / 1000 * this.ruleDefaultWith;
               }
             }
           }else{
-            tasksTemp[j]['sec'] = 100
+            tasksTemp[j]['sec'] = 100;
+            //tasksTemp[j]['width'] = 100 / 1000 * this.ruleDefaultWith;
           }
           if (data[i].i[j].t > 0){
             tasksTemp[j]['t'] = data[i].i[j].t
@@ -2123,6 +2117,8 @@ export default {
           if (data[i].i[j].n == 0 || data[i].i[j].n){
             tasksTemp[j]['n'] = data[i].i[j].n
           }
+
+          //tasksTemp[j]['width'] = data[i].i[j].v / 1000 * this.ruleDefaultWith;
         }
         tasks.push(tasksTemp);
       }
@@ -2143,6 +2139,7 @@ export default {
         if (this.ruleMax != 0 && this.resetTaskList[i].obj.t == 0){
           let rule = this.ruleMax * 100 - this.resetTaskList[i].rule;
           this.resetTaskList[i].obj.secLoop = rule;
+          this.resetTaskList[i].obj['width'] = rule / 1000 * this.ruleDefaultWith;
         }
       }
 
@@ -2150,6 +2147,7 @@ export default {
         if (this.ruleMax != 0 && this.resetSenceList[i].obj.sec == -1){
           let rule = this.ruleMax * 100 - this.resetSenceList[i].rule;
           this.resetSenceList[i].obj.secLoop = rule;
+          this.resetSenceList[i].obj['width'] = rule / 1000 * this.ruleDefaultWith;
         }
       }
     },
@@ -3139,32 +3137,41 @@ export default {
           if (this.formOrder.type != ""){
             obj['v'] = this.formOrder.emptyTime;
             obj['sec'] = this.formOrder.emptyTime;
+            obj['width'] = this.formOrder.emptyTime / 1000 * this.ruleDefaultWith;
           }else if (this.formCurtainsOrder.type != ""){
             obj['v'] = this.formCurtainsOrder.emptyTime;
             obj['sec'] = this.formCurtainsOrder.emptyTime;
+            obj['width'] = this.formOrder.emptyTime / 1000 * this.ruleDefaultWith;
           }else if (this.formSwitchOrder.type != ""){
             obj['v'] = this.formSwitchOrder.emptyTime;
             obj['sec'] = this.formSwitchOrder.emptyTime;
+            obj['width'] = this.formOrder.emptyTime / 1000 * this.ruleDefaultWith;
           }else if (this.formSceneOrder.type != ""){
             obj['v'] = this.formSceneOrder.emptyTime;
             obj['sec'] = this.formSceneOrder.emptyTime;
+            obj['width'] = this.formOrder.emptyTime / 1000 * this.ruleDefaultWith;
           }
         }else if (outTypeObj(this.formOrder.type) == 2 || this.formCurtainsOrder.type == 2 || outTypeObj(this.formSwitchOrder.type) == 2 || this.formSceneOrder.type == 2 || this.formMusicOrder.type == 2){
           if (this.formOrder.type != ""){
             obj['v'] = this.formOrder.waitTime;
             obj['sec'] = this.formOrder.waitTime;
+            obj['width'] = this.formOrder.waitTime / 1000 * this.ruleDefaultWith;
           }else if (this.formCurtainsOrder.type != ""){
             obj['v'] = this.formCurtainsOrder.waitTime;
             obj['sec'] = this.formCurtainsOrder.waitTime;
+            obj['width'] = this.formOrder.waitTime / 1000 * this.ruleDefaultWith;
           }else if (this.formSwitchOrder.type != ""){
             obj['v'] = this.formSwitchOrder.waitTime;
             obj['sec'] = this.formSwitchOrder.waitTime;
+            obj['width'] = this.formOrder.waitTime / 1000 * this.ruleDefaultWith;
           }else if (this.formSceneOrder.type != ""){
             obj['v'] = this.formSceneOrder.waitTime;
             obj['sec'] = this.formSceneOrder.waitTime;
+            obj['width'] = this.formOrder.waitTime / 1000 * this.ruleDefaultWith;
           }else if (this.formMusicOrder.type != ""){
             obj['v'] = this.formMusicOrder.waitTime;
             obj['sec'] = this.formMusicOrder.waitTime;
+            obj['width'] = this.formOrder.emptyTime / 1000 * this.ruleDefaultWith;
           }
         }else if (outTypeObj(this.formOrder.type) == 6){
           obj['v'] = parseInt(this.customBottomOpen);
@@ -3491,6 +3498,89 @@ export default {
     goBack () {
       // console.log("点击了浏览器的返回按钮");
       history.pushState(null, null, document.URL);
+    },
+    scaleStart(type){
+      let _self=this;
+      this.loopClick = null;
+      this.loopType = type;
+      clearTimeout(this.loopClick);
+      this.loopClick = setTimeout(function() {
+        if (type == 'add'){
+          _self.scaleAdd();
+        }else if (type == 'minus'){
+          _self.scaleMinus();
+        }
+        _self.scaleStart(type);
+      }, 100);
+    },
+    scaleEnd(){
+      clearTimeout(this.loopClick);
+      this.loopType = "";
+    },
+    scaleMinus(){
+      if (this.ruleDefaultWith >= 5){
+        this.ruleDefaultWith = this.ruleDefaultWith - 1;
+        if (this.ruleDefaultWith < 45 && this.ruleDefaultWith > 23){
+          this.ruleColWidth = 2;
+        }else if (this.ruleDefaultWith < 23 && this.ruleDefaultWith > 10){
+          this.ruleColWidth = 5;
+        }else if (this.ruleDefaultWith <= 10 && this.ruleDefaultWith > 5){
+          this.ruleColWidth = 10;
+        }else if (this.ruleDefaultWith <= 5){
+          this.ruleColWidth = 15;
+        }
+
+        for (let i = 0; i < this.taskList.length; i++) {
+          let otherSec = 0;
+          let width = 0;
+          for (let j = 0; j < this.taskList[i].length; j++) {
+            if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4) {
+              let colSec = 0;
+              if (this.taskList[i][j].sec && this.taskList[i][j].sec != -1){
+                colSec = this.taskList[i][j].sec / 1000;
+              }
+              if (this.taskList[i][j].secLoop){
+                colSec = this.taskList[i][j].secLoop / 1000
+              }
+              if (colSec < 1){
+                width += colSec;
+              }
+              let result = colSec;
+              this.taskList[i][j].width = this.taskList[i][j].width - result - width;
+            }
+          }
+        }
+      }
+    },
+    scaleAdd(){
+      this.ruleDefaultWith = this.ruleDefaultWith + 1;
+      if (this.ruleDefaultWith > 25 && this.ruleDefaultWith < 45){
+        this.ruleColWidth = 2;
+      }else if (this.ruleDefaultWith > 20 && this.ruleDefaultWith <= 25){
+        this.ruleColWidth = 5;
+      }else if (this.ruleDefaultWith > 10 && this.ruleDefaultWith <= 20){
+        this.ruleColWidth = 10;
+      }else if (this.ruleDefaultWith >= 5 && this.ruleDefaultWith <= 10){
+        this.ruleColWidth = 15;
+      }else {
+        this.ruleColWidth = 1;
+      }
+
+      for (let i = 0; i < this.taskList.length; i++) {
+        for (let j = 0; j < this.taskList[i].length; j++) {
+          if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4) {
+            let colSec = 0;
+            if (this.taskList[i][j].sec && this.taskList[i][j].sec != -1){
+              colSec = this.taskList[i][j].sec / 1000;
+            }
+            if (this.taskList[i][j].secLoop){
+              colSec = this.taskList[i][j].secLoop / 1000
+            }
+            let result = Math.floor(colSec);
+            this.taskList[i][j].width = this.taskList[i][j].width + result;
+          }
+        }
+      }
     }
   }
 }
@@ -3530,7 +3620,7 @@ export default {
     height: 30px;
   }
   .rule-class {
-    min-width: 10px;
+    min-width: 0px;
     height: 30px;
     display: inline-block;
   }

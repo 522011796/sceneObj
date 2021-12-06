@@ -38,23 +38,42 @@
 <!--          </div>-->
 <!--        </div>-->
         <div class="block-list-header">
-          <el-row>
-            <el-col :span="this.appType != 'app' ? 3 : 12">
-              <span v-if="this.appType != 'app'">
-                <el-button size="mini" type="error" @click="logout()">{{$t("退出")}}</el-button>
-              </span>
-              <span v-else class="fontBold">
-                <label>{{$t("场景列表")}}</label>
-                :
-                <label>{{data.length}}</label>
-              </span>
-            </el-col>
-            <el-col :span="21" class="textRight">
-              <el-button size="mini" type="error" @click="selEnvList()" v-if="this.appType != 'app'">{{$t("场所列表")}}</el-button>
-              <el-button v-if="globalDeviceType != 'ios'" size="mini" type="success" @click="selEnvTplList()">{{$t("模版列表")}}</el-button>
-              <el-button v-if="globalDeviceType != 'ios'" size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
-            </el-col>
-          </el-row>
+          <div v-if="appType != 'app'">
+            <el-row>
+              <el-col :span="3">
+                <span>
+                  <el-button size="mini" type="error" @click="logout()">{{$t("退出")}}</el-button>
+                </span>
+              </el-col>
+              <el-col :span="21" class="textRight">
+                <el-button size="mini" type="error" @click="selEnvList()">{{$t("场所列表")}}</el-button>
+                <el-button size="mini" type="success" @click="selEnvTplList()">{{$t("模版列表")}}</el-button>
+                <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
+              </el-col>
+            </el-row>
+          </div>
+
+          <div v-if="appType == 'app'">
+            <div v-if="globalDeviceType == 'ios'">
+              <el-row>
+                <el-col :span="24">
+                <span class="fontBold">
+                  <label>{{$t("场景列表")}}</label>
+                  :
+                  <label>{{data.length}}</label>
+                </span>
+                </el-col>
+              </el-row>
+            </div>
+            <div v-else>
+              <el-row>
+                <el-col :span="24" class="textRight">
+                  <el-button size="mini" type="success" @click="selEnvTplList()">{{$t("模版列表")}}</el-button>
+                  <el-button size="mini" type="warning" @click="createSence()">{{$t("创建场景")}}</el-button>
+                </el-col>
+              </el-row>
+            </div>
+          </div>
         </div>
       </div>
 
