@@ -3,19 +3,19 @@
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
 
     <div v-if="appType == 'app' && drawerListVisible == false" :class="screenOrientation == 'landscape' ? 'main-block-scale-app-v-class' : 'main-block-scale-app-p-class'">
-      <div class="scale-item-block" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
+      <div class="scale-item-block" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-plus"></i></span>
       </div>
-      <div class="scale-item-block marginTop5" @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
+      <div class="scale-item-block marginTop5" @click.prevent="scaleMinus" @mousedown.prevent="scaleStart('minus')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-minus"></i></span>
       </div>
     </div>
 
     <div v-else-if="drawerListVisible == false" class="main-block-scale-class">
-      <div class="scale-item-block" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
+      <div class="scale-item-block" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-plus"></i></span>
       </div>
-      <div class="scale-item-block marginTop5" @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
+      <div class="scale-item-block marginTop5" @click.prevent="scaleMinus" @mousedown.prevent="scaleStart('minus')"  @mouseup.prevent="scaleEnd()"  @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-minus"></i></span>
       </div>
     </div>
@@ -3499,6 +3499,23 @@ export default {
       // console.log("点击了浏览器的返回按钮");
       history.pushState(null, null, document.URL);
     },
+    setRuleDefaultWidth (value){
+      if (this.ruleDefaultWith < 50 && this.ruleDefaultWith > 40){
+        this.ruleColWidth = 5 * value;
+      }else if (this.ruleDefaultWith <= 40 && this.ruleDefaultWith > 30){
+        this.ruleColWidth = 10 * value;
+      }else if (this.ruleDefaultWith <= 30 && this.ruleDefaultWith > 20){
+        this.ruleColWidth = 15 * value;
+      }else if (this.ruleDefaultWith <= 20 && this.ruleDefaultWith > 15){
+        this.ruleColWidth = 20 * value;
+      }else if (this.ruleDefaultWith <= 15 && this.ruleDefaultWith > 10){
+        this.ruleColWidth = 25 * value;
+      }else if (this.ruleDefaultWith <= 10 && this.ruleDefaultWith > 5){
+        this.ruleColWidth = 30 * value;
+      }else if (this.ruleDefaultWith <= 0){
+        this.ruleColWidth = 60 * value;
+      }
+    },
     scaleStart(type){
       let _self=this;
       this.loopClick = null;
@@ -3518,16 +3535,22 @@ export default {
       this.loopType = "";
     },
     scaleMinus(){
-      if (this.ruleDefaultWith >= 5){
+      if (this.ruleDefaultWith){
         this.ruleDefaultWith = this.ruleDefaultWith - 1;
-        if (this.ruleDefaultWith < 45 && this.ruleDefaultWith > 23){
-          this.ruleColWidth = 2;
-        }else if (this.ruleDefaultWith < 23 && this.ruleDefaultWith > 10){
-          this.ruleColWidth = 5;
-        }else if (this.ruleDefaultWith <= 10 && this.ruleDefaultWith > 5){
-          this.ruleColWidth = 10;
-        }else if (this.ruleDefaultWith <= 5){
-          this.ruleColWidth = 15;
+        if (this.ruleMax / 10 <= 10){
+          this.setRuleDefaultWidth(0.4);
+        }else if (this.ruleMax / 10 > 10 && this.ruleMax / 10 <= 20){
+          this.setRuleDefaultWidth(0.6);
+        }else if (this.ruleMax / 10 > 20 && this.ruleMax / 10 <= 30){
+          this.setRuleDefaultWidth(0.8);
+        }else if (this.ruleMax / 10 > 20 && this.ruleMax / 10 <= 60){
+          this.setRuleDefaultWidth(1.2);
+        }else if (this.ruleMax / 10 > 60 && this.ruleMax / 10 <= 590){
+          this.setRuleDefaultWidth(10);
+        }else if (this.ruleMax / 10 > 590 && this.ruleMax / 10 <= 5900){
+          this.setRuleDefaultWidth(100);
+        }else {
+          this.setRuleDefaultWidth(600);
         }
 
         for (let i = 0; i < this.taskList.length; i++) {
@@ -3562,6 +3585,8 @@ export default {
         this.ruleColWidth = 10;
       }else if (this.ruleDefaultWith >= 5 && this.ruleDefaultWith <= 10){
         this.ruleColWidth = 15;
+      }else if (this.ruleDefaultWith >= 1 && this.ruleDefaultWith <= 5){
+        this.ruleColWidth = 60;
       }else {
         this.ruleColWidth = 1;
       }
@@ -3590,6 +3615,7 @@ export default {
   .demoRuleClass{
     padding: 0px 0px;
     overflow-x: auto;
+    min-width: 100%;
   }
   .demoRuleFixedClass{
     position: relative;
