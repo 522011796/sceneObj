@@ -30,13 +30,17 @@
 
             <div class="ver-line"></div>
           </div>
-          <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in Math.floor(ruleMax * 100 / 1000)" :key="indexNum" class="rule-class" :style="{width: ruleDefaultWith + 'px'}">
+          <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in Math.floor(ruleMax * 100 / 1000)" :key="indexNum" class="rule-class" :style="{width: ruleDefaultWith + 'px'}" style="position: relative">
             <div v-if="indexNum % ruleColWidth == 0">
               <div class="num">
                 {{format(indexNum * 1000)}}
               </div>
 
               <div class="ver-line"></div>
+
+              <div :style="divRuleTimeStyle" style="background: rgba(21,21,21,0.5);height: 100px;width: 100%;position: absolute;top: 0px;display: none">
+
+              </div>
             </div>
             <div v-else>
               &nbsp;
@@ -1590,6 +1594,9 @@ export default {
         'height': '0px',
         'overflow-y': 'auto',
       },
+      divRuleTimeStyle: {
+        'height': '0px',
+      },
       dialogRightTabStyle:{
         'height': '0px',
         'overflow-y': 'auto',
@@ -1884,6 +1891,7 @@ export default {
         let heightOrder = window.innerHeight-45-60;
         this.$set(this.divStyle,'height', this.globalDeviceType == 'ios' ? window.innerHeight-40 + 'px' : window.innerHeight-40-60 + "px");
         this.$set(this.dialogRightTabStyle,'height', height + 'px');
+        this.$set(this.divRuleTimeStyle,'height', this.globalDeviceType == 'ios' ? window.innerHeight + 'px' : window.innerHeight-40 + "px");
         this.$set(this.dialogRightChildTabStyle,'height', heightChild + 'px');
         this.$set(this.drawerBottomDialogStyle,'height', heightBottomChild + 'px');
         this.$set(this.dialogRightTabOrderStyle,'height', heightOrder + 'px');
