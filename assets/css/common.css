@@ -47,19 +47,19 @@ span,div,button,label{
   position: fixed;
   right: 10px;
   bottom: 84px;
-  z-index: 9999;
+  z-index: 99;
 }
 .main-block-scale-app-p-class{
   position: fixed;
   right: 10px;
   bottom: 44px;
-  z-index: 9999;
+  z-index: 99;
 }
 .main-block-scale-app-v-class{
   position: fixed;
   right: 10px;
   bottom: 20px;
-  z-index: 9999;
+  z-index: 99;
 }
 .scale-item-block{
   height: 40px;
@@ -344,6 +344,9 @@ span,div,button,label{
 }
 .marginTop15{
   margin-top: 15px;
+}
+.marginTop2{
+  margin-top: 2px;
 }
 .marginTop5{
   margin-top: 5px;

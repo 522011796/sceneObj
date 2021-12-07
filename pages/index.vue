@@ -76,13 +76,24 @@
                                   :class="itemBlock.i == 1 ? 'color-ffffff' : 'color-434343'"
                       >
                         {{ orderValueInfo(itemBlock.i, 'set') }}
+                        <div class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                          {{format(itemBlock.timeCount)}}
+                        </div>
                       </span>
                       <span v-if="(itemBlock.i == 3) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343 font-size-12">
-                        <label v-if="itemBlock.t > 0">{{ orderValueInfo(itemBlock.i, 'set') }}</label>
+                        <label v-if="itemBlock.t > 0">
+                          {{ orderValueInfo(itemBlock.i, 'set') }}
+                          <div class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                            {{format(itemBlock.timeCount)}}
+                          </div>
+                        </label>
                         <label v-if="itemBlock.t == 0">{{ $t("无限循环") }}</label>
                       </span>
                       <span v-if="(itemBlock.i == 4) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343 font-size-12">
                         {{ itemBlock.n }}
+                        <div class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                          {{format(itemBlock.timeCount)}}
+                        </div>
                         <label v-if="itemBlock.sec == -1" class="color-default">({{ $t("无限循环") }})</label>
                       </span>
 
@@ -1567,6 +1578,7 @@ export default {
       touchType: '',
       loopClick: null,
       loopType: '',
+      timeCount: 0,
       colors: {
         hue: 50,
         saturation: 100,
@@ -2065,11 +2077,14 @@ export default {
     },
     async setSenceData(item, type){
       let data = item;
+      let timeCount = 0;
       //console.log(56,data);
       let plans = [];
       let tasks = [];
       let tasksTemp = [];
       for (let i = 0; i < data.length; i++){
+        this.timeCount = 0;
+        timeCount = 0;
         plans.push({
           d: data[i].d,
           n: data[i].n,
@@ -2087,6 +2102,9 @@ export default {
           if (data[i].i[j].i == 1 || data[i].i[j].i == 2){
             tasksTemp[j]['sec'] = data[i].i[j].v;
             tasksTemp[j]['width'] = data[i].i[j].v / 1000 * this.ruleDefaultWith;
+            timeCount += data[i].i[j].v;
+            this.timeCount = timeCount;
+            tasksTemp[j]['timeCount'] = timeCount;
           }else if (data[i].i[j].i == 4){
             for (let k = 0; k < this.sceneList.length; k++){
               if (this.sceneList[k].sceneId == data[i].i[j].v){
@@ -2094,6 +2112,9 @@ export default {
                 let scnenDuration = this.scnenDuration;
                 tasksTemp[j]['sec'] = scnenDuration == Number.MAX_SAFE_INTEGER ? -1 : scnenDuration;
                 tasksTemp[j]['width'] = tasksTemp[j]['sec'] / 1000 * this.ruleDefaultWith;
+                timeCount += tasksTemp[j]['sec'].v;
+                this.timeCount = timeCount;
+                tasksTemp[j]['timeCount'] = timeCount;
               }
             }
           }else{
@@ -2140,6 +2161,7 @@ export default {
           let rule = this.ruleMax * 100 - this.resetTaskList[i].rule;
           this.resetTaskList[i].obj.secLoop = rule;
           this.resetTaskList[i].obj['width'] = rule / 1000 * this.ruleDefaultWith;
+          //this.timeCount += rule;
         }
       }
 
@@ -2148,11 +2170,12 @@ export default {
           let rule = this.ruleMax * 100 - this.resetSenceList[i].rule;
           this.resetSenceList[i].obj.secLoop = rule;
           this.resetSenceList[i].obj['width'] = rule / 1000 * this.ruleDefaultWith;
+          //this.timeCount += rule;
         }
       }
     },
     setTaskList(taskList, type){//重新组装tasklist，用于显示列表
-      let list = [];
+      let list = JSON.parse(JSON.stringify(taskList));
       let array = [];
       let selfLoopNumber = 0;
       let loopNum = 0;
@@ -2161,12 +2184,13 @@ export default {
       let ruleScene = 0;
       this.resetTaskList = [];
       this.resetSenceList = [];
+      let timeCount = 0;
       for (let i = 0; i < taskList.length; i++){
         for (let j = 0; j < taskList[i].length; j++){
+          timeCount = 0;
           if (this.taskList[i][j].secLoop != undefined || this.taskList[i][j].secLoop){
             this.taskList[i][j].secLoop = undefined;
           }
-
           if (taskList[i][j].i != 1 && taskList[i][j].i != 2 && taskList[i][j].i != 3 && taskList[i][j].i != 4){
             array.push(taskList[i][j]);
           }else if (taskList[i][j].i == 3){
@@ -2175,7 +2199,7 @@ export default {
             selfLoopNumber = 0;
             ruleScene = 0;
             loopNum = this.taskList[i][j].t === 0 ? 1 : this.taskList[i][j].t;
-
+            timeCount = 0;
             for (let k = index; k < this.taskList[i].length; k++){
               if (k < j && (this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2 || this.taskList[i][k].i == 3 || this.taskList[i][k].i == 4)){
                 if (this.taskList[i][k].secLoop){
@@ -2185,6 +2209,7 @@ export default {
                 }
                 resultLoop += Math.floor(bNumber);
                 ruleScene += Math.floor(bNumber);
+                timeCount += bNumber;
               }
             }
             if (resultLoop * loopNum > 0){
@@ -2193,20 +2218,39 @@ export default {
                 rule: ruleScene,
                 obj: this.taskList[i][j]
               });
+              timeCount += resultLoop * loopNum;
+              //console.log(timeCount,resultLoop * loopNum);
               this.$set(this.taskList[i][j],'secLoop', resultLoop * loopNum);
+              this.$set(this.taskList[i][j],'width', resultLoop * loopNum / 1000 * this.ruleDefaultWith);
+              this.$set(this.taskList[i][j],'timeCount', timeCount);
             }
           }else if(taskList[i][j].i == 4){
             //obj['sec'] = this.scnenDuration == Number.MAX_SAFE_INTEGER ? this.ruleMax - sceneRule * 100 : this.scnenDuration;
             ruleScene = 0;
             let bNumber = 0;
-            for (let k = 0; k < this.taskList[i].length; k++){
-              if ((this.taskList[i][k].i == 1 || this.taskList[i][k].i == 2 || this.taskList[i][k].i == 3 || this.taskList[i][k].i == 4)){
-                if (this.taskList[i][k].secLoop){
-                  bNumber = this.taskList[i][k].secLoop;
+            timeCount = 0;
+            let taskList = list[i];
+            for (let k = 0; k < taskList.length; k++){
+              ruleScene = 0;
+              let bNumber = 0;
+
+              if ((taskList[k].i == 1 || taskList[k].i == 2 || taskList[k].i == 3 || taskList[k].i == 4)){
+                if (taskList[k].secLoop){
+                  bNumber = taskList[k].secLoop;
                 }else{
-                  bNumber = this.taskList[i][k].sec;
+                  bNumber = taskList[k].sec;
                 }
                 ruleScene += Math.floor(bNumber);
+                timeCount += ruleScene;
+
+                if (ruleScene <= 0){
+                  this.$set(this.taskList[i][k],'secLoop', 1000);
+                  this.$set(this.taskList[i][k],'width', 1000 / 1000 * this.ruleDefaultWith);
+                }else {
+                  this.$set(this.taskList[i][k],'secLoop',ruleScene);
+                  this.$set(this.taskList[i][k],'width', ruleScene / 1000 * this.ruleDefaultWith);
+                  this.$set(this.taskList[i][k],'timeCount', timeCount);
+                }
               }
             }
             this.resetSenceList.push({
@@ -2215,13 +2259,6 @@ export default {
               indexJ: j,
               indexI: i
             });
-            //this.taskList[i][j].sec = this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec;
-            //this.$set(this.taskList[i][j],'secLoop', this.taskList[i][j].sec == -1 ? this.ruleMax * 100 - ruleScene : this.taskList[i][j].sec);
-            if (ruleScene <= 0){
-              this.$set(this.taskList[i][j],'secLoop', 1000);
-            }else {
-              this.$set(this.taskList[i][j],'secLoop',ruleScene);
-            }
           }else if (taskList[i][j].i == 2){
             let selfSec = this.taskList[i][j].sec;
             // if (resultLoop * loopNum > 0){
@@ -3325,6 +3362,12 @@ export default {
             if (taskList[i][j].list != undefined || taskList[i][j].list != null){
               taskList[i][j].list = undefined;
             }
+            if (taskList[i][j].width != undefined || taskList[i][j].width != null){
+              taskList[i][j].width = undefined;
+            }
+            if (taskList[i][j].timeCount != undefined || taskList[i][j].timeCount != null){
+              taskList[i][j].timeCount = undefined;
+            }
           }
         }
         //console.log(planList);
@@ -3834,9 +3877,9 @@ export default {
     font-size: 12px;
     padding: 0px 10px;
     position: relative;
-    top: 0px;
+    top: 5px;
     height: 40px;
-    line-height: 40px;
+    /*line-height: 40px;*/
   }
   .colorBlock{
     border: 1px solid #dddddd;

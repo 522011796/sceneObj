@@ -721,6 +721,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               if (planList[i].i[j].width != undefined || planList[i].i[j].width != null) {
                 planList[i].i[j].width = undefined;
               }
+              if (planList[i].i[j].timeCount != undefined || planList[i].i[j].timeCount != null) {
+                planList[i].i[j].timeCount = undefined;
+              }
             }
           }
           for (let i = 0; i < planTempList.length; i++) {
@@ -739,6 +742,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               }
               if (planTempList[i].i[j].width != undefined || planTempList[i].i[j].width != null) {
                 planTempList[i].i[j].width = undefined;
+              }
+              if (planTempList[i].i[j].timeCount != undefined || planTempList[i].i[j].timeCount != null) {
+                planTempList[i].i[j].timeCount = undefined;
               }
             }
           }
@@ -775,6 +781,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               if (taskList[i][j].width != undefined || taskList[i][j].width != null){
                 taskList[i][j].width = undefined;
               }
+              if (taskList[i][j].timeCount != undefined || taskList[i][j].timeCount != null){
+                taskList[i][j].timeCount = undefined;
+              }
             }
           }
 
@@ -797,6 +806,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               }
               if (taskTempList[i][j].width != undefined || taskTempList[i][j].width != null){
                 taskTempList[i][j].width = undefined;
+              }
+              if (taskTempList[i][j].timeCount != undefined || taskTempList[i][j].timeCount != null){
+                taskTempList[i][j].timeCount = undefined;
               }
             }
           }

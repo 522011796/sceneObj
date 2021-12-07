@@ -44,6 +44,16 @@
               </el-col>
             </el-row>
           </div>
+          <div>
+            <el-row>
+              <el-col :span="10">
+                {{$t("时刻")}}
+              </el-col>
+              <el-col :span="14">
+                {{format(itemBlock.timeCount)}}
+              </el-col>
+            </el-row>
+          </div>
         </div>
       </div>
       <div v-if="itemBlock.i == 4">
@@ -58,17 +68,48 @@
               </el-col>
             </el-row>
           </div>
-          <div>
+          <div v-if="itemBlock.sec == -1">
             <el-row>
               <el-col :span="10">
                 {{$t("循环次数")}}:
               </el-col>
               <el-col :span="14">
-                <label v-if="itemBlock.sec == -1">{{ $t("无限循环") }}</label>
-                <label v-if="itemBlock.sec != -1">{{ itemBlock.t }}</label>
+                <label>{{ $t("无限循环") }}</label>
               </el-col>
             </el-row>
           </div>
+          <div v-if="itemBlock.sec != -1">
+            <el-row>
+              <el-col :span="10">
+                {{$t("时长")}}:
+              </el-col>
+              <el-col :span="14">
+                <label>{{ itemBlock.sec }}</label>
+              </el-col>
+            </el-row>
+          </div>
+          <div v-if="itemBlock.sec != -1">
+            <el-row>
+              <el-col :span="10">
+                {{$t("时刻")}}
+              </el-col>
+              <el-col :span="14">
+                {{format(itemBlock.timeCount)}}
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
+      <div v-if="itemBlock.i == 1">
+        <div>
+          <el-row>
+            <el-col :span="10">
+              {{$t("时刻")}}:
+            </el-col>
+            <el-col :span="14">
+              {{format(itemBlock.timeCount)}}
+            </el-col>
+          </el-row>
         </div>
       </div>
       <div v-if="itemBlock.i == 2">
@@ -89,6 +130,16 @@
             </el-col>
             <el-col :span="14">
               {{ itemBlock.list ? itemBlock.list.length : 0 }}
+            </el-col>
+          </el-row>
+        </div>
+        <div>
+          <el-row>
+            <el-col :span="10">
+              {{$t("时刻")}}
+            </el-col>
+            <el-col :span="14">
+              {{format(itemBlock.timeCount)}}
             </el-col>
           </el-row>
         </div>
@@ -234,6 +285,25 @@ export default {
     },
     orderColorInfo(type){
       return orderColor(type);
+    },
+    format(seconds) {
+      //var x = 1200
+      var d = this.$moment.duration(seconds, 'milliseconds');
+      var hours = Math.floor(d.asHours());
+      var mins = Math.floor(d.asMinutes()) - hours * 60;
+      var secs = Math.floor(d.asSeconds()) - mins * 60;
+      var secss = Math.floor(d.asMilliseconds()) - secs * 1000;
+
+      // let hour = Math.floor(seconds / 3600) >= 10 ? Math.floor(seconds / 3600) : '0' + Math.floor(seconds / 3600);
+      // seconds -= 3600 * hour;
+      // let min = Math.floor(seconds / 60) >= 10 ? Math.floor(seconds / 60) : '0' + Math.floor(seconds / 60);
+      // seconds -= 60 * min;
+      // let sec = seconds >= 10 ? seconds : '0' + seconds;
+
+      hours = hours >= 10 ? hours : '0'+hours;
+      mins = mins >= 10 ? mins : '0'+mins;
+      secs = secs >= 10 ? secs : '0'+secs;
+      return hours + ':' + mins + ':' + secs;
     }
   }
 }
