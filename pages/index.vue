@@ -1601,6 +1601,8 @@ export default {
       ruleSelStart: "",
       ruleSelEnd: "",
       timeDiff: 0,
+      ruleStartTime: 0,
+      ruleEndTime: 0,
       colors: {
         hue: 50,
         saturation: 100,
@@ -3751,8 +3753,6 @@ export default {
       }
     },
     selRuleItem(event, item, index){
-      let startTime = 0;
-      let endTime = 0;
       let ruleSelStart = this.ruleSelStart === "" ? 0 : this.ruleSelStart;
       for (let i = 0; i < this.ruleItemList.length; i++){
         this.ruleItemList[i].click = false;
@@ -3761,19 +3761,22 @@ export default {
       if (this.ruleSelEnd != ""){
         this.ruleSelStart = "";
         this.ruleSelEnd = "";
+        this.ruleStartTime = 0;
+        this.ruleStartTime = 0;
       }
 
       if (this.ruleSelStart === ""){
         this.ruleSelStart = index;
         this.ruleSelEnd = 0;
-        startTime = item.num;
+        this.ruleStartTime = item.num;
         item.click = true;
       }else {
         this.ruleSelEnd = index;
-        endTime = item.num;
+        this.ruleEndTime = item.num;
       }
 
-      this.timeDiff = endTime -startTime;
+      console.log(this.ruleStartTime, this.ruleEndTime);
+      this.timeDiff = this.ruleEndTime - this.ruleStartTime;
       for (let i = this.ruleSelStart; i <= this.ruleSelEnd; i++){
         this.ruleItemList[i].click = true;
       }
@@ -3781,6 +3784,9 @@ export default {
     closeTimeDiff(){
       this.ruleSelStart = "";
       this.ruleSelEnd = "";
+      this.ruleStartTime = 0;
+      this.ruleEndTime = 0;
+      this.timeDiff = 0;
       for (let i = 0; i < this.ruleItemList.length; i++){
         this.ruleItemList[i].click = false;
       }
