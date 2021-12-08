@@ -40,7 +40,7 @@
 
               <div :style="divRuleTimeStyle" @click.stop="" v-if="itemNum.click == true" style="background: rgba(221,221,221,0.1);height: 100px;width: 100%;position: absolute;top: 40px;border-left: 0.5px dashed #C0C4CC;">
                 <div style="position: relative" v-if="ruleSelEnd != '' && ruleSelEnd != ruleSelStart">
-                  <div v-if="ruleSelStart == indexNum" style="background: rgb(140, 197, 255);z-index: 99;position: absolute; top: 50px;padding: 5px 5px;border-radius: 5px;min-width: 100px;">
+                  <div v-if="ruleSelStart == indexNum" style="background: rgb(140, 197, 255);z-index: 99;position: absolute; top: 50px;padding: 5px 5px;border-radius: 5px;min-width: 100px;" :style="{width: ruleSelWidth - 20+'px'}">
                     {{ $t("时间差") }}: {{ format(timeDiff * 1000) }}
                   </div>
 
@@ -1603,6 +1603,7 @@ export default {
       timeDiff: 0,
       ruleStartTime: 0,
       ruleEndTime: 0,
+      ruleSelWidth: 0,
       colors: {
         hue: 50,
         saturation: 100,
@@ -3623,6 +3624,7 @@ export default {
       this.loopType = "";
     },
     scaleMinus(){
+      this.closeTimeDiff();
       let ruleMainWidthRef = this.$refs.ruleMainWidthRef;
       let ruleColRef = this.$refs.ruleColRef;
       this.defaultStep++;
@@ -3721,6 +3723,7 @@ export default {
       // }
     },
     scaleAdd(){
+      this.closeTimeDiff();
       this.ruleDefaultWith = this.ruleDefaultWith + 1;
       // if (this.ruleDefaultWith > 25 && this.ruleDefaultWith < 45){
       //   this.ruleColWidth = 2;
@@ -3754,6 +3757,7 @@ export default {
     },
     selRuleItem(event, item, index){
       let ruleSelStart = this.ruleSelStart === "" ? 0 : this.ruleSelStart;
+      let ruleSelWidth = 0;
       for (let i = 0; i < this.ruleItemList.length; i++){
         this.ruleItemList[i].click = false;
       }
@@ -3775,11 +3779,14 @@ export default {
         this.ruleEndTime = item.num;
       }
 
-      console.log(this.ruleStartTime, this.ruleEndTime);
+      //console.log(this.ruleStartTime, this.ruleEndTime);
       this.timeDiff = this.ruleEndTime - this.ruleStartTime;
       for (let i = this.ruleSelStart; i <= this.ruleSelEnd; i++){
+        ruleSelWidth += this.ruleItemList[i].width;
         this.ruleItemList[i].click = true;
       }
+      console.log(ruleSelWidth);
+      this.ruleSelWidth = ruleSelWidth;
     },
     closeTimeDiff(){
       this.ruleSelStart = "";
