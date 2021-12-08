@@ -31,7 +31,7 @@
               </div>
             </div>
 
-            <div :style="menuStyle" ref="menuRef" @scroll="handleDefaultScrollTop">
+            <div class="menuBlockClass" :style="menuStyle" ref="menuRef" @scroll="handleDefaultScrollTop">
               <div class="layout-menu-list moon-ellipsis-class" v-for="(item, index) in menuList">
                 <el-popover
                   placement="right"
@@ -841,6 +841,8 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           this.$refs.childRef.$children[0].drawerDevice = false;
           this.$refs.childRef.$children[0].drawerBottomDialogVisible = false;
           this.$refs.childRef.$children[0].drawer = false;
+          this.$refs.childRef.$children[0].defaultStep = 5;
+          this.$refs.childRef.$children[0].defaultStepNum = 1;
           this.drawer = false;
           this.$refs.childRef.$children[0].formSence = {
             id: '',
