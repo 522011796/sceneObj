@@ -1,13 +1,18 @@
 <template>
   <div>
-<!--    <div style="position: relative;height: 100%; width: 100%; background: #000000">-->
-<!--      <div v-for="n in 10">-->
-<!--        222333-->
-<!--      </div>-->
-<!--    </div>-->
-    <div style="position: fixed;bottom: 0;width: 100%; height: 40px; background: #dddddd;color: #434343">
-      45454545
-    </div>
+    <SketchRule
+      :lang="lang"
+      :thick="thick"
+      :scale="scale"
+      :width="582"
+      :height="482"
+      :startX="startX"
+      :startY="startY"
+      :horLineArr="lines.h"
+      :verLineArr="lines.v"
+      :cornerActive="true"
+    >
+    </SketchRule>
   </div>
 </template>
 
@@ -16,6 +21,17 @@ export default {
   layout: 'defaultFull',
   data(){
     return {
+      scale: 2, //658813476562495, //1,
+      startX: 0,
+      startY: 0,
+      lines: {
+        h: [100, 200],
+        v: [100, 200]
+      },
+      thick: 20,
+      lang: "zh-CN",
+      isShowRuler: true,
+      isShowReferLine: true,
       mainStyle: {
         'height': '',
         'overflow-y': 'auto'
@@ -24,6 +40,9 @@ export default {
         'top': '',
       }
     }
+  },
+  components: {
+
   },
   created() {
     this.hh();

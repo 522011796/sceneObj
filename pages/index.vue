@@ -32,13 +32,13 @@
           </div>
           <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in ruleItemList" :key="indexNum" @click.prevent="selRuleItem($event, itemNum, indexNum)"  ref="ruleColRef" class="rule-class" :style="{width: itemNum.width + 'px'}" style="position: relative">
             <div v-if="indexNum % ruleColWidth == 0 && itemNum.show == true">
-              <div class="num">
-                {{ itemNum.time }}
+              <div class="num moon-noellipsis-class" :style="ruleNumStyle">
+                {{ format(itemNum.time * 1000, ruleItemListTimeFormart) }}
               </div>
 
               <div class="ver-line"></div>
 
-              <div :style="divRuleTimeStyle" @click.stop="" v-if="itemNum.click == true" style="background: rgba(221,221,221,0.1);height: 100px;width: 100%;position: absolute;top: 40px;border-left: 0.5px dashed #C0C4CC;">
+              <div :style="divRuleTimeStyle" @click.stop="" v-if="itemNum.click == true" style="background: rgba(221,221,221,0.1);height: 100px;width: 100%;position: absolute;top: 40px;border-left: 1px dashed #C0C4CC;">
                 <div style="position: relative" v-if="ruleSelEnd != '' && ruleSelEnd != ruleSelStart">
                   <div v-if="ruleSelStart == indexNum" style="background: rgb(140, 197, 255);z-index: 99;position: absolute; top: 50px;padding: 5px 5px;border-radius: 5px;min-width: 100px;" :style="{width: ruleSelWidth - 20+'px'}">
                     {{ $t("时间差") }}: {{ format(timeDiff * 1000) }}
@@ -1489,7 +1489,7 @@ export default {
     OrderListPopChildDialog, OrderSwitchTypeDialog, OrderCurtainsTypeDialog, LoopItem, OrderLightTypeDialog },
   data(){
     return {
-      ruleDefaultWith: 52,
+      ruleDefaultWith:52,
       ruleColWidth: 1,
       popvisible: false,
       configLoading: false,
@@ -1598,12 +1598,22 @@ export default {
       defaultStepNum: 1,
       defaultStep: 5,
       ruleItemList: [],
+      ruleItemListTimeFormart: '',
       ruleSelStart: "",
       ruleSelEnd: "",
       timeDiff: 0,
       ruleStartTime: 0,
       ruleEndTime: 0,
       ruleSelWidth: 0,
+      ruleScaleNum: 0,
+      ratate: 'rotate(0deg)',
+      ruleNumStyle: {
+        transform: 'rotate(0deg)',
+        position: 'relative',
+        top: '0px',
+        opacity: 1,
+        fontSize: '12px'
+      },
       colors: {
         hue: 50,
         saturation: 100,
@@ -1761,6 +1771,8 @@ export default {
     this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
     this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
 
+    this.ruleScaleNum = Math.floor(this.ruleDefaultWith / 40);
+
     this.checkIndexOrient();
     //this.initRoom();
     this.initDevice();
@@ -1848,11 +1860,10 @@ export default {
           width: this.ruleDefaultWith,
           click: false,
           show: true,
-          time: this.format(i * 1000),
+          time: i,
           num: i
         });
       }
-      console.log(this.ruleItemList);
 
       this.resetTaskOtherList();
       //console.log(1111111,ruleMax);
@@ -1898,7 +1909,7 @@ export default {
         });
       }
     },
-    format(seconds) {
+    format(seconds, type) {
       //var x = 1200
       var d = this.$moment.duration(seconds, 'milliseconds');
       var hours = Math.floor(d.asHours());
@@ -1915,6 +1926,11 @@ export default {
       hours = hours >= 10 ? hours : '0'+hours;
       mins = mins >= 10 ? mins : '0'+mins;
       secs = secs >= 10 ? secs : '0'+secs;
+
+      let timeStr = "";
+      if (type == 1){
+        return '.' + mins + ':' + secs;
+      }
       return hours + ':' + mins + ':' + secs;
     },
     hhIndex(type){
@@ -3588,21 +3604,18 @@ export default {
       // console.log("点击了浏览器的返回按钮");
       history.pushState(null, null, document.URL);
     },
-    setRuleDefaultWidth (value){
-      if (this.ruleDefaultWith < 50 && this.ruleDefaultWith > 40){
-        this.ruleColWidth = 5 * value;
-      }else if (this.ruleDefaultWith <= 40 && this.ruleDefaultWith > 30){
-        this.ruleColWidth = 10 * value;
-      }else if (this.ruleDefaultWith <= 30 && this.ruleDefaultWith > 20){
-        this.ruleColWidth = 15 * value;
-      }else if (this.ruleDefaultWith <= 20 && this.ruleDefaultWith > 15){
-        this.ruleColWidth = 20 * value;
-      }else if (this.ruleDefaultWith <= 15 && this.ruleDefaultWith > 10){
-        this.ruleColWidth = 25 * value;
-      }else if (this.ruleDefaultWith <= 10 && this.ruleDefaultWith > 5){
-        this.ruleColWidth = 30 * value;
-      }else if (this.ruleDefaultWith <= 0){
-        this.ruleColWidth = 60 * value;
+    getEll(){
+      let isOverflow = this.$refs.ruleColRef;
+      for (let i in isOverflow) {
+        let cWidth = isOverflow[i].clientWidth;
+        let sWidth = isOverflow[i].scrollWidth;
+        if (sWidth > cWidth) { //超过
+          //this.$set(this.isEllipsis, i, true);
+          console.log(i, true);
+        } else {
+          //this.$set(this.isEllipsis, i, false);
+          console.log(i, false);
+        }
       }
     },
     scaleStart(type){
@@ -3627,38 +3640,52 @@ export default {
       this.closeTimeDiff();
       let ruleMainWidthRef = this.$refs.ruleMainWidthRef;
       let ruleColRef = this.$refs.ruleColRef;
-      this.defaultStep++;
-
-      // if (this.defaultStep >= 0){
-      //   this.defaultStep--;
-      // }else {
-      //   this.defaultStep = 5;
-      //   this.defaultStepNum = this.defaultStepNum + 1;
-      //   this.defaultStep = this.defaultStep * this.defaultStepNum;
-      //   console.log(this.defaultStep, this.defaultStepNum);
-      //   this.ruleColWidth = this.defaultStepNum;
-      // }
+      let ruleScalNumTest = Math.floor(this.ruleMax * 100 / 1000);
+      let ruleList = [];
 
       //console.log(this.$refs.ruleColRef);
 
       let width = 0;
       let indexNum = 0;
+      this.defaultStepNum++;
+      let isOverflow = this.$refs.ruleColRef;
+
       for (let i = 0; i < this.ruleItemList.length; i++) {
-        this.ruleItemList[i].width--;
-        if (this.ruleItemList[i].show == true){
-          console.log(this.ruleItemList[i].width);
+        this.ruleItemList[i].width = this.ruleItemList[i].width - this.ruleScaleNum;
+        console.log(1,this.ruleItemList[i].width);
+        if (this.ruleItemList[i].width < 44 && this.ruleItemList[i].width >= 30){
+          this.ruleItemListTimeFormart = 1;
+        }else if (this.ruleItemList[i].width < 30 && this.ruleItemList[i].width >= 25){
+          this.ruleItemListTimeFormart = 1;
+          this.ruleNumStyle = {
+            transform: 'rotate(45deg)',
+            top: '5px',
+            position: 'relative',
+            opacity: 0.7,
+            fontSize: '10px'
+          };
+        }else if (this.ruleItemList[i].width < 25 && this.ruleItemList[i].width >= 6){
+          this.ruleItemListTimeFormart = 1;
+          this.ruleNumStyle = {
+            transform: 'rotate(90deg)',
+            top: '10px',
+            position: 'relative',
+            opacity: 0.7,
+            fontSize: '10px',
+          };
+        }else if(this.ruleItemList[i].width < 6){
+          this.ruleNumStyle = {
+            transform: 'rotate(90deg)',
+            top: '10px',
+            position: 'relative',
+            opacity: 0.7,
+            fontSize: '10px',
+            overflow: 'hidden'
+          };
         }
-        // if (this.ruleItemList[i].width < 45){
-        //   if (this.ruleItemList[i].show == true){
-        //     indexNum++;
-        //     if (indexNum % 2 == 0){
-        //       this.ruleItemList[i].show = false;
-        //       indexNum = 0;
-        //     }
-        //   }
-        // }
       }
 
+      // let scaleNum = Math.floor(this.ruleItemList[0].width / 4);
       //this.ruleDefaultWith = this.ruleDefaultWith - 1;
       for (let i = 0; i < this.taskList.length; i++) {
         let otherSec = 0;
@@ -3677,67 +3704,38 @@ export default {
             }
             let result = colSec;
 
-            this.taskList[i][j].width = this.taskList[i][j].width - result;
+            this.taskList[i][j].width = this.taskList[i][j].width - result *this.ruleScaleNum;
           }
         }
       }
-
-      // if (this.ruleDefaultWith){
-      //   this.ruleDefaultWith = this.ruleDefaultWith - 1;
-      //   if (this.ruleMax / 10 <= 10){
-      //     this.setRuleDefaultWidth(0.4);
-      //   }else if (this.ruleMax / 10 > 10 && this.ruleMax / 10 <= 20){
-      //     this.setRuleDefaultWidth(0.6);
-      //   }else if (this.ruleMax / 10 > 20 && this.ruleMax / 10 <= 30){
-      //     this.setRuleDefaultWidth(0.8);
-      //   }else if (this.ruleMax / 10 > 20 && this.ruleMax / 10 <= 60){
-      //     this.setRuleDefaultWidth(1.2);
-      //   }else if (this.ruleMax / 10 > 60 && this.ruleMax / 10 <= 590){
-      //     this.setRuleDefaultWidth(10);
-      //   }else if (this.ruleMax / 10 > 590 && this.ruleMax / 10 <= 5900){
-      //     this.setRuleDefaultWidth(100);
-      //   }else {
-      //     this.setRuleDefaultWidth(600);
-      //   }
-      //
-      //   for (let i = 0; i < this.taskList.length; i++) {
-      //     let otherSec = 0;
-      //     let width = 0;
-      //     for (let j = 0; j < this.taskList[i].length; j++) {
-      //       if (this.taskList[i][j].i == 1 || this.taskList[i][j].i == 2 || this.taskList[i][j].i == 3 || this.taskList[i][j].i == 4) {
-      //         let colSec = 0;
-      //         if (this.taskList[i][j].sec && this.taskList[i][j].sec != -1){
-      //           colSec = this.taskList[i][j].sec / 1000;
-      //         }
-      //         if (this.taskList[i][j].secLoop){
-      //           colSec = this.taskList[i][j].secLoop / 1000
-      //         }
-      //         if (colSec < 1){
-      //           width += colSec;
-      //         }
-      //         let result = colSec;
-      //         this.taskList[i][j].width = this.taskList[i][j].width - result - width;
-      //       }
-      //     }
-      //   }
-      // }
     },
     scaleAdd(){
       this.closeTimeDiff();
-      this.ruleDefaultWith = this.ruleDefaultWith + 1;
-      // if (this.ruleDefaultWith > 25 && this.ruleDefaultWith < 45){
-      //   this.ruleColWidth = 2;
-      // }else if (this.ruleDefaultWith > 20 && this.ruleDefaultWith <= 25){
-      //   this.ruleColWidth = 5;
-      // }else if (this.ruleDefaultWith > 10 && this.ruleDefaultWith <= 20){
-      //   this.ruleColWidth = 10;
-      // }else if (this.ruleDefaultWith >= 5 && this.ruleDefaultWith <= 10){
-      //   this.ruleColWidth = 15;
-      // }else if (this.ruleDefaultWith >= 1 && this.ruleDefaultWith <= 5){
-      //   this.ruleColWidth = 60;
-      // }else {
-      //   this.ruleColWidth = 1;
-      // }
+      for (let i = 0; i < this.ruleItemList.length; i++) {
+        this.ruleItemList[i].width = this.ruleItemList[i].width + this.ruleScaleNum;
+
+        if (this.ruleItemList[i].width > 44){
+          this.ruleItemListTimeFormart = '';
+          this.ruleNumStyle = {
+            transform: 'rotate(0deg)',
+            top: '0px',
+            position: 'relative',
+            opacity: 1,
+            fontSize: '12px'
+          };
+        }else if (this.ruleItemList[i].width > 25 && this.ruleItemList[i].width <= 44){
+          this.ruleItemListTimeFormart = 1;
+          this.ruleNumStyle = {
+            transform: 'rotate(45deg)',
+            top: '10px',
+            position: 'relative',
+            opacity: 0.7,
+            fontSize: '12px'
+          };
+        }
+      }
+
+      this.ruleDefaultWith += this.ruleScaleNum;
 
       for (let i = 0; i < this.taskList.length; i++) {
         for (let j = 0; j < this.taskList[i].length; j++) {
@@ -3750,7 +3748,7 @@ export default {
               colSec = this.taskList[i][j].secLoop / 1000
             }
             let result = Math.floor(colSec);
-            this.taskList[i][j].width = this.taskList[i][j].width + result;
+            this.taskList[i][j].width += this.ruleScaleNum * result;
           }
         }
       }

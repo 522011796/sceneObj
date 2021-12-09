@@ -861,6 +861,14 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           this.selMenuData = "";
           this.$refs.childRef.$children[0].ruleDefaultWith = 52;
           this.$refs.childRef.$children[0].ruleColWidth = 1;
+          this.$refs.childRef.$children[0].ruleItemListTimeFormart = '';
+          this.$refs.childRef.$children[0].ruleNumStyle = {
+            transform: 'rotate(0deg)',
+            top: '0px',
+            position: 'relative',
+            opacity: 1,
+            fontSize: '12px'
+          };
 
           this.dismissDialogStatus();
           this.$refs.childRef.$children[0].drawerListVisible = true;

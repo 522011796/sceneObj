@@ -88,6 +88,10 @@ span,div,button,label{
   overflow: hidden;
   word-break: break-all;
 }
+.moon-noellipsis-class{
+  white-space: nowrap;
+  word-break: break-all;
+}
 .textCenter{
   text-align: center;
 }
