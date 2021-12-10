@@ -4,7 +4,7 @@
 
     <div v-if="appType == 'app' && drawerListVisible == false" :class="screenOrientation == 'landscape' ? 'main-block-scale-app-v-class' : 'main-block-scale-app-p-class'">
       <div class="marginBottom10">
-        <div class="font-size-10">
+        <div class="font-size-10 textCenter">
           <span>{{ $t("辅助") }}</span>
         </div>
         <el-switch
@@ -24,7 +24,7 @@
 
     <div v-else-if="drawerListVisible == false" class="main-block-scale-class">
       <div class="marginBottom10">
-        <div class="font-size-10">
+        <div class="font-size-10 textCenter">
           <span>{{ $t("辅助") }}</span>
         </div>
         <el-switch
