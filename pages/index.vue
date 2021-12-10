@@ -25,7 +25,7 @@
     <div v-else-if="drawerListVisible == false" class="main-block-scale-class">
       <div class="marginBottom10">
         <div class="font-size-10">
-          <span>{{ $t("辅助线") }}</span>
+          <span>{{ $t("辅助") }}</span>
         </div>
         <el-switch
           v-model="ruleLineStatus"
