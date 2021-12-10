@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="init">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/layouts/default.vue" beforeDir="false" afterPath="$PROJECT_DIR$/layouts/default.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -121,14 +121,7 @@
       <workItem from="1638234002026" duration="65904000" />
       <workItem from="1638509881477" duration="1435000" />
       <workItem from="1638754831390" duration="3220000" />
-      <workItem from="1638758298212" duration="158566000" />
-    </task>
-    <task id="LOCAL-00064" summary="init">
-      <created>1637571955722</created>
-      <option name="number" value="00064" />
-      <option name="presentableId" value="LOCAL-00064" />
-      <option name="project" value="LOCAL" />
-      <updated>1637571955724</updated>
+      <workItem from="1638758298212" duration="159253000" />
     </task>
     <task id="LOCAL-00065" summary="init">
       <created>1637574767054</created>
@@ -466,7 +459,14 @@
       <option name="project" value="LOCAL" />
       <updated>1639146283660</updated>
     </task>
-    <option name="localTasksCounter" value="113" />
+    <task id="LOCAL-00113" summary="init">
+      <created>1639146364330</created>
+      <option name="number" value="00113" />
+      <option name="presentableId" value="LOCAL-00113" />
+      <option name="project" value="LOCAL" />
+      <updated>1639146364331</updated>
+    </task>
+    <option name="localTasksCounter" value="114" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

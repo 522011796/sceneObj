@@ -943,6 +943,10 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           }else if(this.oprType == "return"){
             this.$refs.childRef.$children[0].drawerListVisible = true;
             this.setOkConfirm(1);
+            this.$refs.childRef.$children[0].ruleDefaultWith = 52;
+            this.$refs.childRef.$children[0].ruleColWidth = 1;
+            this.$refs.childRef.$children[0].ruleItemListTimeFormart = '';
+            this.$refs.childRef.$children[0].ruleLineStatus = false;
             this.dialogVisible = false;
           }
         },
