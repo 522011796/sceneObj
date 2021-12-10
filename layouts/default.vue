@@ -704,6 +704,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           let planList = this.$refs.childRef.$children[0].planList;
           let planTempList = this.$refs.childRef.$children[0].planList;
           this.changeStatus = 0;
+          this.$refs.childRef.$children[0].closeTimeDiff();
           for (let i = 0; i < planList.length; i++) {
             for (let j = 0; j < planList[i].i.length; j++) {
               if (planList[i].i[j].popVisible != undefined || planList[i].i[j].popVisible != null) {
@@ -855,7 +856,6 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           this.$refs.childRef.$children[0].drawer = false;
           this.$refs.childRef.$children[0].defaultStep = 5;
           this.$refs.childRef.$children[0].defaultStepNum = 1;
-          this.$refs.childRef.$children[0].closeTimeDiff();
           this.drawer = false;
           this.$refs.childRef.$children[0].formSence = {
             id: '',

@@ -5,7 +5,7 @@
     <div v-if="appType == 'app' && drawerListVisible == false" :class="screenOrientation == 'landscape' ? 'main-block-scale-app-v-class' : 'main-block-scale-app-p-class'">
       <div class="marginBottom10">
         <div class="font-size-10">
-          <span>{{ $t("辅助线") }}</span>
+          <span>{{ $t("辅助") }}</span>
         </div>
         <el-switch
           v-model="ruleLineStatus"
@@ -72,6 +72,7 @@
       </div>
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
+        <div v-if="this.ruleStartTime != 0" :style="[divRuleTimeStyle,divRuleTimeItemStyle]" style="width: 1px;position: absolute;top: 0px;border-width: 1px;border-left-style: dashed;border-left-color: #F56C6C;z-index: 9999"></div>
         <div v-if="this.ruleEndTime != 0" :style="divRuleTimeItemStyle" ref="ruleTimeDiffRef" class="ruleTimeDiffRef" @click.stop="" style="height: 20px;line-height: 20px;min-width: 100px;position: absolute;z-index: 200">
           <div style="position: relative">
             <div class="textLeft" style="background: #F56C6C;z-index: 99;position: absolute; top: 5px;padding: 2px 2px;border-radius: 5px;min-width: 130px;" :style="{width: ruleSelWidth - 20+'px'}">
@@ -1657,6 +1658,10 @@ export default {
       ruleSelWidth: 0,
       ruleScaleNum: 0,
       ruleTimeDiffLeft: 0,
+      ruleTimeDiffEndLeft: 0,
+      endRowStart: 0,
+      endColStart: 0,
+      ruleEndTimeDiffWidth: 0,
       ratate: 'rotate(0deg)',
       ruleLineStatus: false,
       ruleNumStyle: {
@@ -2117,13 +2122,19 @@ export default {
       let colStart = 0;
       let colEnd = 0;
       let ruleTimeDiffLeft = 0;
+      let ruleTimeDiffEndLeft = 0;
       let resetRowCol = 0;
+      let resetEndRowCol = 0;
+      let endSec = 0;
+      let ruleEndTimeDiffWidth = 0;
+      let endWidth = 0;
 
       if (this.ruleSelStartIndex >= 2){
         this.ruleStartTime = 0;
         this.ruleEndTime = 0;
         this.ruleSelStartIndex = 0;
         resetRowCol = 0;
+        resetEndRowCol = 0;
       }
 
       if(this.ruleStartTime == 0){
@@ -2134,11 +2145,16 @@ export default {
         this.ruleEndTime = 0;
         rowStart = index;
         colStart = indexBlock;
+        this.endRowStart = index;
+        this.endColStart = indexBlock;
         resetRowCol = 1;
+        this.ruleEndTimeDiffWidth = itemBlock.width;
         this.ruleSelStartIndex++;
       }else if (this.ruleStartTime != 0){
         let startTime = 0;
         let endTime = 0;
+        let endRowStart = 0;
+        let endColStart = 0;
         if (this.ruleStartTime > itemBlock.timeCount){
           startTime = itemBlock.timeCount;
           endTime = this.ruleStartTime;
@@ -2146,9 +2162,18 @@ export default {
           colStart = indexBlock;
           this.ruleStartTime = startTime;
           this.ruleEndTime = endTime;
+          rowEnd = this.endRowStart;
+          colEnd = this.endColStart;
           resetRowCol = 1;
+          resetEndRowCol = 1;
+          ruleEndTimeDiffWidth = this.ruleEndTimeDiffWidth;
+          console.log(rowStart,colStart, rowEnd,colEnd);
         }else {
           this.ruleEndTime = (itemBlock.secLoop && itemBlock.t == 0) ? -1 : itemBlock.timeCount;
+          rowEnd = index;
+          colEnd = indexBlock;
+          resetEndRowCol = 1;
+          ruleEndTimeDiffWidth = itemBlock.width;
           if (itemBlock.sec == -1){
             this.ruleEndTime = -1;
           }
@@ -2158,6 +2183,7 @@ export default {
         this.ruleSelStartIndex++;
       }
 
+      //console.log(this.ruleEndTime, this.ruleStartTime);
       if (resetRowCol == 1){
         let rowData = this.taskList[rowStart];
         for (let j = 0; j < rowData.length; j++){
@@ -2166,15 +2192,26 @@ export default {
           }
         }
         this.ruleTimeDiffLeft = ruleTimeDiffLeft;
+        console.log(this.ruleTimeDiffLeft);
+      }
+
+      if (resetEndRowCol == 1){
+        let rowData = this.taskList[rowEnd];
+        for (let j = 0; j < rowData.length; j++){
+          if (j < colEnd && (rowData[j].i == 1 || rowData[j].i == 2 || rowData[j].i == 3 || rowData[j].i == 4)){
+            ruleTimeDiffEndLeft += rowData[j].width;
+          }
+        }
+        endWidth = ruleTimeDiffEndLeft + ruleEndTimeDiffWidth - this.ruleTimeDiffLeft;
       }
 
       if (this.ruleEndTime > 0){
         this.timeDiff = this.ruleEndTime - this.ruleStartTime;
         //console.log(this.ruleSelRowStart, this.ruleSelRowEnd, ruleTimeDiffWidth);
       }
-      this.divRuleTimeItemStyle.top = this.ruleSelRowStart*(40+15) +"px";
+      this.divRuleTimeItemStyle.top = this.ruleSelRowStart == 0 ? "5px" : this.ruleSelRowStart * (40+10) +"px";
       this.divRuleTimeItemStyle.left = this.ruleTimeDiffLeft +"px";
-      this.ruleSelWidth = this.timeDiff / 1000 * this.ruleDefaultWith;
+      this.ruleSelWidth = endWidth;
     },
     selBlock(event, item, index, itemBlock, indexBlock){
       this.orderList = item;
@@ -2937,6 +2974,7 @@ export default {
     closeAlertDialog(event){
       if (event == false){
         this.dismissDialogStatus();
+        this.closeTimeDiff();
       }
       this.dialogVisible = event;
     },
@@ -3041,7 +3079,7 @@ export default {
         this.touchStatus = false;
         this.hidePopVisible();
       }
-      if (event.target.className == "demoRuleContentClass" || event.target.className == "demoRuleMainBlockClass" || event.target.className == "menuBlockClass" || event.target.className.indexOf('menu-active') > -1){
+      if (event.target.className == "demoRuleContentClass" || event.target.className == "demoRuleMainBlockClass" || event.target.className == "menuBlockClass" || event.target.className == "demoRuleBlockClass" || event.target.className.indexOf('menu-active') > -1){
         this.closeTimeDiff();
       }
     },
@@ -3233,6 +3271,7 @@ export default {
     cancelOpr(){
       clearInterval(this.timer);
       this.timer = null;
+      this.closeTimeDiff();
       this.dismissDialogStatus();
       this.dialogVisible = false;
     },
@@ -3941,6 +3980,8 @@ export default {
       this.ruleSelRowEnd = "";
       this.ruleSelStartWidth = 0;
       this.ruleSelEndWidth = 0;
+      this.ruleEndTimeDiffWidth = 0;
+      this.ruleSelStartIndex = 0;
     }
   }
 }
