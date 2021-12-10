@@ -72,7 +72,7 @@
       </div>
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
-        <div v-if="this.ruleStartTime != 0" :style="[divRuleTimeStyle,divRuleTimeItemStyle]" style="width: 1px;position: absolute;top: 0px;border-width: 1px;border-left-style: dashed;border-left-color: #F56C6C;z-index: 9999"></div>
+        <div v-if="this.ruleStartTime != 0" :style="[divRuleTimeStyle,divRuleTimeItemStyle,{top: '0px'}]" style="width: 1px;position: absolute;top: 0px;border-width: 1px;border-left-style: dashed;border-left-color: #F56C6C;z-index: 9999"></div>
         <div v-if="this.ruleEndTime != 0" :style="divRuleTimeItemStyle" ref="ruleTimeDiffRef" class="ruleTimeDiffRef" @click.stop="" style="height: 20px;line-height: 20px;min-width: 100px;position: absolute;z-index: 200">
           <div style="position: relative">
             <div class="textLeft" style="background: #F56C6C;z-index: 99;position: absolute; top: 5px;padding: 2px 2px;border-radius: 5px;min-width: 130px;" :style="{width: ruleSelWidth - 20+'px'}">
