@@ -191,7 +191,7 @@
           <span :class="checkItemList(item,index)[1] > 0 ? 'index-plus-list-item' : 'index-plus-item'" :style="item.length <=0 ? {float:'left'} : {}">
             <div v-if="checkItemList(item,index)[0] > 0" @click="selBlock($event, item, index, null, null)" :class="checkItemList(item,index)[1] > 0 ? 'item-tips-list-block' : 'item-tips-block'">1+</div>
 
-            <i class="fa fa-plus font-size-14" @click.stop="setSence($event, item, index, 'lightSub')"></i>
+            <i class="fa fa-plus font-size-14" @click.stop="ruleLineStatus == true ? '' : setSence($event, item, index, 'lightSub')"></i>
           </span>
         </div>
       </div>
