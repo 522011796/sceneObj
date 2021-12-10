@@ -3,6 +3,17 @@
     <div id="guide-v" class="guide guide-v" @mousedown="mousedown"></div>
 
     <div v-if="appType == 'app' && drawerListVisible == false" :class="screenOrientation == 'landscape' ? 'main-block-scale-app-v-class' : 'main-block-scale-app-p-class'">
+      <div class="marginBottom10">
+        <div class="font-size-10">
+          <span>{{ $t("辅助线") }}</span>
+        </div>
+        <el-switch
+          v-model="ruleLineStatus"
+          active-color="#13ce66"
+          inactive-color="#DCDFE6"
+          @change="changeLineStatus">
+        </el-switch>
+      </div>
       <div class="scale-item-block" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-plus"></i></span>
       </div>
@@ -12,6 +23,17 @@
     </div>
 
     <div v-else-if="drawerListVisible == false" class="main-block-scale-class">
+      <div class="marginBottom10">
+        <div class="font-size-10">
+          <span>{{ $t("辅助线") }}</span>
+        </div>
+        <el-switch
+          v-model="ruleLineStatus"
+          active-color="#13ce66"
+          inactive-color="#DCDFE6"
+          @change="changeLineStatus">
+        </el-switch>
+      </div>
       <div class="scale-item-block" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-plus"></i></span>
       </div>
@@ -30,7 +52,7 @@
 
             <div class="ver-line"></div>
           </div>
-          <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in ruleItemList" :key="indexNum" @click.prevent="selRuleItem($event, itemNum, indexNum)"  ref="ruleColRef" class="rule-class" :style="{width: itemNum.width + 'px'}" style="position: relative">
+          <div v-if="taskResetList.length > 0 && Math.floor(ruleMax * 100 / 1000) > 0" v-for="(itemNum, indexNum) in ruleItemList" :key="indexNum" @click.prevent="ruleLineStatus == true ? '' : selRuleItem($event, itemNum, indexNum)"  ref="ruleColRef" class="rule-class" :style="{width: itemNum.width + 'px'}" style="position: relative">
             <div v-if="indexNum % ruleColWidth == 0 && itemNum.show == true">
               <div class="num moon-noellipsis-class" :style="ruleNumStyle">
                 {{ format(itemNum.time * 1000, ruleItemListTimeFormart) }}
@@ -38,16 +60,8 @@
 
               <div class="ver-line"></div>
 
-              <div :style="divRuleTimeStyle" @click.stop="" v-if="itemNum.click == true" style="background: rgba(221,221,221,0.1);height: 100px;width: 100%;position: absolute;top: 40px;border-left: 1px dashed #C0C4CC;">
-                <div style="position: relative" v-if="ruleSelEnd != '' && ruleSelEnd != ruleSelStart">
-                  <div v-if="ruleSelStart == indexNum" style="background: rgb(140, 197, 255);z-index: 99;position: absolute; top: 50px;padding: 5px 5px;border-radius: 5px;min-width: 100px;" :style="{width: ruleSelWidth - 20+'px'}">
-                    {{ $t("时间差") }}: {{ format(timeDiff * 1000) }}
-                  </div>
+              <div :style="[divRuleTimeStyle,{width: ruleDefaultWith+'px'}]" @click.stop="" v-if="ruleLineStatus == true" style="height: 100px;width: 100%;position: absolute;top: 40px;border-width: 1px;border-left-style: dashed;border-left-color: rgba(221,221,221, 0.3);background: rgba(0,0,0, 0.1);z-index: 9">
 
-<!--                  <span @click.stop="closeTimeDiff" v-if="ruleSelEnd == indexNum" style="position: absolute; right:5px;top: 45px;font-size: 16px;">-->
-<!--                    <i class="fa fa-times"></i>-->
-<!--                  </span>-->
-                </div>
               </div>
             </div>
             <div v-else>
@@ -58,7 +72,24 @@
       </div>
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
-        <div class="demoRuleBlockClass" v-for="(item, index) in taskResetList" style="margin-bottom: 10px;position: relative">
+        <div v-if="this.ruleEndTime != 0" :style="divRuleTimeItemStyle" ref="ruleTimeDiffRef" class="ruleTimeDiffRef" @click.stop="" style="height: 20px;line-height: 20px;min-width: 100px;position: absolute;z-index: 200">
+          <div style="position: relative">
+            <div class="textLeft" style="background: #F56C6C;z-index: 99;position: absolute; top: 5px;padding: 2px 2px;border-radius: 5px;min-width: 130px;" :style="{width: ruleSelWidth - 20+'px'}">
+              <div v-if="ruleStartTime != -1 && ruleEndTime != -1">
+                {{ $t("时间差") }}: {{ format(timeDiff, '3') }}
+
+                <span class="fa fa-times-circle" style="font-size: 14px; position: relative;float: right;top:-5px;right:-5px;color:#ffffff;" @click.stop="closeTimeDiff"></span>
+              </div>
+              <div style="width: 220px" v-else-if="ruleStartTime == -1 || ruleEndTime == -1">
+                {{ $t("存在无限循环指令，无法计算时间差") }}
+                <span class="fa fa-times-circle" style="font-size: 14px; position: relative;float: right;top:-5px;right:-5px;color:#ffffff;" @click.stop="closeTimeDiff"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="demoRuleBlockClass" v-for="(item, index) in taskResetList" style="margin-bottom: 10px;position: relative;z-index: 99">
           <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item"
                v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2 || itemBlock.i == 3 || itemBlock.i == 4)"
                :style="{
@@ -71,7 +102,20 @@
                       }"
           >
 
-            <v-touch v-on:tap="selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
+<!--            <div :style="[divRuleTimeStyle, {top: index == 0 ? 0 : -(index * (40 + 10)) +'px'}]" v-if="itemBlock.line" @click.stop="" style="background: rgba(0,0,0,0.1);height: 0px;width: 100%;position: absolute;z-index: 200">-->
+<!--              <div style="position: relative" v-if="ruleSelRowStart == index && ruleEndTime != ''">-->
+<!--                <div v-if="ruleSelStart == indexBlock" class="textLeft" style="background: rgb(140, 197, 255);z-index: 99;position: absolute; top: 5px;padding: 5px 5px;border-radius: 5px;min-width: 140px;" :style="{width: ruleSelWidth - 20+'px'}">-->
+<!--                  <div v-if="ruleStartTime != -1 && ruleEndTime != -1">-->
+<!--                    {{ $t("时间差") }}: {{ format(timeDiff, '3') }}-->
+<!--                  </div>-->
+<!--                  <div style="width: 300px" v-if="ruleStartTime == -1 || ruleEndTime == -1">-->
+<!--                    {{ $t("存在无限循环指令，无法计算时间差") }}-->
+<!--                  </div>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--            </div>-->
+
+            <v-touch v-on:tap="ruleLineStatus == true ? '' : selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
               <el-popover
                 popper-class="indexPopVisible"
                 v-model="itemBlock.popVisible"
@@ -81,7 +125,7 @@
                 <div class="font-size-10">
                   <order-list-pop-child-dialog :item-block="itemBlock" :item="item"></order-list-pop-child-dialog>
                 </div>
-                <v-touch v-on:press="selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative">
+                <v-touch  v-on:tap="ruleLineStatus == true ? selRuleLine($event, item, index, itemBlock, indexBlock) : ''" v-on:press="ruleLineStatus == true ? '' : selPressBlock($event, item, index, itemBlock, indexBlock)" slot="reference" style="height: 100%; width: 100%; user-select: none;position: relative" ref="blockItemRef">
                   <div>
                     <div class="moon-ellipsis-class index-main-item-block font-size-12">
                       <span v-if="(itemBlock.i == 1 || itemBlock.i == 2 && (itemBlock.i != 3 || itemBlock.i != 4)) && (!itemBlock.list || itemBlock.list.length == 0)"
@@ -103,7 +147,7 @@
                       </span>
                       <span v-if="(itemBlock.i == 4) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343 font-size-12">
                         {{ itemBlock.n }}
-                        <div class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                        <div v-if="itemBlock.sec != -1" class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
                           {{format(itemBlock.timeCount)}}
                         </div>
                         <label v-if="itemBlock.sec == -1" class="color-default">({{ $t("无限循环") }})</label>
@@ -1598,15 +1642,23 @@ export default {
       defaultStepNum: 1,
       defaultStep: 5,
       ruleItemList: [],
+      ruleSelStartIndex: "",
+      ruleTimeX: 0,
       ruleItemListTimeFormart: '',
+      ruleSelRowStart: "",
+      ruleSelRowEnd: "",
       ruleSelStart: "",
       ruleSelEnd: "",
+      ruleSelStartWidth: 0,
+      ruleSelEndWidth: 0,
       timeDiff: 0,
       ruleStartTime: 0,
       ruleEndTime: 0,
       ruleSelWidth: 0,
       ruleScaleNum: 0,
+      ruleTimeDiffLeft: 0,
       ratate: 'rotate(0deg)',
+      ruleLineStatus: false,
       ruleNumStyle: {
         transform: 'rotate(0deg)',
         position: 'relative',
@@ -1621,12 +1673,20 @@ export default {
         alpha: 1
       },
       valuetext: '',
+      topTimeDiffTop: {
+        'top': '0px',
+      },
       divStyle: {
         'height': '0px',
         'overflow-y': 'auto',
       },
       divRuleTimeStyle: {
         'height': '0px',
+      },
+      divRuleTimeItemStyle: {
+        'left': '0px',
+        'top': '0px',
+        'width': '0px',
       },
       dialogRightTabStyle:{
         'height': '0px',
@@ -1930,6 +1990,8 @@ export default {
       let timeStr = "";
       if (type == 1){
         return '.' + mins + ':' + secs;
+      }else if (type == 3){
+        return hours + ":" + mins + ':' + secs + '.' + secss;
       }
       return hours + ':' + mins + ':' + secs;
     },
@@ -1942,7 +2004,8 @@ export default {
         let heightOrder = window.innerHeight-45-60;
         this.$set(this.divStyle,'height', this.globalDeviceType == 'ios' ? window.innerHeight-40 + 'px' : window.innerHeight-40-60 + "px");
         this.$set(this.dialogRightTabStyle,'height', height + 'px');
-        this.$set(this.divRuleTimeStyle,'height', this.globalDeviceType == 'ios' ? window.innerHeight + 'px' : window.innerHeight-40 + "px");
+        this.$set(this.divRuleTimeStyle,'height', this.globalDeviceType == 'ios' ? window.innerHeight + 'px' : window.innerHeight-40-60 + "px");
+        //this.$set(this.divRuleTimeItemStyle,'height', this.globalDeviceType == 'ios' ? window.innerHeight + 'px' : window.innerHeight-40-60 + "px");
         this.$set(this.dialogRightChildTabStyle,'height', heightChild + 'px');
         this.$set(this.drawerBottomDialogStyle,'height', heightBottomChild + 'px');
         this.$set(this.dialogRightTabOrderStyle,'height', heightOrder + 'px');
@@ -2043,6 +2106,76 @@ export default {
       this.getEnvList();
       this.drawerEnvVisible = true;
     },
+    selRuleLine(event, item, index, itemBlock, indexBlock){
+      let ruleSelStartIndex = 0;
+      let startIndex = "";
+      let endIndex = "";
+      let topTimeDiffTop = 0;
+      let ruleTimeDiffWidth = 0;
+      let rowStart = 0;
+      let rowEnd = 0;
+      let colStart = 0;
+      let colEnd = 0;
+      let ruleTimeDiffLeft = 0;
+      let resetRowCol = 0;
+
+      if (this.ruleSelStartIndex >= 2){
+        this.ruleStartTime = 0;
+        this.ruleEndTime = 0;
+        this.ruleSelStartIndex = 0;
+        resetRowCol = 0;
+      }
+
+      if(this.ruleStartTime == 0){
+        this.ruleStartTime = (itemBlock.secLoop && itemBlock.t == 0) ? -1 : itemBlock.timeCount;
+        if (itemBlock.sec == -1){
+          this.ruleStartTime = -1;
+        }
+        this.ruleEndTime = 0;
+        rowStart = index;
+        colStart = indexBlock;
+        resetRowCol = 1;
+        this.ruleSelStartIndex++;
+      }else if (this.ruleStartTime != 0){
+        let startTime = 0;
+        let endTime = 0;
+        if (this.ruleStartTime > itemBlock.timeCount){
+          startTime = itemBlock.timeCount;
+          endTime = this.ruleStartTime;
+          rowStart = index;
+          colStart = indexBlock;
+          this.ruleStartTime = startTime;
+          this.ruleEndTime = endTime;
+          resetRowCol = 1;
+        }else {
+          this.ruleEndTime = (itemBlock.secLoop && itemBlock.t == 0) ? -1 : itemBlock.timeCount;
+          if (itemBlock.sec == -1){
+            this.ruleEndTime = -1;
+          }
+        }
+        this.ruleSelRowStart = index;
+        this.ruleSelRowEnd = indexBlock;
+        this.ruleSelStartIndex++;
+      }
+
+      if (resetRowCol == 1){
+        let rowData = this.taskList[rowStart];
+        for (let j = 0; j < rowData.length; j++){
+          if (j < colStart && (rowData[j].i == 1 || rowData[j].i == 2 || rowData[j].i == 3 || rowData[j].i == 4)){
+            ruleTimeDiffLeft += rowData[j].width;
+          }
+        }
+        this.ruleTimeDiffLeft = ruleTimeDiffLeft;
+      }
+
+      if (this.ruleEndTime > 0){
+        this.timeDiff = this.ruleEndTime - this.ruleStartTime;
+        //console.log(this.ruleSelRowStart, this.ruleSelRowEnd, ruleTimeDiffWidth);
+      }
+      this.divRuleTimeItemStyle.top = this.ruleSelRowStart*(40+15) +"px";
+      this.divRuleTimeItemStyle.left = this.ruleTimeDiffLeft +"px";
+      this.ruleSelWidth = this.timeDiff / 1000 * this.ruleDefaultWith;
+    },
     selBlock(event, item, index, itemBlock, indexBlock){
       this.orderList = item;
       this.taskIndex = index;
@@ -2137,6 +2270,7 @@ export default {
     async setSenceData(item, type){
       let data = item;
       let timeCount = 0;
+      let index = 0;
       //console.log(56,data);
       let plans = [];
       let tasks = [];
@@ -2144,6 +2278,7 @@ export default {
       for (let i = 0; i < data.length; i++){
         this.timeCount = 0;
         timeCount = 0;
+        index = 0;
         plans.push({
           d: data[i].d,
           n: data[i].n,
@@ -2197,6 +2332,8 @@ export default {
           if (data[i].i[j].n == 0 || data[i].i[j].n){
             tasksTemp[j]['n'] = data[i].i[j].n
           }
+
+          tasksTemp[j]['line'] = false;
 
           //tasksTemp[j]['width'] = data[i].i[j].v / 1000 * this.ruleDefaultWith;
         }
@@ -3430,6 +3567,9 @@ export default {
             if (taskList[i][j].timeCount != undefined || taskList[i][j].timeCount != null){
               taskList[i][j].timeCount = undefined;
             }
+            if (taskList[i][j].line != undefined || taskList[i][j].line != null){
+              taskList[i][j].line = undefined;
+            }
           }
         }
         //console.log(planList);
@@ -3618,6 +3758,12 @@ export default {
         }
       }
     },
+    changeLineStatus(value){
+      this.ruleLineStatus = value;
+      if (value == false){
+        this.closeTimeDiff();
+      }
+    },
     scaleStart(type){
       let _self=this;
       this.loopClick = null;
@@ -3652,7 +3798,6 @@ export default {
 
       for (let i = 0; i < this.ruleItemList.length; i++) {
         this.ruleItemList[i].width = this.ruleItemList[i].width - this.ruleScaleNum;
-        console.log(1,this.ruleItemList[i].width);
         if (this.ruleItemList[i].width < 44 && this.ruleItemList[i].width >= 30){
           this.ruleItemListTimeFormart = 1;
         }else if (this.ruleItemList[i].width < 30 && this.ruleItemList[i].width >= 25){
@@ -3686,7 +3831,7 @@ export default {
       }
 
       // let scaleNum = Math.floor(this.ruleItemList[0].width / 4);
-      //this.ruleDefaultWith = this.ruleDefaultWith - 1;
+      this.ruleDefaultWith -= this.ruleScaleNum;
       for (let i = 0; i < this.taskList.length; i++) {
         let otherSec = 0;
         let width = 0;
@@ -3747,7 +3892,7 @@ export default {
             if (this.taskList[i][j].secLoop){
               colSec = this.taskList[i][j].secLoop / 1000
             }
-            let result = Math.floor(colSec);
+            let result = Math.floor(colSec) == 0 ? 1 : Math.floor(colSec);
             this.taskList[i][j].width += this.ruleScaleNum * result;
           }
         }
@@ -3792,9 +3937,10 @@ export default {
       this.ruleStartTime = 0;
       this.ruleEndTime = 0;
       this.timeDiff = 0;
-      for (let i = 0; i < this.ruleItemList.length; i++){
-        this.ruleItemList[i].click = false;
-      }
+      this.ruleSelRowStart = "";
+      this.ruleSelRowEnd = "";
+      this.ruleSelStartWidth = 0;
+      this.ruleSelEndWidth = 0;
     }
   }
 }

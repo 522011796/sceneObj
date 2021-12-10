@@ -47,19 +47,19 @@ span,div,button,label{
   position: fixed;
   right: 10px;
   bottom: 84px;
-  z-index: 99;
+  z-index: 202;
 }
 .main-block-scale-app-p-class{
   position: fixed;
   right: 10px;
   bottom: 44px;
-  z-index: 99;
+  z-index: 202;
 }
 .main-block-scale-app-v-class{
   position: fixed;
   right: 10px;
   bottom: 20px;
-  z-index: 99;
+  z-index: 2002;
 }
 .scale-item-block{
   height: 40px;

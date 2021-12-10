@@ -724,6 +724,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               if (planList[i].i[j].timeCount != undefined || planList[i].i[j].timeCount != null) {
                 planList[i].i[j].timeCount = undefined;
               }
+              if (planList[i].i[j].line != undefined || planList[i].i[j].line != null) {
+                planList[i].i[j].line = undefined;
+              }
             }
           }
           for (let i = 0; i < planTempList.length; i++) {
@@ -745,6 +748,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               }
               if (planTempList[i].i[j].timeCount != undefined || planTempList[i].i[j].timeCount != null) {
                 planTempList[i].i[j].timeCount = undefined;
+              }
+              if (planTempList[i].i[j].line != undefined || planTempList[i].i[j].line != null) {
+                planTempList[i].i[j].line = undefined;
               }
             }
           }
@@ -784,6 +790,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               if (taskList[i][j].timeCount != undefined || taskList[i][j].timeCount != null){
                 taskList[i][j].timeCount = undefined;
               }
+              if (taskList[i][j].line != undefined || taskList[i][j].line != null){
+                taskList[i][j].line = undefined;
+              }
             }
           }
 
@@ -809,6 +818,9 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
               }
               if (taskTempList[i][j].timeCount != undefined || taskTempList[i][j].timeCount != null){
                 taskTempList[i][j].timeCount = undefined;
+              }
+              if (taskTempList[i][j].line != undefined || taskTempList[i][j].line != null){
+                taskTempList[i][j].line = undefined;
               }
             }
           }
@@ -843,6 +855,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           this.$refs.childRef.$children[0].drawer = false;
           this.$refs.childRef.$children[0].defaultStep = 5;
           this.$refs.childRef.$children[0].defaultStepNum = 1;
+          this.$refs.childRef.$children[0].closeTimeDiff();
           this.drawer = false;
           this.$refs.childRef.$children[0].formSence = {
             id: '',
@@ -862,6 +875,7 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           this.$refs.childRef.$children[0].ruleDefaultWith = 52;
           this.$refs.childRef.$children[0].ruleColWidth = 1;
           this.$refs.childRef.$children[0].ruleItemListTimeFormart = '';
+          this.$refs.childRef.$children[0].ruleLineStatus = false;
           this.$refs.childRef.$children[0].ruleNumStyle = {
             transform: 'rotate(0deg)',
             top: '0px',
