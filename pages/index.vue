@@ -42,9 +42,9 @@
       </div>
     </div>
 
-    <div ref="ruleMainWidthRef" class="demoRuleClass" :style="{'width': ruleMax / 10 * ruleDefaultWith + 43 + 0.1 + 'px'}">
+    <div ref="ruleMainWidthRef" class="demoRuleClass" :style="{'width': ruleMax / 10 * ruleDefaultWith + 20 + 43 + 0.1 + 'px'}">
       <div class="demoRuleMainBlockClass">
-        <div class="demoRuleFixedClass" :style="{'width': ruleMax / 10 * ruleDefaultWith + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
+        <div class="demoRuleFixedClass" :style="{'width': ruleMax / 10 * ruleDefaultWith + ruleDefaultWith + 0.1+'px', 'left': -scrollLeft+0 + 'px'}">
           <div v-if="taskResetList.length > 0 && JSON.stringify(taskResetList[0]) != '[]' && Math.floor(ruleMax * 100 / 1000) <= 0" v-for="(itemNum, indexNum) in 1" :key="indexNum" class="rule-class" style="width: 52px">
             <div class="num">
               {{format(indexNum * 1000)}}
@@ -1967,7 +1967,7 @@ export default {
 
       this.ruleItemList = [];
       let ruleChartLine = Math.floor(this.ruleMax * 100 / 1000);
-      for (let i = 0; i < ruleChartLine; i++){
+      for (let i = 0; i <= ruleChartLine; i++){
         this.ruleItemList.push({
           width: this.ruleDefaultWith,
           click: false,
