@@ -435,6 +435,14 @@ span,div,button,label{
 .color-disabled{
   color: #C0C4CC;
 }
+.bg-add{
+  background: rgb(225, 243, 216);
+  color: #666666;
+}
+.bg-minus{
+  background: rgb(253, 226, 226);
+  color: #666666;
+}
 .width260{
   width: 260px;
 }

@@ -14,7 +14,7 @@
           @change="changeLineStatus">
         </el-switch>
       </div>
-      <div class="scale-item-block" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
+      <div class="scale-item-block bg-add" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-plus"></i></span>
       </div>
       <div class="scale-item-block marginTop5" @click.prevent="scaleMinus" @mousedown.prevent="scaleStart('minus')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
@@ -34,10 +34,10 @@
           @change="changeLineStatus">
         </el-switch>
       </div>
-      <div class="scale-item-block" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
+      <div class="scale-item-block bg-add" @click.prevent="scaleAdd" @mousedown.prevent="scaleStart('add')"  @mouseup.prevent="scaleEnd()" @touchstart.prevent="scaleStart('add')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-plus"></i></span>
       </div>
-      <div class="scale-item-block marginTop5" @click.prevent="scaleMinus" @mousedown.prevent="scaleStart('minus')"  @mouseup.prevent="scaleEnd()"  @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
+      <div class="scale-item-block bg-minus marginTop5" @click.prevent="scaleMinus" @mousedown.prevent="scaleStart('minus')"  @mouseup.prevent="scaleEnd()"  @touchstart.prevent="scaleStart('minus')" @touchend.prevent="scaleEnd()">
         <span><i class="fa fa-minus"></i></span>
       </div>
     </div>
@@ -60,7 +60,7 @@
 
               <div class="ver-line"></div>
 
-              <div :style="[divRuleTimeStyle,{width: ruleDefaultWith+'px'}]" @click.stop="" v-if="ruleLineStatus == true" style="height: 100px;width: 100%;position: absolute;top: 40px;border-width: 1px;border-left-style: dashed;border-left-color: rgba(221,221,221, 0.3);background: rgba(0,0,0, 0.1);z-index: 9">
+              <div :style="[divRuleTimeStyle]" @click.stop="" v-if="ruleLineStatus == true" style="height: 100px;width: 1px;position: absolute;top: 40px;border-width: 1px;border-left-style: dashed;border-left-color: rgba(221,221,221, 0.3);z-index: 9">
 
               </div>
             </div>
@@ -72,18 +72,42 @@
       </div>
 
       <div class="demoRuleContentClass" :style="divStyle" ref="wrapper" @scroll="handleScrollTop">
-        <div v-if="this.ruleStartTime != 0" :style="[divRuleTimeStyle,divRuleTimeItemStyle,{top: '0px'}]" style="width: 1px;position: absolute;top: 0px;border-width: 1px;border-left-style: dashed;border-left-color: #F56C6C;z-index: 9999"></div>
-        <div v-if="this.ruleEndTime != 0" :style="divRuleTimeItemStyle" ref="ruleTimeDiffRef" class="ruleTimeDiffRef" @click.stop="" style="height: 20px;line-height: 20px;min-width: 100px;position: absolute;z-index: 200">
-          <div style="position: relative">
-            <div class="textLeft" style="background: #F56C6C;z-index: 99;position: absolute; top: 5px;padding: 2px 2px;border-radius: 5px;min-width: 130px;" :style="{width: ruleSelWidth - 20+'px'}">
-              <div v-if="ruleStartTime != -1 && ruleEndTime != -1">
-                {{ $t("时间差") }}: {{ format(timeDiff, '3') }}
+        <div v-if="this.ruleStartTime != 0" class="demoRuleContentBorderClass" :style="[divRuleTimeStyle,divRuleTimeItemStyle,{top: '0px',width: ruleSelWidth+'px'}]" style="width: 1px;position: absolute;top: 0px;border-width: 1px;border-left-style: dashed;border-left-color: #F56C6C;z-index: 200;background: rgba(221,221,221,0.2);"></div>
+        <div v-if="this.ruleStartTime != 0" class="demoRuleContentBorderClass" :style="[divRuleTimeStyle,divRuleTimeItemStyle,{top: '0px',width: ruleSESelWidth+'px'}]" style="width: 1px;position: absolute;top: 0px;border-width: 0px;border-left-style: dashed;border-left-color: #F56C6C;z-index: 99;background: rgba(253, 246, 236,0.2);"></div>
+        <div v-if="this.ruleStartTime != 0 && ruleEESelWidth > 0" class="demoRuleContentBorderClass" :style="[divRuleTimeStyle,divRuleTimeItemEEStyle,{top: '0px',width: '0px'}]" style="width: 1px;position: absolute;top: 0px;border-width: 1px;border-left-style: dashed;border-left-color: rgb(225, 243, 216);z-index: 200;"></div>
+        <div v-if="this.ruleStartTime != 0 && ruleESSelWidth > 0" class="demoRuleContentBorderClass" :style="[divRuleTimeStyle,divRuleTimeItemESStyle,{top: '0px',width: ruleESSelWidth+'px'}]" style="width: 1px;position: absolute;top: 0px;border-width: 0px;border-left-style: dashed;border-left-color: #F56C6C;z-index: 99;background: rgba(253, 226, 226,0.4);"></div>
+        <div v-if="this.ruleEndTime != 0" ref="ruleTimeDiffRef" class="ruleTimeDiffRef" @click.stop="" style="height: 20px;line-height: 20px;min-width: 100px;position: absolute;z-index: 200">
+          <div style="position: relative" :style="divRuleTimeItemStyle">
+            <div class="textLeft" style="background: rgba(245,108,108, 1);position: absolute; top: 5px;padding: 2px 0px 2px 1px;border-radius: 5px;min-width: 60px;">
+              <div v-if="ruleStartTime != -1 && ruleEndTime != -1" :style="{width: ruleSelWidth+'px'}">
+                {{ timeDiff }}
 
-                <span class="fa fa-times-circle" style="font-size: 14px; position: relative;float: right;top:-5px;right:-5px;color:#ffffff;" @click.stop="closeTimeDiff"></span>
+                <span class="fa fa-times-circle" style="font-size: 14px; position: absolute;float: right;top:-5px;right:-5px;color:#ffffff;" @click.stop="closeTimeDiff"></span>
               </div>
               <div style="width: 220px" v-else-if="ruleStartTime == -1 || ruleEndTime == -1">
                 {{ $t("存在无限循环指令，无法计算时间差") }}
                 <span class="fa fa-times-circle" style="font-size: 14px; position: relative;float: right;top:-5px;right:-5px;color:#ffffff;" @click.stop="closeTimeDiff"></span>
+              </div>
+            </div>
+          </div>
+          <div v-if="ruleSESelWidth > 0 && ruleStartTime != -1 && ruleEndTime != -1" style="position: relative;" :style="divRuleTimeItemSEStyle">
+            <div class="textLeft color-666666" style="background: rgba(250, 236, 216, 1);z-index: 99;position: absolute; top: 5px;padding: 2px 0px 2px 1px;border-radius: 5px;min-width: 20px;" :style="{width: ruleSESelWidth+'px'}">
+              <div>
+                {{ timeSSDiff }}
+              </div>
+            </div>
+          </div>
+          <div v-if="ruleStartTime != -1 && ruleEndTime != -1" style="position: relative;" :style="divRuleTimeItemEEStyle">
+            <div class="textLeft color-666666" style="background: rgba(225, 243, 216, 1);z-index: 99;position: absolute; top: 5px;padding: 2px 0px 2px 1px;border-radius: 5px;min-width: 20px;" :style="{width: ruleEESelWidth+'px'}">
+              <div>
+                {{ timeEEDiff }}
+              </div>
+            </div>
+          </div>
+          <div v-if="ruleESSelWidth > 0 && (ruleStartTime != -1 && ruleEndTime != -1)" style="position: relative;" :style="divRuleTimeItemESStyle">
+            <div class="textLeft color-666666" style="background: rgba(233, 233, 235, 1);z-index: 99;position: absolute; top: 5px;padding: 2px 0px 2px 1px;border-radius: 5px;min-width: 20px;" :style="{width: ruleESSelWidth+'px'}">
+              <div>
+                {{ timeESDiff }}
               </div>
             </div>
           </div>
@@ -1653,15 +1677,23 @@ export default {
       ruleSelStartWidth: 0,
       ruleSelEndWidth: 0,
       timeDiff: 0,
+      timeSSDiff: 0,
+      timeEEDiff: 0,
+      timeESDiff: 0,
       ruleStartTime: 0,
       ruleEndTime: 0,
       ruleSelWidth: 0,
+      ruleSESelWidth: 0,
+      ruleEESelWidth: 0,
+      ruleESSelWidth: 0,
       ruleScaleNum: 0,
       ruleTimeDiffLeft: 0,
+      ruleTimeDiffEEndLeft: 0,
       ruleTimeDiffEndLeft: 0,
       endRowStart: 0,
       endColStart: 0,
       ruleEndTimeDiffWidth: 0,
+      ruleEEndTimeDiffWidth: 0,
       ratate: 'rotate(0deg)',
       ruleLineStatus: false,
       ruleNumStyle: {
@@ -1689,6 +1721,21 @@ export default {
         'height': '0px',
       },
       divRuleTimeItemStyle: {
+        'left': '0px',
+        'top': '0px',
+        'width': '0px',
+      },
+      divRuleTimeItemSEStyle: {
+        'left': '0px',
+        'top': '0px',
+        'width': '0px',
+      },
+      divRuleTimeItemEEStyle: {
+        'left': '0px',
+        'top': '0px',
+        'width': '0px',
+      },
+      divRuleTimeItemESStyle: {
         'left': '0px',
         'top': '0px',
         'width': '0px',
@@ -1981,7 +2028,6 @@ export default {
       var mins = Math.floor(d.asMinutes()) - hours * 60;
       var secs = Math.floor(d.asSeconds()) - mins * 60;
       var secss = Math.floor(d.asMilliseconds()) - secs * 1000;
-
       // let hour = Math.floor(seconds / 3600) >= 10 ? Math.floor(seconds / 3600) : '0' + Math.floor(seconds / 3600);
       // seconds -= 3600 * hour;
       // let min = Math.floor(seconds / 60) >= 10 ? Math.floor(seconds / 60) : '0' + Math.floor(seconds / 60);
@@ -1996,7 +2042,13 @@ export default {
       if (type == 1){
         return '.' + mins + ':' + secs;
       }else if (type == 3){
-        return hours + ":" + mins + ':' + secs + '.' + secss;
+        let timeStr = hours + ":" + mins + ':' + secs;
+        if (secss > 0){
+          timeStr += '.' + secss;
+        }
+        return timeStr;
+      }else if (type == 4){
+        return '.' + secss;
       }
       return hours + ':' + mins + ':' + secs;
     },
@@ -2123,11 +2175,22 @@ export default {
       let colEnd = 0;
       let ruleTimeDiffLeft = 0;
       let ruleTimeDiffEndLeft = 0;
+      let ruleTimeDiffSEndLeft = 0;
+      let ruleTimeDiffEEndLeft = 0;
+      let ruleTimeDiffESndLeft = 0;
       let resetRowCol = 0;
       let resetEndRowCol = 0;
+      let resetEEndRowCol = 0;
       let endSec = 0;
+      let ruleStartTimeDiffWidth = 0;
       let ruleEndTimeDiffWidth = 0;
+      let ruleEndTimeSEDiffWidth = 0;
+      let ruleEndTimeEEDiffWidth = 0;
+      let ruleEndTimeESDiffWidth = 0;
       let endWidth = 0;
+      let sEndWidth = 0;
+      let eEndWidth = 0;
+      let eSndWidth = 0;
 
       if (this.ruleSelStartIndex >= 2){
         this.ruleStartTime = 0;
@@ -2149,12 +2212,14 @@ export default {
         this.endColStart = indexBlock;
         resetRowCol = 1;
         this.ruleEndTimeDiffWidth = itemBlock.width;
+        this.ruleEEndTimeDiffWidth = itemBlock.width;
         this.ruleSelStartIndex++;
       }else if (this.ruleStartTime != 0){
         let startTime = 0;
         let endTime = 0;
         let endRowStart = 0;
         let endColStart = 0;
+        let eeDiffWidth = 0;
         if (this.ruleStartTime > itemBlock.timeCount){
           startTime = itemBlock.timeCount;
           endTime = this.ruleStartTime;
@@ -2166,14 +2231,18 @@ export default {
           colEnd = this.endColStart;
           resetRowCol = 1;
           resetEndRowCol = 1;
+          resetEEndRowCol = 1;
+          eeDiffWidth = itemBlock.width;
           ruleEndTimeDiffWidth = this.ruleEndTimeDiffWidth;
-          console.log(rowStart,colStart, rowEnd,colEnd);
+          ruleEndTimeEEDiffWidth = this.ruleEEndTimeDiffWidth;
+          this.ruleEEndTimeDiffWidth  = eeDiffWidth;
         }else {
           this.ruleEndTime = (itemBlock.secLoop && itemBlock.t == 0) ? -1 : itemBlock.timeCount;
           rowEnd = index;
           colEnd = indexBlock;
           resetEndRowCol = 1;
           ruleEndTimeDiffWidth = itemBlock.width;
+          ruleEndTimeEEDiffWidth = itemBlock.width;
           if (itemBlock.sec == -1){
             this.ruleEndTime = -1;
           }
@@ -2192,7 +2261,7 @@ export default {
           }
         }
         this.ruleTimeDiffLeft = ruleTimeDiffLeft;
-        console.log(this.ruleTimeDiffLeft);
+        this.ruleTimeDiffEEndLeft = ruleTimeDiffLeft + this.ruleEEndTimeDiffWidth;
       }
 
       if (resetEndRowCol == 1){
@@ -2200,18 +2269,64 @@ export default {
         for (let j = 0; j < rowData.length; j++){
           if (j < colEnd && (rowData[j].i == 1 || rowData[j].i == 2 || rowData[j].i == 3 || rowData[j].i == 4)){
             ruleTimeDiffEndLeft += rowData[j].width;
+            ruleTimeDiffSEndLeft += rowData[j].width;
+            ruleTimeDiffEEndLeft += rowData[j].width;
           }
         }
+        // if (resetEEndRowCol == 1){
+        //   console.log(ruleTimeDiffEEndLeft , ruleEndTimeEEDiffWidth , this.ruleTimeDiffEEndLeft);
+        // }
+
         endWidth = ruleTimeDiffEndLeft + ruleEndTimeDiffWidth - this.ruleTimeDiffLeft;
+        sEndWidth = ruleTimeDiffEndLeft - this.ruleTimeDiffLeft;
+        eEndWidth = ruleTimeDiffEEndLeft + ruleEndTimeEEDiffWidth - this.ruleTimeDiffEEndLeft;
+        eSndWidth = ruleTimeDiffEndLeft - this.ruleTimeDiffEEndLeft;
       }
 
+      //console.log(ruleTimeDiffEEndLeft,  ruleEndTimeEEDiffWidth, this.ruleTimeDiffEEndLeft);
+
       if (this.ruleEndTime > 0){
-        this.timeDiff = this.ruleEndTime - this.ruleStartTime;
-        //console.log(this.ruleSelRowStart, this.ruleSelRowEnd, ruleTimeDiffWidth);
+        //this.timeDiff = this.ruleEndTime - this.ruleStartTime;
+        let timeESDiffNum = eSndWidth / this.ruleDefaultWith;
+        let timeSSDiffNum = sEndWidth / this.ruleDefaultWith;
+        let timeEEDiffNum = eEndWidth / this.ruleDefaultWith;
+        this.timeDiff = this.format(endWidth / this.ruleDefaultWith * 1000, 3);
+        this.timeEEDiff = this.format(eEndWidth / this.ruleDefaultWith * 1000, 3);
+        if (timeSSDiffNum < 1){
+          this.timeSSDiff = this.format(timeSSDiffNum * 1000, 4);
+        }else {
+          this.timeSSDiff = this.format(timeSSDiffNum * 1000, 3);
+        }
+
+        if (timeEEDiffNum < 1){
+          this.timeEEDiff = this.format(timeEEDiffNum * 1000, 4);
+        }else {
+          this.timeEEDiff = this.format(timeEEDiffNum * 1000, 3);
+        }
+
+        if (timeESDiffNum < 1){
+          this.timeESDiff = this.format(timeESDiffNum * 1000, 4);
+        }else {
+          this.timeESDiff = this.format(timeESDiffNum * 1000, 3);
+        }
       }
       this.divRuleTimeItemStyle.top = this.ruleSelRowStart == 0 ? "5px" : this.ruleSelRowStart * (40+10) +"px";
       this.divRuleTimeItemStyle.left = this.ruleTimeDiffLeft +"px";
+
+      this.divRuleTimeItemSEStyle.top = this.ruleSelRowStart == 0 ? "55px" : this.ruleSelRowStart * (40+10)+40 +"px";
+      this.divRuleTimeItemSEStyle.left = this.ruleTimeDiffLeft +"px";
+
+      this.divRuleTimeItemEEStyle.top = this.ruleSelRowStart == 0 ? "95px" : this.ruleSelRowStart * (40+10)+80 +"px";
+      this.divRuleTimeItemEEStyle.left = this.ruleTimeDiffEEndLeft +"px";
+
+      this.divRuleTimeItemESStyle.top = this.ruleSelRowStart == 0 ? "135px" : this.ruleSelRowStart * (40+10)+120 +"px";
+      this.divRuleTimeItemESStyle.left = this.ruleTimeDiffEEndLeft +"px";
+
+
       this.ruleSelWidth = endWidth;
+      this.ruleSESelWidth = sEndWidth;
+      this.ruleEESelWidth = eEndWidth;
+      this.ruleESSelWidth = eSndWidth;
     },
     selBlock(event, item, index, itemBlock, indexBlock){
       this.orderList = item;
@@ -3931,7 +4046,10 @@ export default {
             if (this.taskList[i][j].secLoop){
               colSec = this.taskList[i][j].secLoop / 1000
             }
-            let result = Math.floor(colSec) == 0 ? 1 : Math.floor(colSec);
+            let result = colSec;
+            if (colSec >= 0 && colSec < 1){
+              result = 0.5;
+            }
             this.taskList[i][j].width += this.ruleScaleNum * result;
           }
         }
