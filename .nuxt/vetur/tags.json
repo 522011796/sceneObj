@@ -17,6 +17,9 @@
   "NuxtLogo": {
     "description": "Auto imported from components/NuxtLogo.vue"
   },
+  "OrderChangeDeviceTypeDialog": {
+    "description": "Auto imported from components/OrderChangeDeviceTypeDialog.vue"
+  },
   "OrderCurtainsTypeDialog": {
     "description": "Auto imported from components/OrderCurtainsTypeDialog.vue"
   },

@@ -112,6 +112,7 @@ export function outTypeObj(type){
     15 : 15,
     16 : 16,
     17 : 17,
+    18 : 18,
   };
   return typeOutObj[type];
 }
@@ -136,6 +137,7 @@ export function outEditTypeObj(type){
     15 : 15,
     16 : 16,
     17 : 17,
+    18 : 18,
   };
   return outEditTypeObj[type];
 }
@@ -158,7 +160,8 @@ export function orderValue(type, str){
     "14":"暂停控制",
     "15":"音乐进度控制",
     "16":"点状灯效",
-    "17":"线状灯效"
+    "17":"线状灯效",
+    "18":"发送串行数据"
   };
   if (str && type == 'set') {
     return orderValue[str];
@@ -186,7 +189,8 @@ export function orderColor(type){
     "14":"#336699",
     "15":"#0000CC",
     "16":"#660066",
-    "17":"#006633"
+    "17":"#006633",
+    "18":"#006633"
   };
   return orderColor[type];
 }
@@ -197,7 +201,8 @@ export function planType(type, str){
     "1": "灯",
     "2": "开关",
     "3": "窗帘",
-    "5": "音乐"
+    "5": "音乐",
+    "6": "串行器"
   };
   if (type == 'set') {
     return planType[str];
@@ -228,7 +233,8 @@ export function deviceType(type){
     "1": "灯",
     "2": "开关",
     "3": "窗帘",
-    "5": "音乐"
+    "5": "音乐",
+    "6": "串行器"
   };
   return deviceType[type];
 }

@@ -58,7 +58,8 @@
                           <img v-else-if="item.t == 2" src="~/static/img/switch.png" class="layout-menu-icon"/>
                           <img v-else-if="item.t == 3" src="~/static/img/curtains.png" class="layout-menu-icon"/>
                           <img v-else-if="item.t == 5" src="~/static/img/music.png" class="layout-menu-icon"/>
-                          <img v-else-if="item.t == 0" src="~/static/img/sence.png" class="layout-menu-icon"/>
+                          <img v-else-if="item.t == 6" src="~/static/img/music.png" class="layout-menu-icon"/>
+                          <img v-else-if="item.t == 0" src="~/static/img/changedevice.png" class="layout-menu-icon"/>
                         </span>
                         <span class="layout-menu-title" v-if="isCollapse == true">
                           {{ item.n }}
@@ -192,6 +193,9 @@
                     </div>
                     <div class="index-pop-item" @click="changePlainType($event, 5)">
                       <span>{{$t("音乐")}}</span>
+                    </div>
+                    <div class="index-pop-item" @click="changePlainType($event, 6)">
+                      <span>{{$t("串行器")}}</span>
                     </div>
                     <div class="index-pop-item" @click="changePlainType($event, 0)">
                       <span>{{$t("场景")}}</span>

@@ -825,6 +825,34 @@
             </el-form-item>
           </el-form>
         </div>
+
+        <div v-if="setChildBottomType == 'changeDeviceSub'" >
+          <el-form class="padding-tb10-lr20" label-width="95px" ref="formMusicOrder" :model="formChangeDevice">
+            <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
+              <div class="textRight color-666666">
+                <el-popover
+                  placement="left"
+                  width="260"
+                  popper-class="pop-custom"
+                  trigger="click"
+                  v-model="customDrawBottomVisible">
+                  <div class="textCenter">
+                    <order-change-device-type-dialog @click="changeCustomBottomChangeDeviceType"></order-change-device-type-dialog>
+                  </div>
+                  <span slot="reference" size="mini" class="font-size-12">
+                          <label>{{formChangeDevice.type == '' ? $t("请选择") : orderValueInfo(formChangeDevice.type, 'set')}}</label>
+                          <label><i class="fa fa-chevron-right"></i></label>
+                        </span>
+                </el-popover>
+              </div>
+            </el-form-item>
+            <el-form-item v-if="customBottomType == 13" label="音乐播放" class="netmoon-form-item-border-dialog custon-input-item">
+              <div class="textRight color-666666">
+                <el-input :placeholder="$t('请输入串行器数据')" v-model="formChangeDevice.source"></el-input>
+              </div>
+            </el-form-item>
+          </el-form>
+        </div>
       </div>
     </el-drawer>
 
@@ -1505,6 +1533,35 @@
                   </el-form-item>
                 </el-form>
               </div>
+
+              <div v-if="setChildBottomType == 'changeDeviceSub'" >
+                <el-form class="padding-tb10-lr20" label-width="95px" ref="formMusicOrder" :model="formChangeDevice">
+                  <el-form-item label="指令类型" class="netmoon-form-item-border-dialog">
+                    <div class="textRight color-666666">
+                      <el-popover
+                        placement="left"
+                        width="260"
+                        popper-class="pop-custom"
+                        trigger="click"
+                        v-model="customBottomVisible">
+                        <div class="textCenter">
+                          <order-change-device-type-dialog @click="changeCustomBottomChangeDeviceType"></order-change-device-type-dialog>
+                        </div>
+                        <span slot="reference" size="mini" class="font-size-12">
+                          <label v-if="areaItem == ''">{{formChangeDevice.type == '' ? $t("请选择") : orderValueInfo(formChangeDevice.type, 'set')}}</label>
+                          <label v-if="areaItem != ''">{{formChangeDevice.type == '' ? $t("请选择") : orderValueInfo(formChangeDevice.type, 'set')}}</label>
+                          <label><i class="fa fa-chevron-right"></i></label>
+                        </span>
+                      </el-popover>
+                    </div>
+                  </el-form-item>
+                  <el-form-item v-if="customBottomType == 13" label="串行器数据" class="netmoon-form-item-border-dialog custon-input-item">
+                    <div class="textRight color-666666">
+                      <el-input :placeholder="$t('请输入串行器数据')" v-model="formChangeDevice.source"></el-input>
+                    </div>
+                  </el-form-item>
+                </el-form>
+              </div>
             </div>
           </div>
         </div>
@@ -1543,9 +1600,11 @@ import OrderPowerTypeDialog from "../components/OrderPowerTypeDialog";
 import OrderSceneTypeDialog from "../components/OrderSceneTypeDialog";
 import {showChartLoading, hideChartLoading} from "../utils/loadingChart";
 import OrderMusicTypeDialog from "../components/OrderMusicTypeDialog";
+import OrderChangeDeviceTypeDialog from "../components/OrderChangeDeviceTypeDialog";
 export default {
   mixins: [mixins],
   components: {
+    OrderChangeDeviceTypeDialog,
     OrderMusicTypeDialog,
     OrderSceneTypeDialog,
     OrderPowerTypeDialog,
@@ -1853,6 +1912,16 @@ export default {
         sourceCode: '',
         openSource: true,
         img: ''
+      },
+      formChangeDevice: {
+        type: '18',
+        source: '',
+        roomId: '',
+        sceneId: '',
+        sceneName: '',
+        sceneType: 1,
+        sourceCode: '',
+        openSource: true,
       }
     }
   },
@@ -2340,6 +2409,7 @@ export default {
       this.formSwitchOrder.type = "";
       this.formSceneOrder.type = "";
       this.formMusicOrder.type = "";
+      this.formChangeDevice.type = "";
       this.loopIndex = "";
       this.loopItem = "";
       this.senceIndex = "";
@@ -2363,6 +2433,10 @@ export default {
         this.setChildBottomType = 'musicSub';
         this.customBottomType = 13;
         this.formMusicOrder.type = 13;
+      }else if (this.planList[index].t == 6){
+        this.setChildBottomType = 'changeDeviceSub';
+        this.customBottomType = 18;
+        this.formChangeDevice.type = 18;
       }else if (this.planList[index].t == 0){
         this.setChildBottomType = 'sceneSub';
         this.customBottomType = 4;
@@ -2716,6 +2790,10 @@ export default {
         this.setChildBottomType = 'musicSub';
         this.customBottomType = 13;
         this.formMusicOrder.type = 13;
+      }else if (this.planList[index].t === 6){
+        this.setChildBottomType = 'changeDeviceSub';
+        this.customBottomType = 18;
+        this.formChangeDevice.type = 18;
       }
 
       //console.log(this.formOrder.type, this.formSwitchOrder.type);
@@ -2912,6 +2990,12 @@ export default {
         }else if (item.i == 2){
           this.formSceneOrder.waitTime = item.v;
         }
+      }else if (this.setChildBottomType == 'changeDeviceSub') {
+        this.formChangeDevice.type = item.i;
+        this.customBottomType = item.i;
+        if (item.i == 18) {
+          this.formChangeDevice.source = item.v;
+        }
       }
       this.drawerBottomDialogVisible = true;
     },
@@ -2939,6 +3023,10 @@ export default {
         this.customBottomType = 4;
         this.formSceneOrder.type = 4;
         this.formSceneOrder.curtainsOpenClose = 0;
+      }else if (this.setChildBottomType == 'changeDeviceSub'){
+        this.customBottomType = 18;
+        this.formChangeDevice.type = 18;
+        this.formChangeDevice.source = "";
       }
     },
     insertOrder(event, item, index, area, type){
@@ -3166,6 +3254,14 @@ export default {
       this.customBottomVisible = false;
       this.customDrawBottomVisible = false;
     },
+    changeCustomBottomChangeDeviceType(event, type){
+      this.editOpr = "edit";
+      this.areaItem = "";
+      this.formChangeDevice.type = type;
+      this.customBottomType = type;
+      this.customBottomVisible = false;
+      this.customDrawBottomVisible = false;
+    },
     changeSceneBottomCurtainsType(event, type){
       this.editOpr = "edit";
       this.areaItem = "";
@@ -3366,6 +3462,10 @@ export default {
         this.formMusicOrder.sence = item.sceneId;
         this.formMusicOrder.senceText = item.sceneName;
         this.formMusicOrder.senceRoom = item.roomId;
+      }else if (type == "changeDeviceSub"){
+        this.formChangeDevice.sence = item.sceneId;
+        this.formChangeDevice.senceText = item.sceneName;
+        this.formChangeDevice.senceRoom = item.roomId;
       }
       this.customBottomOpenVisible = false;
       this.customDrawBottomOpenVisible = false;
@@ -3454,6 +3554,19 @@ export default {
             }
           }
         }
+      }else if (this.setChildBottomType == 'changeDeviceSub' && this.oprType != 'delOrder'){
+        if (this.formChangeDevice.type == 18){
+          if (this.formChangeDevice.source == ""){
+            MessageCommonTips(this, this.$t("请输入串行器数据！"), 'warning');
+            return;
+          }
+        }
+        if (this.formChangeDevice.type == 18){
+          if (this.formChangeDevice.musicProcess == ""){
+            MessageCommonTips(this, this.$t("请输入串行器数据！"), 'warning');
+            return;
+          }
+        }
       }else if (this.setChildBottomType == 'sceneSub' && this.oprType != 'delOrder'){
         if (this.formSceneOrder.type == 3){
           if (this.formSceneOrder.startOrderI == ""){
@@ -3495,6 +3608,10 @@ export default {
         }else if (this.formMusicOrder.type != ""){
           obj = {
             i : this.formMusicOrder.type
+          }
+        }else if (this.formChangeDevice.type != ""){
+          obj = {
+            i : this.formChangeDevice.type
           }
         }else if (this.formSceneOrder.type != ""){
           obj = {
@@ -3622,6 +3739,8 @@ export default {
 
         }else if (this.formMusicOrder.type == 15){
           obj['v'] = parseInt(this.formMusicOrder.musicProcess);
+        }else if (this.formMusicOrder.type == 18){
+          obj['v'] = parseInt(this.formChangeDevice.source);
         }
         //console.log(5557,obj);
         //this.taskItem.push(obj);

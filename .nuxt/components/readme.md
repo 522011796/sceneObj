@@ -12,6 +12,7 @@ You can directly use them in pages and other components without the need to impo
 - `<LightOpenTypeDialog>` | `<light-open-type-dialog>` (components/LightOpenTypeDialog.vue)
 - `<LoopItem>` | `<loop-item>` (components/LoopItem.vue)
 - `<NuxtLogo>` | `<nuxt-logo>` (components/NuxtLogo.vue)
+- `<OrderChangeDeviceTypeDialog>` | `<order-change-device-type-dialog>` (components/OrderChangeDeviceTypeDialog.vue)
 - `<OrderCurtainsTypeDialog>` | `<order-curtains-type-dialog>` (components/OrderCurtainsTypeDialog.vue)
 - `<OrderEditDialog>` | `<order-edit-dialog>` (components/OrderEditDialog.vue)
 - `<OrderLightTypeDialog>` | `<order-light-type-dialog>` (components/OrderLightTypeDialog.vue)
