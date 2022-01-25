@@ -157,14 +157,14 @@
                                   :class="itemBlock.i == 1 ? 'color-ffffff' : 'color-434343'"
                       >
                         {{ orderValueInfo(itemBlock.i, 'set') }}
-                        <div class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                        <div class="moon-ellipsis-class font-size-10 color-F2F6FC marginTop2">
                           {{format(itemBlock.timeCount)}}
                         </div>
                       </span>
                       <span v-if="(itemBlock.i == 3) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343 font-size-12">
                         <label v-if="itemBlock.t > 0">
                           {{ orderValueInfo(itemBlock.i, 'set') }}
-                          <div class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                          <div class="moon-ellipsis-class font-size-10 color-909399 marginTop2">
                             {{format(itemBlock.timeCount)}}
                           </div>
                         </label>
@@ -172,7 +172,7 @@
                       </span>
                       <span v-if="(itemBlock.i == 4) && (!itemBlock.list || itemBlock.list.length == 0)" class="color-434343 font-size-12">
                         {{ itemBlock.n }}
-                        <div v-if="itemBlock.sec != -1" class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                        <div v-if="itemBlock.sec != -1" class="moon-ellipsis-class font-size-10 color-F2F6FC marginTop2">
                           {{format(itemBlock.timeCount)}}
                         </div>
                         <label v-if="itemBlock.sec == -1" class="color-default">({{ $t("无限循环") }})</label>
@@ -182,7 +182,7 @@
                         {{orderValueInfo(itemList.i, 'set')}}
                         <label v-if="indexList != itemBlock.list.length - 1"> | </label>
 
-                        <div class="moon-ellipsis-class font-size-10 color-disabled marginTop2">
+                        <div class="moon-ellipsis-class font-size-10 color-F2F6FC marginTop2">
                             {{format(itemBlock.timeCount)}}
                           </div>
                       </span>
