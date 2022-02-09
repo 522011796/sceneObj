@@ -531,6 +531,7 @@ export default {
       this.$emit('selSence', event, item, type);
     },
     async createTplOpr(event, item){
+      this.drawerCreateTplVisible = true;
       await this.getSourceUrl(item.sourceUrl);
       await this.getDeviceOldList();
       await this.saveTplConfig();
@@ -539,7 +540,6 @@ export default {
         return;
       }
       this.showDialogStatus();
-      this.drawerCreateTplVisible = true;
     },
     changeTplDrawer(event){
       this.drawerTplVisible = event;
