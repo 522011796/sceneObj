@@ -59,6 +59,9 @@
   "Tutorial": {
     "description": "Auto imported from components/Tutorial.vue"
   },
+  "TreeDeviceRoomTree": {
+    "description": "Auto imported from components/tree/DeviceRoomTree.vue"
+  },
   "Toast": {
     "description": "Auto imported from components/toast/index.js"
   }

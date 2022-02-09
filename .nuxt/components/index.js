@@ -18,6 +18,7 @@ export { default as RoomListDialog } from '../../components/RoomListDialog.vue'
 export { default as SceneListDialog } from '../../components/SceneListDialog.vue'
 export { default as TplListDialog } from '../../components/TplListDialog.vue'
 export { default as Tutorial } from '../../components/Tutorial.vue'
+export { default as TreeDeviceRoomTree } from '../../components/tree/DeviceRoomTree.vue'
 export { default as Toast } from '../../components/toast/index.js'
 
 // nuxt/nuxt.js#8607

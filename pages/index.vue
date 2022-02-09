@@ -4117,10 +4117,14 @@ export default {
             if (this.taskList[i][j].secLoop){
               colSec = this.taskList[i][j].secLoop / 1000
             }
-            if (colSec < 1){
-              width += colSec;
-            }
+            // if (colSec < 1){
+            //   width += colSec;
+            // }
+
             let result = colSec;
+            if (colSec >= 0 && colSec < 1){
+              result = 0.5;
+            }
 
             this.taskList[i][j].width = this.taskList[i][j].width - result *this.ruleScaleNum;
           }
@@ -4246,7 +4250,7 @@ export default {
   }
   .demoRuleChildClass{
     display: inline-block;
-    min-width: 10px;
+    min-width: 5.2px;
     height: 45px;
     text-align: center;
     /*border-right: 0.1px solid #434343;*/

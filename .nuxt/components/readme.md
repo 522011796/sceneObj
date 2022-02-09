@@ -26,4 +26,5 @@ You can directly use them in pages and other components without the need to impo
 - `<SceneListDialog>` | `<scene-list-dialog>` (components/SceneListDialog.vue)
 - `<TplListDialog>` | `<tpl-list-dialog>` (components/TplListDialog.vue)
 - `<Tutorial>` | `<tutorial>` (components/Tutorial.vue)
+- `<TreeDeviceRoomTree>` | `<tree-device-room-tree>` (components/tree/DeviceRoomTree.vue)
 - `<Toast>` | `<toast>` (components/toast/index.js)

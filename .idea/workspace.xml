@@ -2,9 +2,23 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="07ebeac9-f407-4844-9b54-2e5caeee4ec8" name="Default Changelist" comment="init">
+      <change afterPath="$PROJECT_DIR$/components/tree/DeviceRoomTree.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/index3.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/item.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pages/itemH.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/components/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/components/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/components/readme.md" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/components/readme.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/router.js" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/router.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/routes.json" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/routes.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.nuxt/vetur/tags.json" beforeDir="false" afterPath="$PROJECT_DIR$/.nuxt/vetur/tags.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/assets/css/common.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/css/common.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/SceneListDialog.vue" beforeDir="false" afterPath="$PROJECT_DIR$/components/SceneListDialog.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/nuxt.config.js" beforeDir="false" afterPath="$PROJECT_DIR$/nuxt.config.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pages/index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pages/index2.vue" beforeDir="false" afterPath="$PROJECT_DIR$/pages/index2.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,7 +58,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/static/img" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/components/tree" />
     <property name="list.type.of.created.stylesheet" value="CSS" />
     <property name="node.js.path.for.package.eslint" value="project" />
     <property name="node.js.path.for.package.standard" value="project" />
@@ -62,11 +76,11 @@
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/components/tree" />
+      <recent name="$PROJECT_DIR$/pages" />
+      <recent name="$PROJECT_DIR$/plugins" />
       <recent name="$PROJECT_DIR$/static/img" />
       <recent name="$PROJECT_DIR$/components" />
-      <recent name="$PROJECT_DIR$/plugins" />
-      <recent name="$PROJECT_DIR$/mixins" />
-      <recent name="$PROJECT_DIR$/utils" />
     </key>
   </component>
   <component name="ServiceViewManager">
@@ -128,14 +142,8 @@
       <workItem from="1639711377405" duration="1000" />
       <workItem from="1639711749650" duration="2000" />
       <workItem from="1642730934566" duration="3894000" />
-      <workItem from="1643095926729" duration="774000" />
-    </task>
-    <task id="LOCAL-00070" summary="init">
-      <created>1637655943899</created>
-      <option name="number" value="00070" />
-      <option name="presentableId" value="LOCAL-00070" />
-      <option name="project" value="LOCAL" />
-      <updated>1637655943899</updated>
+      <workItem from="1643095926729" duration="2972000" />
+      <workItem from="1643158771280" duration="64909000" />
     </task>
     <task id="LOCAL-00071" summary="init">
       <created>1637661072885</created>
@@ -473,7 +481,14 @@
       <option name="project" value="LOCAL" />
       <updated>1642755976974</updated>
     </task>
-    <option name="localTasksCounter" value="119" />
+    <task id="LOCAL-00119" summary="init">
+      <created>1643096796733</created>
+      <option name="number" value="00119" />
+      <option name="presentableId" value="LOCAL-00119" />
+      <option name="project" value="LOCAL" />
+      <updated>1643096796733</updated>
+    </task>
+    <option name="localTasksCounter" value="120" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
