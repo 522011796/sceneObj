@@ -312,15 +312,20 @@
                       @after-enter="showItemData($event, itemMain)"
                       @after-leave=""
                       @show=""
+                      @hide="closeItemData"
                       v-model="item.visible">
-                      <div style="max-height: 300px;overflow-y: auto">
+                      <div style="height: 140px;overflow-y: auto">
                         <span v-if="deviceBottomList.length == 0"><i class="fa fa-spinner fa-spin"></i></span>
-                        <el-tree ref="treeDevice" v-if="deviceBottomList.length > 0" accordion empty-text="" :data="deviceBottomList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemMain.dd, item, itemMain)">
-                          <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <label class="font-size-12">{{ data.label }}</label>
-                            <label class="font-size-12 color-disabled">({{ data.n }})</label>
-                          </span>
-                        </el-tree>
+<!--                        <el-tree ref="treeDevice" v-if="deviceBottomList.length > 0" accordion empty-text="" :data="deviceBottomList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemMain.dd, item, itemMain)">-->
+<!--                          <span class="custom-tree-node" slot-scope="{ node, data }">-->
+<!--                            <label class="font-size-12">{{ data.label }}</label>-->
+<!--                            <label class="font-size-12 color-disabled">({{ data.n }})</label>-->
+<!--                          </span>-->
+<!--                        </el-tree>-->
+                        <div v-for="(itemTree, indexTree) in deviceBottomList" style="height: 25px; line-height: 25px" @click="selTreeItem(itemTree,itemMain.dd, item, itemMain)">
+                          <span class="font-size-12">{{itemTree.label}}</span>
+<!--                          <span class="font-size-12 color-disabled">({{itemTree.n}})</span>-->
+                        </div>
                       </div>
                       <div slot="reference">
                         <span v-if="item.extraSn != ''">
@@ -755,7 +760,11 @@ export default {
       this.$parent.$parent.$parent.$refs.childRef.$children[0].envPopStatus = "";
     },
     showItemData(event, itemData){
+      this.deviceBottomList = [];
       this.deviceBottomList = itemData.dd;
+    },
+    closeItemData(){
+      this.deviceBottomList = [];
     },
     showBottomDialog(event, indexMain, itemMain, item, index){
       this.deviceBottomList = itemMain.dd;
@@ -836,7 +845,7 @@ export default {
       item.extraName = '';
       itemMain.extraCount--;
     },
-    selTreeItem(data, node, self, itemMainDD, item, itemMain){
+    selTreeItem(data, itemMainDD, item, itemMain){
       let deviceList = JSON.parse(JSON.stringify(itemMainDD));
       if(item.extraName != ""){
         itemMainDD.splice(itemMainDD.length ,0, {
@@ -894,6 +903,7 @@ export default {
     },
     cancelTplSetConfig(){
       this.deviceTplData = [];
+      this.deviceBottomList = [];
       this.tplSetDeviceVisible = false;
     },
     okTplSetConfig(){
