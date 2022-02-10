@@ -665,7 +665,6 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
           let menuList = JSON.parse(JSON.stringify(this.menuList));
           menuList.push(this.selMenuData);
           this.menuList = menuList;
-          console.log(this.menuList);
           //this.initMenu(this.menuList);
           //setSenceData();
           this.$refs.childRef.$children[0].setSenceData(this.menuList);
