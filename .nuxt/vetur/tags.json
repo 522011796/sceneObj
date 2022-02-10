@@ -53,16 +53,19 @@
   "SceneListDialog": {
     "description": "Auto imported from components/SceneListDialog.vue"
   },
+  "TaskListTemplate": {
+    "description": "Auto imported from components/TaskListTemplate.vue"
+  },
   "TplListDialog": {
     "description": "Auto imported from components/TplListDialog.vue"
   },
   "Tutorial": {
     "description": "Auto imported from components/Tutorial.vue"
   },
-  "TreeDeviceRoomTree": {
-    "description": "Auto imported from components/tree/DeviceRoomTree.vue"
-  },
   "Toast": {
     "description": "Auto imported from components/toast/index.js"
+  },
+  "TreeDeviceRoomTree": {
+    "description": "Auto imported from components/tree/DeviceRoomTree.vue"
   }
 }

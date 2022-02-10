@@ -113,7 +113,6 @@
           </div>
         </div>
 
-
         <div class="demoRuleBlockClass" v-for="(item, index) in taskResetList" style="margin-bottom: 10px;position: relative;z-index: 99">
           <div class="demoRuleChildClass" v-for="(itemBlock, indexBlock) in item" :key="itemBlock.id"
                v-if="item.length > 0 && (itemBlock.i == 1 || itemBlock.i == 2 || itemBlock.i == 3 || itemBlock.i == 4)"
@@ -126,19 +125,6 @@
                         'position': 'relative'
                       }"
           >
-
-            <!--            <div :style="[divRuleTimeStyle, {top: index == 0 ? 0 : -(index * (40 + 10)) +'px'}]" v-if="itemBlock.line" @click.stop="" style="background: rgba(0,0,0,0.1);height: 0px;width: 100%;position: absolute;z-index: 200">-->
-            <!--              <div style="position: relative" v-if="ruleSelRowStart == index && ruleEndTime != ''">-->
-            <!--                <div v-if="ruleSelStart == indexBlock" class="textLeft" style="background: rgb(140, 197, 255);z-index: 99;position: absolute; top: 5px;padding: 5px 5px;border-radius: 5px;min-width: 140px;" :style="{width: ruleSelWidth - 20+'px'}">-->
-            <!--                  <div v-if="ruleStartTime != -1 && ruleEndTime != -1">-->
-            <!--                    {{ $t("时间差") }}: {{ format(timeDiff, '3') }}-->
-            <!--                  </div>-->
-            <!--                  <div style="width: 300px" v-if="ruleStartTime == -1 || ruleEndTime == -1">-->
-            <!--                    {{ $t("存在无限循环指令，无法计算时间差") }}-->
-            <!--                  </div>-->
-            <!--                </div>-->
-            <!--              </div>-->
-            <!--            </div>-->
 
             <v-touch v-on:tap="ruleLineStatus == true ? '' : selBlock($event, item, index, itemBlock, indexBlock)" style="height: 100%;width:100%;">
               <el-popover
@@ -1582,6 +1568,7 @@
 </template>
 
 <script>
+import VirtualList from 'vue-virtual-scroll-list'
 import mixins from "../mixins/mixins";
 import {common} from "../utils/api/url";
 import LoopItem from "../components/LoopItem";
@@ -1612,6 +1599,8 @@ import OrderSceneTypeDialog from "../components/OrderSceneTypeDialog";
 import {showChartLoading, hideChartLoading} from "../utils/loadingChart";
 import OrderMusicTypeDialog from "../components/OrderMusicTypeDialog";
 import OrderChangeDeviceTypeDialog from "../components/OrderChangeDeviceTypeDialog";
+import TaskListTemplate from "../components/TaskListTemplate";
+import ItemH from "./itemH";
 export default {
   mixins: [mixins],
   components: {
@@ -1625,7 +1614,7 @@ export default {
     SceneListDialog,
     EnvListDialog,
     AlertMessageDialog,
-    OrderListPopChildDialog, OrderSwitchTypeDialog, OrderCurtainsTypeDialog, LoopItem, OrderLightTypeDialog },
+    OrderListPopChildDialog, OrderSwitchTypeDialog, OrderCurtainsTypeDialog, LoopItem, OrderLightTypeDialog,VirtualList,TaskListTemplate },
   data(){
     return {
       ruleDefaultWith:52,
@@ -1767,6 +1756,11 @@ export default {
       ruleEEndTimeDiffWidth: 0,
       ratate: 'rotate(0deg)',
       ruleLineStatus: false,
+      TaskListComment: TaskListTemplate,
+      startIndex: 0,
+      endIndex: 10,
+      itemHeight: 40,
+      dataTempList: [],
       ruleNumStyle: {
         transform: 'rotate(0deg)',
         position: 'relative',
@@ -4260,6 +4254,10 @@ export default {
       this.ruleSelEndWidth = 0;
       this.ruleEndTimeDiffWidth = 0;
       this.ruleSelStartIndex = 0;
+    },
+    visibleList() {
+      this.dataTempList = this.taskResetList.slice(this.startIndex, this.endIndex)
+      console.log(this.dataTempList);
     }
   }
 }

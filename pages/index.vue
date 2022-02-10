@@ -890,7 +890,7 @@
         <div>
           <div class="">
             <div class="rightDialogContent" :style="dialogRightTabOrderStyle">
-              <div class="item-list-child" v-for="(item, index) in orderList" :key="index" @click="upateChildBottomDialog($event, 'lightSub', index, item)">
+              <div class="item-list-child" v-for="(item, index) in orderList" :key="index">
                 <el-row>
                   <el-col :span="15">
                     <span class="opr-item-title-block">
