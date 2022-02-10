@@ -156,7 +156,10 @@
                       <span v-if="(itemBlock.i == 1 || itemBlock.i == 2 && (itemBlock.i != 3 || itemBlock.i != 4)) && (!itemBlock.list || itemBlock.list.length == 0)"
                                   :class="itemBlock.i == 1 ? 'color-ffffff' : 'color-434343'"
                       >
-                        {{ orderValueInfo(itemBlock.i, 'set') }}
+
+                        <div class="moon-ellipsis-class">
+                          {{ orderValueInfo(itemBlock.i, 'set') }}
+                        </div>
                         <div class="moon-ellipsis-class font-size-10 color-F2F6FC marginTop2">
                           {{format(itemBlock.timeCount)}}
                         </div>
