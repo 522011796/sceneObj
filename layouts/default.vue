@@ -662,8 +662,10 @@ import {MessageCommonTips, MessageSuccess, MessageWarning, planType} from "../ut
             MessageCommonTips(this, this.$t("请选择需要复制的任务"), 'warning');
             return;
           }
-          //console.log(this.selMenuData);
-          this.menuList.push(this.selMenuData);
+          let menuList = JSON.parse(JSON.stringify(this.menuList));
+          menuList.push(this.selMenuData);
+          this.menuList = menuList;
+          console.log(this.menuList);
           //this.initMenu(this.menuList);
           //setSenceData();
           this.$refs.childRef.$children[0].setSenceData(this.menuList);
