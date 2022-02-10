@@ -1952,7 +1952,7 @@ export default {
     this.appType == 'app' ? this.paddingMainBottom = '104px' : this.paddingMainBottom = '0px';
     this.appType == 'app' ? this.paddingBottom = '84px' : this.paddingBottom = '0px';
 
-    this.ruleScaleNum = Math.floor(this.ruleDefaultWith / 40);
+    this.ruleScaleNum = Math.floor(this.ruleDefaultWith / 52);
 
     this.checkIndexOrient();
     //this.initRoom();
@@ -4102,7 +4102,6 @@ export default {
           };
         }
       }
-
       // let scaleNum = Math.floor(this.ruleItemList[0].width / 4);
       this.ruleDefaultWith -= this.ruleScaleNum;
       for (let i = 0; i < this.taskList.length; i++) {
@@ -4123,9 +4122,8 @@ export default {
 
             let result = colSec;
             if (colSec >= 0 && colSec < 1){
-              result = 0.5;
+              result = 0.2;
             }
-
             this.taskList[i][j].width = this.taskList[i][j].width - result *this.ruleScaleNum;
           }
         }
@@ -4171,7 +4169,7 @@ export default {
             }
             let result = colSec;
             if (colSec >= 0 && colSec < 1){
-              result = 0.5;
+              result = 0.2;
             }
             this.taskList[i][j].width += this.ruleScaleNum * result;
           }
