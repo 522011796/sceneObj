@@ -28,9 +28,11 @@ export const common = {
   queryReceiveTplShareInfoList: '/tpl/queryReceiveTplShareInfoList',//查询接收模版列表
   handleShareTplInfo: '/tpl/handleShareTplInfo',//模版处理
   querySceneActionList: '/scene/querySceneActionList',//查询场景详细信息
+  generalAuthorizeCode: '/auth/generalAuthorizeCode',
+  saveSession: '/auth/saveSession',
 };
 
 export const commonConfig = {
-  manufacturer: 'Netmoon',
+  manufacturer: 'IGSMART',
   baseUrl: 'https://api.iot.9451.com.cn',
 };
