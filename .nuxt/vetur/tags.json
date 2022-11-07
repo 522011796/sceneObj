@@ -17,6 +17,9 @@
   "NuxtLogo": {
     "description": "Auto imported from components/NuxtLogo.vue"
   },
+  "OrderChangeDeviceTypeDialog": {
+    "description": "Auto imported from components/OrderChangeDeviceTypeDialog.vue"
+  },
   "OrderCurtainsTypeDialog": {
     "description": "Auto imported from components/OrderCurtainsTypeDialog.vue"
   },
@@ -50,6 +53,9 @@
   "SceneListDialog": {
     "description": "Auto imported from components/SceneListDialog.vue"
   },
+  "TaskListTemplate": {
+    "description": "Auto imported from components/TaskListTemplate.vue"
+  },
   "TplListDialog": {
     "description": "Auto imported from components/TplListDialog.vue"
   },
@@ -58,5 +64,8 @@
   },
   "Toast": {
     "description": "Auto imported from components/toast/index.js"
+  },
+  "TreeDeviceRoomTree": {
+    "description": "Auto imported from components/tree/DeviceRoomTree.vue"
   }
 }

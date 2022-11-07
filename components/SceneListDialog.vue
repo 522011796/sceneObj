@@ -294,20 +294,38 @@
                     </el-popover>
                   </div>
                   <div class="tpl-item-child-content-block">
+<!--                    <div @click="showBottomDialog($event, indexMain, itemMain, item, index)">-->
+<!--                        <span v-if="item.extraSn != ''">-->
+<!--                          <label class="moon-ellipsis-class font-size-12" style="display: inline-block;max-width: 85%;vertical-align: middle">{{ item.extraName }}</label>-->
+<!--                          <label @click="removeDeviceItem($event ,itemMain.dd, item, itemMain)">-->
+<!--                            <i class="fa fa-close"></i>-->
+<!--                          </label>-->
+<!--                        </span>-->
+<!--                      <div v-if="item.extraSn == ''">-->
+<!--                        <i class="fa fa-plus-circle color-warning"></i>-->
+<!--                      </div>-->
+<!--                    </div>-->
+
                     <el-popover
                       placement="bottom"
                       trigger="click"
-                      @after-enter=""
+                      @after-enter="showItemData($event, itemMain)"
                       @after-leave=""
+                      @show=""
+                      @hide="closeItemData"
                       v-model="item.visible">
-                      <div style="max-height: 300px;overflow-y: auto">
-                        <span v-if="deviceLoading == true"><i class="fa fa-spinner fa-spin"></i></span>
-                        <el-tree ref="treeDevice" v-if="itemMain.dd.length > 0" accordion empty-text="" :data="itemMain.dd" @node-click="(data, node, self) => selTreeItem(data, node, self, itemMain.dd, item, itemMain)">
-                          <span class="custom-tree-node" slot-scope="{ node, data }">
-                            <label class="font-size-12">{{ data.label }}</label>
-                            <label class="font-size-12 color-disabled">({{ data.n }})</label>
-                          </span>
-                        </el-tree>
+                      <div style="height: 140px;overflow-y: auto">
+                        <span v-if="deviceBottomList.length == 0"><i class="fa fa-spinner fa-spin"></i></span>
+<!--                        <el-tree ref="treeDevice" v-if="deviceBottomList.length > 0" accordion empty-text="" :data="deviceBottomList" @node-click="(data, node, self) => selTreeItem(data, node, self, itemMain.dd, item, itemMain)">-->
+<!--                          <span class="custom-tree-node" slot-scope="{ node, data }">-->
+<!--                            <label class="font-size-12">{{ data.label }}</label>-->
+<!--                            <label class="font-size-12 color-disabled">({{ data.n }})</label>-->
+<!--                          </span>-->
+<!--                        </el-tree>-->
+                        <div v-for="(itemTree, indexTree) in deviceBottomList" style="height: 25px; line-height: 25px" @click="selTreeItem(itemTree,itemMain.dd, item, itemMain)">
+                          <span class="font-size-12">{{itemTree.label}}</span>
+<!--                          <span class="font-size-12 color-disabled">({{itemTree.n}})</span>-->
+                        </div>
                       </div>
                       <div slot="reference">
                         <span v-if="item.extraSn != ''">
@@ -327,6 +345,26 @@
             </el-row>
           </el-collapse-item>
         </el-collapse>
+
+        <!--底部弹出--暂时没用-->
+        <div class="mask" v-show="drawerBottomDialogVisible"></div>
+        <transition name="myboxV">
+          <div class="drawerBottomDialog share" v-show="drawerBottomDialogVisible" style="width: 100%">
+            <div>
+              <div class="drawerHeader header textCenter" @click="closeBottomDialog">
+                <span class="color-666666">设备列表</span>
+              </div>
+            </div>
+            <div>
+              <el-tree ref="treeDevice" accordion empty-text="" :data="deviceBottomList" @node-click="(data, node, self) => selTreeBottomItem(data, node, self, deviceBottomList, deviceBottomMainIndex, deviceBottomItem, deviceBottomItemIndex)">
+                <span class="custom-tree-node" slot-scope="{ node, data }">
+                  <label class="font-size-12">{{ data.label }}</label>
+                  <label class="font-size-12 color-disabled">({{ data.n }})</label>
+                </span>
+              </el-tree>
+            </div>
+          </div>
+        </transition>
       </div>
     </el-drawer>
 
@@ -414,6 +452,7 @@ import TplListDialog from "./TplListDialog";
 import {common} from "../utils/api/url";
 import {deviceType, inArray, MessageCommonTips, MessageError, MessageSuccess, MessageWarning} from "../utils/utils";
 import {Loading} from "element-ui";
+import itemH from "../pages/itemH";
 
 export default {
   components: {TplListDialog},
@@ -436,6 +475,7 @@ export default {
   },
   data() {
     return {
+      drawerBottomDialogVisible: false,
       dialogNormalVisible: false,
       roomObj: {},
       drawerTplVisible: false,
@@ -447,6 +487,10 @@ export default {
       deviceStatusData: [],
       deviceTplData: [],
       deviceTplBakData: [],
+      deviceBottomList: [],
+      deviceBottomMainIndex: '',
+      deviceBottomItemIndex: '',
+      deviceBottomItem: '',
       timer: null,
       tplSetDeviceVisible: false,
       deviceLoading: false,
@@ -487,6 +531,7 @@ export default {
       this.$emit('selSence', event, item, type);
     },
     async createTplOpr(event, item){
+      this.drawerCreateTplVisible = true;
       await this.getSourceUrl(item.sourceUrl);
       await this.getDeviceOldList();
       await this.saveTplConfig();
@@ -495,7 +540,6 @@ export default {
         return;
       }
       this.showDialogStatus();
-      this.drawerCreateTplVisible = true;
     },
     changeTplDrawer(event){
       this.drawerTplVisible = event;
@@ -536,7 +580,8 @@ export default {
       this.drawerCreateTplVisible = false;
     },
     editDeviceModelName(){
-      this.deviceTplData = JSON.parse(JSON.stringify(this.deviceTplBakData));
+      let _self = this;
+      _self.deviceTplData = JSON.parse(JSON.stringify(_self.deviceTplBakData));
       this.tplSetDeviceVisible = true;
     },
     async saveTplConfig(){
@@ -714,6 +759,23 @@ export default {
       this.timer = null;
       this.$parent.$parent.$parent.$refs.childRef.$children[0].envPopStatus = "";
     },
+    showItemData(event, itemData){
+      this.deviceBottomList = [];
+      this.deviceBottomList = itemData.dd;
+    },
+    closeItemData(){
+      this.deviceBottomList = [];
+    },
+    showBottomDialog(event, indexMain, itemMain, item, index){
+      this.deviceBottomList = itemMain.dd;
+      this.deviceBottomMainIndex = indexMain;
+      this.deviceBottomItemIndex = index;
+      this.deviceBottomItem = item;
+      this.drawerBottomDialogVisible = true;
+    },
+    closeBottomDialog(){
+      this.drawerBottomDialogVisible=false
+    },
     installSenceDeviceStauts(event, item){
       let params = {
         envKey: this.$route.query.envKey != "" && this.$route.query.envKey != undefined ? this.$route.query.envKey : localStorage.getItem("envKey"),
@@ -783,7 +845,7 @@ export default {
       item.extraName = '';
       itemMain.extraCount--;
     },
-    selTreeItem(data, node, self, itemMainDD, item, itemMain){
+    selTreeItem(data, itemMainDD, item, itemMain){
       let deviceList = JSON.parse(JSON.stringify(itemMainDD));
       if(item.extraName != ""){
         itemMainDD.splice(itemMainDD.length ,0, {
@@ -804,6 +866,29 @@ export default {
       itemMain.extraCount++;
       item.visible = false;
     },
+    selTreeBottomItem(data, node, self, deviceBottomList, mainIndex, item, itemIndex){
+      let deviceList = JSON.parse(JSON.stringify(deviceBottomList));
+      // if(item.extraName != ""){
+      //   itemMainDD.splice(itemMainDD.length ,0, {
+      //     label: item.extraName,
+      //     n: item.extraSn,
+      //     name: item.extraName,
+      //   });
+      //   itemMain.extraCount--;
+      // }
+      // item.extraSn = data.n;
+      // item.extraName = data.label;
+      // item.label = data.label;
+      // for (let i = 0; i < deviceList.length; i++){
+      //   if (data.n == deviceList[i].n){
+      //     itemMainDD.splice(i,1);
+      //   }
+      // }
+      // itemMain.extraCount++;
+
+      //this.deviceBottomList[] = '';
+      this.drawerBottomDialogVisible = false;
+    },
     editDeviceName(event, item){
 
     },
@@ -818,6 +903,7 @@ export default {
     },
     cancelTplSetConfig(){
       this.deviceTplData = [];
+      this.deviceBottomList = [];
       this.tplSetDeviceVisible = false;
     },
     okTplSetConfig(){
@@ -976,3 +1062,63 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+/* 给过渡的name加样式 */
+.mybox-leave-active, .mybox-enter-active {
+  transition: all 0.4s ease;
+}
+
+.mybox-leave-active, .mybox-enter {
+  height: 0px !important;
+}
+
+.mybox-leave, .mybox-enter-active {
+  height: 50%;
+}
+
+.myboxV-leave-active, .myboxV-enter-active {
+  transition: all 0.4s ease;
+}
+
+.myboxV-leave-active, .myboxV-enter {
+  height: 0px !important;
+}
+
+.myboxV-leave, .myboxV-enter-active {
+  height: 70%;
+}
+.share{
+  z-index: 100;
+  transition: bottom .5s ease-in;
+}
+.mask{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: rgba(0,0,0,0.5);
+  z-index: 99;
+}
+.drawerBottomDialogContent{
+  position: absolute;
+  top: 45px;
+  left: 0px;
+  width: 100%;
+}
+.drawerBottomDialog .header{
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+.drawerBottomDialog{
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  height: 50%;
+  width: 100%;
+  background: #fefefe;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+</style>

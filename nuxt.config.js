@@ -35,7 +35,7 @@ export default {
     '@/plugins/moment',
     '@/plugins/qs',
     '@/plugins/toast',
-    {src: '@/plugins/vueRule', ssr: false},
+    {src: '@/plugins/vueRule', ssr: false}
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
