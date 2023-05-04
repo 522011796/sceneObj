@@ -33,6 +33,6 @@ export const common = {
 };
 
 export const commonConfig = {
-  manufacturer: 'IGSMART',
+  manufacturer: 'LCSMART',
   baseUrl: 'https://api.iot.9451.com.cn',
 };

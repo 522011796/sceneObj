@@ -4,6 +4,7 @@ export const EnvListDialog = () => import('../../components/EnvListDialog.vue' /
 export const LightOpenTypeDialog = () => import('../../components/LightOpenTypeDialog.vue' /* webpackChunkName: "components/light-open-type-dialog" */).then(c => wrapFunctional(c.default || c))
 export const LoopItem = () => import('../../components/LoopItem.vue' /* webpackChunkName: "components/loop-item" */).then(c => wrapFunctional(c.default || c))
 export const NuxtLogo = () => import('../../components/NuxtLogo.vue' /* webpackChunkName: "components/nuxt-logo" */).then(c => wrapFunctional(c.default || c))
+export const OrderChangeDeviceTypeDialog = () => import('../../components/OrderChangeDeviceTypeDialog.vue' /* webpackChunkName: "components/order-change-device-type-dialog" */).then(c => wrapFunctional(c.default || c))
 export const OrderCurtainsTypeDialog = () => import('../../components/OrderCurtainsTypeDialog.vue' /* webpackChunkName: "components/order-curtains-type-dialog" */).then(c => wrapFunctional(c.default || c))
 export const OrderEditDialog = () => import('../../components/OrderEditDialog.vue' /* webpackChunkName: "components/order-edit-dialog" */).then(c => wrapFunctional(c.default || c))
 export const OrderLightTypeDialog = () => import('../../components/OrderLightTypeDialog.vue' /* webpackChunkName: "components/order-light-type-dialog" */).then(c => wrapFunctional(c.default || c))
@@ -15,9 +16,11 @@ export const OrderSwitchKeyTypeDialog = () => import('../../components/OrderSwit
 export const OrderSwitchTypeDialog = () => import('../../components/OrderSwitchTypeDialog.vue' /* webpackChunkName: "components/order-switch-type-dialog" */).then(c => wrapFunctional(c.default || c))
 export const RoomListDialog = () => import('../../components/RoomListDialog.vue' /* webpackChunkName: "components/room-list-dialog" */).then(c => wrapFunctional(c.default || c))
 export const SceneListDialog = () => import('../../components/SceneListDialog.vue' /* webpackChunkName: "components/scene-list-dialog" */).then(c => wrapFunctional(c.default || c))
+export const TaskListTemplate = () => import('../../components/TaskListTemplate.vue' /* webpackChunkName: "components/task-list-template" */).then(c => wrapFunctional(c.default || c))
 export const TplListDialog = () => import('../../components/TplListDialog.vue' /* webpackChunkName: "components/tpl-list-dialog" */).then(c => wrapFunctional(c.default || c))
 export const Tutorial = () => import('../../components/Tutorial.vue' /* webpackChunkName: "components/tutorial" */).then(c => wrapFunctional(c.default || c))
 export const Toast = () => import('../../components/toast/index.js' /* webpackChunkName: "components/toast" */).then(c => wrapFunctional(c.default || c))
+export const TreeDeviceRoomTree = () => import('../../components/tree/DeviceRoomTree.vue' /* webpackChunkName: "components/tree-device-room-tree" */).then(c => wrapFunctional(c.default || c))
 
 // nuxt/nuxt.js#8607
 function wrapFunctional(options) {

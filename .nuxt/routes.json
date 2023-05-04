@@ -1,5 +1,26 @@
 [
   {
+    "name": "index3",
+    "path": "/index3",
+    "component": "/Users/likai/工作/object/vuejs/tmall/test/pages/index3.vue",
+    "chunkName": "pages/index3",
+    "_name": "_fa4315ee"
+  },
+  {
+    "name": "item",
+    "path": "/item",
+    "component": "/Users/likai/工作/object/vuejs/tmall/test/pages/item.vue",
+    "chunkName": "pages/item",
+    "_name": "_2572097b"
+  },
+  {
+    "name": "itemH",
+    "path": "/itemH",
+    "component": "/Users/likai/工作/object/vuejs/tmall/test/pages/itemH.vue",
+    "chunkName": "pages/itemH",
+    "_name": "_ebc65746"
+  },
+  {
     "name": "login",
     "path": "/login",
     "component": "/Users/likai/工作/object/vuejs/tmall/test/pages/login.vue",

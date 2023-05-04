@@ -1,0 +1,35 @@
+{
+	"default": "Netmoon",
+	"manufacturer-list": {
+		"Netmoon": {
+			"manufacturer": "Netmoon",
+			"logo": "https://api.iot.9451.com.cn/upload/logo/Netmoon.png",
+			"domain": "https://api.iot.9451.com.cn",
+			"name": "棉花糖智能"
+		},
+		"Sufn": {
+			"manufacturer": "Sufn",
+			"logo": "https://api.iot.shafengled.cn:1443/upload/logo/Sufn.png",
+			"domain": "https://api.iot.shafengled.cn:1443",
+			"name": "Sufn Smart"
+		},
+		"IGSMART": {
+			"manufacturer": "IGSMART",
+			"logo": "https://api.iot.9451.com.cn/upload/logo/IGSMART.png",
+			"domain": "https://api.iot.9451.com.cn",
+			"name": "IG智能"
+		},
+    "LCSMART": {
+      "manufacturer": "LCSMART",
+      "logo": "https://api.iot.9451.com.cn/upload/logo/LCSMART.png",
+      "domain": "https://api.iot.9451.com.cn",
+      "name": "LC智能照明"
+    },
+		"MAIYUAN": {
+			"manufacturer": "MAIYUAN",
+			"logo": "https://api.iot.9451.com.cn/upload/logo/MAIYUAN.png",
+			"domain": "https://api.iot.9451.com.cn",
+			"name": "迈远智能"
+		}
+	}
+}
